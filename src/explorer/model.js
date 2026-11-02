@@ -1,0 +1,64 @@
+export function validateDataset(data) {
+  if(data?.meta?.synthetic!==true) throw new Error('本 demo 只接受明确标记的合成数据。');
+  for(const key of ['individuals','genes','populations','traits']) {
+    if(!Array.isArray(data[key])||!data[key].length||data[key].some(x=>typeof x?.id!=='string'||!x.id)||new Set(data[key].map(x=>x.id)).size!==data[key].length) throw new Error(`${key} 标识缺失或重复`);
+  }
+  for(const gene of data.genes) {
+    if(!Array.isArray(gene.variants)||!Array.isArray(gene.features)||!gene.trait_ids?.length||gene.trait_ids.some(id=>!data.traits.some(t=>t.id===id))||!(gene.start<gene.end)) throw new Error('基因结构或性状映射无效');
+    if(gene.variants.some(v=>!v.id||!Number.isInteger(v.pos)||v.pos<gene.start||v.pos>gene.end||!['A','C','G','T'].includes(v.ref)||!['A','C','G','T'].includes(v.alt)||v.ref===v.alt)) throw new Error('SNP 注释无效');
+  }
+  if(data.traits.some(t=>!data.genes.some(g=>g.trait_ids.includes(t.id)))) throw new Error('性状缺少关联的演示基因');
+  const variants=data.genes.flatMap(g=>g.variants);
+  if(new Set(variants.map(v=>v.id)).size!==variants.length) throw new Error('变异 ID 重复');
+  for(const individual of data.individuals) {
+    if(individual.ploidy!==2||!data.populations.some(p=>p.id===individual.population_id)) throw new Error('群体或倍性无效');
+    for(const v of variants) {
+      const gt=individual.genotypes?.[v.id];
+      if(!Array.isArray(gt)||gt.length!==2||gt.some(a=>a!==null&&a!==0&&a!==1)) throw new Error('本 demo 仅支持二倍体双等位 SNP');
+    }
+    if(!individual.phenotypes||Object.values(individual.phenotypes).some(v=>v!==null&&!Number.isFinite(v))) throw new Error('表型必须为数值或 null');
+  }
+  return data;
+}
+export function selectCohort(data,popIds,individualIds,individualOnly) {
+  return data.individuals.filter(s=>popIds.includes(s.population_id)&&(!individualOnly||individualIds.includes(s.id)));
+}
+export function alleleStats(samples,variant) {
+  let ref=0,alt=0,complete=0,het=0;
+  for(const s of samples) {
+    const gt=s.genotypes[variant.id];
+    for(const a of gt) {if(a===0)ref++;else if(a===1)alt++;}
+    if(gt.every(a=>a!==null)){complete++;if(gt[0]!==gt[1])het++;}
+  }
+  const called=ref+alt,total=samples.reduce((n,s)=>n+s.ploidy,0);
+  return {ref,alt,called,total,complete,het,n:samples.length,af:called?alt/called:null,maf:called?Math.min(ref,alt)/called:null,missing:total?(total-called)/total:null};
+}
+export function retainedVariants(samples,gene,minMaf,maxMissing) {
+  return gene.variants.filter(v=>{const s=alleleStats(samples,v);return s.called>0&&s.maf>=minMaf&&s.missing<=maxMissing;});
+}
+export function gtToken(gt,v) {return gt.map(a=>a===null?'·':a===0?v.ref:v.alt).sort().join('/');}
+export function genotypeGroups(samples,variants) {
+  if(!variants.length) return [];
+  const groups=new Map();
+  for(const s of samples) {
+    if(variants.some(v=>s.genotypes[v.id].includes(null)))continue;
+    const key=variants.map(v=>s.genotypes[v.id].slice().sort().join('/')).join('|');
+    if(!groups.has(key))groups.set(key,{key,id:`G${key.replaceAll('/','').replaceAll('|','')}`,tokens:variants.map(v=>gtToken(s.genotypes[v.id],v)),members:[]});
+    groups.get(key).members.push(s);
+  }
+  return [...groups.values()].sort((a,b)=>b.members.length-a.members.length||a.key.localeCompare(b.key));
+}
+export function quantile(values,p) {
+  const v=values.filter(Number.isFinite).slice().sort((a,b)=>a-b);
+  if(!v.length)return null;
+  const i=(v.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);
+  return v[lo]+(v[hi]-v[lo])*(i-lo);
+}
+export const percent=n=>n===null?'—':`${(100*n).toFixed(1)}%`;
+export function exportSnapshot(data,state) {
+  const gene=data.genes.find(g=>g.id===state.geneId);
+  const cohort=selectCohort(data,state.popIds,state.individualIds,state.individualOnly);
+  const retained=retainedVariants(cohort,gene,state.minMaf,state.maxMissing);
+  const selected=retained.find(v=>v.id===state.variantId)||retained[0];
+  return {dataset:data.meta,exported_at:new Date().toISOString(),selection:{...state,variantId:selected?.id??null},cohort_ids:cohort.map(s=>s.id),frequency_denominator:'called allele copies; partial calls contribute known copies',genotype_denominator:'complete individuals across retained markers',variants:gene.variants.map(v=>({...v,retained:retained.includes(v),...alleleStats(cohort,v)})),population_stats:selected?state.popIds.map(id=>({id,...alleleStats(cohort.filter(s=>s.population_id===id),selected)})):[],genotype_groups:genotypeGroups(cohort,retained).map(g=>({id:g.id,tokens:g.tokens,member_ids:g.members.map(s=>s.id)})),individuals:cohort.map(s=>({id:s.id,population_id:s.population_id,phenotype:s.phenotypes[state.traitId],genotypes:Object.fromEntries(retained.map(v=>[v.id,s.genotypes[v.id]]))}))};
+}
