@@ -75,14 +75,19 @@ test('published cohort retains every source allele copy, phenotype, and gene evi
   const readRelease = file => JSON.parse(gunzipSync(readFileSync(new URL('../../public/prior/' + file, import.meta.url))));
   const cohort = readRelease('cohort.json.gz');
   const observed = validateDataset(observedDataset(cohort, readRelease('ontology.jsonld.gz')));
-  assert.equal(observed.individuals.length, 2347);
+  assert.equal(observed.individuals.length, 6044);
   assert.equal(observed.genes.length, 50);
   assert.equal(observed.genes.filter(g => g.variants.length).length, 32);
   assert.equal(observed.genes.flatMap(g => g.records).length, 425);
   const sites = new Map(observed.genes.flatMap(g => g.variants).map(v => [v.id, v]));
-  assert.equal(sites.size, 254);
-  assert.equal([...sites.values()].filter(v => v.alt === null).length, 5);
+  assert.equal(sites.size, 255);
+  assert.equal([...sites.values()].filter(v => v.alt === null).length, 0);
   assert.equal(cohort.environments.length, 66);
+  const populations=observed.populations.map(p=>p.id);
+  const filter=scope=>selectCohort(observed,populations,[],false,scope);
+  assert.deepEqual(['modern cultivar','landrace','legacy'].map(s=>filter(s).length),[5222,822,2347]);
+  const alk=alleleStats(observed.individuals,sites.get('Chr06:6752887'));
+  assert.deepEqual([alk.ref,alk.alt,alk.complete,alk.het],[3935,8147,6041,35]);
   let measured = 0;
   for (const [i, source] of cohort.samples.entries()) {
     const row = observed.individuals[i];
@@ -103,5 +108,5 @@ test('published cohort retains every source allele copy, phenotype, and gene evi
       if (source.ph[j] !== null) measured++;
     }
   }
-  assert.equal(measured, 76542);
+  assert.equal(measured, 186556);
 });

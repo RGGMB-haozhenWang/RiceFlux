@@ -1,6 +1,6 @@
 import {regionalView} from './regions.js';
 export function validateDataset(data) {
-  const observed=data?.meta?.synthetic===false && data.meta.schema==='RiceFlux modern indica 1.0';
+  const observed=data?.meta?.synthetic===false && ['RiceFlux modern indica 1.0','RiceFlux registry 2.0'].includes(data.meta.schema);
   if(!observed && data?.meta?.synthetic!==true) throw new Error('需要带来源版本的实测数据或明确标记的合成数据。');
   for(const key of ['individuals','genes','populations','traits']) {
     if(!Array.isArray(data[key])||!data[key].length||data[key].some(x=>typeof x?.id!=='string'||!x.id)||new Set(data[key].map(x=>x.id)).size!==data[key].length) throw new Error(`${key} 标识缺失或重复`);
@@ -22,8 +22,12 @@ export function validateDataset(data) {
   }
   return data;
 }
-export function selectCohort(data,popIds,individualIds,individualOnly) {
-  return data.individuals.filter(s=>popIds.includes(s.population_id)&&(!individualOnly||individualIds.includes(s.id)));
+export function inMaterialScope(s,scope) {
+  if(scope==='legacy')return s.legacy===true;
+  return !scope||scope==='all'||s.kind===scope;
+}
+export function selectCohort(data,popIds,individualIds,individualOnly,scope) {
+  return data.individuals.filter(s=>inMaterialScope(s,scope)&&popIds.includes(s.population_id)&&(!individualOnly||individualIds.includes(s.id)));
 }
 export function alleleStats(samples,variant) {
   let ref=0,alt=0,complete=0,het=0;
@@ -59,7 +63,7 @@ export function quantile(values,p) {
 export const percent=n=>n===null?'—':`${(100*n).toFixed(1)}%`;
 export function exportSnapshot(data,state) {
   const gene=data.genes.find(g=>g.id===state.geneId);
-  const cohort=selectCohort(data,state.popIds,state.individualIds,state.individualOnly);
+  const cohort=selectCohort(data,state.popIds,state.individualIds,state.individualOnly,state.materialScope);
   const retained=retainedVariants(cohort,gene,state.minMaf,state.maxMissing);
   const selected=retained.find(v=>v.id===state.variantId)||retained[0];
   // Older saved selections identify one worksheet column directly.
@@ -69,5 +73,23 @@ export function exportSnapshot(data,state) {
   const valueId=view?.active.id || state.traitId;
   const regional=view && {assay:view.assay,year:view.year,unit:view.unit,active_site:view.active.source.site,active_column:view.active.source.column,
     sites:view.sites.map(({site,endpoint})=>({site,column:endpoint?.source.column??null}))};
-  return {dataset:data.meta,exported_at:new Date().toISOString(),trait:view?{id:trait.id,name:trait.name,unit:view.unit,source:view.active.source}:trait,...(view?{phenotype_view:regional}:{}),gene:{id:gene.id,name:gene.name,assembly:gene.assembly},selection:{...state,variantId:selected?.id??null},cohort_ids:cohort.map(s=>s.id),frequency_denominator:'called allele copies; partial calls contribute known copies',genotype_denominator:'complete individuals across retained markers',variants:gene.variants.map(v=>({...v,reference_allele:v.ref,alternate_allele:v.alt,retained:retained.includes(v),...alleleStats(cohort,v)})),population_stats:selected?state.popIds.map(id=>({id,...alleleStats(cohort.filter(s=>s.population_id===id),selected)})):[],genotype_groups:genotypeGroups(cohort,retained).map(g=>({id:g.id,tokens:g.tokens,member_ids:g.members.map(s=>s.id)})),individuals:cohort.map(s=>({id:s.id,name:s.name,population_id:s.population_id,phenotype:s.phenotypes[valueId]??null,...(view?{phenotypes_by_column:Object.fromEntries(view.sites.filter(r=>r.endpoint).map(({endpoint:e})=>[e.source.column,s.phenotypes[e.id]??null]))}:{}),genotypes:Object.fromEntries(retained.map(v=>[v.id,s.genotypes[v.id]]))}))};
+  return {dataset:data.meta,exported_at:new Date().toISOString(),trait:view?{id:trait.id,name:trait.name,unit:view.unit,source:view.active.source}:trait,...(view?{phenotype_view:regional}:{}),gene:{id:gene.id,name:gene.name,assembly:gene.assembly},selection:{...state,variantId:selected?.id??null},cohort_ids:cohort.map(s=>s.id),frequency_denominator:'called allele copies; partial calls contribute known copies',genotype_denominator:'complete individuals across retained markers',variants:gene.variants.map(v=>({...v,reference_allele:v.ref,alternate_allele:v.alt,...(data.evidence?{qtn_evidence:data.evidence.sites[v.id]}:{}),retained:retained.includes(v),...alleleStats(cohort,v)})),population_stats:selected?state.popIds.map(id=>({id,...alleleStats(cohort.filter(s=>s.population_id===id),selected)})):[],genotype_groups:genotypeGroups(cohort,retained).map(g=>({id:g.id,tokens:g.tokens,member_ids:g.members.map(s=>s.id)})),individuals:cohort.map(s=>({id:s.id,name:s.name,population_id:s.population_id,...(s.kind?{material_type:s.kind,registered_subspecies:s.subspecies,ped_id:s.ped}:{}),phenotype:s.phenotypes[valueId]??null,...(view?{phenotypes_by_column:Object.fromEntries(view.sites.filter(r=>r.endpoint).map(({endpoint:e})=>[e.source.column,s.phenotypes[e.id]??null]))}:{}),genotypes:Object.fromEntries(retained.map(v=>[v.id,s.genotypes[v.id]]))}))};
+}
+
+export function literatureMatches(gene,definitions,cohort) {
+  const byPosition=new Map(gene.variants.map(v=>[v.pos,v]));
+  return definitions.map(row=>{
+    const states=row.components.map(c=>c.state??'—').join('·');
+    const variants=row.components.map(c=>byPosition.get(c.pos));
+    const valid=row.components.length>1&&row.components.every((c,i)=>variants[i]&&/^[ACGT]$/.test(c.state)&&c.ref===variants[i].ref);
+    if(!valid)return {row,states,matched:null,callable:null};
+    let matched=0,callable=0;
+    for(const s of cohort) {
+      const pairs=variants.map(v=>s.genotypes[v.id]);
+      if(pairs.some(([a,b])=>a===null||a!==b))continue;
+      callable++;
+      if(pairs.every(([a],i)=>(a===0?variants[i].ref:variants[i].alt)===row.components[i].state))matched++;
+    }
+    return {row,states,matched,callable};
+  });
 }

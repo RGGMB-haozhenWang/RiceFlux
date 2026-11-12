@@ -4,18 +4,16 @@
 
 | 数据 | 范围 |
 |---|---|
-| 材料 | 6,044 份原始材料名录；2,347 份现代籼稻精确匹配分型（SC 954、CC-I 1,190、SW-I 203） |
-| 基因与位点 | 50 个基因，425 条文献或定向复核记录；254 个有群体分型的目标坐标覆盖 32 个基因，其中 5 个坐标仅观察到参考碱基 |
-| 实测表型 | 1,599 份材料有至少一个有效值，共 76,542 个有效值、63 个非空的性状环境列 |
-| 群体证据 | 对照 25 个完整可比组合的分组人数、66 个性状环境列的分组汇总、23 项主环境效应对比 |
+| 材料 | 6,044 份，分为 5,222 份现代品种、822 份地方品种与 7 个登记来源群体。可切换到历史 2,347 份现代籼稻分析子集。 |
+| 基因与位点 | 50 个基因，425 条先验事件。255 个有原始分型的坐标覆盖 32 个基因，其中 10 个对应原文功能位点、225 个为文献单倍型组分、20 个为其他单个位点记录。 |
+| 实测表型 | 3,605 份材料有至少一项实测值，66 个性状环境列合计 186,556 个有效值。地区图按当前选择及实际有值的材料统计。 |
+| 文献证据 | 基因与位点详情列出功能、事件和背景 DOI。文献单倍型按原文的完整组分匹配，保留杂合与缺失。原始 MAP 缺少 83 个有结构化坐标的先验位点。 |
 
-[原始研究](https://pubmed.ncbi.nlm.nih.gov/40083159/) · [项目实际数据目录](public/prior/) · [逐材料基因型](https://rggmb-haozhenwang.github.io/RiceFlux/prior/genotypes.tsv.gz) · [逐材料表型](https://rggmb-haozhenwang.github.io/RiceFlux/prior/phenotypes.tsv.gz) · [位点字典](public/prior/typed_sites.tsv) · [数据说明与哈希](public/prior/data_manifest.json)。分型按 MSU7 正链一基坐标排列。原始双等位值保留杂合及 0/N 缺失状态；表型空格表示未测。`public/prior/` 保存原面板读取的实测数据和基因先验，`docs/prior/` 是 GitHub Pages 发布副本。
+在“材料范围”选择全部、现代品种、地方品种或历史分析子集，再按来源组或个体筛选。等位频率、组合、地区表型和导出使用相同的选择。历史 23 项主环境效应对比保留其现代籼稻分析范围。登记编号与 PED 编号有 6,030 项精确匹配，14 项带作者脚注 #1，保留两套编号和原登记群体。原始 0/N 表示缺失，表型空格表示未测。[群体研究](https://doi.org/10.1016/j.molp.2025.03.007) · [作者材料名录](https://ars.els-cdn.com/content/image/1-s2.0-S1674205225000978-mmc2.xlsx)
 
-## 全名录分型与文献追溯
+ALK 的三个坐标为 Chr6 上的 6,752,756、6,752,887 和 6,752,888。新增的中间位点有 1,950 份 GG、4,056 份 TT、35 份 GT、3 份缺失。文献定义的组合可以按当前人群查看完整纯合匹配数。[ALK 原文](https://doi.org/10.1186/s12284-020-00393-5)
 
-从基因区域选择位点，点击“查询 6,044 份材料分型”可筛选现代品种或地方品种、按材料编号或名称搜索。全名录包含 5,222 份登记现代品种和 822 份地方品种。6,030 个原始 ID 直接匹配，14 个 ID 带作者脚注 `#1`，去掉脚注后与 PED 唯一匹配。补表说明这 14 份的登记亚种和基因组分类有分歧。论文的现代品种群体分析采用 5,208 份材料。当前面板的表型图和频率分析沿用已有的 2,347 份现代籼稻。原始 0/N 为缺失，保留未分相的两个碱基。[数据研究](https://doi.org/10.1016/j.molp.2025.03.007) · [作者补表 1 和脚注](https://ars.els-cdn.com/content/image/1-s2.0-S1674205225000978-mmc2.xlsx) · [全名录分型下载](https://rggmb-haozhenwang.github.io/RiceFlux/prior/accession_genotypes_6044.tsv.gz)
-
-425 条先验事件均可追溯至 DOI，涉及 66 个不同的事件来源 DOI。事件包括 SNP、插缺、重复和多位点型。254 个已分型坐标中，本版把 6 个坐标对应到有核苷酸层面证据的功能等位，224 个归入文献多位点型的组分，11 个为单位置来源记录，13 个为需要另核单碱基作用的定向标记。一个坐标可关联多条事件，最强可支持的解释见逐位点表。文献作用的适用性仍取决于性状、环境与遗传背景。页面分别标出功能等位原文、事件来源和基因背景 DOI。[逐位点证据](public/prior/site_evidence.tsv) · [逐事件证据](public/prior/event_evidence.tsv) · [论文题名与 DOI](public/prior/literature_doi.tsv)
+[全名录分型](public/prior/accession_genotypes_6044.tsv.gz) · [全名录表型](public/prior/phenotypes_6044.tsv.gz) · [广义 QTN 与 DOI](public/prior/broad_qtn_sites.tsv) · [425 条先验事件覆盖](public/prior/event_panel_coverage.tsv) · [83 个未测坐标](public/prior/absent_coordinates.tsv) · [数据清单与哈希](public/prior/data_manifest.json)
 
 **合成数据演示** [群体与等位变异探索](https://rggmb-haozhenwang.github.io/RiceFlux/?view=demo)
 

@@ -9,7 +9,7 @@ export function DoiLinks({values,papers}){
 function SiteEvidence({marker,evidence}){
   const row=evidence.sites[marker];
   if(!row)return null;
-  return <div className="site-evidence"><strong>{marker} · {row.level}</strong><p>{row.note}</p>
+  return <div className="site-evidence"><strong>{marker} · {row.level}</strong><p>{row.level==='单个位点记录'?row.sourceClass+'。':''}{row.note}</p>
     {[[row.primary,'功能等位原文'],[row.event,'事件来源'],[row.background,'基因背景文献']].filter(([ds])=>ds.length).map(([ds,label])=>
       <details key={label} open={label==='功能等位原文'}><summary>{label}（{ds.length}）</summary><DoiLinks values={ds} papers={evidence.papers}/></details>)}
   </div>;
@@ -58,7 +58,19 @@ export function AccessionCalls({gene,selected,evidence}){
           <tbody>{rows.slice(0,limit).map(s=><tr key={s.id}><td>{s.id}{s.id!==s.ped&&<small> PED {s.ped}</small>}</td><td>{s.name}</td><td>{s.type==='landrace'?'地方品种':'现代品种'}</td><td>{s.subspecies} / {s.group}{s.match!=='exact'?' · 归属有分歧':''}</td><td>{s.gt.slice(2*column,2*column+2).split('').join('/')}</td></tr>)}</tbody></table></div>
         {rows.length>limit&&<Button size="1" variant="ghost" onClick={()=>setLimit(n=>n+100)}>显示更多材料</Button>}
       </>}
-      <div className="dialog-actions"><a className="doi-link" href={download} download>下载全部材料 × 254 位点（TSV.GZ）</a><Dialog.Close><Button>关闭</Button></Dialog.Close></div>
+      <div className="dialog-actions"><a className="doi-link" href={download} download>下载全部材料 × {archive?.markers.length??255} 位点（TSV.GZ）</a><Dialog.Close><Button>关闭</Button></Dialog.Close></div>
     </Dialog.Content></Dialog.Root>
   </div>;
+}
+
+export function CoverageDetails({gene,evidence}) {
+  const coverage=evidence.coverage?.[gene.id];
+  if(!coverage)return null;
+  return <details className="site-evidence coverage-details">
+    <summary>文献变异的分型覆盖</summary>
+    {coverage.examples.map(item=><p key={item.event}><strong>{item.event}</strong><br/>{item.position} · {item.status} <DoiLinks values={item.doi} papers={evidence.papers}/></p>)}
+    {coverage.absent.length>0&&<details><summary>原始分型目录未收录的坐标（{coverage.absent.length}）</summary>
+      {coverage.absent.map(item=><p key={item.marker}>{item.marker} · 文献状态 {item.state} <DoiLinks values={item.doi} papers={evidence.papers}/></p>)}
+    </details>}
+  </details>;
 }

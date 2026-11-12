@@ -1,6 +1,6 @@
 import {measuredTraits} from './regions.js';
 // Adapt the released cohort and its ontology to the existing explorer data model.
-const groupColors = {'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6'};
+const groupColors = {'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
 function hasPrior(trait, label) {
   switch(trait.family) {
     case 'heading': return label==='抽穗期';
@@ -15,7 +15,7 @@ function hasPrior(trait, label) {
 }
 
 export function observedDataset(cohort, ontology) {
-  if(cohort.schema!=='RiceFlux modern indica 1.0')throw new Error('群体数据版本不匹配');
+  if(!['RiceFlux modern indica 1.0','RiceFlux registry 2.0'].includes(cohort.schema))throw new Error('群体数据版本不匹配');
   const nodes=ontology['@graph'],byId=new Map(nodes.map(n=>[n['@id'],n]));
   const resolve=ref=>byId.get(ref['@id']);
   const measured=measuredTraits(cohort.environments);
@@ -49,7 +49,7 @@ export function observedDataset(cohort, ontology) {
       s.feature=features.some(f=>f.start<=s.pos && s.pos<=f.end)?'CDS':s.pos>=model.promoterStart && s.pos<=model.promoterEnd?'上游 2 kb':s.pos>=model.start && s.pos<=model.end?'基因区非 CDS':'基因侧翼';
     }
     const records=nodes.filter(x=>x.gene?.['@id']===n['@id'] && x.orderedComponents).map(e=>{
-      const components=e.orderedComponents['@list'].map(r=>{const c=resolve(r);return {pos:c.locatedAt?resolve(c.locatedAt).position:null,state:c.reportedState??null};});
+      const components=e.orderedComponents['@list'].map(r=>{const c=resolve(r);return {pos:c.locatedAt?resolve(c.locatedAt).position:null,ref:c.locatedAt?resolve(c.locatedAt).reference:null,state:c.reportedState??null};});
       const key=e['@id'].slice(3),source=byId.get('rf:ev_'+key),count=byId.get('rf:obs_'+key);
       return {id:key,label:e.label,mode:e.completeness,components,sources:(source?.supportedBy||[]).map(r=>r['@id']),matched:count?.matched};
     });
@@ -70,11 +70,12 @@ export function observedDataset(cohort, ontology) {
     return pairs.get(key);
   }
   const individuals=cohort.samples.map(s=>({
-    id:s.id,name:s.name,population_id:s.group,ploidy:2,
+    id:s.id,name:s.name,population_id:s.group,ploidy:2,kind:s.type,subspecies:s.subspecies,ped:s.ped,legacy:s.legacy,
     genotypes:Object.fromEntries(variants.map((v,i)=>[v.id,decode(s.gt.slice(2*i,2*i+2),v)])),
     phenotypes:Object.fromEntries(cohort.environments.map((e,i)=>['env_'+e.column,s.ph[i]])),
   }));
-  const populations=Object.keys(groupColors).map(id=>({id,name:id,color:groupColors[id]}));
+  const present=new Set(cohort.samples.map(s=>s.group));
+  const populations=Object.keys(groupColors).filter(id=>present.has(id)).map(id=>({id,name:id,color:groupColors[id]}));
   return {meta:{synthetic:false,schema:cohort.schema,assembly:cohort.assembly,source:'https://pubmed.ncbi.nlm.nih.gov/40083159/'},genes,traits,populations,individuals};
 }
 
