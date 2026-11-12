@@ -1,0 +1,199 @@
+column	trait	site	year	group	n	mean
+B	Heading date (days)	Gongzhuling	2022	CC-I	0	
+B	Heading date (days)	Gongzhuling	2022	SC	0	
+B	Heading date (days)	Gongzhuling	2022	SW-I	0	
+C	Heading date (days)	Gongzhuling	2023	CC-I	372	109.13978
+C	Heading date (days)	Gongzhuling	2023	SC	234	121.74359
+C	Heading date (days)	Gongzhuling	2023	SW-I	9	
+D	Heading date (days)	Tanghai	2022	CC-I	486	103.84156
+D	Heading date (days)	Tanghai	2022	SC	350	100.74
+D	Heading date (days)	Tanghai	2022	SW-I	127	119.66142
+E	Heading date (days)	Tanghai	2023	CC-I	877	98.78905
+E	Heading date (days)	Tanghai	2023	SC	561	102.32264
+E	Heading date (days)	Tanghai	2023	SW-I	134	114.47015
+F	Heading date (days)	Hefei	2022	CC-I	850	85.90471
+F	Heading date (days)	Hefei	2022	SC	542	87.9262
+F	Heading date (days)	Hefei	2022	SW-I	136	97.31618
+G	Heading date (days)	Hefei	2023	CC-I	885	80.12768
+G	Heading date (days)	Hefei	2023	SC	574	82.12195
+G	Heading date (days)	Hefei	2023	SW-I	138	91.14493
+H	Heading date (days)	Wuhan	2022	CC-I	848	84.37382
+H	Heading date (days)	Wuhan	2022	SC	537	86.51769
+H	Heading date (days)	Wuhan	2022	SW-I	132	92.34091
+I	Heading date (days)	Wuhan	2023	CC-I	884	87.14932
+I	Heading date (days)	Wuhan	2023	SC	567	86.34744
+I	Heading date (days)	Wuhan	2023	SW-I	138	98.9058
+J	Heading date (days)	Hangzhou	2022	CC-I	845	80.46627
+J	Heading date (days)	Hangzhou	2022	SC	543	82.49355
+J	Heading date (days)	Hangzhou	2022	SW-I	135	93.51111
+K	Heading date (days)	Hangzhou	2023	CC-I	885	81.08362
+K	Heading date (days)	Hangzhou	2023	SC	572	83.85839
+K	Heading date (days)	Hangzhou	2023	SW-I	138	92.24638
+L	Heading date (days)	Kunming	2022	CC-I	479	132.65762
+L	Heading date (days)	Kunming	2022	SC	345	133.06377
+L	Heading date (days)	Kunming	2022	SW-I	59	137.38983
+M	Heading date (days)	Kunming	2023	CC-I	666	125.26276
+M	Heading date (days)	Kunming	2023	SC	418	130.80622
+M	Heading date (days)	Kunming	2023	SW-I	101	141.9703
+N	Heading date (days)	Nanning	2022	CC-I	848	72.28302
+N	Heading date (days)	Nanning	2022	SC	548	73.17153
+N	Heading date (days)	Nanning	2022	SW-I	134	77.89552
+O	Heading date (days)	Nanning	2023	CC-I	885	71.0
+O	Heading date (days)	Nanning	2023	SC	576	70.99306
+O	Heading date (days)	Nanning	2023	SW-I	138	78.2029
+CQ	Grain length (mm)	Gongzhuling	2022	CC-I	0	
+CQ	Grain length (mm)	Gongzhuling	2022	SC	0	
+CQ	Grain length (mm)	Gongzhuling	2022	SW-I	0	
+CR	Grain length (mm)	Gongzhuling	2023	CC-I	345	8.84102
+CR	Grain length (mm)	Gongzhuling	2023	SC	175	8.55562
+CR	Grain length (mm)	Gongzhuling	2023	SW-I	8	
+CS	Grain length (mm)	Tanghai	2022	CC-I	478	9.41766
+CS	Grain length (mm)	Tanghai	2022	SC	349	9.13562
+CS	Grain length (mm)	Tanghai	2022	SW-I	125	9.5556
+CT	Grain length (mm)	Tanghai	2023	CC-I	858	9.57733
+CT	Grain length (mm)	Tanghai	2023	SC	559	9.03249
+CT	Grain length (mm)	Tanghai	2023	SW-I	130	10.17569
+CU	Grain length (mm)	Hefei	2022	CC-I	845	9.1351
+CU	Grain length (mm)	Hefei	2022	SC	539	8.83281
+CU	Grain length (mm)	Hefei	2022	SW-I	131	9.50579
+CV	Grain length (mm)	Hefei	2023	CC-I	884	9.30529
+CV	Grain length (mm)	Hefei	2023	SC	574	8.93177
+CV	Grain length (mm)	Hefei	2023	SW-I	138	9.64573
+CW	Grain length (mm)	Wuhan	2022	CC-I	835	8.80521
+CW	Grain length (mm)	Wuhan	2022	SC	534	8.41947
+CW	Grain length (mm)	Wuhan	2022	SW-I	132	9.18686
+CX	Grain length (mm)	Wuhan	2023	CC-I	861	8.6953
+CX	Grain length (mm)	Wuhan	2023	SC	552	8.27505
+CX	Grain length (mm)	Wuhan	2023	SW-I	133	9.04975
+CY	Grain length (mm)	Hangzhou	2022	CC-I	841	9.08137
+CY	Grain length (mm)	Hangzhou	2022	SC	537	8.73276
+CY	Grain length (mm)	Hangzhou	2022	SW-I	133	9.53178
+CZ	Grain length (mm)	Hangzhou	2023	CC-I	880	8.98593
+CZ	Grain length (mm)	Hangzhou	2023	SC	567	8.42277
+CZ	Grain length (mm)	Hangzhou	2023	SW-I	137	9.77885
+DA	Grain length (mm)	Kunming	2022	CC-I	451	8.16567
+DA	Grain length (mm)	Kunming	2022	SC	337	7.87878
+DA	Grain length (mm)	Kunming	2022	SW-I	53	8.3766
+DB	Grain length (mm)	Kunming	2023	CC-I	645	7.86425
+DB	Grain length (mm)	Kunming	2023	SC	407	7.44619
+DB	Grain length (mm)	Kunming	2023	SW-I	91	8.01988
+DC	Grain length (mm)	Nanning	2022	CC-I	845	9.04096
+DC	Grain length (mm)	Nanning	2022	SC	546	8.70331
+DC	Grain length (mm)	Nanning	2022	SW-I	136	9.27799
+DD	Grain length (mm)	Nanning	2023	CC-I	885	9.14212
+DD	Grain length (mm)	Nanning	2023	SC	575	8.71344
+DD	Grain length (mm)	Nanning	2023	SW-I	137	9.48968
+DE	Grain width (mm)	Gongzhuling	2022	CC-I	0	
+DE	Grain width (mm)	Gongzhuling	2022	SC	0	
+DE	Grain width (mm)	Gongzhuling	2022	SW-I	0	
+DF	Grain width (mm)	Gongzhuling	2023	CC-I	345	2.8567
+DF	Grain width (mm)	Gongzhuling	2023	SC	175	2.7085
+DF	Grain width (mm)	Gongzhuling	2023	SW-I	8	
+DG	Grain width (mm)	Tanghai	2022	CC-I	481	2.71576
+DG	Grain width (mm)	Tanghai	2022	SC	349	2.55716
+DG	Grain width (mm)	Tanghai	2022	SW-I	125	2.9176
+DH	Grain width (mm)	Tanghai	2023	CC-I	868	2.66903
+DH	Grain width (mm)	Tanghai	2023	SC	559	2.51275
+DH	Grain width (mm)	Tanghai	2023	SW-I	131	2.73344
+DI	Grain width (mm)	Hefei	2022	CC-I	845	2.65063
+DI	Grain width (mm)	Hefei	2022	SC	539	2.50086
+DI	Grain width (mm)	Hefei	2022	SW-I	131	2.62527
+DJ	Grain width (mm)	Hefei	2023	CC-I	884	2.64736
+DJ	Grain width (mm)	Hefei	2023	SC	574	2.46872
+DJ	Grain width (mm)	Hefei	2023	SW-I	138	2.69841
+DK	Grain width (mm)	Wuhan	2022	CC-I	835	2.39533
+DK	Grain width (mm)	Wuhan	2022	SC	534	2.24218
+DK	Grain width (mm)	Wuhan	2022	SW-I	132	2.35628
+DL	Grain width (mm)	Wuhan	2023	CC-I	860	2.43777
+DL	Grain width (mm)	Wuhan	2023	SC	552	2.25449
+DL	Grain width (mm)	Wuhan	2023	SW-I	133	2.44414
+DM	Grain width (mm)	Hangzhou	2022	CC-I	841	2.55983
+DM	Grain width (mm)	Hangzhou	2022	SC	537	2.39194
+DM	Grain width (mm)	Hangzhou	2022	SW-I	133	2.57732
+DN	Grain width (mm)	Hangzhou	2023	CC-I	880	2.63888
+DN	Grain width (mm)	Hangzhou	2023	SC	567	2.43984
+DN	Grain width (mm)	Hangzhou	2023	SW-I	137	2.70561
+DO	Grain width (mm)	Kunming	2022	CC-I	449	2.39049
+DO	Grain width (mm)	Kunming	2022	SC	330	2.19694
+DO	Grain width (mm)	Kunming	2022	SW-I	52	2.62654
+DP	Grain width (mm)	Kunming	2023	CC-I	641	2.5286
+DP	Grain width (mm)	Kunming	2023	SC	402	2.36321
+DP	Grain width (mm)	Kunming	2023	SW-I	90	2.50178
+DQ	Grain width (mm)	Nanning	2022	CC-I	845	2.7272
+DQ	Grain width (mm)	Nanning	2022	SC	546	2.52189
+DQ	Grain width (mm)	Nanning	2022	SW-I	136	2.76764
+DR	Grain width (mm)	Nanning	2023	CC-I	885	2.73293
+DR	Grain width (mm)	Nanning	2023	SC	575	2.51104
+DR	Grain width (mm)	Nanning	2023	SW-I	137	2.7677
+ER	Scale of leaf blast resistance	Donggang	2022	CC-I	486	0.08642
+ER	Scale of leaf blast resistance	Donggang	2022	SC	349	0.03152
+ER	Scale of leaf blast resistance	Donggang	2022	SW-I	132	0.63636
+ES	Scale of leaf blast resistance	Donggang	2023	CC-I	511	1.21526
+ES	Scale of leaf blast resistance	Donggang	2023	SC	265	1.78491
+ES	Scale of leaf blast resistance	Donggang	2023	SW-I	10	1.4
+ET	Scale of leaf blast resistance	Jinhai	2023	CC-I	885	1.8
+ET	Scale of leaf blast resistance	Jinhai	2023	SC	574	1.49303
+ET	Scale of leaf blast resistance	Jinhai	2023	SW-I	138	1.78986
+EU	Scale of leaf blast resistance	Hangzhou	2022	CC-I	850	3.69529
+EU	Scale of leaf blast resistance	Hangzhou	2022	SC	549	3.83607
+EU	Scale of leaf blast resistance	Hangzhou	2022	SW-I	136	4.24265
+EV	SLBR_CH102	Hangzhou	2023	CC-I	61	2.62295
+EV	SLBR_CH102	Hangzhou	2023	SC	29	2.41379
+EV	SLBR_CH102	Hangzhou	2023	SW-I	4	
+EW	SLBR_CH171	Hangzhou	2023	CC-I	61	2.91803
+EW	SLBR_CH171	Hangzhou	2023	SC	29	2.44828
+EW	SLBR_CH171	Hangzhou	2023	SW-I	4	
+EX	SLBR_CH182	Hangzhou	2023	CC-I	61	2.42623
+EX	SLBR_CH182	Hangzhou	2023	SC	29	2.51724
+EX	SLBR_CH182	Hangzhou	2023	SW-I	4	
+EY	SLBR_CH551	Hangzhou	2023	CC-I	61	2.72131
+EY	SLBR_CH551	Hangzhou	2023	SC	29	2.75862
+EY	SLBR_CH551	Hangzhou	2023	SW-I	4	
+EZ	SLBR_CH553	Hangzhou	2023	CC-I	61	2.7377
+EZ	SLBR_CH553	Hangzhou	2023	SC	29	2.44828
+EZ	SLBR_CH553	Hangzhou	2023	SW-I	4	
+FA	Scale of leaf blast resistance	Menghai	2022	CC-I	849	0.46996
+FA	Scale of leaf blast resistance	Menghai	2022	SC	549	0.28051
+FA	Scale of leaf blast resistance	Menghai	2022	SW-I	136	1.5
+FB	Scale of leaf blast resistance	Yuxi	2023	CC-I	884	0.13801
+FB	Scale of leaf blast resistance	Yuxi	2023	SC	574	0.15331
+FB	Scale of leaf blast resistance	Yuxi	2023	SW-I	138	0.6087
+FC	Scale of neck blast resistance	Donggang	2022	CC-I	141	1.39007
+FC	Scale of neck blast resistance	Donggang	2022	SC	38	0.05263
+FC	Scale of neck blast resistance	Donggang	2022	SW-I	7	
+FD	Scale of neck blast resistance	Donggang	2023	CC-I	501	0.78244
+FD	Scale of neck blast resistance	Donggang	2023	SC	253	0.89723
+FD	Scale of neck blast resistance	Donggang	2023	SW-I	10	0.4
+FE	Scale of neck blast resistance	Jinzhai	2023	CC-I	881	2.32917
+FE	Scale of neck blast resistance	Jinzhai	2023	SC	561	1.95187
+FE	Scale of neck blast resistance	Jinzhai	2023	SW-I	136	1.91176
+FF	Scale of neck blast resistance	Menghai	2022	CC-I	849	4.76561
+FF	Scale of neck blast resistance	Menghai	2022	SC	549	3.86339
+FF	Scale of neck blast resistance	Menghai	2022	SW-I	136	5.78676
+FG	Scale of neck blast resistance	Yuxi	2023	CC-I	883	5.62627
+FG	Scale of neck blast resistance	Yuxi	2023	SC	574	5.48084
+FG	Scale of neck blast resistance	Yuxi	2023	SW-I	138	5.01449
+FH	Scale of neck blast resistance	Wuzhou	2022	CC-I	839	7.73182
+FH	Scale of neck blast resistance	Wuzhou	2022	SC	543	7.89503
+FH	Scale of neck blast resistance	Wuzhou	2022	SW-I	129	7.4031
+FI	Scale of neck blast resistance	Wuzhou	2023	CC-I	215	5.24186
+FI	Scale of neck blast resistance	Wuzhou	2023	SC	144	5.56944
+FI	Scale of neck blast resistance	Wuzhou	2023	SW-I	39	4.28205
+FJ	Lesion length of rice bacterial blight_C5 (cm)	Beijing	2023	CC-I	879	9.71524
+FJ	Lesion length of rice bacterial blight_C5 (cm)	Beijing	2023	SC	574	10.40354
+FJ	Lesion length of rice bacterial blight_C5 (cm)	Beijing	2023	SW-I	136	9.77721
+FK	LL_K85(cm)	Beijing	2023	CC-I	883	4.97949
+FK	LL_K85(cm)	Beijing	2023	SC	565	3.86687
+FK	LL_K85(cm)	Beijing	2023	SW-I	136	4.4913
+FL	LL_P6(cm)	Beijing	2023	CC-I	885	11.4851
+FL	LL_P6(cm)	Beijing	2023	SC	574	12.13969
+FL	LL_P6(cm)	Beijing	2023	SW-I	137	12.76825
+FM	LL_T1(cm)	Beijing	2023	CC-I	885	4.86582
+FM	LL_T1(cm)	Beijing	2023	SC	575	3.53387
+FM	LL_T1(cm)	Beijing	2023	SW-I	137	4.68066
+FP	Relative lesion height of rice sheath blight disease (%)	Beijing	2022	CC-I	478	52.47734
+FP	Relative lesion height of rice sheath blight disease (%)	Beijing	2022	SC	345	50.00501
+FP	Relative lesion height of rice sheath blight disease (%)	Beijing	2022	SW-I	53	43.74245
+FQ	Relative lesion height of rice sheath blight disease (%)	Beijing	2023	CC-I	435	73.08457
+FQ	Relative lesion height of rice sheath blight disease (%)	Beijing	2023	SC	265	68.85683
+FQ	Relative lesion height of rice sheath blight disease (%)	Beijing	2023	SW-I	84	44.40202

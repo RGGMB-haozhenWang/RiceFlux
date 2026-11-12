@@ -1,0 +1,67 @@
+column	trait	site	year	n
+B	Heading date (days)	Gongzhuling	2022	0
+C	Heading date (days)	Gongzhuling	2023	615
+D	Heading date (days)	Tanghai	2022	963
+E	Heading date (days)	Tanghai	2023	1572
+F	Heading date (days)	Hefei	2022	1528
+G	Heading date (days)	Hefei	2023	1597
+H	Heading date (days)	Wuhan	2022	1517
+I	Heading date (days)	Wuhan	2023	1589
+J	Heading date (days)	Hangzhou	2022	1523
+K	Heading date (days)	Hangzhou	2023	1595
+L	Heading date (days)	Kunming	2022	883
+M	Heading date (days)	Kunming	2023	1185
+N	Heading date (days)	Nanning	2022	1530
+O	Heading date (days)	Nanning	2023	1599
+CQ	Grain length (mm)	Gongzhuling	2022	0
+CR	Grain length (mm)	Gongzhuling	2023	528
+CS	Grain length (mm)	Tanghai	2022	952
+CT	Grain length (mm)	Tanghai	2023	1547
+CU	Grain length (mm)	Hefei	2022	1515
+CV	Grain length (mm)	Hefei	2023	1596
+CW	Grain length (mm)	Wuhan	2022	1501
+CX	Grain length (mm)	Wuhan	2023	1546
+CY	Grain length (mm)	Hangzhou	2022	1511
+CZ	Grain length (mm)	Hangzhou	2023	1584
+DA	Grain length (mm)	Kunming	2022	841
+DB	Grain length (mm)	Kunming	2023	1143
+DC	Grain length (mm)	Nanning	2022	1527
+DD	Grain length (mm)	Nanning	2023	1597
+DE	Grain width (mm)	Gongzhuling	2022	0
+DF	Grain width (mm)	Gongzhuling	2023	528
+DG	Grain width (mm)	Tanghai	2022	955
+DH	Grain width (mm)	Tanghai	2023	1558
+DI	Grain width (mm)	Hefei	2022	1515
+DJ	Grain width (mm)	Hefei	2023	1596
+DK	Grain width (mm)	Wuhan	2022	1501
+DL	Grain width (mm)	Wuhan	2023	1545
+DM	Grain width (mm)	Hangzhou	2022	1511
+DN	Grain width (mm)	Hangzhou	2023	1584
+DO	Grain width (mm)	Kunming	2022	831
+DP	Grain width (mm)	Kunming	2023	1133
+DQ	Grain width (mm)	Nanning	2022	1527
+DR	Grain width (mm)	Nanning	2023	1597
+ER	Scale of leaf blast resistance	Donggang	2022	967
+ES	Scale of leaf blast resistance	Donggang	2023	786
+ET	Scale of leaf blast resistance	Jinhai	2023	1597
+EU	Scale of leaf blast resistance	Hangzhou	2022	1535
+EV	SLBR_CH102	Hangzhou	2023	94
+EW	SLBR_CH171	Hangzhou	2023	94
+EX	SLBR_CH182	Hangzhou	2023	94
+EY	SLBR_CH551	Hangzhou	2023	94
+EZ	SLBR_CH553	Hangzhou	2023	94
+FA	Scale of leaf blast resistance	Menghai	2022	1534
+FB	Scale of leaf blast resistance	Yuxi	2023	1596
+FC	Scale of neck blast resistance	Donggang	2022	186
+FD	Scale of neck blast resistance	Donggang	2023	764
+FE	Scale of neck blast resistance	Jinzhai	2023	1578
+FF	Scale of neck blast resistance	Menghai	2022	1534
+FG	Scale of neck blast resistance	Yuxi	2023	1595
+FH	Scale of neck blast resistance	Wuzhou	2022	1511
+FI	Scale of neck blast resistance	Wuzhou	2023	398
+FJ	Lesion length of rice bacterial blight_C5 (cm)	Beijing	2023	1589
+FK	LL_K85(cm)	Beijing	2023	1584
+FL	LL_P6(cm)	Beijing	2023	1596
+FM	LL_T1(cm)	Beijing	2023	1597
+FP	Relative lesion height of rice sheath blight disease (%)	Beijing	2022	876
+FQ	Relative lesion height of rice sheath blight disease (%)	Beijing	2023	784

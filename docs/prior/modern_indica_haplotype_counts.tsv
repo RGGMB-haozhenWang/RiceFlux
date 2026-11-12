@@ -1,0 +1,119 @@
+gene	symbol	event	label	components	covered	status	matched	other_complete	missing	unphased_het
+Os07g0695100	DTH7	ef5425db4df498682	FPLS1097622 Hap1 seven-marker set	7	7	全组分可比较	8	2330	1	8
+Os07g0695100	DTH7	efee8ab8b12205205	FPLS1097622 Hap2 seven-marker set	7	7	全组分可比较	191	2147	1	8
+Os07g0695100	DTH7	e8373e783e18a8236	FPLS1097622 Hap3 seven-marker set	7	7	全组分可比较	1	2337	1	8
+Os07g0695100	DTH7	ea3657836f30abf9c	FPLS1097622 Hap4 seven-marker set	7	7	全组分可比较	2128	210	1	8
+Os07g0695100	DTH7	e52414c21239b83f6	FPLS1097622 Hap5 seven-marker set	7	7	全组分可比较	10	2328	1	8
+Os08g0224300	ARE1	efcad638dfe3b7eaa	ARE1 source coding Hap_1	15	4	结构或未解析组分				
+Os08g0224300	ARE1	ebdea59c699402469	ARE1 source coding Hap_2	15	4	结构或未解析组分				
+Os08g0224300	ARE1	e29bafa992abd21a0	ARE1 source coding Hap_3	15	4	结构或未解析组分				
+Os08g0224300	ARE1	ec1147b76adba2c38	ARE1 source coding Hap_4	15	4	结构或未解析组分				
+Os08g0224300	ARE1	e7e5d2c5c42c17f74	ARE1 source coding Hap_5	15	4	结构或未解析组分				
+Os08g0224300	ARE1	e45bbf9deecf75732	ARE1 source coding Hap_6	15	4	结构或未解析组分				
+Os08g0224300	ARE1	ea80f21997c559f78	ARE1 source coding Hap_7	15	4	结构或未解析组分				
+Os08g0224300	ARE1	ecd6aed1dc74319e0	ARE1 source coding Hap_8	15	4	结构或未解析组分				
+Os08g0224300	ARE1	e8bd811597a74687b	ARE1 source coding Hap_9	15	4	结构或未解析组分				
+Os08g0224300	ARE1	eabf3ef299a2b31ed	ARE1 source coding Hap_10	15	4	结构或未解析组分				
+Os08g0224300	ARE1	e4b1ff685601f4e81	ARE1 source coding Hap_11	15	4	结构或未解析组分				
+Os08g0224300	ARE1	e130994b64b709a11	ARE1 source coding Hap_12	15	4	结构或未解析组分				
+Os04g0580700	COG1/OsMADS17	edb301af82024a07d	NC43077 type1 14-marker haplotype	14	9	结构或未解析组分				
+Os04g0580700	COG1/OsMADS17	e66750c42e67887c9	NC43077 type2 14-marker haplotype	14	9	结构或未解析组分				
+Os04g0580700	COG1/OsMADS17	e97670eee545ad26b	NC43077 type3 14-marker haplotype	14	9	结构或未解析组分				
+Os04g0580700	COG1/OsMADS17	eebe769019419c809	BMC07901 six-SNP Hap1	6	6	全组分可比较	2245	93	0	9
+Os04g0580700	COG1/OsMADS17	e52be43cbb501d01f	BMC07901 six-SNP Hap2	6	6	全组分可比较	27	2311	0	9
+Os04g0580700	COG1/OsMADS17	e1032a626e472e8b6	BMC07901 six-SNP Hap3	6	6	全组分可比较	62	2276	0	9
+Os04g0580700	COG1/OsMADS17	ed7fd2b7af01665a6	BMC07901 six-SNP Hap4	6	6	全组分可比较	0	2338	0	9
+Os04g0580700	COG1/OsMADS17	ebfed71d0be1d31f7	BMC07901 six-SNP Hap5	6	6	全组分可比较	4	2334	0	9
+Os01g0197100	D2	e342b55b0e053676d	D2 indica Hap1 Table7	30	28	MAP覆盖不全				
+Os01g0197100	D2	e08ba522a8ca60eb2	D2 indica Hap2 Table7	30	28	结构或未解析组分				
+Os01g0197100	D2	ef3263d99d5e7dab1	D2 indica Hap3 Table7	30	28	MAP覆盖不全				
+Os01g0197100	D2	edbd4c325be94975a	D2 indica Hap4 Table7	30	28	MAP覆盖不全				
+Os01g0197100	D2	ecd5ff1b6e0f53f56	D2 japonica Hap1 Table6	5	2	MAP覆盖不全				
+Os01g0197100	D2	e31677e876034b63a	D2 japonica Hap2 Table6	5	2	MAP覆盖不全				
+Os01g0197100	D2	efe898552868b5b3f	D2 japonica Hap3 Table6	5	2	MAP覆盖不全				
+Os01g0197100	D2	e954b53ee18808d4a	D2 japonica Hap4 Table6	5	2	MAP覆盖不全				
+Os01g0667400	DWT1	eb6c0d597a35d5190	DWT1 WRtype2	4	0	结构或未解析组分				
+Os01g0667400	DWT1	ef4d02e16e36950d4	DWT1 WRtype1	4	0	结构或未解析组分				
+Os01g0667400	DWT1	e90ad2bbf718cba34	DWT1 WRtype3	4	0	结构或未解析组分				
+Os07g0261200	Ghd7	ee1a437d204c71cb3	FPLS2022 Hap1	5	0	MAP覆盖不全				
+Os07g0261200	Ghd7	ea8600eff5a907fd3	FPLS2022 Hap2	5	0	MAP覆盖不全				
+Os01g0205700	GNP2/OsGSK1	e7f64a905dbccf21d	GNP2 Table1 Hap1 GG	2	2	全组分可比较	2158	143	29	17
+Os01g0205700	GNP2/OsGSK1	ecc8278849fd1d742	GNP2 Table1 Hap2 GA	2	2	全组分可比较	38	2263	29	17
+Os01g0205700	GNP2/OsGSK1	eebf086d4aa358c61	GNP2 Table1 Hap3 AG	2	2	全组分可比较	1	2300	29	17
+Os01g0205700	GNP2/OsGSK1	e02c53f246eecb612	GNP2 Table1 Hap4 AA	2	2	全组分可比较	104	2197	29	17
+Os01g0205700	GNP2/OsGSK1	e229794007ebe2f54	GNP2 SupplementaryTable2 43marker pattern rows 3	43	36	MAP覆盖不全				
+Os01g0205700	GNP2/OsGSK1	e9023c4cdeaa2fdf1	GNP2 SupplementaryTable2 43marker pattern rows 1	43	36	MAP覆盖不全				
+Os01g0205700	GNP2/OsGSK1	ea63070f36097cea4	GNP2 SupplementaryTable2 43marker pattern rows 6	43	36	MAP覆盖不全				
+Os01g0205700	GNP2/OsGSK1	e29bbdc709d2080e3	GNP2 SupplementaryTable2 43marker pattern rows 5	43	36	MAP覆盖不全				
+Os01g0205700	GNP2/OsGSK1	ecb5b5f2d3a6ae8e4	GNP2 SupplementaryTable2 43marker pattern rows 4,9	43	36	MAP覆盖不全				
+Os01g0205700	GNP2/OsGSK1	ef7adc9f2ce73fdf2	GNP2 SupplementaryTable2 43marker pattern rows 2,8	43	36	MAP覆盖不全				
+Os01g0205700	GNP2/OsGSK1	e7709c3d285323179	GNP2 SupplementaryTable2 43marker pattern rows 7	43	36	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	ee52214482a64056f	IPA1 linked SNP Hap1	7	4	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	e984c2df922206ce0	IPA1 linked SNP Hap10	7	4	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	e0fbb53b4ab7eed37	IPA1 linked SNP Hap2	7	4	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	e15adedf4b7da3e0b	IPA1 linked SNP Hap3	7	4	结构或未解析组分				
+Os08g0509600	IPA1/OsSPL14	e8e8e57524f47f580	IPA1 linked SNP Hap4	7	4	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	e3d4f44115e2211da	IPA1 linked SNP Hap5	7	4	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	e1fb5b0f8d76803c0	IPA1 linked SNP Hap6	7	4	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	ea66c6478c1275fdf	IPA1 linked SNP Hap7	7	4	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	e5b94208a8c684180	IPA1 linked SNP Hap8	7	4	MAP覆盖不全				
+Os08g0509600	IPA1/OsSPL14	e2775fb6def1b5f3e	IPA1 linked SNP Hap9	7	4	MAP覆盖不全				
+Os07g0662900	OsDPE2	e098b946a0fb7a7d6	DPE2 Figure1C9sitevector Dular	9	7	结构或未解析组分				
+Os07g0662900	OsDPE2	ea61cee70fe1b9a2d	DPE2 Figure1C9sitevector ZH11	9	7	结构或未解析组分				
+Os01g0681900	OsGOGAT1	e339cc1e0f182d8df	GLT1 aus Fig6C Hap-1	6	5	MAP覆盖不全				
+Os01g0681900	OsGOGAT1	e4d75343a25c0ca4c	GLT1 aus Fig6C Hap-2	6	5	MAP覆盖不全				
+Os01g0681900	OsGOGAT1	e6e57561b5b7f5bc5	GLT1 aus Fig6C Hap-3	6	5	MAP覆盖不全				
+Os01g0681900	OsGOGAT1	e5349ef54947c4882	GLT1 aus Fig6C Hap-4	6	5	MAP覆盖不全				
+Os03g0186600	OsMADS47	e3111213f5e2433e3	MADS47 2021 Fig2b Hap1	8	8	全组分可比较	1664	604	59	20
+Os03g0186600	OsMADS47	efc3cf8c56ae13826	MADS47 2021 Fig2b Hap2	8	8	全组分可比较	483	1785	59	20
+Os03g0186600	OsMADS47	ee570aa1e24024c16	MADS47 2021 Fig2b Hap3	8	8	全组分可比较	102	2166	59	20
+Os03g0186600	OsMADS47	e3b2fe01b675fca50	MADS47 2021 Fig2b Hap4	8	8	全组分可比较	16	2252	59	20
+Os03g0186600	OsMADS47	e20ec7e6192081a0b	MADS47 2021 Fig2b Hap5	8	8	全组分可比较	0	2268	59	20
+Os03g0186600	OsMADS47	e92246160ab349ad8	MADS47 2021 Fig2b Hap6	8	8	全组分可比较	0	2268	59	20
+Os03g0186600	OsMADS47	e82ac17a20b50e089	MADS47 2021 Fig2b Hap7	8	8	全组分可比较	2	2266	59	20
+Os03g0186600	OsMADS47	ed87863f6fa1606fe	MADS47 2025 S17A Hap1	88	65	MAP覆盖不全				
+Os03g0186600	OsMADS47	e52f7fea57781feea	MADS47 2025 S17A Hap2	88	65	MAP覆盖不全				
+Os03g0186600	OsMADS47	e1bdcb3f71ff7b8ce	MADS47 2025 S17A Hap3	88	65	MAP覆盖不全				
+Os03g0186600	OsMADS47	e76a003263d520d5e	MADS47 2025 S17A Hap4	88	65	MAP覆盖不全				
+Os03g0186600	OsMADS47	e3b282a66e8438990	MADS47 2025 S17A Hap5	88	65	MAP覆盖不全				
+Os01g0236700	OsNLP3	eac2ae1bbe3c314fe	OsNLP3 S15A Hap1	29	25	MAP覆盖不全				
+Os01g0236700	OsNLP3	e665667311245bfd7	OsNLP3 S15A Hap2	29	25	MAP覆盖不全				
+Os01g0236700	OsNLP3	ec65c8c4f71fe15ee	OsNLP3 S15A Hap3	29	25	MAP覆盖不全				
+Os01g0236700	OsNLP3	e2ecf7175b0e201f1	OsNLP3 S15A Hap4	29	25	MAP覆盖不全				
+Os01g0236700	OsNLP3	ee8f298c09751d56a	OsNLP3 S15A Hap5	29	25	MAP覆盖不全				
+Os01g0236700	OsNLP3	e5f2eb03766afd7c4	OsNLP3 S15A Hap6	29	25	MAP覆盖不全				
+Os03g0150600	OsPT1	e92d5141c49cf5556	OsPT1 source haplotype A-1	3	2	MAP覆盖不全				
+Os03g0150600	OsPT1	e52a3d6de2226b9ad	OsPT1 source haplotype A-2	3	2	MAP覆盖不全				
+Os03g0150600	OsPT1	edfa4b5f27eb0007f	OsPT1 source haplotype A-3	3	2	MAP覆盖不全				
+Os03g0150600	OsPT1	e4cb000b01e0ca1b0	OsPT1 source haplotype B-1	3	2	结构或未解析组分				
+Os03g0150600	OsPT1	eab89959565ab546e	OsPT1 source haplotype B-2	3	2	结构或未解析组分				
+Os03g0150600	OsPT1	e4ec58acab33cfda9	OsPT1 source haplotype B-3	3	2	结构或未解析组分				
+Os01g0823900	OsPUB3	e31bffeca4ae1cdac	PUB3 source Hap1	6	4	MAP覆盖不全				
+Os01g0823900	OsPUB3	eb079fa86435ee1af	PUB3 source Hap2	6	4	MAP覆盖不全				
+Os01g0823900	OsPUB3	e925e6d699cda4e69	PUB3 source Hap3	6	4	MAP覆盖不全				
+Os01g0823900	OsPUB3	e2714516573440917	PUB3 source Hap4	6	4	MAP覆盖不全				
+Os01g0823900	OsPUB3	e10c7346bf008fbf1	PUB3 source Hap5	6	4	MAP覆盖不全				
+Os01g0823900	OsPUB3	e102fa6ca91a4a1af	PUB3 source Hap6	6	4	MAP覆盖不全				
+Os01g0823900	OsPUB3	ee1cb0147868b5808	PUB3 source Hap7	6	4	MAP覆盖不全				
+Os01g0823900	OsPUB3	e4509ec104fa36c09	PUB3 source Hap8	6	4	MAP覆盖不全				
+Os07g0616800	OsSUS3	e63aa773caeb8d7fd	SUS3 2018 Fig4A20SNPvector Koshihikari	20	12	结构或未解析组分				
+Os07g0616800	OsSUS3	e653a087efd1faeca	SUS3 2018 Fig4A20SNPvector Habataki	20	12	结构或未解析组分				
+Os07g0616800	OsSUS3	ee8fe65f54352133d	SUS3 2024 Fig3b Hap1	22	0	结构或未解析组分				
+Os07g0616800	OsSUS3	e491ef61387d7bcff	SUS3 2024 Fig3b Hap2	22	0	结构或未解析组分				
+Os07g0616800	OsSUS3	e10e6c33f81a33372	SUS3 2024 Fig3b Hap3	22	0	结构或未解析组分				
+Os07g0616800	OsSUS3	e22209be62e992dac	SUS3 2024 Fig3b Hap4	22	0	结构或未解析组分				
+Os07g0616800	OsSUS3	e97f25f538db2b453	SUS3 2024 Fig3b Hap5	22	0	结构或未解析组分				
+Os01g0690600	RGN1a	eacc3c2b28defbfe2	RGN1a Hap1	6	1	MAP覆盖不全				
+Os01g0690600	RGN1a	e9ed6b21abfdde350	RGN1a Hap2	6	1	MAP覆盖不全				
+Os01g0690600	RGN1a	ef77c29956834fd1b	RGN1a Hap3	6	1	MAP覆盖不全				
+Os02g0450000	TAC4	e939ec82edc0674c0	TAC4 S8b Hap1	8	1	结构或未解析组分				
+Os02g0450000	TAC4	ed1f35833742aed35	TAC4 S8b Hap2	8	1	结构或未解析组分				
+Os02g0450000	TAC4	eee3eafc9ab0a8891	TAC4 S8b Hap3	8	1	结构或未解析组分				
+Os02g0450000	TAC4	e014567be70f6d231	TAC4 S8b Hap4	8	1	结构或未解析组分				
+Os02g0450000	TAC4	e21579271fa3e1027	TAC4 S8b Hap5	8	1	结构或未解析组分				
+Os02g0450000	TAC4	ec29ccf41a6543a3f	TAC4 S8b Hap6	8	1	结构或未解析组分				
+Os02g0450000	TAC4	e282b2469b885291d	TAC4 S8b Hap7	8	1	结构或未解析组分				
+Os01g0610300	TN1/OsASI1	ebbf6e6f570173ac6	TN1 Figure1d hap1	6	6	全组分可比较	274	1769	18	286
+Os01g0610300	TN1/OsASI1	ee980e019f7a235ed	TN1 Figure1d hap2	6	6	全组分可比较	96	1947	18	286
+Os01g0610300	TN1/OsASI1	e5763504f28909b96	TN1 Figure1d hap3	6	6	全组分可比较	6	2037	18	286
+Os01g0610300	TN1/OsASI1	eebf0761df0cf7eef	TN1 Figure1d hap4	6	6	全组分可比较	1656	387	18	286

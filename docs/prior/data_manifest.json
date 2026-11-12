@@ -1,0 +1,128 @@
+{
+  "version": "2026-11-12",
+  "source_study": "https://pubmed.ncbi.nlm.nih.gov/40083159/",
+  "source_tables": [
+    "6044_accession.xlsx",
+    "6044_pheno(1).xlsx",
+    "rename6048.map",
+    "rename6048.ped"
+  ],
+  "assembly": "Os-Nipponbare-Reference-IRGSP-1.0 / MSU7, positions 1-based on positive strand",
+  "statistics": {
+    "accessions": 2347,
+    "eligible": 2354,
+    "genes": 50,
+    "events": 425,
+    "sites": 254,
+    "ped_calls": 596138,
+    "phenotype_columns": 66,
+    "populated_columns": 63,
+    "trait_values": 76542,
+    "phenotyped": 1599,
+    "groups": {
+      "SC": 954,
+      "CC-I": 1190,
+      "SW-I": 203
+    },
+    "replicated_combinations": 25,
+    "verified_loci": 254,
+    "primary_contrasts": 23
+  },
+  "sample_definition": "6,044 registry entries; filtered by type=modern cultivar and indica/japonica=indica; exact accession ID joins to the indexed PED. 7 eligible IDs without an exact PED match are marked in the roster.",
+  "matrix": "Each pair in the genotype TSV preserves both unphased PED allele codes, including 0 or N. In cohort JSON gt is concatenated pairs in sites order; ph aligns to environments. Blank TSV phenotype or JSON null means unmeasured. Duplicate source phenotype ID accepted only for identical target values.",
+  "interpretation": "Source haplotype component order is retained in prior_events.tsv. A missing position is unresolved. Complex events require their own assay. Full homozygous matches and adjusted phenotype contrasts have different denominators. Model estimates are reproduced from the previous analysis; raw measurements here are per accession, endpoint and environment.",
+  "files": {
+    "accessions_6044.tsv.gz": {
+      "label": "6,044 份材料名录",
+      "bytes": 53558,
+      "sha256": "34ab45a1590f7420f9972ab3a13f874968fa0ba285a0d2ef2953cca00530d9c6"
+    },
+    "genotypes.tsv.gz": {
+      "label": "逐材料双等位分型",
+      "bytes": 59297,
+      "sha256": "bbfb666fa4130516179bc64fe724cb22e7e3cc42afd15e748b518451b4ee0fa9"
+    },
+    "typed_sites.tsv": {
+      "label": "254 个已分型位点与观测等位",
+      "bytes": 13685,
+      "sha256": "3d99520d24cd0d33eb95c32705b38ea3085c5774695eed13e15ca4a4813f3955"
+    },
+    "phenotypes.tsv.gz": {
+      "label": "逐材料实测表型",
+      "bytes": 130336,
+      "sha256": "03dd16b5aca3e30ab727d90cdd8330bfd5dbc8f461ee9c633fe9414ed395948f"
+    },
+    "phenotype_dictionary.tsv": {
+      "label": "性状、地点与年份字典",
+      "bytes": 2789,
+      "sha256": "c3f3fde1479a90eae1bc18bddc87f09a17119745bda4d0a44e1e4c52343970ae"
+    },
+    "prior_events.tsv": {
+      "label": "425 条等位与单倍型定义",
+      "bytes": 134926,
+      "sha256": "182976917fb8619004519736e755dcacb5936c84aa659b8c579ad7d0f5ee20f1"
+    },
+    "core50_genes.tsv": {
+      "label": "50 基因证据表",
+      "bytes": 23030,
+      "sha256": "8932be5a8f4a997016491cfca2af19c7fa04c387be9b2bcd2589293d42165d17"
+    },
+    "modern_indica_marker_counts.tsv": {
+      "label": "位点覆盖与基因型计数",
+      "bytes": 21669,
+      "sha256": "5cc38c331bfae10e42b34ebe69be3b065821928aa4ed377042e8ff12767bc942"
+    },
+    "modern_indica_haplotype_counts.tsv": {
+      "label": "单倍型匹配人数",
+      "bytes": 11031,
+      "sha256": "35811feaf4f810701db7cbde5865ef1364b4ed325ec68807c335192e6a189024"
+    },
+    "primary_contrasts.tsv": {
+      "label": "23 项主环境效应对比",
+      "bytes": 4929,
+      "sha256": "b57b2409b6ec089c833b650191bee9f5902e3d9f90ad59bb1d872003f4501add"
+    },
+    "cohort.json.gz": {
+      "label": "群体浏览器 JSON",
+      "bytes": 209388,
+      "sha256": "6d35c9fe5cd147f8b794d3c8fdb8361f68b113319429c3ca27bdaa8663163291"
+    },
+    "ontology.jsonld.gz": {
+      "label": "JSON-LD 本体",
+      "bytes": 73136,
+      "sha256": "e1de6142ef293d1688b767cd054a904cf12d52b100aa888a7fee5e76001d0189"
+    },
+    "group_marker_counts.tsv": {
+      "sha256": "f92d626934b8375db4c8684d32ff4217bf470978532de0a31111843ecbbb7963",
+      "bytes": 39957,
+      "label": "分来源组的位点计数"
+    },
+    "group_haplotype_counts.tsv": {
+      "sha256": "552ebb1845870f93bfb34631b3ced569b8cb26749c87ccb75707d005c46ef337",
+      "bytes": 5661,
+      "label": "分来源组的单倍型计数"
+    },
+    "group_phenotype_means.tsv": {
+      "sha256": "ba292b390cd2f0029aa6a1ee4d98192b74034e39c3d5ca16642e23aa16b98507",
+      "bytes": 10514,
+      "label": "分组实测表型汇总"
+    },
+    "groups.json": {
+      "sha256": "6f539a763312f91a378f60e2cca464faf7d22ddc2d5faeb657b7ccb1c88d6140",
+      "bytes": 139031,
+      "label": "群体汇总 JSON"
+    },
+    "population_ontology.jsonld": {
+      "sha256": "c7f6b023c855d120ac29364c0643d6c96b72d58bca3efd437e620a8005ec9322",
+      "bytes": 2656,
+      "label": "群体数据本体"
+    }
+  },
+  "availability": "Public rice accession IDs, names, source groups, targeted per-accession genotypes and matched target phenotypes, alongside the corresponding aggregate counts and estimates.",
+  "source_checksums": {
+    "6044_accession.xlsx": "7428ad23166e8199a30e55c508afde6370f2a48453efb867006a0f7a69595209",
+    "6044_pheno(1).xlsx": "5501ca6694dd56f01d86431fbca20cbf7431e5318ad87acd52d3f929b39c740c",
+    "ped_index.json": "dd1dfb64696d9e33c77fb0753b3ab537896ca45a083deb1f94097516574dd6a4",
+    "rename6048.map": "74d77ef85289db5b48b5086e21afef71f085033d62bb0a78e450fa41b225cc9c"
+  }
+}
