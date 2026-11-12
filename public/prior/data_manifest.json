@@ -116,6 +116,31 @@
       "sha256": "c7f6b023c855d120ac29364c0643d6c96b72d58bca3efd437e620a8005ec9322",
       "bytes": 2656,
       "label": "群体数据本体"
+    },
+    "accession_genotypes_6044.tsv.gz": {
+      "label": "6,044 份材料 × 254 个位点原始双等位分型（含类别与原始编号）",
+      "bytes": 158731,
+      "sha256": "e7aaf34084d71911bb639f21b222bde9392f48b59c9090e464a61de067c17975"
+    },
+    "site_evidence.tsv": {
+      "label": "254 个位点的证据层级、事件 ID、对应 DOI 与基因背景 DOI",
+      "bytes": 119228,
+      "sha256": "2b5f23637ee1155eee2fcc805f2de562d607d26fcc5b2489c991be574d870976"
+    },
+    "event_evidence.tsv": {
+      "label": "425 条有序事件定义、来源 DOI、V4 行与附件行",
+      "bytes": 175860,
+      "sha256": "0cb8443d1f662b2c559a23ce050a65ffc0273c3f7d6e7f96c56545379918b0e0"
+    },
+    "literature_doi.tsv": {
+      "label": "规范化 DOI、登记题名和年份",
+      "bytes": 20537,
+      "sha256": "566bb33e71c91e808e9d4d91457ffc80058e34a60ef962727bfd8e3d624a8809"
+    },
+    "evidence.json.gz": {
+      "label": "面板内的事件、坐标和论文索引",
+      "bytes": 19453,
+      "sha256": "37e65b5ca3c920c0ff40a841e1b66fdd581bb7e1685b1154e9108ae08139d6dd"
     }
   },
   "availability": "Public rice accession IDs, names, source groups, targeted per-accession genotypes and matched target phenotypes, alongside the corresponding aggregate counts and estimates.",
@@ -124,5 +149,51 @@
     "6044_pheno(1).xlsx": "5501ca6694dd56f01d86431fbca20cbf7431e5318ad87acd52d3f929b39c740c",
     "ped_index.json": "dd1dfb64696d9e33c77fb0753b3ab537896ca45a083deb1f94097516574dd6a4",
     "rename6048.map": "74d77ef85289db5b48b5086e21afef71f085033d62bb0a78e450fa41b225cc9c"
-  }
+  },
+  "full_accession_genotypes": {
+    "rows": 6044,
+    "sites": 254,
+    "cells": 1535176,
+    "classes": {
+      "modern cultivar": 5222,
+      "landrace": 822
+    },
+    "id_match": {
+      "exact": 6030,
+      "unique_#1_suffix": 14
+    },
+    "calls": {
+      "complete": 1529092,
+      "missing_both": 6084
+    },
+    "source_doi": "10.1016/j.molp.2025.03.007",
+    "author_table_sha256": "489238c08e5af0e6eeb3fc043e12168379e0e359513e2b3dd9d2e11866b175a3",
+    "author_table": "https://ars.els-cdn.com/content/image/1-s2.0-S1674205225000978-mmc2.xlsx",
+    "author_table_locator": "Supplementary Table 1, row 6053, note #1",
+    "modern_used_for_population_structure": 5208,
+    "subspecies_discordant": 14,
+    "author_metadata_verified_rows": 6044,
+    "join_rule": "The 6030 exact IDs and the 14 accession IDs with publisher footnote #1 match unique distinct PED IIDs. Both IDs retained. #1 indicates a recorded subspecies inconsistent with genomic classification. Phenotype panels continue using the original 2347 modern indica subset.",
+    "matrix": "Positive-strand unphased PED allele pairs, columns in typed_sites.tsv marker order. 0/N are source missing codes. Four wild PED rows outside the 6044 accession list excluded."
+  },
+  "literature_evidence": {
+    "events": 425,
+    "events_with_doi": 425,
+    "unique_event_dois": 66,
+    "event_source_counts": {
+      "来源记录": 405,
+      "等位/单倍型支持": 3,
+      "自然关联": 11,
+      "事件因果": 4,
+      "原文功能等位与参考基因组方向核对": 2
+    },
+    "site_categories": {
+      "文献多位点型的组分": 224,
+      "文献记录的单位置，独立因果待核": 11,
+      "核苷酸与文献功能等位已对应": 6,
+      "定向复核标记，单碱基因果待核": 13
+    },
+    "literature_dois": 112
+  },
+  "source_study_doi": "10.1016/j.molp.2025.03.007"
 }

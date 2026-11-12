@@ -1,6 +1,6 @@
 # RiceFlux
 
-[打开 RiceFlux 群体与等位变异面板](https://rggmb-haozhenwang.github.io/RiceFlux/)。原面板直接读取实测群体和基因注释。性状选择器按地点和年份列出实测值，个体选择器支持品种名或材料编号。基因轨道、群体频率、基因型组合、表型分布与个体表按当前筛选同步更新。在“数据、算法与参考”中可查看当前基因的文献单倍型与来源。原图谱链接也会打开此面板。
+[打开 RiceFlux 群体与等位变异面板](https://rggmb-haozhenwang.github.io/RiceFlux/)。原面板直接读取实测群体和基因注释。性状选择器按生育期、粒形和抗病分类。表型图按地点列出当年各基因型组合的分布，可切换年份与鉴定指标；地区明细联动原始个体值。导出包含当前地点的个体值与该次比较的各原表列，个体选择器支持品种名或材料编号。基因轨道、群体频率、基因型组合、表型分布与个体表按当前筛选同步更新。在“数据、算法与参考”中可查看当前基因的文献单倍型与来源。原图谱链接也会打开此面板。
 
 | 数据 | 范围 |
 |---|---|
@@ -10,6 +10,12 @@
 | 群体证据 | 对照 25 个完整可比组合的分组人数、66 个性状环境列的分组汇总、23 项主环境效应对比 |
 
 [原始研究](https://pubmed.ncbi.nlm.nih.gov/40083159/) · [项目实际数据目录](public/prior/) · [逐材料基因型](https://rggmb-haozhenwang.github.io/RiceFlux/prior/genotypes.tsv.gz) · [逐材料表型](https://rggmb-haozhenwang.github.io/RiceFlux/prior/phenotypes.tsv.gz) · [位点字典](public/prior/typed_sites.tsv) · [数据说明与哈希](public/prior/data_manifest.json)。分型按 MSU7 正链一基坐标排列。原始双等位值保留杂合及 0/N 缺失状态；表型空格表示未测。`public/prior/` 保存原面板读取的实测数据和基因先验，`docs/prior/` 是 GitHub Pages 发布副本。
+
+## 全名录分型与文献追溯
+
+从基因区域选择位点，点击“查询 6,044 份材料分型”可筛选现代品种或地方品种、按材料编号或名称搜索。全名录包含 5,222 份登记现代品种和 822 份地方品种。6,030 个原始 ID 直接匹配，14 个 ID 带作者脚注 `#1`，去掉脚注后与 PED 唯一匹配。补表说明这 14 份的登记亚种和基因组分类有分歧。论文的现代品种群体分析采用 5,208 份材料。当前面板的表型图和频率分析沿用已有的 2,347 份现代籼稻。原始 0/N 为缺失，保留未分相的两个碱基。[数据研究](https://doi.org/10.1016/j.molp.2025.03.007) · [作者补表 1 和脚注](https://ars.els-cdn.com/content/image/1-s2.0-S1674205225000978-mmc2.xlsx) · [全名录分型下载](https://rggmb-haozhenwang.github.io/RiceFlux/prior/accession_genotypes_6044.tsv.gz)
+
+425 条先验事件均可追溯至 DOI，涉及 66 个不同的事件来源 DOI。事件包括 SNP、插缺、重复和多位点型。254 个已分型坐标中，本版把 6 个坐标对应到有核苷酸层面证据的功能等位，224 个归入文献多位点型的组分，11 个为单位置来源记录，13 个为需要另核单碱基作用的定向标记。一个坐标可关联多条事件，最强可支持的解释见逐位点表。文献作用的适用性仍取决于性状、环境与遗传背景。页面分别标出功能等位原文、事件来源和基因背景 DOI。[逐位点证据](public/prior/site_evidence.tsv) · [逐事件证据](public/prior/event_evidence.tsv) · [论文题名与 DOI](public/prior/literature_doi.tsv)
 
 **合成数据演示** [群体与等位变异探索](https://rggmb-haozhenwang.github.io/RiceFlux/?view=demo)
 

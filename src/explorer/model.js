@@ -1,3 +1,4 @@
+import {regionalView} from './regions.js';
 export function validateDataset(data) {
   const observed=data?.meta?.synthetic===false && data.meta.schema==='RiceFlux modern indica 1.0';
   if(!observed && data?.meta?.synthetic!==true) throw new Error('需要带来源版本的实测数据或明确标记的合成数据。');
@@ -61,5 +62,12 @@ export function exportSnapshot(data,state) {
   const cohort=selectCohort(data,state.popIds,state.individualIds,state.individualOnly);
   const retained=retainedVariants(cohort,gene,state.minMaf,state.maxMissing);
   const selected=retained.find(v=>v.id===state.variantId)||retained[0];
-  return {dataset:data.meta,exported_at:new Date().toISOString(),trait:data.traits.find(t=>t.id===state.traitId),gene:{id:gene.id,name:gene.name,assembly:gene.assembly},selection:{...state,variantId:selected?.id??null},cohort_ids:cohort.map(s=>s.id),frequency_denominator:'called allele copies; partial calls contribute known copies',genotype_denominator:'complete individuals across retained markers',variants:gene.variants.map(v=>({...v,reference_allele:v.ref,alternate_allele:v.alt,retained:retained.includes(v),...alleleStats(cohort,v)})),population_stats:selected?state.popIds.map(id=>({id,...alleleStats(cohort.filter(s=>s.population_id===id),selected)})):[],genotype_groups:genotypeGroups(cohort,retained).map(g=>({id:g.id,tokens:g.tokens,member_ids:g.members.map(s=>s.id)})),individuals:cohort.map(s=>({id:s.id,name:s.name,population_id:s.population_id,phenotype:s.phenotypes[state.traitId]??null,genotypes:Object.fromEntries(retained.map(v=>[v.id,s.genotypes[v.id]]))}))};
+  // Older saved selections identify one worksheet column directly.
+  const trait=data.traits.find(t=>t.id===state.traitId) || data.traits.find(t=>t.environments?.some(e=>e.id===state.traitId));
+  const oldEndpoint=trait?.environments?.find(e=>e.id===state.traitId);
+  const view=regionalView(trait,state.phenotypeView || (oldEndpoint && {assay:oldEndpoint.assay,year:oldEndpoint.source.year,site:oldEndpoint.source.site}));
+  const valueId=view?.active.id || state.traitId;
+  const regional=view && {assay:view.assay,year:view.year,unit:view.unit,active_site:view.active.source.site,active_column:view.active.source.column,
+    sites:view.sites.map(({site,endpoint})=>({site,column:endpoint?.source.column??null}))};
+  return {dataset:data.meta,exported_at:new Date().toISOString(),trait:view?{id:trait.id,name:trait.name,unit:view.unit,source:view.active.source}:trait,...(view?{phenotype_view:regional}:{}),gene:{id:gene.id,name:gene.name,assembly:gene.assembly},selection:{...state,variantId:selected?.id??null},cohort_ids:cohort.map(s=>s.id),frequency_denominator:'called allele copies; partial calls contribute known copies',genotype_denominator:'complete individuals across retained markers',variants:gene.variants.map(v=>({...v,reference_allele:v.ref,alternate_allele:v.alt,retained:retained.includes(v),...alleleStats(cohort,v)})),population_stats:selected?state.popIds.map(id=>({id,...alleleStats(cohort.filter(s=>s.population_id===id),selected)})):[],genotype_groups:genotypeGroups(cohort,retained).map(g=>({id:g.id,tokens:g.tokens,member_ids:g.members.map(s=>s.id)})),individuals:cohort.map(s=>({id:s.id,name:s.name,population_id:s.population_id,phenotype:s.phenotypes[valueId]??null,...(view?{phenotypes_by_column:Object.fromEntries(view.sites.filter(r=>r.endpoint).map(({endpoint:e})=>[e.source.column,s.phenotypes[e.id]??null]))}:{}),genotypes:Object.fromEntries(retained.map(v=>[v.id,s.genotypes[v.id]]))}))};
 }

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "node --test src/explorer/model.test.js"
+    "test": "node --test src/explorer/*.test.js"
   },
   "dependencies": {
     "@radix-ui/react-icons": "1.3.2",
