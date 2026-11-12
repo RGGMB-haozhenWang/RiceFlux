@@ -1,15 +1,15 @@
 # RiceFlux
 
-[打开水稻核心基因与现代籼稻材料图谱](https://rggmb-haozhenwang.github.io/RiceFlux/prior/)。首页默认打开真实材料数据。可按基因、位点、单倍型、材料编号、品种名或来源组检索，查看同一材料在具体地点年份的实测表型，并导出结果。
+[打开 RiceFlux 群体与等位变异面板](https://rggmb-haozhenwang.github.io/RiceFlux/)。原面板直接读取实测群体和基因注释。性状选择器按地点和年份列出实测值，个体选择器支持品种名或材料编号。基因轨道、群体频率、基因型组合、表型分布与个体表按当前筛选同步更新。在“数据、算法与参考”中可查看当前基因的文献单倍型与来源。原图谱链接也会打开此面板。
 
 | 数据 | 范围 |
 |---|---|
 | 材料 | 6,044 份原始材料名录；2,347 份现代籼稻精确匹配分型（SC 954、CC-I 1,190、SW-I 203） |
-| 基因与位点 | 50 个基因，425 条文献或定向复核记录；254 个有群体双等位分型的目标坐标覆盖 32 个基因 |
+| 基因与位点 | 50 个基因，425 条文献或定向复核记录；254 个有群体分型的目标坐标覆盖 32 个基因，其中 5 个坐标仅观察到参考碱基 |
 | 实测表型 | 1,599 份材料有至少一个有效值，共 76,542 个有效值、63 个非空的性状环境列 |
 | 群体证据 | 对照 25 个完整可比组合的分组人数、66 个性状环境列的分组汇总、23 项主环境效应对比 |
 
-[原始研究](https://pubmed.ncbi.nlm.nih.gov/40083159/) · [项目实际数据目录](public/prior/) · [逐材料基因型](https://rggmb-haozhenwang.github.io/RiceFlux/prior/genotypes.tsv.gz) · [逐材料表型](https://rggmb-haozhenwang.github.io/RiceFlux/prior/phenotypes.tsv.gz) · [位点字典](public/prior/typed_sites.tsv) · [数据说明与哈希](public/prior/data_manifest.json)。分型按 MSU7 正链一基坐标排列。原始双等位值保留杂合及 0/N 缺失状态；表型空格表示未测。`public/prior/` 是图谱源文件，`docs/prior/` 是 GitHub Pages 发布副本。
+[原始研究](https://pubmed.ncbi.nlm.nih.gov/40083159/) · [项目实际数据目录](public/prior/) · [逐材料基因型](https://rggmb-haozhenwang.github.io/RiceFlux/prior/genotypes.tsv.gz) · [逐材料表型](https://rggmb-haozhenwang.github.io/RiceFlux/prior/phenotypes.tsv.gz) · [位点字典](public/prior/typed_sites.tsv) · [数据说明与哈希](public/prior/data_manifest.json)。分型按 MSU7 正链一基坐标排列。原始双等位值保留杂合及 0/N 缺失状态；表型空格表示未测。`public/prior/` 保存原面板读取的实测数据和基因先验，`docs/prior/` 是 GitHub Pages 发布副本。
 
 **合成数据演示** [群体与等位变异探索](https://rggmb-haozhenwang.github.io/RiceFlux/?view=demo)
 

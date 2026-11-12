@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {gunzipSync} from 'node:zlib';
+import {observedDataset} from './observed.js';
 import {readFileSync} from 'node:fs';
 import {validateDataset, selectCohort, alleleStats, retainedVariants, genotypeGroups, quantile, exportSnapshot} from './model.js';
 
@@ -67,4 +69,39 @@ test('export is auditable from raw genotype counts and complete members',()=>{
   assert.equal(new Set(ids).size,ids.length);
   assert.ok(out.dataset.synthetic);
   assert.deepEqual(exportSnapshot(data,{...state,popIds:[]}).genotype_groups,[]);
+});
+
+test('published cohort retains every source allele copy, phenotype, and gene evidence record', () => {
+  const readRelease = file => JSON.parse(gunzipSync(readFileSync(new URL('../../public/prior/' + file, import.meta.url))));
+  const cohort = readRelease('cohort.json.gz');
+  const observed = validateDataset(observedDataset(cohort, readRelease('ontology.jsonld.gz')));
+  assert.equal(observed.individuals.length, 2347);
+  assert.equal(observed.genes.length, 50);
+  assert.equal(observed.genes.filter(g => g.variants.length).length, 32);
+  assert.equal(observed.genes.flatMap(g => g.records).length, 425);
+  const sites = new Map(observed.genes.flatMap(g => g.variants).map(v => [v.id, v]));
+  assert.equal(sites.size, 254);
+  assert.equal([...sites.values()].filter(v => v.alt === null).length, 5);
+  assert.equal(cohort.environments.length, 66);
+  let measured = 0;
+  for (const [i, source] of cohort.samples.entries()) {
+    const row = observed.individuals[i];
+    assert.equal(row.id, source.id);
+    assert.equal(row.name, source.name);
+    assert.equal(row.population_id, source.group);
+    for (const [j, site] of cohort.sites.entries()) {
+      const v = sites.get(site.marker), gt = row.genotypes[site.marker];
+      assert.equal(v.pos, site.pos);
+      assert.equal(v.ref, site.ref);
+      for (let copy = 0; copy < 2; copy++) {
+        const raw = source.gt[2*j + copy];
+        assert.equal(gt[copy] === null ? null : [v.ref, v.alt][gt[copy]], raw === 'N' || raw === '0' ? null : raw);
+      }
+    }
+    for (const [j, env] of cohort.environments.entries()) {
+      assert.equal(row.phenotypes['env_' + env.column], source.ph[j]);
+      if (source.ph[j] !== null) measured++;
+    }
+  }
+  assert.equal(measured, 76542);
 });

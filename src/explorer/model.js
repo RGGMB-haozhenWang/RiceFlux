@@ -1,11 +1,12 @@
 export function validateDataset(data) {
-  if(data?.meta?.synthetic!==true) throw new Error('本 demo 只接受明确标记的合成数据。');
+  const observed=data?.meta?.synthetic===false && data.meta.schema==='RiceFlux modern indica 1.0';
+  if(!observed && data?.meta?.synthetic!==true) throw new Error('需要带来源版本的实测数据或明确标记的合成数据。');
   for(const key of ['individuals','genes','populations','traits']) {
     if(!Array.isArray(data[key])||!data[key].length||data[key].some(x=>typeof x?.id!=='string'||!x.id)||new Set(data[key].map(x=>x.id)).size!==data[key].length) throw new Error(`${key} 标识缺失或重复`);
   }
   for(const gene of data.genes) {
     if(!Array.isArray(gene.variants)||!Array.isArray(gene.features)||!gene.trait_ids?.length||gene.trait_ids.some(id=>!data.traits.some(t=>t.id===id))||!(gene.start<gene.end)) throw new Error('基因结构或性状映射无效');
-    if(gene.variants.some(v=>!v.id||!Number.isInteger(v.pos)||v.pos<gene.start||v.pos>gene.end||!['A','C','G','T'].includes(v.ref)||!['A','C','G','T'].includes(v.alt)||v.ref===v.alt)) throw new Error('SNP 注释无效');
+    if(gene.variants.some(v=>!v.id||!Number.isInteger(v.pos)||v.pos<gene.start||v.pos>gene.end||!['A','C','G','T'].includes(v.ref)||(!['A','C','G','T'].includes(v.alt) && !(observed && v.alt===null))||v.ref===v.alt)) throw new Error('SNP 注释无效');
   }
   if(data.traits.some(t=>!data.genes.some(g=>g.trait_ids.includes(t.id)))) throw new Error('性状缺少关联的演示基因');
   const variants=data.genes.flatMap(g=>g.variants);
@@ -14,7 +15,7 @@ export function validateDataset(data) {
     if(individual.ploidy!==2||!data.populations.some(p=>p.id===individual.population_id)) throw new Error('群体或倍性无效');
     for(const v of variants) {
       const gt=individual.genotypes?.[v.id];
-      if(!Array.isArray(gt)||gt.length!==2||gt.some(a=>a!==null&&a!==0&&a!==1)) throw new Error('本 demo 仅支持二倍体双等位 SNP');
+      if(!Array.isArray(gt)||gt.length!==2||gt.some(a=>a!==null&&a!==0&&(a!==1||v.alt===null))) throw new Error('位点须使用二倍体双等位编码');
     }
     if(!individual.phenotypes||Object.values(individual.phenotypes).some(v=>v!==null&&!Number.isFinite(v))) throw new Error('表型必须为数值或 null');
   }
@@ -60,5 +61,5 @@ export function exportSnapshot(data,state) {
   const cohort=selectCohort(data,state.popIds,state.individualIds,state.individualOnly);
   const retained=retainedVariants(cohort,gene,state.minMaf,state.maxMissing);
   const selected=retained.find(v=>v.id===state.variantId)||retained[0];
-  return {dataset:data.meta,exported_at:new Date().toISOString(),selection:{...state,variantId:selected?.id??null},cohort_ids:cohort.map(s=>s.id),frequency_denominator:'called allele copies; partial calls contribute known copies',genotype_denominator:'complete individuals across retained markers',variants:gene.variants.map(v=>({...v,retained:retained.includes(v),...alleleStats(cohort,v)})),population_stats:selected?state.popIds.map(id=>({id,...alleleStats(cohort.filter(s=>s.population_id===id),selected)})):[],genotype_groups:genotypeGroups(cohort,retained).map(g=>({id:g.id,tokens:g.tokens,member_ids:g.members.map(s=>s.id)})),individuals:cohort.map(s=>({id:s.id,population_id:s.population_id,phenotype:s.phenotypes[state.traitId],genotypes:Object.fromEntries(retained.map(v=>[v.id,s.genotypes[v.id]]))}))};
+  return {dataset:data.meta,exported_at:new Date().toISOString(),trait:data.traits.find(t=>t.id===state.traitId),gene:{id:gene.id,name:gene.name,assembly:gene.assembly},selection:{...state,variantId:selected?.id??null},cohort_ids:cohort.map(s=>s.id),frequency_denominator:'called allele copies; partial calls contribute known copies',genotype_denominator:'complete individuals across retained markers',variants:gene.variants.map(v=>({...v,reference_allele:v.ref,alternate_allele:v.alt,retained:retained.includes(v),...alleleStats(cohort,v)})),population_stats:selected?state.popIds.map(id=>({id,...alleleStats(cohort.filter(s=>s.population_id===id),selected)})):[],genotype_groups:genotypeGroups(cohort,retained).map(g=>({id:g.id,tokens:g.tokens,member_ids:g.members.map(s=>s.id)})),individuals:cohort.map(s=>({id:s.id,name:s.name,population_id:s.population_id,phenotype:s.phenotypes[state.traitId]??null,genotypes:Object.fromEntries(retained.map(v=>[v.id,s.genotypes[v.id]]))}))};
 }
