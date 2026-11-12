@@ -1,10 +1,12 @@
 # RiceFlux
 
+[50 个核心基因 · 单倍型与文献证据](https://rggmb-haozhenwang.github.io/RiceFlux/prior/)收录水稻基因身份、公开文献定义、参考基因结构和按原文排序的等位状态。该入口支持按性状或来源记录类型筛选、导出当前基因及下载 JSON-LD 本体实体。`public/prior/` 为源文件，`docs/prior/` 为 Pages 发布副本。
+
 **在线演示：** https://rggmb-haozhenwang.github.io/RiceFlux/
 
 面向育种家的群体与等位变异探索演示，参考 [EasyHap](https://github.com/Guangqi-He/EasyHap) 的基因区域、变异、群体组成与表型查看流程。选择性状、基因、群体或感兴趣的个体后，可查看各群体的等位基因频率、基因型组合和模拟表型，并导出当前筛选结果。
 
-> **演示数据声明**：材料、基因、群体、坐标、基因型与表型均为合成数据；未使用真实水稻材料、1001 Genomes 或 AtFLM 实测数据。结果不能用于育种决策或论文结论。
+> **原群体演示的数据声明**：材料、基因、群体、坐标、基因型与表型均为合成数据；未使用真实水稻材料、1001 Genomes 或 AtFLM 实测数据。结果不能用于育种决策或论文结论。
 
 ## 运行
 
