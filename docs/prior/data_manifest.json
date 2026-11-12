@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-12.registry6044.2",
+  "version": "2026-11-12.V4-full.1",
   "source_study": "https://pubmed.ncbi.nlm.nih.gov/40083159/",
   "source_tables": [
     "6044_accession.xlsx",
@@ -10,10 +10,9 @@
   "assembly": "Os-Nipponbare-Reference-IRGSP-1.0 / MSU7, positions 1-based on positive strand",
   "statistics": {
     "accessions": 6044,
-    "genes": 50,
-    "events": 425,
-    "sites": 255,
-    "ped_calls": 1541220,
+    "genes": 484,
+    "sites": 1067,
+    "ped_calls": 6448948,
     "phenotype_columns": 66,
     "populated_columns": 66,
     "trait_values": 186556,
@@ -30,7 +29,8 @@
     "classes": {
       "modern cultivar": 5222,
       "landrace": 822
-    }
+    },
+    "historical_identity_only": 1
   },
   "sample_definition": "All 6,044 published roster entries, including 5,222 modern cultivars and 822 landraces. The seven groups use the registry assignments; 14 flagged records retain their original IDs and group. Legacy adjusted contrasts are restricted to the earlier subset.",
   "matrix": "Each pair in the genotype TSV preserves both unphased PED allele codes, including 0 or N. In cohort JSON gt is concatenated pairs in sites order; ph aligns to environments. Blank TSV phenotype or JSON null means unmeasured. Duplicate source phenotype ID accepted only for identical target values.",
@@ -175,6 +175,46 @@
       "label": "6,044 份材料的 66 列表型，空值为未测",
       "bytes": 309659,
       "sha256": "0bc850146ff1c5ae42e17b30feeb2324ef390ad7de663be458e332db39a1149c"
+    },
+    "v4_prior_genes.tsv": {
+      "label": "全先验基因目录（含单列历史身份）",
+      "bytes": 184420,
+      "sha256": "9c0e058ed4ffc244f0ccb3e99ad9e5c3e01ecf336e825a1c602df26e6efbb7f0"
+    },
+    "v4_catalog.json.gz": {
+      "label": "全库可视化档案、模型与证据",
+      "bytes": 138741,
+      "sha256": "8262231d007abe7d3935edb55beb456f74652e9de37ad7d8d6f1f00f2fb40fd6"
+    },
+    "v4_catalog.jsonld.gz": {
+      "label": "扩展本体：基因、事件及探索标记",
+      "bytes": 50597,
+      "sha256": "b477241f21ba92a74b6e92354368167bd979dee24c9e2d9c280b2fff4af0a23d"
+    },
+    "v4_prior_events.tsv.gz": {
+      "label": "V4 事件、原文状态和事件 DOI",
+      "bytes": 16772,
+      "sha256": "c7abcd1221ff5c838b55eb93e243a91daeed12cdb2b1668115051e0e8e3a3fd1"
+    },
+    "v4_accession_calls.tsv.gz": {
+      "label": "扩展标记 × 6,044 份逐材料分型",
+      "bytes": 627971,
+      "sha256": "376abb11bed2f2ad8ad20e9439ac16f481aa41a7007ae040dfd00cd03fc9b510"
+    },
+    "v4_marker_dictionary.tsv": {
+      "label": "扩展文献位点和区域 SNP 字典",
+      "bytes": 59084,
+      "sha256": "530846f0b25e625b8db4d32e4b355f9978106a502f126006bcece5ed6954ef58"
+    },
+    "v4_marker_calls.json.gz": {
+      "label": "按位点存储的实测分型与材料轴",
+      "bytes": 507377,
+      "sha256": "16ecfedce1882a2a36daf2c16c6e04765168bb9fa0b75e7738d3a5f7b9a61cef"
+    },
+    "v4_site_coverage.tsv.gz": {
+      "label": "V4 可比较单碱基坐标的原始群体目录覆盖",
+      "bytes": 1564,
+      "sha256": "37351fcc2f62dcb6027df7d0779c3416de6dfdb9995f004893674bed318ce483"
     }
   },
   "availability": "Public rice accession IDs, names, source groups, targeted per-accession genotypes and matched target phenotypes, alongside the corresponding aggregate counts and estimates.",
@@ -256,5 +296,62 @@
     "identical_duplicate_rows": 1,
     "finite_cells": 186556,
     "measured_accessions": 3605
+  },
+  "core_release_statistics": {
+    "accessions": 6044,
+    "genes": 50,
+    "events": 425,
+    "sites": 255,
+    "ped_calls": 1541220,
+    "phenotype_columns": 66,
+    "populated_columns": 66,
+    "trait_values": 186556,
+    "phenotyped": 3605,
+    "groups": {
+      "SC": 994,
+      "SW-J": 465,
+      "CC-I": 1295,
+      "NE": 1998,
+      "NC": 397,
+      "CC-J": 478,
+      "SW-I": 417
+    },
+    "classes": {
+      "modern cultivar": 5222,
+      "landrace": 822
+    }
+  },
+  "catalog": {
+    "v4_genes": 476,
+    "v4_rows": 940,
+    "core_genes": 50,
+    "v4_and_core": 42,
+    "external_core": 8,
+    "historical": 1,
+    "catalog": 485,
+    "active": 484,
+    "source_event_rows": 513,
+    "frozen_sites": 255,
+    "new_literature_sites": 21,
+    "regional_sites": 791,
+    "typed_genes": 445,
+    "literature_typed_genes": 33,
+    "regional_genes": 412,
+    "samples": 6044,
+    "retained_identity_only": 1,
+    "excluded_cold_or_deferred_rows": 22,
+    "genes_with_doi": 460,
+    "active_without_calls": 39,
+    "literature_sites": 276,
+    "all_sites": 1067
+  },
+  "catalog_sources": {
+    "V4_table_sha256": "bdc0bd2ad56fd471a921f8da7b111746073412c4df96d4f004889d334ebea28f",
+    "V4_database_sha256": "8076fe53c6d97993ac056a7668df3bf2dd17c608a9da65a6caf511b27134c6b6",
+    "five_column_sha256": "ae003db57b749a76d12bf26645006f331e83a3008948aa7b375a333d9790f338",
+    "assembly": "Os-Nipponbare-Reference-IRGSP-1.0 / MSU7",
+    "regional_marker_rule": "For genes without typed literature targets choose at most one MAP SNP in each reference transcript CDS and strand-specific upstream 2 kb. Choose closest to the transcription start among eligible positions; skip previously allocated/shared coordinates and source event coordinates. No trait, allele frequency, significance, LD or favorable-allele criterion. Regional comparison only.",
+    "interpretation": "Gene IDs without exact reference anchors can be browsed without coordinates. Gene literature and event DOI are separate. Existing 425 core evidence cards overlap V4 source records: do not add the two row counts.",
+    "cohort_scope": "Whole registry of 6,044. Comparisons show raw observed genotypes, not a new association test."
   }
 }

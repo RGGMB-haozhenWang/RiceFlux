@@ -2,7 +2,7 @@ import React,{useState,useEffect,useMemo} from 'react';
 import {Button,Dialog} from '@radix-ui/themes';
 import {readText} from './observed.js';
 
-const download='./prior/accession_genotypes_6044.tsv.gz';
+const original='./prior/accession_genotypes_6044.tsv.gz',extended='./prior/v4_accession_calls.tsv.gz';
 export function DoiLinks({values,papers}){
   return <>{values.map(d=><React.Fragment key={d}> <a className="doi-link" href={'https://doi.org/'+d} title={papers[d]} target="_blank" rel="noreferrer">{d}</a> </React.Fragment>)}</>;
 }
@@ -25,15 +25,16 @@ export function parseCallArchive(text){
   });
   return {samples,markers};
 }
-let archivePromise;
-function loadArchive(){
-  if(!archivePromise)archivePromise=readText(download).then(parseCallArchive).catch(e=>{archivePromise=undefined;throw e});
-  return archivePromise;
+const archives=new Map();
+function loadArchive(path){
+  if(!archives.has(path))archives.set(path,readText(path).then(parseCallArchive).catch(e=>{archives.delete(path);throw e}));
+  return archives.get(path);
 }
 export function AccessionCalls({gene,selected,evidence}){
   const [open,setOpen]=useState(false),[marker,setMarker]=useState(''),[archive,setArchive]=useState(null),[error,setError]=useState('');
   const [kind,setKind]=useState('all'),[search,setSearch]=useState(''),[limit,setLimit]=useState(40),[retry,setRetry]=useState(0);
-  useEffect(()=>{if(!open||archive)return;let active=true;setError('');loadArchive().then(v=>{if(active)setArchive(v)}).catch(e=>{if(active)setError(e.message)});return()=>{active=false}},[open,archive,retry]);
+  const download=gene.variants.find(v=>v.id===marker)?.classified?extended:original;
+  useEffect(()=>{if(!open)return;setArchive(null);let active=true;setError('');loadArchive(download).then(v=>{if(active)setArchive(v)}).catch(e=>{if(active)setError(e.message)});return()=>{active=false}},[open,download,retry]);
   const column=archive?.markers.indexOf(marker)??-1;
   const rows=useMemo(()=>{
     const term=search.trim().toLowerCase();
@@ -58,7 +59,7 @@ export function AccessionCalls({gene,selected,evidence}){
           <tbody>{rows.slice(0,limit).map(s=><tr key={s.id}><td>{s.id}{s.id!==s.ped&&<small> PED {s.ped}</small>}</td><td>{s.name}</td><td>{s.type==='landrace'?'地方品种':'现代品种'}</td><td>{s.subspecies} / {s.group}{s.match!=='exact'?' · 归属有分歧':''}</td><td>{s.gt.slice(2*column,2*column+2).split('').join('/')}</td></tr>)}</tbody></table></div>
         {rows.length>limit&&<Button size="1" variant="ghost" onClick={()=>setLimit(n=>n+100)}>显示更多材料</Button>}
       </>}
-      <div className="dialog-actions"><a className="doi-link" href={download} download>下载全部材料 × {archive?.markers.length??255} 位点（TSV.GZ）</a><Dialog.Close><Button>关闭</Button></Dialog.Close></div>
+      <div className="dialog-actions"><a className="doi-link" href={download} download>下载全部材料 × {archive?.markers.length??'…'} 位点（TSV.GZ）</a><Dialog.Close><Button>关闭</Button></Dialog.Close></div>
     </Dialog.Content></Dialog.Root>
   </div>;
 }

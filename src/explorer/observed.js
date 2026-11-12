@@ -1,3 +1,4 @@
+import {attachCatalog} from './catalog.js';
 import {measuredTraits} from './regions.js';
 // Adapt the released cohort and its ontology to the existing explorer data model.
 const groupColors = {'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
@@ -91,6 +92,6 @@ async function readJSON(path,signal){return JSON.parse(await readText(path,signa
 
 export async function loadExplorer(base,demo,signal){
   if(demo)return readJSON(base+'data/explorer_demo.json',signal);
-  const [cohort,graph,evidence]=await Promise.all([readJSON(base+'prior/cohort.json.gz',signal),readJSON(base+'prior/ontology.jsonld.gz',signal),readJSON(base+'prior/evidence.json.gz',signal)]);
-  return {...observedDataset(cohort,graph),evidence};
+  const [cohort,graph,evidence,catalog,calls]=await Promise.all(['cohort.json.gz','ontology.jsonld.gz','evidence.json.gz','v4_catalog.json.gz','v4_marker_calls.json.gz'].map(file=>readJSON(base+'prior/'+file,signal)));
+  return attachCatalog(observedDataset(cohort,graph),catalog,calls,evidence);
 }

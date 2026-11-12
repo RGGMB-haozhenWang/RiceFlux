@@ -5,3 +5,14 @@
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 .control-hint,.panel-title p,.footnote{font-size:11px;color:#6d7c88}.kpis p,.pop-frequency small{font-size:10px;color:#6d7c88}.track-label,.axis{font-size:12px;fill:#6d7c88}.panel-tag{color:#6d7c88}.people-list .empty{grid-column:1/-1}
+
+.prior-search {width:100%;margin-top:.55rem}
+.catalog-filters {display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.catalog-filters input,.catalog-filters select {border:1px solid #ccd7d7;background:white;color:#263b40;border-radius:6px;padding:.5rem;font:inherit}
+.catalog-filters input {flex:1;min-width:12rem}
+.catalog-list {max-height:48vh;overflow:auto}
+.catalog-list>button {display:flex;align-items:center;justify-content:space-between;gap:.5rem;width:100%;text-align:left;border:none;background:white;padding:.65rem .4rem;border-bottom:1px solid #e8eded;color:#25433c;cursor:pointer}
+.catalog-list>button:hover,.catalog-list>button:focus-visible {background:#edf6f3}
+.catalog-list small {text-align:right;color:#586b6d}
+.prior-card {overflow-wrap:anywhere}
+.catalog-event {border-left:2px solid #c8d9d3;margin:.65rem 0;padding:.1rem .65rem}
