@@ -33,3 +33,19 @@
 .file-button {position:relative}.file-button input {position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
 .file-button:focus-within {outline:2px solid #306d91}
 .prior-import {margin-top:1rem}
+
+.joint-panel h3 {font-size:1.05rem;color:#203f3b;margin:1.2rem 0 .45rem}
+.joint-definitions {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr));gap:.65rem}
+.joint-definition {min-width:0;background:#f4f8f6;border-radius:.5rem;padding:.65rem}
+.joint-definition label {display:grid;gap:.3rem}
+.joint-definition select {max-width:100%;padding:.3rem;font:inherit}
+.joint-definition details {margin-top:.4rem;font-size:.82rem;overflow-wrap:anywhere}
+.joint-counters {display:flex;flex-wrap:wrap;gap:.8rem 2rem;padding:1rem 0;border-bottom:1px solid #d8e3de}
+.joint-counters span,.joint-counters strong,.joint-panel td small,.joint-panel th small {display:block}
+.joint-counters strong {font-size:1.5rem;color:#215750}
+.joint-panel .compare-tools {margin:.65rem 0}
+.joint-selected {background:#eef6f0}
+.joint-panel .matrix-scroll {max-height:28rem}
+.joint-panel small {font-size:.78rem;color:#526660}
+.joint-secondary {margin-top:1rem;border-top:1px solid #d8e3de;padding-top:.7rem}
+.joint-secondary>button {margin:.6rem 0}

@@ -19,3 +19,9 @@ riceflux_comparison.tsv 使用相同列序，逐个列出所选基因的已接�
 单基因视图“导出当前分析”保存 JSON，包含材料与群体筛选、位点阈值、轨道基因、个体分型、组合、局部表型与材料名称状态。频率和地区表型的适用材料范围随选择一起导出。
 
 riceflux_material_genotypes.tsv 每行一份材料，前六列为 accession_id、original_name、name_zh、name_status、material_type、source_group。后续每列为一个“基因|位点”，值为正链未分相的等位对，· 表示缺失拷贝，NA 表示基因没有可选位点。导出保留材料范围和搜索条件。
+
+多基因单倍型组合
+打开“多基因比较”时，面板将当前基因与 ALK 加入比较；当前基因为 ALK 时配对 DTH7。可移除并添加其他基因。每份材料按所选方案的全部位点判型，只有各基因都得到唯一标签才进入组合计数。当前材料、来源群体、材料类别和个体筛选沿用左侧设置。文献定义使用固定组分，单基因探索用 MAF 滑块不改变这些组分。各基因可以独立切换方案。不同来源或不同位点集合的文献型分别计算。
+文献命名型需要完整、纯合、与文献状态一致。含缺失、杂合、定义位点未覆盖、纯合状态未匹配及多个型名并列均保留为未完整判型。无完整可用文献方案的基因默认使用本面板已有标记的实测纯合序列，标注“群体纯合标记型”。只有一个标记时标为“单标记”。导入八列表的 Hap 给出与 Position 等长的逗号分隔 A/C/G/T 状态时，可选择“导入状态型”。仅有型名的导入行保存在输入匹配结果中。
+riceflux_joint_combinations.tsv 按 ALL 和每个来源群体输出所有观察到的完整组合，组内未出现的组合份数为 0。population_n 为当前范围内材料数，joint_typed_n 为所有基因联合可判型的材料数，joint_unresolved_n 为剩余材料数。frequency_within_typed = member_n / joint_typed_n。分母为零时留空。definition 字段含方案、坐标顺序、参考碱基、型名、状态和 DOI。
+riceflux_joint_materials.tsv 按所选组合及成员检索条件导出。每个基因分别输出 type、status 和 ordered_calls。ordered_calls 顺序对应组合表中的 definition，· 表示缺失拷贝，斜线表示未分相等位对。联合状态 unresolved 的材料仍保留可判定基因的结果。

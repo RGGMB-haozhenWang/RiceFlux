@@ -1,3 +1,4 @@
+import {JointPanel} from './JointPanel.jsx';
 import React,{useEffect,useMemo,useState} from 'react';
 import {GenomeTrack} from './GenomeTrack.jsx';
 import {callOf} from './catalog.js';
@@ -35,7 +36,7 @@ export function ComparePanel({data,activeGene,cohort}){
   function add(id){if(id)setIds(previous=>previous.includes(id)?previous:[...previous,id]);}
   const available=data.genes.filter(g=>!g.catalog?.historical && !ids.includes(g.id) && [g.id,g.name,g.catalog?.msu,...g.catalog?.aliases||[]].join(' ').toLowerCase().includes(filter.toLowerCase()));
   const selected=available.some(g=>g.id===choice)?choice:available[0]?.id||'';
-  const genes=ids.map(id=>data.genes.find(g=>g.id===id)).filter(Boolean);
+  const genes=useMemo(()=>ids.map(id=>data.genes.find(g=>g.id===id)).filter(Boolean),[ids,data.genes]);
   const selectedSites=genes.map(g=>g.variants.find(v=>v.id===markerIds[g.id])||g.variants[0]);
   const sampleFields=['accession_id','original_name','name_zh','name_status','material_type','source_group'];
   const siteLabels=genes.map((g,i)=>g.name+'|'+(selectedSites[i]?.id||'NA'));
@@ -63,21 +64,27 @@ export function ComparePanel({data,activeGene,cohort}){
     const file=event.target.files[0];event.target.value='';if(!file)return;
     try{install(readPrior(await file.text()),file.name);}catch(e){setError(e.message);}
   }
-  return <section className="panel compare-panel"><div className="panel-title"><div><h2>多基因比较</h2><p>在同一批材料中查看多个基因的位置、位点和等位频率。</p></div>
-  <button aria-expanded={open} onClick={()=>{if(!open&&!ids.length&&!records.length)add(activeGene.id);setOpen(!open);}}>{open?'收起比较':'打开比较'}</button></div>
+  return <section className="panel compare-panel"><div className="panel-title"><div><h2>多基因比较</h2><p>按材料合并各基因的单倍型，查看组合频率、来源群体和成员。</p></div>
+  <button aria-expanded={open} onClick={()=>{if(!open&&!ids.length&&!records.length){
+    const example=data.genes.find(g=>g.name===(activeGene.name==='ALK'?'DTH7':'ALK'));
+    setIds([activeGene.id,...(example&&activeGene.id!==example.id?[example.id]:[])]);
+  }setOpen(!open);}}>{open?'收起比较':'打开比较'}</button></div>
   {open&&<><div className="compare-tools"><input aria-label="搜索比较基因" type="search" placeholder="基因名或基因编号" value={filter} onChange={e=>setFilter(e.target.value)}/>
   <select aria-label="选择比较基因" value={selected} onChange={e=>setChoice(e.target.value)}>{!available.length&&<option value="">无匹配基因</option>}{available.map(g=><option key={g.id} value={g.id}>{g.name}</option>)}</select>
   <button disabled={!selected} onClick={()=>add(selected)}>加入比较</button><label className="file-button">导入八列 TSV<input aria-label="导入八列 TSV" type="file" accept=".tsv,.txt" onChange={upload}/></label>
   <a href="./formats/prior.tsv" download>样表</a><a href="./formats/README.txt" target="_blank" rel="noreferrer">格式与部署</a>
-  <button disabled={!genes.length} onClick={exportComparison}>导出比较 TSV</button></div>
-  {error&&<p role="alert">{error}</p>}<p>{genes.length} 个基因 · 当前 {cohort.length.toLocaleString()} 份材料 · 各轨道按自身坐标范围绘制</p>
+  </div>
+  {error&&<p role="alert">{error}</p>}<p>{genes.length} 个基因 · 当前 {cohort.length.toLocaleString()} 份材料</p>
+  {genes.length>0&&<div className="compare-tools joint-chips">{genes.map(g=><button key={g.id} aria-label={'从组合移除 '+g.name} onClick={()=>setIds(previous=>previous.filter(id=>id!==g.id))}>{g.name} ×</button>)}</div>}
+  {genes.length>=2?<JointPanel key={JSON.stringify(ids)} data={data} genes={genes} cohort={cohort} records={records}/>:<p>请选择至少两个基因查看跨基因组合。</p>}
+  {genes.length>0&&<details className="joint-secondary"><summary>基因位置与单个位点对照</summary><button onClick={exportComparison}>导出位点比较 TSV</button>
   <div className="comparison-grid">{genes.map(g=><CompareGene key={g.id} gene={g} cohort={cohort} markerId={markerIds[g.id]} setMarker={id=>setMarkerIds(prev=>({...prev,[g.id]:id}))} onRemove={()=>setIds(ids.filter(id=>id!==g.id))}/>)}</div>
   {genes.length>0&&<details className="prior-import"><summary>逐材料对照所选位点</summary><div className="compare-tools">
   <input aria-label="检索多基因材料" type="search" placeholder="中文名、原名或编号" value={material} onChange={e=>{setMaterial(e.target.value);setLimit(20);}}/>
   <button onClick={()=>saveFile('riceflux_material_genotypes.tsv',writeTSV([...sampleFields,...siteLabels],visibleSamples.map(sampleRow)))}>导出材料对照 TSV</button></div>
   <p>{visibleSamples.length.toLocaleString()} 份材料 · 每个基因显示上方所选位点</p><div className="matrix-scroll"><table className="individual-table"><thead><tr><th>材料</th>{siteLabels.map(k=><th key={k}>{k}</th>)}</tr></thead>
   <tbody>{visibleSamples.slice(0,limit).map(s=><tr key={s.id}><td>{s.id}<small>{nameLabel(s)}</small></td>{selectedSites.map((v,i)=><td key={genes[i].id}>{v?gtToken(callOf(s,v),v):'NA'}</td>)}</tr>)}</tbody></table></div>
-  {visibleSamples.length>limit&&<button onClick={()=>setLimit(limit+40)}>查看更多材料</button>}</details>}
+  {visibleSamples.length>limit&&<button onClick={()=>setLimit(limit+40)}>查看更多材料</button>}</details>}</details>}
   {records.length>0&&<div className="prior-import"><h3>{filename}</h3><p>{records.length} 条先验记录 · {results.filter(r=>r.Status==='matched').length} / {results.length} 个组分匹配到群体分型</p>
   <button onClick={()=>saveFile('riceflux_prior_results.tsv',writeTSV(resultColumns,results))}>导出输入记录及匹配结果</button>
   <div className="matrix-scroll"><table className="individual-table"><thead><tr>{['基因','性状与功能','Chr / Position','文献 Hap','匹配 / ALT 频率'].map(s=><th key={s}>{s}</th>)}</tr></thead><tbody>{results.slice(0,showRows).map((r,i)=><tr key={i}><td>{r.QTG}</td><td>{r.Trait} · {r.Function}</td><td>{r.Chr} / {r.Position.split(',')[r.Component-1]}</td><td>{r.Hap}</td><td>{r.Marker?r.Marker+' · '+percent(r.ALT_frequency):({gene_unresolved:'基因身份待核',position_missing:'无坐标',site_unmatched:'位点或 REF 未匹配'}[r.Status])}</td></tr>)}</tbody></table></div>

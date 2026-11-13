@@ -1,20 +1,11 @@
 import React, {useMemo, useState} from 'react';
 import {DoiLinks} from './AccessionCalls.jsx';
+import {literatureDefinitions} from './jointHaplotypes.js';
 import {literatureMatches} from './model.js';
 
 export function HaplotypeMatches({gene,cohort,evidence}) {
   const [open,setOpen]=useState(false);
-  const definitions=useMemo(()=>{
-    const rows=gene.records.filter(r=>r.mode==='完整多位点型').map(r=>({...r,doi:evidence.events[r.id].doi}));
-    if(gene.name==='ALK') {
-      const positions=[6752756,6752887,6752888];
-      for(const [label,bases] of [['ALKᵃ','AGC'],['ALKᵇ','GTT'],['ALKᶜ','GGC']]) {
-        rows.push({id:label,label,doi:['10.1186/s12284-020-00393-5'],
-          components:positions.map((pos,i)=>({pos,state:bases[i],ref:['A','G','C'][i]}))});
-      }
-    }
-    return rows;
-  },[gene,evidence]);
+  const definitions=useMemo(()=>literatureDefinitions(gene,evidence),[gene,evidence]);
   const results=useMemo(()=>open?literatureMatches(gene,definitions,cohort):[],[open,gene,definitions,cohort]);
   if(!definitions.length)return null;
   return <details className="site-evidence" onToggle={event=>setOpen(event.currentTarget.open)}>
