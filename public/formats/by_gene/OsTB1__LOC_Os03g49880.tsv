@@ -1,0 +1,5 @@
+QTG	Trait	Function	MSU_ID	Chr	Position	Ref	Hap	Source_DOI
+OsTB1	基因层面：每穗粒数; 分蘖数; 抗倒伏性/机械强度; 株高	基因层面：自身遗传片段/多类调控编辑及新TB1编码单双突支持分蘖、秆和穗功能	LOC_Os03g49880	Chr3	NA	NA	OsTB1 sourceChr3:28424929 G>A	10.3390/genes14081593
+OsTB1	基因层面：每穗粒数; 分蘖数; 抗倒伏性/机械强度; 株高	基因层面：自身遗传片段/多类调控编辑及新TB1编码单双突支持分蘖、秆和穗功能	LOC_Os03g49880	Chr3	NA	NA	OsTB1 5UTR TGTG presence/absence	10.1111/pbi.13370 10.3390/genes14081593
+OsTB1	基因层面：每穗粒数; 分蘖数; 抗倒伏性/机械强度; 株高	【来源在快筛冻结集_既有记录；资源变异】基因层面：自身遗传片段/多类调控编辑及新TB1编码单双突支持分蘖、秆和穗功能	LOC_Os03g49880	Chr3	NA	NA	AGCG>A codon deletion	10.1186/s12284-025-00875-4
+OsTB1	基因层面：每穗粒数; 分蘖数; 抗倒伏性/机械强度; 株高	【来源在快筛冻结集_既有记录；资源变异】基因层面：自身遗传片段/多类调控编辑及新TB1编码单双突支持分蘖、秆和穗功能	LOC_Os03g49880	Chr3	NA	NA	G>T splice donor candidate	10.1186/s12284-025-00875-4

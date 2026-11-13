@@ -1,0 +1,4 @@
+QTG	Trait	Function	MSU_ID	Chr	Position	Ref	Hap	Source_DOI
+FZP	基因层面：主穗粒数; 二次枝梗数; 千粒重; 单株籽粒产量; 每穗颖花数; 株高; 粒长	基因层面：FZP/BFL1控制小花转换与芽生长有原证据；强失活/强过表达均可能有严重代价	LOC_Os07g47330	Chr7	NA	NA	FZP source+165 T/presence-absence association	10.7717/peerj.18746
+FZP	基因层面：主穗粒数; 二次枝梗数; 千粒重; 单株籽粒产量; 每穗颖花数; 株高; 粒长	基因层面：FZP/BFL1控制小花转换与芽生长有原证据；强失活/强过表达均可能有严重代价	LOC_Os07g47330	Chr7	NA	NA	fzp-11 spontaneous AP2/ERF A→T Asp→Val	10.1038/srep19022
+FZP	基因层面：主穗粒数; 二次枝梗数; 千粒重; 单株籽粒产量; 每穗颖花数; 株高; 粒长	基因层面：FZP/BFL1控制小花转换与芽生长有原证据；强失活/强过表达均可能有严重代价	LOC_Os07g47330	Chr7	NA	NA	ST-5 linked FZP3UTR3bp+12bp insertions	10.1038/s41598-018-30395-9

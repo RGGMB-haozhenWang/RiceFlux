@@ -103,6 +103,8 @@ export async function loadExplorer(base,demo,signal){
     const path=config.prior_file;
     if(typeof path!=='string'||!/^formats\/[a-zA-Z0-9_-]+\.tsv$/.test(path))throw Error('服务器先验文件应位于 formats 目录');
     data.deploymentPrior=readPrior(await readText(base+path,signal));
+    data.deploymentPriorFile=path;
+    data.compareOnLoad=config.compare_on_load!==false;
   }
   return data;
 }

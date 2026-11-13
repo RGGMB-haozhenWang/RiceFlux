@@ -68,3 +68,11 @@ npm run dev
 输入保留八列 TSV，可在末尾追加 `Source_DOI`。浏览器按基因身份解析记录，按参考组装、染色体、位置及 REF 匹配有序组分。导出包含输入行号、组分序号、基因及位点 IRI、分型状态、当前材料范围内的拷贝计数，以及分别标注的输入来源、功能、事件和基因文献。输入记录的“导出先验关系图 JSON-LD”可与全库已发布本体按 IRI 连接。逐材料导出统一使用名录编号、原始名称、材料类别与来源群体。
 
 [领域词汇](CONTEXT.md) · [机器可读交换合同](public/formats/exchange.json) · [格式和静态部署](public/formats/README.txt)
+
+## 477 基因全库输入
+
+面板默认读取 477 个来源基因的 941 条先验记录。在「多基因比较」打开当前基因组合后，可查看来源记录并导出组分匹配结果。全库包含 534 条事件、406 条基因档案和一条 LOGL1 历史身份。OsESV1 与 LA3 的别名重叠，保留未解析状态。
+
+[全库 TSV](public/formats/prior_477.tsv) · [逐基因索引](public/formats/gene_index.tsv) · [全套输入 ZIP](public/formats/riceflux_prior_477.zip) · [逐行来源](public/formats/audit/row_lineage.tsv) · [群体位点覆盖](public/formats/audit/panel_coverage.tsv)
+
+索引中的 file 路径相对于索引所在目录，可直接下载对应基因文件。静态部署配置中 `compare_on_load: false` 让全库成为可用的先验定义，比较面板按用户选中的基因计算。手动导入自己的表仍会选中该表中能解析的基因。

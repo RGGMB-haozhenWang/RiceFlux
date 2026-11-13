@@ -1,1 +1,5 @@
-{"version":1,"prior_file":null}
+{
+  "version": 1,
+  "prior_file": "formats/prior_477.tsv",
+  "compare_on_load": false
+}

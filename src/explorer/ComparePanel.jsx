@@ -22,6 +22,7 @@ export function ComparePanel({data,activeGene,cohort}){
   const [markerIds,setMarkerIds]=useState({}),[material,setMaterial]=useState(''),[limit,setLimit]=useState(20);
   const [records,setRecords]=useState([]),[filename,setFilename]=useState(''),[error,setError]=useState('');
   const [showRows,setShowRows]=useState(24);
+  const bundledLibrary=data.deploymentPriorFile==='formats/prior_477.tsv';
   function add(id){if(id)setIds(previous=>previous.includes(id)?previous:[...previous,id]);}
   const available=data.genes.filter(g=>!g.catalog?.historical && !ids.includes(g.id) && [g.id,g.name,g.catalog?.msu,...g.catalog?.aliases||[]].join(' ').toLowerCase().includes(filter.toLowerCase()));
   const selected=available.some(g=>g.id===choice)?choice:available[0]?.id||'';
@@ -34,13 +35,15 @@ export function ComparePanel({data,activeGene,cohort}){
     return row;
   }
   const visibleSamples=open&&genes.length?cohort.filter(s=>matchesMaterial(s,material)):[];
-  function install(parsed,name){
+  function install(parsed,name,selectGenes=true){
     const bound=bindPrior(parsed,data.genes);
     setRecords(bound);setFilename(name);setShowRows(24);setError('');
-    setIds([...new Set(bound.map(r=>r.gene?.id).filter(Boolean))]);setOpen(true);
+    if(selectGenes){
+      setIds([...new Set(bound.map(r=>r.gene?.id).filter(Boolean))]);setOpen(true);
+    }
   }
-  useEffect(()=>{if(data.deploymentPrior)install(data.deploymentPrior,'服务器先验表');},[data]);
-  const results=useMemo(()=>records.length?priorResults(records,cohort,data.evidence):[],[records,data,cohort]);
+  useEffect(()=>{if(data.deploymentPrior)install(data.deploymentPrior,data.deploymentPriorFile.split('/').at(-1),data.compareOnLoad);},[data]);
+  const results=useMemo(()=>open&&records.length?priorResults(records,cohort,data.evidence):[],[open,records,data,cohort]);
   function exportComparison(){
     downloadTable(formats.siteComparison,comparisonResults(genes,cohort,data.evidence));
   }
@@ -53,7 +56,7 @@ export function ComparePanel({data,activeGene,cohort}){
     try{install(readPrior(await file.text()),file.name);}catch(e){setError(e.message);}
   }
   return <section className="panel compare-panel"><div className="panel-title"><div><h2>多基因比较</h2><p>按材料合并各基因的单倍型，查看组合频率、来源群体和成员。</p></div>
-  <button aria-expanded={open} onClick={()=>{if(!open&&!ids.length&&!records.length){
+  <button aria-expanded={open} onClick={()=>{if(!open&&!ids.length&&(!records.length||(!data.compareOnLoad&&filename===data.deploymentPriorFile?.split('/').at(-1)))){
     const example=data.genes.find(g=>g.name===(activeGene.name==='ALK'?'DTH7':'ALK'));
     setIds([activeGene.id,...(example&&activeGene.id!==example.id?[example.id]:[])]);
   }setOpen(!open);}}>{open?'收起比较':'打开比较'}</button></div>
@@ -61,6 +64,7 @@ export function ComparePanel({data,activeGene,cohort}){
   <select aria-label="选择比较基因" value={selected} onChange={e=>setChoice(e.target.value)}>{!available.length&&<option value="">无匹配基因</option>}{available.map(g=><option key={g.id} value={g.id}>{g.name}</option>)}</select>
   <button disabled={!selected} onClick={()=>add(selected)}>加入比较</button><label className="file-button">导入八列 TSV<input aria-label="导入八列 TSV" type="file" accept=".tsv,.txt" onChange={upload}/></label>
   <a href="./formats/prior.tsv" download>样表</a><a href="./formats/README.txt" target="_blank" rel="noreferrer">格式与部署</a><a href="./formats/exchange.json" download>输入输出本体</a>
+  {bundledLibrary&&<><a href="./formats/prior_477.tsv" download>477 基因全库 TSV</a><a href="./formats/gene_index.tsv" download>逐基因索引</a><a href="./formats/riceflux_prior_477.zip" download>完整输入包 ZIP</a></>}
   </div>
   {error&&<p role="alert">{error}</p>}<p>{genes.length} 个基因 · 当前 {cohort.length.toLocaleString()} 份材料</p>
   {genes.length>0&&<div className="compare-tools joint-chips">{genes.map(g=><button key={g.id} aria-label={'从组合移除 '+g.name} onClick={()=>setIds(previous=>previous.filter(id=>id!==g.id))}>{g.name} ×</button>)}</div>}
