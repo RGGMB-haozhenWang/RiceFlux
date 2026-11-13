@@ -1,7 +1,6 @@
 import React,{useMemo,useRef,useState} from 'react';
 import {geneSchemes,jointCalls,statusText} from './jointHaplotypes.js';
-import {nameLabel} from './names.js';
-import {resolvePrior,writeTSV,saveFile} from './exchange.js';
+import {formats,downloadTable,materialRow,matchesMaterial} from './formats.js';
 
 const kinds={literature:'文献命名型',input:'导入状态型',observed:'群体纯合标记型'};
 const pct=(n,d)=>d?(100*n/d).toFixed(1)+'%':'—';
@@ -21,19 +20,13 @@ function Definition({gene,schemes,current,onChange}){
       <p>按本面板已有标记的坐标顺序，用实测纯合碱基序列命名。单个位点仅显示单标记型。</p>}
     </details></div>;
 }
-function download(name,rows,fields){saveFile(name,writeTSV(fields,rows));}
 
 export function JointPanel({data,genes,cohort,records}){
   const [chosen,setChosen]=useState({}),[selection,setSelection]=useState('all'),[query,setQuery]=useState('');
   const [limit,setLimit]=useState(24),[comboLimit,setComboLimit]=useState(24);
   const menus=useMemo(()=>{
-    const imported=new Map();
-    for(const r of records){
-      const g=resolvePrior(r,data.genes);
-      if(g){if(!imported.has(g.id))imported.set(g.id,[]);imported.get(g.id).push(r);}
-    }
-    return genes.map(g=>geneSchemes(g,data.evidence,imported.get(g.id)));
-  },[data,genes,records]);
+    return genes.map(g=>geneSchemes(g,data.evidence,records.filter(r=>r.gene===g)));
+  },[data.evidence,genes,records]);
   const methods=useMemo(()=>menus.map((menu,i)=>menu.find(s=>s.id===chosen[genes[i].id])||menu[0]),[menus,genes,chosen]);
   const result=useMemo(()=>jointCalls(cohort,methods),[cohort,methods]);
   const popIds=data.populations.map(p=>p.id).filter(id=>result.population.has(id));
@@ -41,30 +34,35 @@ export function JointPanel({data,genes,cohort,records}){
   const mode=selection==='unresolved'?'unresolved':selection==='all'?'all':'group';
   const term=query.trim().toLowerCase();
   const rows=result.members.filter(({sample,key})=>(mode==='all'||(mode==='unresolved'?key===null:key===selection))&&
-    (!term||[sample.id,sample.name,sample.name_zh||''].some(v=>v.toLowerCase().includes(term))));
+    matchesMaterial(sample,term));
   const statsLabel=mode==='group'?JSON.parse(selection).join(' × '):mode==='unresolved'?'未完整判型':'全部材料';
   function filterMembers(key){setSelection(key);setLimit(24);setQuery('');}
   const definitionFields=genes.map(g=>'definition|'+g.id);
   const schemeValues=Object.fromEntries(methods.map((s,i)=>[definitionFields[i],JSON.stringify({mode:s.kind,chr:genes[i].chromosome,positions:s.positions,refs:s.markers.map(v=>v?.ref??null),doi:s.doi,definitions:s.definitions})]));
   function exportGroups(){
-    const fields=['source_group','population_n','joint_typed_n','joint_unresolved_n',...genes.map(g=>g.name+'|'+g.id),'member_n','frequency_within_typed',...definitionFields],out=[];
+    const geneFields=genes.map(g=>g.name+'|'+g.id);
+    const fields=formats.jointCombinations.columns.flatMap(key=>{
+      if(key==='{gene}|{gene_id}')return geneFields;
+      return key==='definition|{gene_id}'?definitionFields:[key];
+    });
+    const out=[];
     for(const [pop,n,typed] of [['ALL',cohort.length,result.assigned],...popIds.map(p=>[p,result.population.get(p).all,result.population.get(p).assigned])]){
       for(const group of result.groups){
         const count=pop==='ALL'?group.n:group.pops.get(pop)||0;
-        out.push({...Object.fromEntries(group.labels.map((l,i)=>[fields[4+i],l])),source_group:pop,population_n:n,joint_typed_n:typed,joint_unresolved_n:n-typed,member_n:count,frequency_within_typed:typed?count/typed:null,...schemeValues});
+        out.push({...Object.fromEntries(group.labels.map((l,i)=>[geneFields[i],l])),source_group:pop,population_n:n,joint_typed_n:typed,joint_unresolved_n:n-typed,member_n:count,frequency_within_typed:typed?count/typed:null,...schemeValues});
       }
       if(!result.groups.length)out.push({source_group:pop,population_n:n,joint_typed_n:typed,joint_unresolved_n:n-typed,...schemeValues});
     }
-    download('riceflux_joint_combinations.tsv',out,fields);
+    downloadTable(formats.jointCombinations,out,fields);
   }
   function exportMembers(){
-    const cols=genes.flatMap(g=>['type','status','ordered_calls'].map(k=>g.id+'|'+k));
+    const cols=genes.flatMap(g=>formats.jointMaterials.columnPatterns.map(key=>key.replace('{gene_id}',g.id)));
     const out=rows.map(({sample:s,calls,key})=>{
       const values=calls.flatMap(c=>[c.label,c.status,c.bases]);
-      return {accession_id:s.id,original_name:s.name,name_zh:s.name_zh,name_status:s.name_status,material_type:s.kind,source_group:s.population_id,joint_status:key?'called':'unresolved',
+      return {...materialRow(s),joint_status:key?'called':'unresolved',
         ...Object.fromEntries(cols.map((k,i)=>[k,values[i]]))};
     });
-    download('riceflux_joint_materials.tsv',out,['accession_id','original_name','name_zh','name_status','material_type','source_group','joint_status',...cols]);
+    downloadTable(formats.jointMaterials,out,[...formats.jointMaterials.columns,...cols]);
   }
   return <div className="joint-panel">
     <div className="joint-definitions">{genes.map((gene,i)=><Definition key={gene.id} gene={gene} schemes={menus[i]} current={methods[i]} onChange={id=>{setChosen({...chosen,[gene.id]:id});filterMembers('all');setComboLimit(24);}}/>)}</div>
@@ -85,11 +83,11 @@ export function JointPanel({data,genes,cohort,records}){
       <button onClick={exportGroups}>导出组合与群体频率</button></div>
     <h3 tabIndex={-1} ref={memberHeading}>群体内逐材料分型</h3>
     <div className="compare-tools"><button onClick={()=>filterMembers('all')}>全部材料</button><button onClick={()=>filterMembers('unresolved')}>未完整判型材料</button>
-      <input aria-label="检索组合成员" type="search" placeholder="材料编号、中文名或原名" value={query} onChange={e=>{setQuery(e.target.value);setLimit(24);}}/>
+      <input aria-label="检索组合成员" type="search" placeholder="材料编号或名录品种名" value={query} onChange={e=>{setQuery(e.target.value);setLimit(24);}}/>
       <button onClick={exportMembers}>导出当前成员分型</button></div>
     <p className="joint-member-count">{statsLabel} · {rows.length.toLocaleString()} 份</p>
     <div className="matrix-scroll"><table className="individual-table joint-members"><thead><tr><th>材料</th><th>来源群体 / 类别</th>{genes.map(g=><th key={g.id}>{g.name}</th>)}</tr></thead>
-      <tbody>{rows.slice(0,limit).map(({sample:s,calls})=><tr key={s.id}><td>{s.id}<small>{nameLabel(s)}</small></td><td>{s.population_id}<small>{s.kind==='landrace'?'地方品种':'现代品种'}</small></td>
+      <tbody>{rows.slice(0,limit).map(({sample:s,calls})=><tr key={s.id}><td>{s.id}<small>{s.name}</small></td><td>{s.population_id}<small>{s.kind==='landrace'?'地方品种':'现代品种'}</small></td>
         {calls.map((c,i)=><td key={genes[i].id}>{displayCall(c)}<small>{c.bases||'—'}</small></td>)}</tr>)}</tbody></table></div>
     {rows.length>limit&&<button onClick={()=>setLimit(limit+48)}>查看更多组合成员</button>}
   </div>;

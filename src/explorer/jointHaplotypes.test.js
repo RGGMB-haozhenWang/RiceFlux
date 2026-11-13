@@ -16,3 +16,12 @@ test('ordered homozygous states, ambiguity, unresolved phase, partial coverage a
  assert.deepEqual(all.population.get('SC'),{all:6,assigned:1});assert.equal(all.groups[0].pops.get('NE'),1);
  assert.equal(jointCalls([], [known,observed]).assigned,0);
 });
+
+test('supplement binds literature definitions to catalog identity, with the published order and source',()=>{
+  const alk={id:'Os06g0229800',name:'alias',variants:[],records:[]};
+  const known=geneSchemes(alk,{events:{}}).find(s=>s.kind==='literature');
+  assert.deepEqual(known.positions,[6752756,6752887,6752888]);
+  assert.deepEqual(known.doi,['10.1186/s12284-020-00393-5']);
+  assert.deepEqual(known.definitions.map(d=>d.sequence),['A·G·C','G·T·T','G·G·C']);
+  assert.ok(geneSchemes({...alk,id:'different',name:'ALK'},{events:{}}).every(s=>s.kind!=='literature'));
+});

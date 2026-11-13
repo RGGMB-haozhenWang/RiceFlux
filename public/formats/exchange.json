@@ -1,0 +1,34 @@
+{
+  "@context": {
+    "@vocab": "https://rggmb-haozhenwang.github.io/RiceFlux/prior/#",
+    "rf": "https://rggmb-haozhenwang.github.io/RiceFlux/prior/#",
+    "columns": {"@container": "@list"},
+    "columnPatterns": {"@container": "@list"},
+    "accepts": {"@type": "@id"},
+    "produces": {"@type": "@id"},
+    "rowType": {"@type": "@id"},
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@id": "rf:exchange_v2",
+  "version": 2,
+  "@graph": [
+    {"@id":"rf:RiceFlux","@type":"AnalyticalTool","accepts":["rf:priorTable","rf:cohortInput","rf:evidenceInput"],"produces":["rf:priorResults","rf:siteComparison","rf:materialMarkers","rf:jointCombinations","rf:jointMaterials","rf:analysisSnapshot","rf:priorGraph"]},
+    {"@id":"rf:ComponentMatch","@type":"owl:Class","rdfs:label":"输入组分在所选材料范围内的分型匹配"},
+    {"@id":"rf:CombinationCount","@type":"owl:Class","rdfs:label":"所选基因完整分型组合在群体内的计数"},
+    {"@id":"rf:component","@type":"owl:ObjectProperty","rdfs:domain":{"@id":"rf:ComponentMatch"},"rdfs:range":{"@id":"rf:OrderedComponent"}},
+    {"@id":"rf:matchedSite","@type":"owl:ObjectProperty","rdfs:domain":{"@id":"rf:ComponentMatch"}},
+    {"@id":"rf:analysis","@type":"owl:ObjectProperty","rdfs:domain":{"@id":"rf:ComponentMatch"},"rdfs:range":{"@id":"rf:ComponentMatching"}},
+    {"@id":"rf:cohort","@type":"owl:ObjectProperty","rdfs:domain":{"@id":"rf:ComponentMatching"},"rdfs:range":{"@id":"rf:Cohort"}},
+    {"@id":"rf:priorTable","@type":"InputDataset","filename":"prior.tsv","rowType":"rf:PriorEvent","columns":["QTG","Trait","Function","MSU_ID","Chr","Position","Ref","Hap"],"optionalColumns":["Source_DOI"],"keyNote":"文件内的行号识别一条先验，逗号分隔组分按原顺序对应。"},
+    {"@id":"rf:cohortInput","@type":"InputDataset","rowType":"rf:Accession","files":["prior/cohort.json.gz","prior/v4_marker_calls.json.gz"],"keyNote":"按材料编号连接来源群体、逐位点分型和环境表型。"},
+    {"@id":"rf:evidenceInput","@type":"InputDataset","files":["prior/ontology.jsonld.gz","prior/evidence.json.gz","prior/v4_catalog.json.gz","formats/literature.json"],"keyNote":"基因身份、事件组分、参考坐标和分级 DOI。"},
+    {"@id":"rf:priorResults","@type":"OutputDataset","filename":"riceflux_prior_results.tsv","rowType":"rf:ComponentMatch","columns":["QTG","Trait","Function","MSU_ID","Chr","Position","Ref","Hap","Component","Matched_gene","Marker","Status","N_samples","REF_copies","ALT_copies","Called_copies","ALT_frequency","Input_row","Input_DOI","Gene_IRI","Site_IRI","Evidence_level","Functional_DOI","Event_DOI","Gene_DOI"]},
+    {"@id":"rf:siteComparison","@type":"OutputDataset","filename":"riceflux_comparison.tsv","rowType":"rf:MarkerSummary","sameColumnsAs":{"@id":"rf:priorResults"}},
+    {"@id":"rf:materialMarkers","@type":"OutputDataset","filename":"riceflux_material_genotypes.tsv","rowType":"rf:Accession","columns":["accession_id","original_name","material_type","source_group"],"columnPatterns":["{gene}|{marker}"]},
+    {"@id":"rf:jointCombinations","@type":"OutputDataset","filename":"riceflux_joint_combinations.tsv","rowType":"rf:CombinationCount","columns":["source_group","population_n","joint_typed_n","joint_unresolved_n","{gene}|{gene_id}","member_n","frequency_within_typed","definition|{gene_id}"],"keyNote":"各群体的分母是全部所选基因均可判型的材料数。"},
+    {"@id":"rf:jointMaterials","@type":"OutputDataset","filename":"riceflux_joint_materials.tsv","rowType":"rf:Accession","columns":["accession_id","original_name","material_type","source_group","joint_status"],"columnPatterns":["{gene_id}|type","{gene_id}|status","{gene_id}|ordered_calls"]},
+    {"@id":"rf:analysisSnapshot","@type":"OutputDataset","filename":"Flux_{gene_id}_{dataset}.json","rowType":"rf:AnalysisSnapshot"},
+    {"@id":"rf:priorGraph","@type":"OutputDataset","filename":"riceflux_prior_graph.jsonld","rowType":"rf:PriorEvent","keyNote":"每条输入关联有序组分与当前队列的匹配结果。已解析实体沿用已发布的基因和位点 IRI。"}
+  ]
+}

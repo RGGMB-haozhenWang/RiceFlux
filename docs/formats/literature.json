@@ -1,0 +1,36 @@
+{
+  "@context": {
+    "@vocab":"https://rggmb-haozhenwang.github.io/RiceFlux/prior/#",
+    "rf":"https://rggmb-haozhenwang.github.io/RiceFlux/prior/#",
+    "gene":{"@type":"@id"}, "supportedBy":{"@type":"@id"}, "orderedComponents":{"@container":"@list"}, "locatedAt":{"@type":"@id"}
+  },
+  "@graph": [
+    {
+      "@id":"rf:alk_three_site_1", "@type":"HaplotypeDefinition", "gene":"rf:gene_Os06g0229800", "label":"ALKᵃ",
+      "supportedBy":["https://doi.org/10.1186/s12284-020-00393-5"],
+      "orderedComponents":[
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752756_A","position":6752756,"reference":"A","reportedState":"A"},
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752887_G","position":6752887,"reference":"G","reportedState":"G"},
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752888_C","position":6752888,"reference":"C","reportedState":"C"}
+      ]
+    },
+    {
+      "@id":"rf:alk_three_site_2", "@type":"HaplotypeDefinition", "gene":"rf:gene_Os06g0229800", "label":"ALKᵇ",
+      "supportedBy":["https://doi.org/10.1186/s12284-020-00393-5"],
+      "orderedComponents":[
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752756_A","position":6752756,"reference":"A","reportedState":"G"},
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752887_G","position":6752887,"reference":"G","reportedState":"T"},
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752888_C","position":6752888,"reference":"C","reportedState":"T"}
+      ]
+    },
+    {
+      "@id":"rf:alk_three_site_3", "@type":"HaplotypeDefinition", "gene":"rf:gene_Os06g0229800", "label":"ALKᶜ",
+      "supportedBy":["https://doi.org/10.1186/s12284-020-00393-5"],
+      "orderedComponents":[
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752756_A","position":6752756,"reference":"A","reportedState":"G"},
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752887_G","position":6752887,"reference":"G","reportedState":"G"},
+        {"@type":"OrderedComponent","locatedAt":"rf:site_Chr6_6752888_C","position":6752888,"reference":"C","reportedState":"C"}
+      ]
+    }
+  ]
+}

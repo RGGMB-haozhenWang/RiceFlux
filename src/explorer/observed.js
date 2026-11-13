@@ -1,4 +1,3 @@
-import {attachNames} from './names.js';
 import {readPrior} from './exchange.js';
 import {attachCatalog} from './catalog.js';
 import {measuredTraits} from './regions.js';
@@ -95,11 +94,11 @@ async function readJSON(path,signal){return JSON.parse(await readText(path,signa
 export async function loadExplorer(base,demo,signal){
   if(demo)return readJSON(base+'data/explorer_demo.json',signal);
   const payloads=Promise.all(['cohort.json.gz','ontology.jsonld.gz','evidence.json.gz','v4_catalog.json.gz','v4_marker_calls.json.gz'].map(file=>readJSON(base+'prior/'+file,signal)));
-  const [[cohort,graph,evidence,catalog,calls],names,config]=await Promise.all([
-    payloads,readText(base+'prior/accession_names_zh.tsv.gz',signal),readJSON(base+'formats/deployment.json',signal)
+  const [[cohort,graph,evidence,catalog,calls],config]=await Promise.all([
+    payloads,readJSON(base+'formats/deployment.json',signal)
   ]);
   if(config.version!==1)throw Error('服务器配置版本无效');
-  const data=attachNames(attachCatalog(observedDataset(cohort,graph),catalog,calls,evidence),names);
+  const data=attachCatalog(observedDataset(cohort,graph),catalog,calls,evidence);
   if(config.prior_file){
     const path=config.prior_file;
     if(typeof path!=='string'||!/^formats\/[a-zA-Z0-9_-]+\.tsv$/.test(path))throw Error('服务器先验文件应位于 formats 目录');

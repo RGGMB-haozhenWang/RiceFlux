@@ -1,15 +1,16 @@
 import {callOf} from './catalog.js';
 import {chromNum} from './exchange.js';
 
+import supplement from '../../public/formats/literature.json' with { type: 'json' };
+
 export function literatureDefinitions(gene,evidence) {
-  const records=gene.records.filter(r=>r.mode==='完整多位点型').map(r=>({...r,doi:evidence.events[r.id]?.doi||[]}));
-  if(gene.name==='ALK'){
-    const positions=[6752756,6752887,6752888],refs=['A','G','C'];
-    for(const [label,state] of [['ALKᵃ','AGC'],['ALKᵇ','GTT'],['ALKᶜ','GGC']]){
-      records.push({id:label,label,doi:['10.1186/s12284-020-00393-5'],components:positions.map((pos,i)=>({pos,ref:refs[i],state:state[i]}))});
-    }
-  }
-  return records;
+  const records = gene.records.filter(r => r.mode==='完整多位点型')
+    .map(r => ({...r, doi:evidence.events[r.id]?.doi || []}));
+  const extra = supplement['@graph'].filter(d => d.gene==='rf:gene_'+gene.id).map(d => ({
+    id:d['@id'], label:d.label, doi:d.supportedBy.map(url => url.slice('https://doi.org/'.length)),
+    components:d.orderedComponents.map(c => ({pos:c.position, ref:c.reference, state:c.reportedState}))
+  }));
+  return records.concat(extra);
 }
 
 export const statusText={called:'已判型',missing:'分型缺失',heterozygous:'含杂合位点',both:'缺失且含杂合',unmatched:'纯合型未匹配定义',ambiguous:'匹配多个型名',uncovered:'定义位点未覆盖',no_sites:'无分型位点'};
@@ -39,7 +40,7 @@ export function geneSchemes(gene,evidence,imported=[]){
   for(const rec of imported){
     const bases=rec.row.Hap.split(',').map(s=>s.trim().toUpperCase());
     if(bases.length!==rec.sites.length||bases.some(b=>!/^[ACGT]$/.test(b))||chromNum(gene.chromosome)!==rec.chromosome)continue;
-    insertDefinition(sets,gene,{label:bases.join(''),doi:[],components:rec.sites.map((s,i)=>({...s,state:bases[i]}))},'input');
+    insertDefinition(sets,gene,{label:bases.join(''),doi:rec.inputDOI??[],components:rec.sites.map((s,i)=>({...s,state:bases[i]}))},'input');
   }
   const schemes=[...sets.values()];
   for(const s of schemes)s.ready=s.ready&&s.lookup.size>0;
