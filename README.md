@@ -56,3 +56,7 @@ npm run dev
 `src/explorer/` 包含 React 界面、样式、统计逻辑与测试；`data/` 和 `public/data/` 是相同的固定种子合成数据；`generate_explorer_data.py` 用于再生成数据。重生成后将 `data/explorer_demo.json` 同步至 `public/data/`，重新构建 `docs/`。
 
 项目由 React、Vite 和 Radix Themes 构建。所用第三方组件各自保留原有许可证。
+
+在「多基因比较」加入多个基因，可以在同一材料群体中查看坐标、拖动与缩放轨道、查询位点频率或导入八列先验表。材料支持中文候选名、原名和编号检索。候选名保留证据状态。
+
+[输入样表](public/formats/prior.tsv) · [输入、输出与静态部署说明](public/formats/README.txt) · [材料中文名及来源](public/prior/accession_names_zh.tsv.gz)

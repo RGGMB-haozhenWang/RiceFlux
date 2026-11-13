@@ -16,3 +16,20 @@
 .catalog-list small {text-align:right;color:#586b6d}
 .prior-card {overflow-wrap:anywhere}
 .catalog-event {border-left:2px solid #c8d9d3;margin:.65rem 0;padding:.1rem .65rem}
+
+.track-tools,.compare-tools,.comp-gene header {display:flex;align-items:center;flex-wrap:wrap;gap:.45rem}
+.track-tools b,.comp-gene header strong {margin-right:auto}
+.track-tools button,.compare-panel button,.compare-tools select,.compare-tools input,.comp-gene select,.file-button {font:inherit;border:1px solid #cbdad6;border-radius:5px;padding:.28rem .55rem;background:#fff;color:#234b40}
+.track-tools button,.compare-panel button,.file-button {cursor:pointer}
+.compare-panel button:disabled {opacity:.5;cursor:default}
+.genome-view .drag-track {display:block; min-width:0;width:100%;height:auto;touch-action:pan-y;cursor:grab;user-select:none}
+.genome-view .drag-track:active {cursor:grabbing}
+.track-range,.comp-gene p {color:#53676c;font-size:.85rem}
+.comparison-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:1rem}
+.comp-gene,.prior-import {min-width:0;border:1px solid #dbe5e0;border-radius:8px;padding:.8rem}
+.comp-gene header strong {color:#244e40}
+.compare-tools {margin-bottom:.8rem}
+.compare-tools select {max-width:100%}
+.file-button {position:relative}.file-button input {position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
+.file-button:focus-within {outline:2px solid #306d91}
+.prior-import {margin-top:1rem}

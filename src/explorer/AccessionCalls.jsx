@@ -1,3 +1,4 @@
+import {nameLabel} from './names.js';
 import React,{useState,useEffect,useMemo} from 'react';
 import {Button,Dialog} from '@radix-ui/themes';
 import {readText} from './observed.js';
@@ -30,7 +31,7 @@ function loadArchive(path){
   if(!archives.has(path))archives.set(path,readText(path).then(parseCallArchive).catch(e=>{archives.delete(path);throw e}));
   return archives.get(path);
 }
-export function AccessionCalls({gene,selected,evidence}){
+export function AccessionCalls({gene,selected,evidence,namesById}){
   const [open,setOpen]=useState(false),[marker,setMarker]=useState(''),[archive,setArchive]=useState(null),[error,setError]=useState('');
   const [kind,setKind]=useState('all'),[search,setSearch]=useState(''),[limit,setLimit]=useState(40),[retry,setRetry]=useState(0);
   const download=gene.variants.find(v=>v.id===marker)?.classified?extended:original;
@@ -39,8 +40,8 @@ export function AccessionCalls({gene,selected,evidence}){
   const rows=useMemo(()=>{
     const term=search.trim().toLowerCase();
     return (archive?.samples||[]).filter(s=>(kind==='all'||s.type===kind||(kind==='flagged'&&s.match!=='exact')) &&
-      (!term||[s.id,s.ped,s.name].some(v=>v.toLowerCase().includes(term))));
-  },[archive,kind,search]);
+      (!term||[s.id,s.ped,s.name,namesById.get(s.id)?.name_zh||''].some(v=>v.toLowerCase().includes(term))));
+  },[archive,kind,search,namesById]);
   return <div className="accession-source">
     {selected && <SiteEvidence marker={selected.id} evidence={evidence}/>}
     <Button size="1" variant="soft" onClick={()=>{setMarker(selected?.id||gene.variants[0].id);setLimit(40);setOpen(true)}}>查询 6,044 份材料分型</Button>
@@ -56,7 +57,7 @@ export function AccessionCalls({gene,selected,evidence}){
       {error?<p role="alert">{error} <button onClick={()=>setRetry(n=>n+1)}>重新读取</button></p>:!archive?<p role="status">读取原始分型…</p>:column<0?<p role="alert">逐材料分型表中没有该位点。</p>:<>
         <p className="footnote">{rows.length.toLocaleString()} 份符合筛选 · 0 或 N 为原始缺失码</p>
         <div className="matrix-scroll accession-table"><table className="individual-table"><thead><tr>{['名录编号 / PED','品种名','类别','登记亚种 / 群体','正链分型'].map(h=><th key={h}>{h}</th>)}</tr></thead>
-          <tbody>{rows.slice(0,limit).map(s=><tr key={s.id}><td>{s.id}{s.id!==s.ped&&<small> PED {s.ped}</small>}</td><td>{s.name}</td><td>{s.type==='landrace'?'地方品种':'现代品种'}</td><td>{s.subspecies} / {s.group}{s.match!=='exact'?' · 归属有分歧':''}</td><td>{s.gt.slice(2*column,2*column+2).split('').join('/')}</td></tr>)}</tbody></table></div>
+          <tbody>{rows.slice(0,limit).map(s=><tr key={s.id}><td>{s.id}{s.id!==s.ped&&<small> PED {s.ped}</small>}</td><td>{nameLabel(namesById.get(s.id)||s)}{namesById.get(s.id)?.name_sources?.slice(0,1).map(url=><small key={url}><a href={url} target="_blank" rel="noreferrer">名称来源</a></small>)}</td><td>{s.type==='landrace'?'地方品种':'现代品种'}</td><td>{s.subspecies} / {s.group}{s.match!=='exact'?' · 归属有分歧':''}</td><td>{s.gt.slice(2*column,2*column+2).split('').join('/')}</td></tr>)}</tbody></table></div>
         {rows.length>limit&&<Button size="1" variant="ghost" onClick={()=>setLimit(n=>n+100)}>显示更多材料</Button>}
       </>}
       <div className="dialog-actions"><a className="doi-link" href={download} download>下载全部材料 × {archive?.markers.length??'…'} 位点（TSV.GZ）</a><Dialog.Close><Button>关闭</Button></Dialog.Close></div>

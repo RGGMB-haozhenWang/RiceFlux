@@ -215,6 +215,11 @@
       "label": "V4 可比较单碱基坐标的原始群体目录覆盖",
       "bytes": 1564,
       "sha256": "37351fcc2f62dcb6027df7d0779c3416de6dfdb9995f004893674bed318ce483"
+    },
+    "accession_names_zh.tsv.gz": {
+      "label": "材料中文名、名称证据状态与来源",
+      "sha256": "79f41100f1de7b2bdade2b0ce92d61d34148e81f69bfe0a38ac223bfe568f054",
+      "bytes": 93687
     }
   },
   "availability": "Public rice accession IDs, names, source groups, targeted per-accession genotypes and matched target phenotypes, alongside the corresponding aggregate counts and estimates.",
@@ -353,5 +358,16 @@
     "regional_marker_rule": "For genes without typed literature targets choose at most one MAP SNP in each reference transcript CDS and strand-specific upstream 2 kb. Choose closest to the transcription start among eligible positions; skip previously allocated/shared coordinates and source event coordinates. No trait, allele frequency, significance, LD or favorable-allele criterion. Regional comparison only.",
     "interpretation": "Gene IDs without exact reference anchors can be browsed without coordinates. Gene literature and event DOI are separate. Existing 425 core evidence cards overlap V4 source records: do not add the two row counts.",
     "cohort_scope": "Whole registry of 6,044. Comparisons show raw observed genotypes, not a new association test."
+  },
+  "accession_names": {
+    "status_counts": {
+      "unresolved": 3591,
+      "source_candidate": 2160,
+      "multiple_candidates": 292,
+      "study_name": 1
+    },
+    "source_table_sha256": "2b5af14fa5878bd73ff915074c85c0dfbe48ca4afbdfd87b3fb526e5cf1415ea",
+    "identity_key": "accession_id + original_name",
+    "definition": "study_name = same study uses this Chinese variety name; other names are candidates from public name sources, not passport confirmation."
   }
 }
