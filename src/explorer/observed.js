@@ -1,6 +1,6 @@
 import {readPrior} from './exchange.js';
-import {attachCatalog} from './catalog.js';
 import {measuredTraits} from './regions.js';
+import {readTable,readPackage,combineDatasets} from './datasets.js';
 // Adapt the released cohort and its ontology to the existing explorer data model.
 const groupColors = {'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
 function hasPrior(trait, label) {
@@ -93,18 +93,26 @@ async function readJSON(path,signal){return JSON.parse(await readText(path,signa
 
 export async function loadExplorer(base,demo,signal){
   if(demo)return readJSON(base+'data/explorer_demo.json',signal);
-  const payloads=Promise.all(['cohort.json.gz','ontology.jsonld.gz','evidence.json.gz','v4_catalog.json.gz','v4_marker_calls.json.gz'].map(file=>readJSON(base+'prior/'+file,signal)));
-  const [[cohort,graph,evidence,catalog,calls],config]=await Promise.all([
-    payloads,readJSON(base+'formats/deployment.json',signal)
-  ]);
+  const [reference,index,literature,config]=await Promise.all([
+    readJSON(base+'datasets/reference.json.gz',signal),readText(base+'datasets/index.tsv',signal),
+    readText(base+'datasets/literature.tsv',signal),readJSON(base+'formats/deployment.json',signal)]);
   if(config.version!==1)throw Error('服务器配置版本无效');
-  const data=attachCatalog(observedDataset(cohort,graph),catalog,calls,evidence);
+  const registry=readTable(index,['id','name','version','manifest'],'index').objects();
+  if(!registry.length||new Set(registry.map(r=>r.id)).size!==registry.length||registry.some(r=>!/^[-\w]+\/manifest\.json$/.test(r.manifest)))throw Error('数据集索引无效');
+  reference.literature=readTable(literature,['gene_id','doi','summary','scope','event_id']).objects();
   if(config.prior_file){
     const path=config.prior_file;
     if(typeof path!=='string'||!/^formats\/[a-zA-Z0-9_-]+\.tsv$/.test(path))throw Error('服务器先验文件应位于 formats 目录');
-    data.deploymentPrior=readPrior(await readText(base+path,signal));
-    data.deploymentPriorFile=path;
-    data.compareOnLoad=config.compare_on_load!==false;
+    reference.deploymentPrior=readPrior(await readText(base+path,signal));
+    reference.deploymentPriorFile=path;
+    reference.compareOnLoad=config.compare_on_load!==false;
   }
-  return data;
+  const bundle=await loadRegistered(base,registry[0],reference,signal);
+  return {...combineDatasets(reference,[bundle]),reference,datasetRegistry:registry,datasetBundles:[bundle]};
+}
+
+export async function loadRegistered(base,row,reference,signal){
+  const path=base+'datasets/'+row.manifest,manifest=await readJSON(path,signal);
+  if(manifest.id!==row.id||manifest.version!==row.version)throw Error('数据集索引与版本清单不一致');
+  return readPackage(manifest,file=>readText(new URL(file,new URL(path,location.href)),signal),reference);
 }

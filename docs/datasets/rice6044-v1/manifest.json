@@ -1,0 +1,29 @@
+{
+  "schema": "RiceFlux tables 1.0",
+  "id": "rice6044",
+  "name": "RiceAtlas 6044",
+  "version": "2026-11-14.1",
+  "assembly": "IRGSP-1.0/MSU7",
+  "source": "https://pubmed.ncbi.nlm.nih.gov/40083159/",
+  "genotype_evidence": "G_chip",
+  "files": {
+    "samples": "samples.tsv",
+    "variants": "variants.tsv",
+    "genotypes": "genotypes.tsv.gz",
+    "environments": "environments.tsv",
+    "phenotypes": "phenotypes.tsv.gz"
+  },
+  "sha256": {
+    "samples": "b6f10e7a98ab3fb6730df863fa2472d373382712a8848895537dc9e056feec89",
+    "variants": "f304c7531adeb48e575944ff15b1e676eee39ef87d31f8e4e5651970189b5bc1",
+    "genotypes": "dc88210e9d7749ca5686db973d201bcc099c1a92b004f1faf01692760cd76569",
+    "environments": "ee49ad6a83ec9333aa89cb2a28bbc1a57dff0772a4be045869bd288cc403fab5",
+    "phenotypes": "88035283c97df67185cd8b5b08fef236d55a886079913e63d33f385bfbad40c8"
+  },
+  "counts": {
+    "samples": 6044,
+    "variants": 1067,
+    "environments": 66
+  },
+  "notes": "region 未单独核定，保留 NA；来源组及登记亚种原样保留。基因型为正链、未分相二倍体 SNP，. 表示缺失。SHA256 对解压后的 UTF-8 文本计算。"
+}

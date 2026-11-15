@@ -1,0 +1,200 @@
+gene_id	doi	summary	scope	event_id
+LOC_Os07g49460	10.1016/j.jare.2024.12.007	Improving grain yield and salt tolerance by optimizing plant height with beneficial haplotypes in rice (Oryza sativa)	论文题名	B0005_DTH7_JARE_DONOR_IR29
+LOC_Os07g49460	10.1186/s12870-025-08001-8	A multi-layered regulatory model uncovers the central role of OsPRR37 in coordinating multiple agronomic traits	论文题名	B0005_DTH7_GL_DEL8
+LOC_Os07g49460	10.3389/fpls.2022.1097622	原文补充图 5B、C 按 7 个 SNP 联合定义 5 个型，比较每穗粒数；该图没有逐 SNP 的抽穗因果检验。	已整理位点概述	B0005_DTH7_FPLS1097622_H1
+LOC_Os06g12450	10.1111/j.1467-7652.2005.00162.x	Gelatinization temperature of rice explained by polymorphisms in starch synthase	论文题名	NA
+LOC_Os06g12450	10.1007/s11103-005-6507-2	正链 ATG/GTG，Met737/Val737；原文酶活与淀粉结构实验支持该残基，三位点文献型另包含 6752887 和 6752888。	已整理位点概述	NA
+LOC_Os06g12450	10.1186/s12284-020-00393-5	正链 ATG/GTG，Met737/Val737；原文酶活与淀粉结构实验支持该残基，三位点文献型另包含 6752887 和 6752888。	已整理位点概述	NA
+LOC_Os06g12450	10.1007/s11032-024-01442-3	正链 ATG/GTG，Met737/Val737；原文酶活与淀粉结构实验支持该残基，三位点文献型另包含 6752887 和 6752888。	已整理位点概述	NA
+LOC_Os08g12780	10.1016/j.molp.2021.04.012	The Ghd7 transcription factor represses ARE1 expression to enhance nitrogen utilization and grain yield in rice	论文题名	NA
+LOC_Os08g12780	10.1038/s41467-017-02781-w	较低尿素条件下整等位/NIL增产	已整理事件概述	b0073_are1_promoter_hap_9311
+LOC_Os03g32230	10.1016/j.cell.2017.06.008	负链基因起始密码子上游 618 bp；正链 T>C 对应启动子 SNP33 A>G；原文检验表达及稻瘟病抗性。	已整理位点概述	NA
+LOC_Os04g49150	10.1038/s41467-023-38726-9	OsMADS17 simultaneously increases grain number and grain weight in rice	论文题名	B0005_MADS17_UTR65_38726
+LOC_Os04g49150	10.1038/s41467-023-43077-6	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	B0005_MADS17_43077_TYPE1
+LOC_Os04g49150	10.1186/s12864-021-07901-x	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	B0005_MADS17_BMC07901_H1
+LOC_Os04g49150	10.3389/fpls.2025.1573546	Uncovering the breeding contribution of transposable elements from landraces to improved varieties through pan-genome-wide analysis in rice	论文题名	B0005_MADS17_MITE222
+LOC_Os01g10040	10.1186/s12284-016-0136-z	SMALL GRAIN 11 Controls Grain Size, Grain Number and Grain Yield in Rice	论文题名	NA
+LOC_Os01g10040	10.1371/journal.pgen.1006412	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0013_d2_indica_hap1
+LOC_Os09g26999	10.1002/advs.202508230	SP3 and DEP1 Orchestrate Panicle Architecture by Jointly Regulating APO2 Expression in Rice	论文题名	NA
+LOC_Os09g26999	10.1038/ng.352	DEP1蛋白C端截短，影响穗型和每穗粒数	已整理事件概述	qtn_event_1b36a26b8026b036
+LOC_Os09g26999	10.1111/nph.20412	DEP1蛋白C端截短，影响穗型和每穗粒数	已整理事件概述	qtn_event_1b36a26b8026b036
+LOC_Os09g26999	10.1186/s12284-019-0344-4	The Rice G Protein γ Subunit DEP1/qPE9–1 Positively Regulates Grain-Filling Process by Increasing Auxin and Cytokinin Content in Rice Grains	论文题名	NA
+LOC_Os09g26999	10.1186/s12284-024-00743-7	CRISPR-Based Modulation of uORFs in DEP1 and GIF1 for Enhanced Rice Yield Traits	论文题名	NA
+LOC_Os01g47710	10.1371/journal.pgen.1004154	DWARF TILLER1, a WUSCHEL-Related Homeobox Transcription Factor, Is Required for Tiller Growth in Rice	论文题名	qtn_atom_01b94df117647ac1
+LOC_Os07g15770	10.1002/advs.202504163	Antagonistic Ghd7‐OsNAC42 Complexes Modulate Carbon and Nitrogen Metabolism to Achieve Superior Quality and High Yield in Rice	论文题名	b0004_ghd7_mh63
+LOC_Os07g15770	10.1007/s11032-013-9994-x	The effects of the photoperiod-insensitive alleles, se13, hd1 and ghd7, on yield components in rice	论文题名	b0004_ghd7_eg2
+LOC_Os07g15770	10.3389/fpls.2022.1097622	Natural variation of RGN1a regulates grain number per panicle in japonica rice	论文题名	b0004_ghd7_fpls_hap1
+LOC_Os07g15770	10.1007/s00122-023-04476-x	Effects of the core heading date genes Hd1, Ghd7, DTH8, and PRR37 on yield-related traits in rice	论文题名	b0004_ghd7_xz_splice
+LOC_Os08g07740	10.1007/s00122-023-04476-x	Effects of the core heading date genes Hd1, Ghd7, DTH8, and PRR37 on yield-related traits in rice	论文题名	NA
+LOC_Os07g41200	10.1038/ng.3346	Copy number variation at the GL7 locus contributes to grain size diversity in rice	论文题名	b0004_gl7_p13_cnv
+LOC_Os07g41200	10.1093/plphys/kiae557	Improving rice grain shape through upstream ORF editing-mediated translation regulation	论文题名	NA
+LOC_Os07g41200	10.1186/s12284-025-00786-4	Haplotype Analysis of the GL7/GW7/SLG7 Gene and Its Application in Improving the Grain Quality of Three-Line Hybrid Rice	论文题名	b0004_gl7_id4
+LOC_Os07g41200	10.1534/genetics.115.181115	Natural Variations in SLG7 Regulate Grain Shape in Rice	论文题名	b0004_gl7_azucena
+LOC_Os07g41200	10.1186/s12284-025-00854-9	Allele Mining of Seed-Related Genes Reveals Early movement, Selection and Adaptation of Asian Rice Landraces	论文题名	b0004_gl7_resource_del11
+LOC_Os01g10110	10.1002/tpg2.70191	Genome‐wide association analysis to identify QTLs and candidate genes associated with grain yield and its related traits under low light conditions in rice ( Oryza sativa L.)	论文题名	NA
+LOC_Os01g10110	10.1126/science.1113373	Cytokinin Oxidase Regulates Rice Grain Production	论文题名	B0001_GN1A_5150_DEL11
+LOC_Os01g10110	10.1186/s12284-015-0070-5	Down-Regulation of Cytokinin Oxidase 2 Expression Increases Tiller Number and Improves Rice Yield	论文题名	NA
+LOC_Os01g10110	10.1186/s12284-017-0174-1	Updating the elite rice variety Kongyu 131 by improving the Gn1a locus	论文题名	NA
+LOC_Os01g10110	10.1111/tpj.70936	Dissecting Agronomically favorable genotypes in temperate japonica rice via haplotype analysis of a Japan‐ MAGIC population	论文题名	B0001_GN1A_IWA_INS535
+LOC_Os01g10110	10.1270/jsbbs.22075	Designing rice panicle architecture via developmental regulatory genes	论文题名	B0001_GN1A_ST1_LOCAL
+LOC_Os01g10110	10.3389/fpls.2016.00377	Reassessment of the Four Yield-related Genes Gn1a, DEP1, GS3, and IPA1 in Rice Using a CRISPR/Cas9 System	论文题名	NA
+LOC_Os01g10840	10.1038/s41467-025-64564-y	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0014_gnp2_S5779181_G_A
+LOC_Os02g47280	10.1038/nplants.2015.203	Regulation of OsGRF4 by OsmiR396 controls grain size and yield in rice	论文题名	B0001_GRF4_JDL_FOUR_SITE_HAP
+LOC_Os02g47280	10.1038/s41586-018-0415-5	Modulating plant growth–metabolism coordination for sustainable agriculture	论文题名	B0001_GRF4_MIR396_TC_AA
+LOC_Os02g47280	10.1111/jipb.12473	OsGRF4 controls grain shape, panicle length and seed shattering in rice	论文题名	B0001_GRF4_CDL_GENIC_HAP
+LOC_Os02g47280	10.1111/nph.20412	GS2 cooperates with IPA1 to control panicle architecture	论文题名	B0001_GRF4_MIR396_TC_AA
+LOC_Os02g47280	10.1111/pbi.12569	The OsmiR396c‐OsGRF4‐OsGIF1 regulatory module determines grain size and yield in rice	论文题名	B0001_GRF4_MIR396_TC_AA
+Os03g0407400	10.1534/genetics.109.103002	C165A 编码链终止等位对应正链 G>T；互补、自然变异及原文独立坐标记录支持粒长作用。	已整理位点概述	NA
+Os03g0407400	10.1371/journal.pone.0155768	C165A 编码链终止等位对应正链 G>T；互补、自然变异及原文独立坐标记录支持粒长作用。	已整理位点概述	NA
+LOC_Os05g06660	10.1038/ng.977	启动子单倍型影响粒宽和粒重	已整理事件概述	batch_0002:gs5_zs97_h94_promoter
+LOC_Os05g06660	10.1093/jxb/erv058	Differential expression of GS5 regulates grain size in rice	论文题名	batch_0002:gs5_minus825
+LOC_Os05g06660	10.1186/s12284-025-00854-9	Allele Mining of Seed-Related Genes Reveals Early movement, Selection and Adaptation of Asian Rice Landraces	论文题名	batch_0002:gs5_resource_3444427
+LOC_Os02g14720	10.1038/ng2014	GW2蛋白截短，影响粒宽和千粒重	已整理事件概述	core__events#000242
+LOC_Os05g09520	10.1002/advs.202506242	A Natural Major Module Confers the Trade‐Off between Phenotypic Mean and Plasticity of Grain Chalkiness in Rice	论文题名	b0004_gw5_mpc5_hap1
+LOC_Os05g09520	10.1016/j.abiote.2026.100039	Hyperspectral phenotyping reveals the genetic basis of grain quality in rice	论文题名	b0004_gw5_9311_nil
+LOC_Os05g09520	10.1038/ng.169	Deletion in a gene associated with grain size increased yields during rice domestication	论文题名	b0004_gw5_legacy1212
+LOC_Os05g09520	10.7717/peerj.18746	Genome-wide association study reveals the advantaged genes regulating japonica rice grain shape traits in northern China	论文题名	b0004_gw5_peerj_hap1
+LOC_Os05g09520	10.1186/s12284-025-00854-9	Allele Mining of Seed-Related Genes Reveals Early movement, Selection and Adaptation of Asian Rice Landraces	论文题名	b0004_gw5_region_095
+LOC_Os08g41940	10.1038/ng.2327	Control of grain size, shape and quality by OsSPL16 in rice	论文题名	core__events#001422
+LOC_Os06g16370	10.1007/s11032-013-9994-x	The effects of the photoperiod-insensitive alleles, se13, hd1 and ghd7, on yield components in rice	论文题名	B0005_HD1_HS110_MPING
+LOC_Os06g16370	10.1007/s00122-023-04476-x	Effects of the core heading date genes Hd1, Ghd7, DTH8, and PRR37 on yield-related traits in rice	论文题名	NA
+LOC_Os06g16370	10.1111/tpj.70936	Dissecting Agronomically favorable genotypes in temperate japonica rice via haplotype analysis of a Japan‐ MAGIC population	论文题名	B0005_HD1_EXON1_INS36
+LOC_Os06g16370	10.1186/s12284-025-00854-9	Allele Mining of Seed-Related Genes Reveals Early movement, Selection and Adaptation of Asian Rice Landraces	论文题名	B0005_HD1_RICE854_T12
+LOC_Os03g57940	10.1111/tpj.12268	LOC_Os03g57940.1 的 GCT→ACT（A331T）；原文比较 Nipponbare 和 Koshihikari 等位的激酶及抽穗作用。	已整理位点概述	NA
+LOC_Os08g39890	10.1016/j.xplc.2025.101348	OsSPL14 and OsNF-YB9/YC8-12 subunits cooperate to enhance grain appearance quality by promoting Waxy and PDIL1-1 expression in rice	论文题名	NA
+LOC_Os08g39890	10.1038/ncomms14789	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0011_ipa1_2D_three3137
+LOC_Os08g39890	10.1038/ng.591	改变miR156调控，影响株型	已整理事件概述	qtn_event_91d03eaeeeac305b
+LOC_Os08g39890	10.1038/ng.592	改变miR156调控，影响株型	已整理事件概述	qtn_event_91d03eaeeeac305b
+LOC_Os08g39890	10.1038/s41467-019-11830-5	The grain yield modulator miR156 regulates seed dormancy through the gibberellin pathway in rice	论文题名	NA
+LOC_Os08g39890	10.1111/nph.20412	改变miR156调控，影响株型	已整理事件概述	qtn_event_91d03eaeeeac305b
+LOC_Os08g39890	10.1186/s12870-023-04062-9	IPA1 improves drought tolerance by activating SNAC1 in rice	论文题名	NA
+LOC_Os08g39890	10.3389/fpls.2016.00377	Reassessment of the Four Yield-related Genes Gn1a, DEP1, GS3, and IPA1 in Rice Using a CRISPR/Cas9 System	论文题名	NA
+LOC_Os04g52479	10.1073/pnas.1310790110	NAL1 allele from a rice landrace greatly increases yield in modern indica cultivars	论文题名	batch_0002:nal1_baliontjer_spike
+LOC_Os04g52479	10.1093/mp/ssu055	LSCHL4 from Japonica Cultivar, Which Is Allelic to NAL1 , Increases Yield of Indica Super Rice 93-11	论文题名	batch_0002:nal1_nipponbare_to9311
+LOC_Os04g52479	10.1111/tpj.70145	Exploring genomic regions and genes modulating plant height and flag leaf morphology in rice	论文题名	NA
+LOC_Os04g52479	10.1186/s12284-020-00374-8	Natural Sequence Variations and Combinations of GNP1 and NAL1 Determine the Grain Number per Panicle in Rice	论文题名	batch_0002:nal1_rice2020_5895
+LOC_Os04g52479	10.1186/s12284-021-00495-8	Genome-Wide Association Study of the Genetic Basis of Effective Tiller Number in Rice	论文题名	batch_0002:nal1_etn_31212801
+LOC_Os04g52479	10.1186/s12870-025-07239-6	QTL-seq identifies NAL1 and OsOFP19 as additive regulators of tiller number in rice (Oryza sativa L.)	论文题名	batch_0002:nal1_rice2025_qtl
+LOC_Os04g52479	10.3389/fpls.2024.1505679	Combining two main NAL1 functional alleles can increase rice yield	论文题名	batch_0002:nal1_nipponbare_to9311
+LOC_Os07g46790	10.1186/s12284-023-00618-3	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0070_dpe2_mapping_vector1
+LOC_Os01g48960	10.1111/tpj.14794	Concurrent activation of OsAMT1;2 and OsGOGAT1 in rice leads to enhanced nitrogen use efficiency under nitrogen limitation	论文题名	NA
+LOC_Os01g48960	10.1186/s12284-024-00700-4	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0019_glt1_aus_hap1
+LOC_Os07g12900	10.1073/pnas.1005396107	Gene limiting cadmium accumulation in rice	论文题名	NA
+LOC_Os03g08754	10.1002/advs.202501946	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0058_mads47_2025_hap1
+LOC_Os03g08754	10.1186/s12864-021-07901-x	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0057_mads47_2021_hap1
+LOC_Os01g13540	10.1016/j.xplc.2024.100999	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0053_nlp3_hap1
+LOC_Os02g53130	10.1002/advs.202523376	原文 Fig. 2，9311 的 Arg783 对应日本晴的 Trp779；参考负链 CDS TGG→AGG，核对终点为硝酸还原酶活性。	已整理位点概述	qtn_atom_855e814a9a059782
+LOC_Os02g53130	10.1038/s41467-019-13110-8	原文 Fig. 2，9311 的 Arg783 对应日本晴的 Trp779；参考负链 CDS TGG→AGG，核对终点为硝酸还原酶活性。	已整理位点概述	NA
+LOC_Os03g05620	10.1016/j.xplc.2025.101566	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0039_pt1_h_mite_266
+LOC_Os01g60860	10.1186/s12284-022-00604-1	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0047_pub3_cds_1546
+LOC_Os07g32170	10.1016/j.abiote.2026.100077	The OsSPL–SNB complex orchestrates the reproductive transition through tillering suppression in rice	论文题名	NA
+LOC_Os07g32170	10.1038/ng.3518	调节OsSPL13表达和籽粒大小	已整理事件概述	B0001_SPL13_LGH_REPEAT
+LOC_Os07g32170	10.1093/plphys/kiae557	Improving rice grain shape through upstream ORF editing-mediated translation regulation	论文题名	NA
+LOC_Os07g32170	10.1186/s12284-025-00854-9	Allele Mining of Seed-Related Genes Reveals Early movement, Selection and Adaptation of Asian Rice Landraces	论文题名	B0001_SPL13_RESOURCE_DEL6
+LOC_Os07g42490	10.1111/pbi.14420	Natural variation of WBR7 confers rice high yield and quality by modulating sucrose supply in sink organs	论文题名	b0065_sus3_2024_hap1
+LOC_Os07g42490	10.1270/jsbbs.18007	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0064_sus3_2018_snp_vector1
+LOC_Os07g42490	10.3390/ijms20204971	Sucrose Synthase Enhances Hull Size and Grain Weight by Regulating Cell Division and Starch Accumulation in Transgenic Rice	论文题名	NA
+LOC_Os06g22460	10.1038/s41598-017-10617-2	与原文未中断 ORF 的第 2209 个核苷酸对齐；正链 A/G 对应编码链 TAG/CAG；原文在多个遗传背景检测提前终止等位；其他 Pid3 序列差异也会影响抗性。	已整理位点概述	NA
+LOC_Os03g44500	10.1038/cr.2012.151	保留原文事件和报告状态；目前缺少对这个碱基单独作用的明确裁决。	已整理位点概述	qtn_atom_0a95f38427cb77a2
+LOC_Os06g06300	10.1371/journal.pone.0075959	正链 G>A 对应 E105K；原文图 4C–F 比较功能等位与定点替换，抽穗效应需结合光周期和 Hd1 背景。	已整理位点概述	NA
+LOC_Os01g49580	10.3389/fpls.2022.1097622	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0009_rgn1a_hap1
+LOC_Os06g45460	10.1038/ncomms1132	New approach for rice improvement using a pleiotropic QTL gene for lodging resistance and yield	论文题名	batch_0002:apo1_habataki_context
+LOC_Os06g45460	10.1038/s42003-020-1036-8	Diverse panicle architecture results from various combinations of Prl5/GA20ox4 and Pbl6/APO1 alleles	论文题名	batch_0002:apo1_habataki_st1_assayed
+LOC_Os06g45460	10.1186/s12284-024-00723-x	Genetic Dissection of Major Rice QTLs for Strong Culms and Fine Mapping of qWS5 for Breeding Application in Transplanted System	论文题名	NA
+LOC_Os06g45460	10.1186/s12284-025-00804-5	Genome Editing of the qPL6 Promoter Creates Novel Alleles for High-Yielding Rice	论文题名	batch_0002:apo1_yyp1_haplotype
+LOC_Os06g45460	10.1270/jsbbs.22075	Designing rice panicle architecture via developmental regulatory genes	论文题名	NA
+LOC_Os06g45460	10.1270/jsbbs.23013	Identification and characterization of stable QTLs for vascular bundle number at the panicle neck in rice (<i>Oryza sativa</i> L.)	论文题名	NA
+LOC_Os06g45460	10.1186/s12864-024-11178-1	The genomic pattern of insertion/deletion variations during rice improvement	论文题名	batch_0002:apo1_proximal_flw_indel
+LOC_Os01g66100	10.1111/pbi.13661	Gibberellins orchestrate panicle architecture mediated by DELLA–KNOX signalling in rice	论文题名	NA
+LOC_Os01g66100	10.1111/tpj.70936	Dissecting Agronomically favorable genotypes in temperate japonica rice via haplotype analysis of a Japan‐ MAGIC population	论文题名	NA
+LOC_Os02g25230	10.1111/pbi.13440	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	b0051_tac4_source_cds1793
+LOC_Os01g42460	10.1111/pbi.14017	同一坐标可出现在多个命名型中；组合证据不单独确定每个 SNP 的因果作用。	已整理位点概述	NA
+LOC_Os06g04200	10.1046/j.1365-313x.1998.00189.x	内含子 1 的剪接供体 G/T；原始剪接实验证实转录加工差异，1k-RiCA 的标记表给出同一参考坐标。	已整理位点概述	NA
+LOC_Os06g04200	10.1186/s12284-019-0311-0	内含子 1 的剪接供体 G/T；原始剪接实验证实转录加工差异，1k-RiCA 的标记表给出同一参考坐标。	已整理位点概述	NA
+LOC_Os05g01710	10.1111/tpj.13164	The broadly effective recessive resistance gene xa5 of rice is a virulence effector‐dependent quantitative trait for bacterial blight	论文题名	NA
+LOC_Os02g29040	10.1371/journal.pgen.1009594	ANK1：该文献在本库对应单倍型记录“OsANK1 S12 Indica_H1_Lv displayed promoter”。	先验记录概述	b0010_loc_os02g29040_indica_h1_lv
+LOC_Os02g29210	10.1371/journal.pgen.1009594	ANK2：该文献在本库对应单倍型记录“OsANK2 S12 Indica_H1_Lv displayed promoter”。	先验记录概述	b0010_loc_os02g29210_indica_h1_lv
+unresolved_gene_36ad38cc5d23b335	10.1093/aob/mcae227	Chr8 salt-response region (source 142)：该文献在本库对应Haplotype记录“group 15”，涉及生殖期盐处理/对照的相对粮重百分比；作者认为 group 15 较有利，具体比较组及效应数值未核；。	先验记录概述	qtn_event_691431f34ed8f1db:group15
+unresolved_gene_576d1b26f25cd5a1	10.3390/ijms241411447	事件组比较：作者称 Hap9 与 Pin20、Hap2 与 Songjing15 基因型一致，报告单倍型粒长与粒宽差异；Hap9 粒长 9.36 mm、长宽比 3.31；群体结构与连锁混杂未排除。	已整理事件概述	qtn_event_413c85c766d18e0a:Hap2
+LOC_Os01g54270	10.3390/plants13233349	D10：该文献在本库对应SNP记录“D10 putative p47dt1 authorT>G/M>R”。	先验记录概述	b0022_d10_p47dt1_T_G
+LOC_Os01g67430	10.1111/pbi.12849	DF1/Os01g0900400：该文献在本库对应SNP记录“df1-1 G>T, origin unspecified”。	先验记录概述	b0007_df1_1
+LOC_Os01g67430	10.1111/j.1365-313x.2008.03710.x	DF1/Os01g0900400：该文献在本库对应SNP记录“eg1-1 C>A / Cys309stop”。	先验记录概述	b0007_eg1_1
+LOC_Os01g08270	10.1093/plcell/koaa037	DNR1：该文献在本库对应Indel记录“DNR1 HJX74 reported promoter 520 bp deletion relative to IRAP9”。	先验记录概述	b0012_dnr1_reported_promoter_520bp
+LOC_Os10g35460	10.1038/s41467-022-31844-w	DROT1：该文献在本库对应单倍型记录“IRAT109 DROT1 Hap3 23-SNP source haplotype”。	先验记录概述	b0007_drot1_hap3
+LOC_Os05g48990	10.1186/s12284-021-00495-8	Genome-Wide Association Study of the Genetic Basis of Effective Tiller Number in Rice	论文题名	NA
+Os01g0356951	10.1186/s12284-019-0282-1	事件组比较：作者报告区域甲基化差异及表达关联；不将其提升为具体甲基化位点因果。	已整理事件概述	qtn_event_fa00cb7b4d2eaf20:Epi-sp
+LOC_Os07g47330	10.1038/s41598-018-30395-9	FZP：该文献在本库对应单倍型记录“ST-5 linked FZP3UTR3bp+12bp insertions”。	先验记录概述	B0001_FZP_ST5_3UTR_PAIR
+LOC_Os07g47330	10.7717/peerj.18746	Genome-wide association study reveals the advantaged genes regulating japonica rice grain shape traits in northern China	论文题名	B0001_FZP_165_T_PA
+LOC_Os07g47330	10.1038/srep19022	FZP：该文献在本库对应SNP记录“fzp-11 spontaneous AP2/ERF A→T Asp→Val”。	先验记录概述	B0001_FZP11_SPONTANEOUS_AT
+LOC_Os07g47330	10.1111/nph.20412	GS2 cooperates with IPA1 to control panicle architecture	论文题名	NA
+LOC_Os03g63970	10.1186/s12284-020-00374-8	Natural Sequence Variations and Combinations of GNP1 and NAL1 Determine the Grain Number per Panicle in Rice	论文题名	NA
+LOC_Os03g63970	10.1371/journal.pgen.1006386	GA20ox1：该文献在本库对应单倍型记录“GNP1/GA20ox1 启动子自然单倍型”。	先验记录概述	core__events#000663
+LOC_Os03g63970	10.1111/pbi.13661	Gibberellins orchestrate panicle architecture mediated by DELLA–KNOX signalling in rice	论文题名	NA
+LOC_Os03g63970	10.1111/tpj.70936	Dissecting Agronomically favorable genotypes in temperate japonica rice via haplotype analysis of a Japan‐ MAGIC population	论文题名	NA
+LOC_Os04g33740	10.1186/s12284-024-00743-7	CRISPR-Based Modulation of uORFs in DEP1 and GIF1 for Enhanced Rice Yield Traits	论文题名	NA
+unresolved_gene_d08a32f807ea15c8	10.1111/pbi.70064	事件组比较：作者报告 Hap2/Hap3 粒长较 Hap1 大、粒宽较小，Hap2 垩白率低于 Hap1/Hap3；亚种、群体结构和连锁混杂未排除。	已整理事件概述	qtn_event_a44c1c0b3c599bcc:Hap1
+LOC_Os04g32510	10.1038/s41467-025-64564-y	Natural variation of GNP2 enhances grain number to benefit rice yield	论文题名	NA
+LOC_Os06g40780	10.1016/j.cj.2020.04.011	GNP6/MOC1/Os06g0610350：该文献在本库对应单倍型记录“CJ promoter21SNP Hap1”。	先验记录概述	B0005_MOC1_CJ_PROM_H1
+LOC_Os06g40780	10.1038/nature01518	GNP6/MOC1/Os06g0610350：该文献在本库对应Indel记录“H89025 spontaneous 1.9 kb retro insertion”。	先验记录概述	B0005_MOC1_H89025_RETRO948
+LOC_Os06g15620	10.1186/s12284-025-00854-9	Allele Mining of Seed-Related Genes Reveals Early movement, Selection and Adaptation of Asian Rice Landraces	论文题名	NA
+LOC_Os06g44100	10.7717/peerj.18746	Genome-wide association study reveals the advantaged genes regulating japonica rice grain shape traits in northern China	论文题名	NA
+unresolved_gene_95c70ba83e74aa33	10.1007/s00122-024-04658-1	作者报告三处氨基酸替换及一处 14 bp 缺失，并报告蛋白 C 端减少 30 个氨基酸；转录本及序列方向待核。	已整理事件概述	core__events#001854
+LOC_Os03g04100	10.1111/pbi.14031	1. 分蘖角度：增加\n2. 向地性曲率：24/48/72/96 h降低\n3. OsIAA20_WOX6_WOX11：upper/lowerexpressionproxy\n4. 单株籽粒产量：差异不显著\n5. 穗部与籽粒性状：差异不显著\n6. 组织染色：reducedvisiblegranules inla3/CR6；restoredCPL	已整理事件概述	qtn_atom_b18da2c3e4e00f5d
+LOC_Os01g61480	10.1073/pnas.1932414100	LAX1：该文献在本库对应Indel记录“2003 lax-1 spontaneous Shinriki retrotransposon”。	先验记录概述	b0007_lax1_shinriki_retrotransposon
+LOC_Os01g61480	10.1186/s12284-023-00618-3	OsDPE2 Regulates Rice Panicle Morphogenesis by Modulating the Content of Starch	论文题名	NA
+LOC_Os03g52320	10.1186/s12284-024-00743-7	CRISPR-Based Modulation of uORFs in DEP1 and GIF1 for Enhanced Rice Yield Traits	论文题名	NA
+LOC_Os01g64660	10.1186/s12864-024-11178-1	The genomic pattern of insertion/deletion variations during rice improvement	论文题名	NA
+LOC_Os01g18240	10.1038/s41467-020-19019-x	MYB61：该文献在本库对应Indel记录“MYB61 promoter named helitron presence/absence”。	先验记录概述	b0015_myb61_hel_osa_val_0065
+LOC_Os01g54860	10.1038/s41467-017-01501-8	NOG1：该文献在本库对应Indel记录“NOG1 exon14 GAG three-base presence/absence”。	先验记录概述	b0009_nog1_cds_gag
+LOC_Os02g12310	10.3389/fpls.2016.01638	与千粒重相关	已整理事件概述	core__events#000221
+LOC_Os07g04180	10.1186/s12284-021-00495-8	Genome-Wide Association Study of the Genetic Basis of Effective Tiller Number in Rice	论文题名	NA
+LOC_Os04g52090	10.1038/s41467-023-38726-9	OsMADS17 simultaneously increases grain number and grain weight in rice	论文题名	NA
+LOC_Os04g41030	10.1111/pbi.70128	已审基因档案记载 rub1 的每穗粒数、株高、结实率、粒长及千粒重下降；该材料表型不等于已隔离证明 104 G>A 单碱基因果。	已整理事件概述	core__events#001768
+LOC_Os01g52050	10.1111/pbi.14610	OsBRI1：该文献在本库对应SNP记录“BRI1 natural source marker vg0129930698”。	先验记录概述	b0023_bri1_vg0129930698
+unresolved_gene_460e1053109413ad	10.1038/s41467-024-50787-y	事件组比较：2024 年论文称 vg0131729028 A/G 与种子萌发百分率有关；原 GWAS 的方向及效应大小未核。	已整理事件概述	M0865-E01
+LOC_Os01g59350	10.1002/advs.202516180	OsbZIP08：该文献在本库对应SNP记录“OsbZIP08 vg0134314934 A/T”。	先验记录概述	b0009_bzip08_vg0134314934
+LOC_Os08g37070	10.1016/j.xplc.2024.100999	OsNLP3 enhances grain weight and reduces grain chalkiness in rice	论文题名	NA
+LOC_Os03g24460	10.1073/pnas.2519395123	事件组比较：作者报告 Hap1 的 PGWC 和 DEC 低于 Hap2；代换系为片段级比较，不能归因单一 SNP。	已整理事件概述	qtn_event_d33a4acc046b55d5:Hap1
+LOC_Os03g11614	10.1016/j.xplc.2024.101178	OsMADS1/qLGY3：该文献在本库对应SNP记录“NYZ 内含子4 g7014 A>C”。	先验记录概述	batch_0002:mads1_nyz_g7014
+LOC_Os03g11614	10.1038/s41467-018-03047-9	OsMADS1/qLGY3：该文献在本库对应复合变异记录“天然末端剪接复合替换（L-204 / SLG / NYZ）”。	先验记录概述	batch_0002:mads1_terminal_gv
+LOC_Os03g11614	10.1111/pbi.12903	OsMADS1/qLGY3：该文献在本库对应单倍型记录“SLG 自然基因单倍型”。	先验记录概述	batch_0002:mads1_slg_haplotype
+LOC_Os03g11614	10.1186/s12284-020-00428-x	OsMADS1/qLGY3：该文献在本库对应SNP记录“OLR 自发 G80A / G27D”。	先验记录概述	batch_0002:mads1_olr_g80a
+LOC_Os03g11614	10.1038/s41467-023-38726-9	OsMADS17 simultaneously increases grain number and grain weight in rice	论文题名	NA
+LOC_Os03g11614	10.1186/s12284-025-00854-9	Allele Mining of Seed-Related Genes Reveals Early movement, Selection and Adaptation of Asian Rice Landraces	论文题名	batch_0002:mads1_resource_type1
+LOC_Os09g32040	10.1002/advs.202504163	Antagonistic Ghd7‐OsNAC42 Complexes Modulate Carbon and Nitrogen Metabolism to Achieve Superior Quality and High Yield in Rice	论文题名	NA
+LOC_Os10g25850	10.1016/j.xplc.2024.100999	OsNLP3 enhances grain weight and reduces grain chalkiness in rice	论文题名	NA
+unresolved_gene_3b1419d3f994899d	10.1111/pbi.70296	事件组比较：作者报告自然材料中 HapII 的低氮有效穗数 EPNL 和低氮/高氮有效穗数比 EPNR 高于 HapI；仅为来源群体关联。	已整理事件概述	qtn_event_9593a6355b5fe76b:HapI
+LOC_Os01g48800	10.1186/s12284-024-00700-4	Exploring Genetic Diversity within aus Rice Germplasm: Insights into the Variations in Agro-morphological Traits	论文题名	NA
+LOC_Os03g02460	10.3389/fpls.2026.1820692	事件组比较：作者报告来源材料中 Hap2 粒长较 Hap1 长；仅为 Hap1/Hap2 组比较，不赋予 Hap3–Hap6 比较方向，也不证明单个位点因果。	已整理事件概述	qtn_event_2cba042942eeb82a:Hap1
+LOC_Os03g03130	10.1111/pbi.14524	OsSCE1a：该文献在本库对应Indel记录“OsSCE1a source promoter367bp MITE I/D”。	先验记录概述	qtn_atom_61e95b92d5a50b40
+LOC_Os06g49010	10.1016/j.abiote.2026.100077	The OsSPL–SNB complex orchestrates the reproductive transition through tillering suppression in rice	论文题名	NA
+LOC_Os02g07780	10.1186/s12284-021-00531-7	1. 粒长关联：Hap5较长	已整理事件概述	qtn_atom_fb2697373417c7cc
+LOC_Os03g28330	10.3390/ijms20204971	Sucrose Synthase Enhances Hull Size and Grain Weight by Regulating Cell Division and Starch Accumulation in Transgenic Rice	论文题名	NA
+LOC_Os06g09450	10.3390/ijms20204971	Sucrose Synthase Enhances Hull Size and Grain Weight by Regulating Cell Division and Starch Accumulation in Transgenic Rice	论文题名	NA
+LOC_Os03g22120	10.3390/ijms20204971	Sucrose Synthase Enhances Hull Size and Grain Weight by Regulating Cell Division and Starch Accumulation in Transgenic Rice	论文题名	NA
+LOC_Os04g24430	10.3390/ijms20204971	Sucrose Synthase Enhances Hull Size and Grain Weight by Regulating Cell Division and Starch Accumulation in Transgenic Rice	论文题名	NA
+LOC_Os02g58480	10.3390/ijms20204971	Sucrose Synthase Enhances Hull Size and Grain Weight by Regulating Cell Division and Starch Accumulation in Transgenic Rice	论文题名	NA
+LOC_Os03g49880	10.1111/pbi.13370	OsTB1：该文献在本库对应Indel记录“OsTB1 5UTR TGTG presence/absence”。	先验记录概述	b0004_tb1_tgtg
+LOC_Os03g49880	10.1186/s12284-025-00875-4	OsTB1：该文献在本库对应Indel记录“AGCG>A codon deletion”。	先验记录概述	b0004_tb1_codon
+LOC_Os03g49880	10.3390/genes14081593	OsTB1：该文献在本库对应SNP记录“OsTB1 sourceChr3:28424929 G>A”。	先验记录概述	b0004_tb1_upstream
+unresolved_gene_580b5803e79ded74	10.1111/pbi.13560	事件组比较：作者报告高上部二次枝梗数材料与 Hap1 关联；来源文字报告 Hap1 与 Hap3 的籽粒 chalk content 均值分别为 28% 与 60%；各组样本量、统计和原图未核；不推断单 SNP 因果或项目材料分型。	已整理事件概述	core__events#001778:Hap1
+LOC_Os01g59410	10.1007/s00122-020-03699-6	OsVQ4：该文献在本库对应SNP记录“OsVQ4 source G259A”。	先验记录概述	b0009_vq4_g259a
+LOC_Os01g53260	10.1038/s41467-025-56752-7	OsWRKY23：该文献在本库对应Indel记录“IRAT261 promoter393bp insertion”。	先验记录概述	b0009_wrky23_ins393
+LOC_Os09g16510	10.1186/s12284-021-00495-8	Genome-Wide Association Study of the Genetic Basis of Effective Tiller Number in Rice	论文题名	NA
+LOC_Os12g08780	10.1002/tpg2.70191	Genome‐wide association analysis to identify QTLs and candidate genes associated with grain yield and its related traits under low light conditions in rice ( Oryza sativa L.)	论文题名	NA
+LOC_Os11g09280	10.1016/j.xplc.2025.101348	OsSPL14 and OsNF-YB9/YC8-12 subunits cooperate to enhance grain appearance quality by promoting Waxy and PDIL1-1 expression in rice	论文题名	NA
+LOC_Os07g05900	10.1038/ng.247	PROG1：该文献在本库对应SNP记录“PROG1 M1 source fragment508”。	先验记录概述	qtn_atom_1202c616c3750ff4
+LOC_Os04g51000	10.1002/advs.202508230	SP3 and DEP1 Orchestrate Panicle Architecture by Jointly Regulating APO2 Expression in Rice	论文题名	NA
+LOC_Os01g49160	10.1111/pbi.13702	RGN1：该文献在本库对应Indel记录“RGN1 BS208 GAG58-60 deletion”。	先验记录概述	b0017_rgn1_BS208_GAG58_60del
+LOC_Os06g44034	10.1038/s41467-023-43077-6	Transcriptome-wide association analyses reveal the impact of regulatory variants on rice panicle architecture and causal gene regulatory networks	论文题名	NA
+LOC_Os01g72090	10.1007/s11032-013-9994-x	The effects of the photoperiod-insensitive alleles, se13, hd1 and ghd7, on yield components in rice	论文题名	NA
+LOC_Os03g60080	10.1186/s12870-023-04062-9	IPA1 improves drought tolerance by activating SNAC1 in rice	论文题名	NA
+LOC_Os07g13170	10.1016/j.abiote.2026.100077	The OsSPL–SNB complex orchestrates the reproductive transition through tillering suppression in rice	论文题名	NA
+LOC_Os03g03070	10.1111/tpj.70936	Dissecting Agronomically favorable genotypes in temperate japonica rice via haplotype analysis of a Japan‐ MAGIC population	论文题名	NA
+LOC_Os11g12740	10.1186/s12870-025-08001-8	A multi-layered regulatory model uncovers the central role of OsPRR37 in coordinating multiple agronomic traits	论文题名	NA
+LOC_Os03g55610	10.1002/advs.202508230	SP3 and DEP1 Orchestrate Panicle Architecture by Jointly Regulating APO2 Expression in Rice	论文题名	NA
+LOC_Os07g42410	10.1038/s41467-025-59236-w	文献状态表中的同坐标组分；单独的群体分型不证明功能或效应。	已整理位点概述	qtn_atom_2c3f1c3aec30d4a8
+LOC_Os03g51660	10.1371/journal.pgen.1006412	A Novel Tiller Angle Gene, TAC3, together with TAC1 and D2 Largely Determine the Natural Variation of Tiller Angle in Rice Cultivars	论文题名	NA
+LOC_Os06g41850	10.1038/ng.2612	TGW6：该文献在本库对应Indel记录“TGW6 Kasalath 编码区 G 缺失”。	先验记录概述	core__events#001061
+LOC_Os06g41850	10.1186/s12284-025-00854-9	Allele Mining of Seed-Related Genes Reveals Early movement, Selection and Adaptation of Asian Rice Landraces	论文题名	NA
+LOC_Os01g04900	10.1016/j.xplc.2025.101295	事件组比较：作者报告 Hap2/Hap3 的粒长、粒宽和千粒重高于其余三个主要组；较高籽粒锌浓度的论述同时引用既有研究；原图、各组样本量及精确值未核，不能据此推断单点因果或独立新增实验。	已整理事件概述	qtn_event_f457f887c259860a:Hap1

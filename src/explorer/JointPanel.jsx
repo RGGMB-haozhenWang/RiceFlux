@@ -1,3 +1,4 @@
+import {PopulationComposition} from './PopulationComposition.jsx';
 import React,{useMemo,useRef,useState} from 'react';
 import {geneSchemes,jointCalls,statusText} from './jointHaplotypes.js';
 import {formats,downloadTable,materialRow,matchesMaterial} from './formats.js';
@@ -53,7 +54,7 @@ export function JointPanel({data,genes,cohort,records}){
       }
       if(!result.groups.length)out.push({source_group:pop,population_n:n,joint_typed_n:typed,joint_unresolved_n:n-typed,...schemeValues});
     }
-    downloadTable(formats.jointCombinations,out,fields);
+    downloadTable(formats.jointCombinations,out.map(row=>({...row,grouping_dimension:data.meta.groupBy||'source_group',dataset_versions:JSON.stringify(data.meta.datasets||[])})),fields);
   }
   function exportMembers(){
     const cols=genes.flatMap(g=>formats.jointMaterials.columnPatterns.map(key=>key.replace('{gene_id}',g.id)));
@@ -72,10 +73,10 @@ export function JointPanel({data,genes,cohort,records}){
     <h3>单倍型组合与群体分布</h3>
     <p>每行是一种实际观察到的组合。各来源群体格内为份数和组内频率，分母是该群体在全部所选基因均已判型的材料数。</p>
     <div className="matrix-scroll"><table className="individual-table joint-summary"><thead><tr>
-      {genes.map(g=><th key={g.id}>{g.name}</th>)}<th>合计 / 频率</th>
-      {popIds.map(id=><th key={id}>{id}<small>已判 {result.population.get(id).assigned} / {result.population.get(id).all}</small></th>)}<th>成员</th></tr></thead>
+      {genes.map(g=><th key={g.id}>{g.name}</th>)}<th>合计 / 频率</th><th>群体组成</th>
+      {popIds.map(id=><th key={id}>{data.populations.find(p=>p.id===id)?.name}<small>已判 {result.population.get(id).assigned} / {result.population.get(id).all}</small></th>)}<th>成员</th></tr></thead>
       <tbody>{result.groups.slice(0,comboLimit).map(g=><tr key={g.key} className={g.key===selection?'joint-selected':''}>
-        {g.labels.map((l,i)=><td key={genes[i].id}>{l}</td>)}<td><strong>{g.n.toLocaleString()}</strong><small>{pct(g.n,result.assigned)}</small></td>
+        {g.labels.map((l,i)=><td key={genes[i].id}>{l}</td>)}<td><strong>{g.n.toLocaleString()}</strong><small>{pct(g.n,result.assigned)}</small></td><td><PopulationComposition populations={data.populations} counts={g.pops} total={g.n}/></td>
         {popIds.map(id=><td key={id}>{g.pops.get(id)||0}<small>{pct(g.pops.get(id)||0,result.population.get(id).assigned)}</small></td>)}
         <td><button onClick={()=>{filterMembers(g.key);memberHeading.current?.focus();}}>查看成员</button></td></tr>)}</tbody></table></div>
     {!result.groups.length&&<p>当前材料及判型方案下没有完整组合。可在材料明细查看各基因的判型状态。</p>}
@@ -87,7 +88,7 @@ export function JointPanel({data,genes,cohort,records}){
       <button onClick={exportMembers}>导出当前成员分型</button></div>
     <p className="joint-member-count">{statsLabel} · {rows.length.toLocaleString()} 份</p>
     <div className="matrix-scroll"><table className="individual-table joint-members"><thead><tr><th>材料</th><th>来源群体 / 类别</th>{genes.map(g=><th key={g.id}>{g.name}</th>)}</tr></thead>
-      <tbody>{rows.slice(0,limit).map(({sample:s,calls})=><tr key={s.id}><td>{s.id}<small>{s.name}</small></td><td>{s.population_id}<small>{s.kind==='landrace'?'地方品种':'现代品种'}</small></td>
+      <tbody>{rows.slice(0,limit).map(({sample:s,calls})=><tr key={s.id}><td>{s.id}<small>{s.name}</small></td><td>{data.populations.find(p=>p.id===s.population_id)?.name}<small>{s.kind==='landrace'?'地方品种':s.kind==='modern cultivar'?'现代品种':s.kind}</small></td>
         {calls.map((c,i)=><td key={genes[i].id}>{displayCall(c)}<small>{c.bases||'—'}</small></td>)}</tr>)}</tbody></table></div>
     {rows.length>limit&&<button onClick={()=>setLimit(limit+48)}>查看更多组合成员</button>}
   </div>;

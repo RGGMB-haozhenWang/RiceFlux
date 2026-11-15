@@ -49,3 +49,21 @@
 .joint-panel small {font-size:.78rem;color:#526660}
 .joint-secondary {margin-top:1rem;border-top:1px solid #d8e3de;padding-top:.7rem}
 .joint-secondary>button {margin:.6rem 0}
+
+/* Compact controls and a grain/flow mark; scientific tracks retain their original layout. */
+.flux-mark{position:relative;display:inline-block;width:37px;height:39px;border-radius:10px;background:#e8f2ee;overflow:hidden}
+.flux-mark:before{content:"";position:absolute;width:3px;height:27px;background:#34745f;left:17px;top:7px;transform:rotate(15deg)}
+.flux-mark i{position:absolute;background:#34745f;width:14px;height:8px;border-radius:9px 2px 9px 2px;left:18px;top:8px;transform:rotate(-13deg)}
+.flux-mark i:nth-child(2){left:7px;top:17px;transform:rotate(45deg);background:#78a591}.flux-mark i:nth-child(3){left:17px;top:23px;background:#bdac69}
+.hero{margin-bottom:18px}.hero h1{font-size:25px;letter-spacing:-.6px}.hero h1 small{font-size:12px;display:block;font-weight:500;color:#677b77;letter-spacing:0;margin-top:4px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:8px}.control-step{margin-top:24px}.project{background:transparent;padding:5px 0;border:0}.panel{box-shadow:none}
+.quick-gene-search{margin:8px 0 6px}.quick-gene-search input{font:inherit;width:100%;box-sizing:border-box;border:1px solid #cbdad6;border-radius:6px;padding:8px;background:white}
+.phenotype-section{margin-bottom:22px}.compare-frequency{margin-top:12px}.compare-frequency>div{display:grid;grid-template-columns:minmax(70px,1fr) minmax(70px,2fr) 48px;gap:6px;align-items:center;margin:9px 0;font-size:12px}
+.compare-frequency .af-bar{height:8px;margin:0}.compare-frequency strong{text-align:right}.compare-frequency small{grid-column:2/4;font-size:10px;color:#6d7c88}
+.group-composition{overflow:visible!important;min-width:100px}.group-composition>button{height:100%;padding:0;border:0!important;border-radius:0!important;cursor:help;min-width:2px}.group-composition>button:first-child{border-radius:3px 0 0 3px!important}.group-composition>button:last-child{border-radius:0 3px 3px 0!important}.group-composition>button:focus-visible{outline:2px solid #172e27;outline-offset:2px}
+.population-tooltip{position:fixed;z-index:99999;pointer-events:none;display:grid;gap:5px;background:#173c33;color:#fff;padding:10px 13px;border-radius:6px;box-shadow:0 3px 12px #143d3322;font:12px/1.4 system-ui;max-width:270px}
+.population-tooltip small{color:#d8e8df}.literature-summaries>div{padding:9px 0;border-bottom:1px solid #e8eded}.literature-summaries p{margin:0 0 4px;color:#27463f}.literature-summaries small{color:#6d7c88}
+.dataset-list{display:grid;gap:8px;margin:18px 0}.dataset-list>label{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:12px;border:1px solid #dbe5e0;border-radius:6px}.dataset-list small{color:#6d7c88}.dataset-list button{margin-left:auto}
+.dataset-dialog .matrix-scroll{max-height:290px}.dataset-dialog .individual-table td{max-width:220px;overflow:hidden;text-overflow:ellipsis}.dataset-dialog button,.dataset-dialog select{cursor:pointer}.dataset-dialog .dialog-actions{margin-top:20px}
+@media(max-width:800px){.quick-gene-search{grid-column:1/-1}.catalog-list>button{align-items:flex-start;flex-direction:column}.catalog-list small{text-align:left}.hero h1{font-size:23px}.hero-actions{width:100%}.dataset-list small{width:100%;padding-left:22px}.dataset-dialog .dialog-actions{flex-wrap:wrap}.comparison-grid{grid-template-columns:minmax(0,1fr)}}
+.dataset-dialog button:not(.rt-Button){font:inherit;border:1px solid #cbdad6;border-radius:5px;padding:.28rem .55rem;background:#fff;color:#234b40}.dataset-dialog button:disabled{opacity:.5;cursor:default}

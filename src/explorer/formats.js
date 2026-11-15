@@ -27,12 +27,14 @@ export function downloadTable(format, rows, fields = format.columns ?? formats[f
 
 export function matchesMaterial(sample, query) {
   const term = query.trim().toLowerCase();
-  return [sample.id, sample.name, sample.ped].some(value => value?.toLowerCase().includes(term));
+  return [sample.id, sample.name, sample.ped, sample.source_sample_id].some(value => value?.toLowerCase().includes(term));
 }
 
 export function materialRow(sample) {
   return {
     accession_id: sample.id, original_name: sample.name,
-    material_type: sample.kind, source_group: sample.population_id
+    material_type: sample.kind, source_group: sample.source_group??sample.population_id,
+    dataset_id:sample.dataset_id,source_sample_id:sample.source_sample_id??sample.id,
+    subspecies:sample.subspecies,region:sample.region,display_group:sample.population_id,genotype_evidence:sample.genotype_evidence
   };
 }

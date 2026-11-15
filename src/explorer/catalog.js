@@ -5,7 +5,7 @@ export function callOf(sample,variant){
 }
 export function catalogStatus(g){
   if(g.catalog.historical)return '历史身份';
-  if(g.variants.some(v=>v.classified!=='区域探索标记'))return '文献位点有分型';
+  if(g.variants.some(v=>!['区域探索标记','导入区域标记'].includes(v.classified)))return '文献位点有分型';
   return g.variants.length?'仅区域 SNP 有分型':'未接入分型';
 }
 export function attachCatalog(data,catalog,archive,evidence){
