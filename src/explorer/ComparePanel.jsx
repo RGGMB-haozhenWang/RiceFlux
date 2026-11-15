@@ -21,7 +21,7 @@ function CompareGene({gene,cohort,populations,onRemove,markerId,setMarker}){
 export function ComparePanel({data,activeGene,cohort}){
   const [open,setOpen]=useState(false),[ids,setIds]=useState([]),[choice,setChoice]=useState(''),[filter,setFilter]=useState('');
   const [markerIds,setMarkerIds]=useState({}),[material,setMaterial]=useState(''),[limit,setLimit]=useState(20);
-  const [records,setRecords]=useState([]),[filename,setFilename]=useState(''),[error,setError]=useState('');
+  const [records,setRecords]=useState([]),[filename,setFilename]=useState(''),[error,setError]=useState(''),[custom,setCustom]=useState(false);
   const [showRows,setShowRows]=useState(24),[showPrior,setShowPrior]=useState(false);
   const bundledLibrary=data.deploymentPriorFile==='formats/prior_477.tsv';
   function add(id){if(id)setIds(previous=>previous.includes(id)?previous:[...previous,id]);}
@@ -44,7 +44,7 @@ export function ComparePanel({data,activeGene,cohort}){
     }
   }
   useEffect(()=>{
-    if(records.length&&filename!==data.deploymentPriorFile?.split('/').at(-1))setRecords(bindPrior(records,data.genes));
+    if(custom)setRecords(bindPrior(records,data.genes));
     else if(data.deploymentPrior)install(data.deploymentPrior,data.deploymentPriorFile.split('/').at(-1),data.compareOnLoad);
   },[data]);
   const results=useMemo(()=>open&&showPrior&&records.length?priorResults(records,cohort,data.evidence):[],[open,showPrior,records,data,cohort]);
@@ -58,10 +58,10 @@ export function ComparePanel({data,activeGene,cohort}){
   }
   async function upload(event){
     const file=event.target.files[0];event.target.value='';if(!file)return;
-    try{install(readPrior(await file.text()),file.name);}catch(e){setError(e.message);}
+    try{install(readPrior(await file.text()),file.name);setCustom(true);}catch(e){setError(e.message);}
   }
   return <section className="panel compare-panel"><div className="panel-title"><div><h2>多基因比较</h2></div>
-  <button aria-expanded={open} onClick={()=>{if(!open&&!ids.length&&(!records.length||(!data.compareOnLoad&&filename===data.deploymentPriorFile?.split('/').at(-1)))){
+  <button aria-expanded={open} onClick={()=>{if(!open&&!ids.length&&(!records.length||(!data.compareOnLoad&&!custom))){
     const example=data.genes.find(g=>g.name===(activeGene.name==='ALK'?'DTH7':'ALK'));
     setIds([activeGene.id,...(example&&activeGene.id!==example.id?[example.id]:[])]);
   }setOpen(!open);}}>{open?'收起比较':'打开比较'}</button></div>
