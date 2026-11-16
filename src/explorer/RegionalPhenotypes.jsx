@@ -19,10 +19,10 @@ function RangePlot({row, domain}) {
   </svg>;
 }
 
-export function RegionalPhenotypes({trait, groups, view, onChange, selectedIds}) {
+export function RegionalPhenotypes({trait, groups, view, onChange, selectedIds,compact=false}) {
   const {sites, domain} = useMemo(() => regionalDistributions(groups,view,selectedIds),[groups,view,selectedIds]);
   const activeSite = view.active.source.site;
-  return <div className="regional-chart" aria-label={trait.name+'分地区表型'}>
+  return <div className={'regional-chart'+(compact?' compact-regions':'')} aria-label={trait.name+'分地区表型'}>
     <div className="region-toolbar">
       <div className="year-picker" role="group" aria-label="试验年份"><span>试验年份</span>
         {view.years.map(y => <button type="button" key={y} aria-pressed={y===view.year} onClick={() => onChange({year:y})}>{y}</button>)}
@@ -32,8 +32,9 @@ export function RegionalPhenotypes({trait, groups, view, onChange, selectedIds})
           {view.assays.map(a => <option key={a}>{a}</option>)}
         </select></label>}
     </div>
-    <p className="region-description">各地共用同一横轴（{view.unit}）。箱体为四分位区间，中线为中位数，两端为最小值和最大值。n 为有测值的组合成员数。</p>
-    <div className="region-grid">{sites.map(({site,endpoint,rows,total}) => {
+    {compact&&<label className="site-select">试验地点<select aria-label="表型试验地点" value={activeSite} onChange={e=>onChange({site:e.target.value})}>{sites.map(({site})=><option key={site} value={site}>{siteName(site)}</option>)}</select><span>各地分别展示</span></label>}
+    <details className="region-description" open={!compact}><summary>统计口径 · {view.unit}</summary><p>各地共用同一横轴。箱体为四分位区间，中线为中位数，两端为最小值和最大值。n 为有测值的组合成员数。</p></details>
+    <div className="region-grid">{sites.filter(s=>!compact||s.site===activeSite).map(({site,endpoint,rows,total}) => {
       const active = site===activeSite, name = siteName(site);
       return <section className={'region-card'+(active?' is-active':'')} key={site} aria-label={name+' '+view.year} data-site={site}>
         <header><h3>{name}</h3>
@@ -51,6 +52,6 @@ export function RegionalPhenotypes({trait, groups, view, onChange, selectedIds})
         </> : <p className="region-empty">{!endpoint?'该年无此测定列':!endpoint.source.n?'原表此列无实测值':!groups.length?'当前无完整基因型组合':'当前组合无实测值'}{endpoint?' · n = 0':''}</p>}
       </section>;
     })}</div>
-    <p className="footnote">点击地区的“查看明细”，可在下方逐份查看材料的原始表型。{selectedIds.length>0?'图中圆点标出有测值的关注材料。':''}</p>
+    <p className="footnote">“个体明细”展示所选地区的原始表型。{compact?'展开面板可并列查看各地。':''}{selectedIds.length>0?'圆点为关注材料。':''}</p>
   </div>;
 }

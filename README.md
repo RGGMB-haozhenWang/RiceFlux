@@ -103,3 +103,11 @@ Use **我的工作区** to reorder, resize, rename, add or hide components, save
 **下载基因数据** exports a ZIP of TXT/TSV tables readable by Excel and analysis software. [Ontology and exchange contract](public/formats/ontology.txt), [trait registry](public/formats/traits.tsv), and [chromosome region annotations](public/formats/genome_regions.tsv) define the standard and its boundaries. GO is a gene-function annotation layer; agronomic traits use the Trait–Method–Scale model with explicit, reviewed CO/TO mappings. Current external trait mappings remain unassigned.
 
 RiceNavi's frozen source catalogue is separately accessible: 319 loci, 404 accessions and 128,876 source calls. [Source manifest](public/sources/ricenavi-20261025/manifest.json) records the exact revision. Per-call QC, physical material identity and phase are not certified, and catalogue phenotypes lack bound trial environments. They are not automatically pooled with RiceAtlas 6044. Future genome/pangenome entities and projections are specified in the ontology contract without adding new genome-wide panels.
+
+### 自选位点与电脑总览（2026-11-16）
+
+默认电脑视图将基因结构、等位频率、基因型组合和地区表型放在四个可展开面板；文献、多基因、材料和个体明细由标签页切换。正文 16px、主要数据 14px，提供 18px 大字模式。总览内按试验地点切换表型，展开后分地区并列展示；原组件编辑功能保留在“自由布局”。
+
+单基因和多基因均可使用“自选位点”，逐项勾选或采用 CDS、启动子、文献位点集合预设。单基因以完整未分相调用重算组合及地区表型，多基因以完整纯合序列生成“自选型”，并联动区域轨道和频率菜单。自选组合不继承文献型名；缺少请求位点时保留未覆盖状态，空集合不生成组合。手动选择绕过 MAF/缺失阈值，仍展示当前质控数值，可恢复自动 QC。
+
+工作区保存两种分析范围各自的位点集合、字号和标签页。基因数据包升级为 export 1.1，新增 `analysis_sites.tsv` 保存位点顺序、参考版本、REF、选择方式及覆盖状态；`variants.tsv` 分别记录阈值结果和实际纳入状态。联合成员表也包含完整方案定义与数据版本。6044 原始分型、表型和 477 基因先验未改变。

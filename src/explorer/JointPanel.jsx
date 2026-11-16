@@ -2,20 +2,23 @@ import {PopulationComposition} from './PopulationComposition.jsx';
 import React,{useMemo,useRef,useState} from 'react';
 import {geneSchemes,jointCalls,statusText} from './jointHaplotypes.js';
 import {formats,downloadTable,materialRow,matchesMaterial} from './formats.js';
+import {SitePicker} from './SitePicker.jsx';
 
-const kinds={literature:'文献命名型',input:'导入状态型',observed:'群体纯合标记型'};
+const kinds={literature:'文献命名型',input:'导入状态型',observed:'群体纯合标记型',custom:'自选纯合标记型'};
 const pct=(n,d)=>d?(100*n/d).toFixed(1)+'%':'—';
 const displayCall=c=>c.status==='called'?c.label:statusText[c.status]+(c.label?' · '+c.label:'');
 function schemeTitle(s){
   const title=kinds[s.kind]+' · '+s.positions.length+' 位点';
   return title+(s.definitions.length?' · '+s.definitions[0].label+(s.definitions.length>1?' 等':''):'')+(!s.ready?'（无法完整判型）':'');
 }
-function Definition({gene,schemes,current,onChange}){
+function Definition({gene,cohort,schemes,current,custom,onChange,onCustom}){
   return <div className="joint-definition"><label><strong>{gene.name}</strong>
     <select aria-label={gene.name+' 判型方案'} value={current.id} onChange={e=>onChange(e.target.value)}>
       {schemes.map(s=><option key={s.id} value={s.id}>{schemeTitle(s)}</option>)}</select></label>
+    <SitePicker gene={gene} cohort={cohort} selection={custom} initialIds={current.markers.filter(Boolean).map(v=>v.id)} schemes={schemes} onApply={onCustom}/>
     <details><summary>位点顺序与型名依据</summary>
-      <p>{gene.chromosome} · {current.positions.join(' → ')||'暂无可用位置'}</p>
+      <p>{gene.chromosome} · {current.positions.map(p=>p??'未覆盖').join(' → ')||'暂无可用位置'}</p>
+      {current.kind==='custom'&&<p>自选位点组合，不继承文献型名。{current.missing.length>0&&'未覆盖：'+current.missing.join('、')}{current.assemblyMismatch&&'参考版本不匹配，需重新选点。'}</p>}
       {current.doi.map(d=><a key={d} href={'https://doi.org/'+d} target="_blank" rel="noreferrer">{d} </a>)}
       {current.definitions.length?<ul>{current.definitions.map((d,i)=><li key={i}>{d.label} · {d.sequence}{!d.valid&&'（状态未解析）'}</li>)}</ul>:
       <p>按本面板已有标记的坐标顺序，用实测纯合碱基序列命名。单个位点仅显示单标记型。</p>}
@@ -29,8 +32,8 @@ export function JointPanel({data,genes,cohort,records,config={},onConfig}){
   const [selection,setSelection]=useState('all'),[query,setQuery]=useState('');
   const [limit,setLimit]=useState(24),[comboLimit,setComboLimit]=useState(24);
   const menus=useMemo(()=>{
-    return genes.map(g=>geneSchemes(g,data.evidence,records.filter(r=>r.gene===g)));
-  },[data.evidence,genes,records]);
+    return genes.map(g=>geneSchemes(g,data.evidence,records.filter(r=>r.gene===g),config.customSites?.[g.id]));
+  },[data.evidence,genes,records,config.customSites]);
   const methods=useMemo(()=>menus.map((menu,i)=>menu.find(s=>s.id===chosen[genes[i].id])||menu[0]),[menus,genes,chosen]);
   const result=useMemo(()=>jointCalls(eligible,methods),[eligible,methods]);
   const popIds=data.populations.map(p=>p.id).filter(id=>result.population.has(id));
@@ -42,7 +45,7 @@ export function JointPanel({data,genes,cohort,records,config={},onConfig}){
   const statsLabel=mode==='group'?JSON.parse(selection).join(' × '):mode==='unresolved'?'未完整判型':'全部材料';
   function filterMembers(key){setSelection(key);setLimit(24);setQuery('');}
   const definitionFields=genes.map(g=>'definition|'+g.id);
-  const schemeValues=Object.fromEntries(methods.map((s,i)=>[definitionFields[i],JSON.stringify({mode:s.kind,chr:genes[i].chromosome,positions:s.positions,refs:s.markers.map(v=>v?.ref??null),doi:s.doi,definitions:s.definitions})]));
+  const schemeValues=Object.fromEntries(methods.map((s,i)=>[definitionFields[i],JSON.stringify({mode:s.kind,assembly:s.assembly||genes[i].assembly,chr:genes[i].chromosome,marker_ids:s.markerIds||s.markers.map(v=>v?.id??null),positions:s.positions,refs:(s.markerIds?s.markerIds.map(id=>genes[i].variants.find(v=>v.id===id)):s.markers).map(v=>v?.ref??null),ready:s.ready,doi:s.doi,definitions:s.definitions})]));
   function exportGroups(){
     const geneFields=genes.map(g=>g.name+'|'+g.id);
     const fields=formats.jointCombinations.columns.flatMap(key=>{
@@ -63,14 +66,14 @@ export function JointPanel({data,genes,cohort,records,config={},onConfig}){
     const cols=genes.flatMap(g=>formats.jointMaterials.columnPatterns.map(key=>key.replace('{gene_id}',g.id)));
     const out=rows.map(({sample:s,calls,key})=>{
       const values=calls.flatMap(c=>[c.label,c.status,c.bases]);
-      return {...materialRow(s),joint_status:key?'called':'unresolved',
+      return {...materialRow(s),...schemeValues,dataset_versions:JSON.stringify(data.meta.datasets),joint_status:key?'called':'unresolved',
         ...Object.fromEntries(cols.map((k,i)=>[k,values[i]]))};
     });
-    downloadTable(formats.jointMaterials,out,[...formats.jointMaterials.columns,...cols]);
+    downloadTable(formats.jointMaterials,out,[...formats.jointMaterials.columns,...cols,...definitionFields,'dataset_versions']);
   }
   return <div className="joint-panel">
     <label className="call-policy">分型证据范围 <select aria-label="分型证据范围" value={policy} onChange={e=>{onConfig({...config,policy:e.target.value});filterMembers('all');}}><option value="all">全部来源（保留各自证据标签）</option><option value="direct">仅声明 G_direct 的数据集</option></select><small>来源标签不替代逐位点 QC。当前保留 {eligible.length} / {cohort.length} 份材料；6044 为 G_chip。</small></label>
-    <div className="joint-definitions">{genes.map((gene,i)=><Definition key={gene.id} gene={gene} schemes={menus[i]} current={methods[i]} onChange={id=>{setChosen({...chosen,[gene.id]:id});filterMembers('all');setComboLimit(24);}}/>)}</div>
+    <div className="joint-definitions">{genes.map((gene,i)=><Definition key={gene.id} gene={gene} cohort={eligible} schemes={menus[i]} current={methods[i]} custom={config.customSites?.[gene.id]} onCustom={selection=>{onConfig({...config,customSites:{...config.customSites,[gene.id]:selection},chosen:{...chosen,[gene.id]:'custom'}});filterMembers('all');setComboLimit(24);}} onChange={id=>{setChosen({...chosen,[gene.id]:id});filterMembers('all');setComboLimit(24);}}/>)}</div>
     <div className="joint-counters" aria-label="联合判型统计">
       {[['当前材料',eligible.length],['完整判型',result.assigned],['未完整判型',eligible.length-result.assigned],['观察到的组合',result.groups.length]].map(([label,n])=><div key={label}><span>{label}</span><strong>{n.toLocaleString()}</strong></div>)}
     </div>

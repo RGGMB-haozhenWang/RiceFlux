@@ -1,5 +1,6 @@
 import {callOf} from './catalog.js';
 import {chromNum} from './exchange.js';
+import {resolveSites} from './siteSelection.js';
 
 import supplement from '../../public/formats/literature.json' with { type: 'json' };
 
@@ -39,7 +40,13 @@ function insertDefinition(sets,gene,entry,kind){
   }
 }
 
-export function geneSchemes(gene,evidence,imported=[]){
+export function customScheme(gene,selection){
+  const resolved=resolveSites(gene,selection);
+  return {id:'custom',kind:'custom',...resolved,positions:resolved.markerIds.map(id=>gene.variants.find(v=>v.id===id)?.pos??null),
+    markers:resolved.variants,assembly:selection.assembly,doi:[],definitions:[]};
+}
+
+export function geneSchemes(gene,evidence,imported=[],custom){
   const sets=new Map();
   for(const d of literatureDefinitions(gene,evidence))insertDefinition(sets,gene,d,'literature');
   for(const rec of imported){
@@ -51,7 +58,7 @@ export function geneSchemes(gene,evidence,imported=[]){
   for(const s of schemes)s.ready=s.ready&&s.lookup.size>0;
   const markers=gene.variants.slice().sort((a,b)=>a.pos-b.pos);
   const observed={id:'observed',kind:'observed',positions:markers.map(m=>m.pos),markers,ready:!!markers.length,doi:[],definitions:[]};
-  return [...schemes.filter(s=>s.ready),observed,...schemes.filter(s=>!s.ready)];
+  return [...schemes.filter(s=>s.ready),observed,...(custom?[customScheme(gene,custom)]:[]),...schemes.filter(s=>!s.ready)];
 }
 
 export function typeMaterial(sample,scheme){
@@ -67,7 +74,7 @@ export function typeMaterial(sample,scheme){
   const vector=bases.join(' ');
   if(missing||het)return {status:missing&&het?'both':missing?'missing':'heterozygous',label:'',bases:vector};
   const sequence=bases.join('');
-  if(scheme.kind==='observed')return {status:'called',label:(bases.length===1?'单标记 ':'标记型 ')+sequence,bases:vector};
+  if(scheme.kind==='observed'||scheme.kind==='custom')return {status:'called',label:(scheme.kind==='custom'?'自选型 ':bases.length===1?'单标记 ':'标记型 ')+sequence,bases:vector};
   const matches=scheme.lookup.get(sequence);
   if(!matches)return {status:'unmatched',label:'',bases:vector};
   if(matches.size!==1)return {status:'ambiguous',label:[...matches].join(' / '),bases:vector};

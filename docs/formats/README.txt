@@ -17,7 +17,7 @@ Hap 保留原文型名、单个等位状态或逗号分隔的有序状态。参�
 输出
 riceflux_prior_results.tsv 的前八列保留输入值，每个 Position 组分一行，Component 从 1 起按原顺序编号。追加 Matched_gene、Marker、Status、N_samples、REF_copies、ALT_copies、Called_copies、ALT_frequency。匹配结果为 matched、gene_unresolved、position_missing 或 site_unmatched。未匹配行的调用及频率字段为空。N_samples 是当前选中材料数，Called_copies 是检出的拷贝数，ALT_frequency 是 ALT_copies / Called_copies，范围 0–1，无可用拷贝时留空。
 riceflux_comparison.tsv 使用相同列序，逐个列出所选基因的已接入位点，包括未通过单基因视图 MAF 阈值的稀有位点。Status 为 typed 或 no_typed_site。此表按同一材料筛选统计，Hap 留空。多基因视图的轨道使用独立坐标窗口，同一行的多个 SNP 可以属于同一个先验事件。
-单基因视图“导出当前分析”保存 JSON，包含材料与群体筛选、位点阈值、轨道基因、个体分型、组合、局部表型与名录品种名。频率和地区表型的适用材料范围随选择一起导出。
+单基因视图“下载基因数据”输出 ZIP 内的 UTF-8 TXT/TSV。基因、材料分型、原始表型、频率、证据与分析条件分别成表，可由 Excel 按制表符导入；材料编号按文本导入。JSON 仅用于工作区设置恢复或本体关系。
 
 riceflux_material_genotypes.tsv 每行一份材料，前四列为 accession_id、original_name、material_type、source_group。后续每列为一个“基因|位点”，值为正链未分相的等位对，· 表示缺失拷贝，NA 表示基因没有可选位点。导出保留材料范围和搜索条件。
 
@@ -31,3 +31,9 @@ riceflux_joint_materials.tsv 按所选组合及成员检索条件导出。每个
 formats/exchange.json 是 JSON-LD 交换合同，列出 RiceFlux 接受的输入、各输出文件、行实体及固定列序，花括号代表随所选基因或位点展开的列。补充文献型在 formats/literature.json 中按已发布基因 IRI、正链有序组分和 DOI 登记，单基因和多基因视图共同读取。当前补充文件包含 ALK 三种三位点型。在 prior/ 下可找到已有的核心 ontology.jsonld.gz、群体 population_ontology.jsonld 和扩展 v4_catalog.jsonld.gz。
 输入匹配表追加 Input_row（文件行号，第一条数据为 2）、Input_DOI（输入记录自带来源）、Gene_IRI、Site_IRI、Evidence_level、Functional_DOI、Event_DOI、Gene_DOI。后三种 DOI 分别来自当前发布库的位点功能、事件和基因背景证据，空值表示无对应来源。位点比较表具有同一列结构，Input_row 和 Input_DOI 留空。
 导入后可导出 riceflux_prior_graph.jsonld，图内包含输入文件、当前队列的材料编号、每行原字段、原顺序组分及其匹配状态和计数。每个已解析的基因和每个已匹配位点均引用已发布本体中的 IRI。文件内的空白节点标识输入行和组分，跨文件按发布实体 IRI 连接。
+
+自选位点与桌面阅读（2026-11-16）
+“基因总览”将基因区域、等位频率、基因型组合和地区表型放在一个电脑工作区。默认正文 16px、主要数据 14px，可切换 18px 大字；面板支持展开，其他分析通过标签页访问。“自由布局”保留原有组件编辑与拖动。地区表型在总览按地点切换，展开后分别并列显示，不合并不同试验环境。
+“自选位点”支持逐个勾选、全选、清空、CDS、启动子及完整覆盖的文献位点集合预设。手动模式绕过 MAF/缺失阈值，但不改变原始调用；选择恢复 QC 后重按当前材料过滤。单基因与多基因的位点选择分别保存。多基因自选方案同时限制该基因的区域高亮、频率位点菜单及连锁分析可选标记。
+单基因按未分相基因型向量分组，允许完整杂合；多基因自选方案只命名完整纯合序列为“自选型”，杂合仍标记未解析。自选集合不继承文献 Hap 名称和功能结论。零位点没有完整组；切换数据后请求位点未覆盖或参考版本不一致时，不把剩余子集作为完整定义。
+Gene export 1.1 在原 12 个 TSV 表外加入 analysis_sites.tsv，含 order、marker_id、assembly、chr、position、ref、alt、mode、status；顺序为坐标升序，未覆盖请求保留。variants.tsv 的 qc_retained 记录阈值结果，selected_for_analysis 记录实际选择。联合成员 TSV 追加每个基因的 definition 及 dataset_versions，独立下载也可追溯方案。settings JSON 保留单基因 siteSelections、compare.joint.customSites 及 display；旧设置可导入并使用自由布局。
