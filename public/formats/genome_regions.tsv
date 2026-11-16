@@ -1,0 +1,13 @@
+assembly	chr	feature	position	start	end	resolution	source	assembly_basis	accessed
+IRGSP-1.0	Chr1	centromere_approximate_point	16700000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr2	centromere_approximate_point	13600000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr3	centromere_approximate_point	19400000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr4	centromere_approximate_point	9700000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr5	centromere_approximate_point	12400000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr6	centromere_approximate_point	15300000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr7	centromere_approximate_point	12100000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr8	centromere_approximate_point	12900000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr9	centromere_approximate_point	2800000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr10	centromere_approximate_point	8200000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr11	centromere_approximate_point	12000000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16
+IRGSP-1.0	Chr12	centromere_approximate_point	11900000			approximate_Mb_not_boundary	https://rice.uga.edu/annotation_pseudo_centromeres.shtml	RGAP current pseudomolecules FAQ; approximate legacy clone locations	2026-11-16

@@ -1,0 +1,59 @@
+trait_id	name	category	family	term_kind	ontology_id	mapping_status	method_id	method_label	scale_id	unit	growth_stage	default_direction	ontology_reference
+heading	抽穗期	生育期	heading	measured_trait		unmapped	RF:method:heading:抽穗期	抽穗期	RF:scale:天	天	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+length	粒长	粒形	length	measured_trait		unmapped	RF:method:length:粒长	粒长	RF:scale:mm	mm	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+width	粒宽	粒形	width	measured_trait		unmapped	RF:method:width:粒宽	粒宽	RF:scale:mm	mm	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+leaf_blast	叶瘟抗性	抗病	blast	measured_trait		unmapped	RF:method:leaf_blast:叶瘟评分	叶瘟评分	RF:scale:级	级	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+leaf_blast	叶瘟抗性	抗病	blast	measured_trait		unmapped	RF:method:leaf_blast:SLBR_CH102	SLBR_CH102	RF:scale:原表单位未注明	原表单位未注明	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+leaf_blast	叶瘟抗性	抗病	blast	measured_trait		unmapped	RF:method:leaf_blast:SLBR_CH171	SLBR_CH171	RF:scale:原表单位未注明	原表单位未注明	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+leaf_blast	叶瘟抗性	抗病	blast	measured_trait		unmapped	RF:method:leaf_blast:SLBR_CH182	SLBR_CH182	RF:scale:原表单位未注明	原表单位未注明	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+leaf_blast	叶瘟抗性	抗病	blast	measured_trait		unmapped	RF:method:leaf_blast:SLBR_CH551	SLBR_CH551	RF:scale:原表单位未注明	原表单位未注明	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+leaf_blast	叶瘟抗性	抗病	blast	measured_trait		unmapped	RF:method:leaf_blast:SLBR_CH553	SLBR_CH553	RF:scale:原表单位未注明	原表单位未注明	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+neck_blast	穗颈瘟抗性	抗病	blast	measured_trait		unmapped	RF:method:neck_blast:穗颈瘟评分	穗颈瘟评分	RF:scale:级	级	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+blight	白叶枯病斑长度	抗病	blight	measured_trait		unmapped	RF:method:blight:C5	C5	RF:scale:cm	cm	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+blight	白叶枯病斑长度	抗病	blight	measured_trait		unmapped	RF:method:blight:K85	K85	RF:scale:cm	cm	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+blight	白叶枯病斑长度	抗病	blight	measured_trait		unmapped	RF:method:blight:P6	P6	RF:scale:cm	cm	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+blight	白叶枯病斑长度	抗病	blight	measured_trait		unmapped	RF:method:blight:T1	T1	RF:scale:cm	cm	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+sheath	纹枯病相对病斑高度	抗病	sheath	measured_trait		unmapped	RF:method:sheath:纹枯病相对病斑高度	纹枯病相对病斑高度	RF:scale:%	%	not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+all_prior	全部现行先验基因 · 484	基因先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_米质／糊化	米质／糊化	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_氮利用效率	氮利用效率	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_抗病／稻瘟病	抗病／稻瘟病	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_米质／垩白	米质／垩白	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_粒数与粒重	粒数与粒重	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_分蘖角与粒重	分蘖角与粒重	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_穗型与粒数	穗型与粒数	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_主茎与分蘖同步	主茎与分蘖同步	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_粒长／外观	粒长／外观	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_每穗粒数	每穗粒数	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_穗分枝与粒数	穗分枝与粒数	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_粒型与粒重	粒型与粒重	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_粒宽与外观	粒宽与外观	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_株型与穗粒	株型与穗粒	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_穗粒与叶型	穗粒与叶型	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_米质／香味	米质／香味	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_穗分枝	穗分枝	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_氮同化与粒重	氮同化与粒重	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_低镉	低镉	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_粒形与粒重	粒形与粒重	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_粒重与米质	粒重与米质	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_磷吸收与镉积累	磷吸收与镉积累	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_粒重与粒型	粒重与粒型	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_粒长与粒重	粒长与粒重	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_强秆与抗倒伏	强秆与抗倒伏	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_半矮秆株型	半矮秆株型	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_分蘖角度	分蘖角度	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_分蘖与穗数	分蘖与穗数	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_米质／直链淀粉	米质／直链淀粉	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+prior_抗病／白叶枯	抗病／白叶枯	文献先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_产量构成	产量构成	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_株型	株型	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_粒形	粒形	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+core50	原核心 50 基因	基因先验	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_生育期	生育期	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_其他性状	其他性状	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_unspecified	未归类的基因先验	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_非生物胁迫	非生物胁迫	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_米质	米质	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_Secondary metabolism	Secondary metabolism	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+v4_氮响应	氮响应	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+historical	仅历史身份	历史名录	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice

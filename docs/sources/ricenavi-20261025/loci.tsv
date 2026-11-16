@@ -1,0 +1,320 @@
+external_id	source_row	version	chromosome	position_literal	method	ref_literal	alt_literal	source_effect_label	gene_symbol	variant_type
+ricenavi_locus:e346fefe547ed46de67d5151	1	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	5271719	GATK4	TTCAGCCATGGG	T	increasing grain number	Gn1a	Indel_or_complex
+ricenavi_locus:6bf8c5cfd87f78a2d498c428	2	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	5270928	GATK3	A	C	increasing grain number	Gn1a	SNP
+ricenavi_locus:d1aababcc699b8a56662d563	3	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	5568692	GATK4	T	C	fertility restoration	Rf3	SNP
+ricenavi_locus:ca0ad848ec11c526e0efa2a3	4	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	18722895	GATK4	C	T	hybrid incompatibility	ESA1	SNP
+ricenavi_locus:d20d920648abf03c355c7aec	5	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	22376434	GATK4	C	T	Hybrid male sterility	SaF	SNP
+ricenavi_locus:b66da288ffc05249d7077522	6	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	22381235	GATK4	T	G	Hybrid male sterility	SaM	SNP
+ricenavi_locus:76bd30f2a26a8ede0f1175fd	7	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	31558876	GATK4	G	GCAAAGTTGCCAT	increasing grain number	NOG1	Indel_or_complex
+ricenavi_locus:3f4e80a2a28641100e4326ca	8	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	33695501	GATK4	A	T	interspecific hybrid weakness	Hwi2	SNP
+ricenavi_locus:01192c536cba8057ab62e747	9	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	35558484	GATK4	C	A	increasing grain number	LAX1	SNP
+ricenavi_locus:8d65bf40f5e4305c64ce6f60	10	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	35555900	GATK3	T	C	decreasing tiller number	LAX1	SNP
+ricenavi_locus:ff56369495b6f37075a3389a	11	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	6397412	GATK4	C	A	thermosensitive male sterility	tms5	SNP
+ricenavi_locus:bd1d871c02389b5c2b5567f7	12	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	8117283	GATK4	CA	C	larger grain width and weight	GW2	Indel_or_complex
+ricenavi_locus:62e033a33f45eb2084370863	13	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	9997737	GATK4	C	T	fertility restoration	Rf2	SNP
+ricenavi_locus:d1f17f440632a651d738406b	14	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	28865723	GATK4	G	T	larger grain size and higher nitrogen use efficiency	OsGRF4	SNP
+ricenavi_locus:9045368d462a79ca525411b7	15	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	4353347	GATK4	A	C	increasing grain length	OsLG3	SNP
+ricenavi_locus:924c80e095bdd751caa012b8	16	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	4352886	GATK4	T	A	increasing drought tolerance	OsLG3	SNP
+ricenavi_locus:f52e5cd760b2c095ad3b83cc	17	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	6053303	GATK4	C	A	increasing grain length	OsMADS1	SNP
+ricenavi_locus:760ce623ab7736728cba8700	18	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	16733441	GATK4	G	T	increasing grain length	GS3	SNP
+ricenavi_locus:37884c788fac6215c2532d8b	19	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	17340602	GATK4	T	C	deceasing grain length	GL3.2	SNP
+ricenavi_locus:4f8c585090be8a85edb3c399	20	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	25046741	GATK4	G	T	increasing grain length	GL3.1	SNP
+ricenavi_locus:64ff649c3d9081a93de8587e	21	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	28093193	GATK4	G	A	decreasing generation of stale flavor	LOX-3	SNP
+ricenavi_locus:8ca117c03a6a91917497d563	22	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	35390422	GATK4	C	T	increasing grain length	GL3.3	SNP
+ricenavi_locus:9cffd57e52d7d00050a9b7e6	23	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	36150781	GATK4	G	A	increaing grain number and plant height	GNP1	SNP
+ricenavi_locus:92956292d27dc19298a0c3a6	24	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	14804882	GATK4	C	T	hybrid incompatibility	S28	SNP
+ricenavi_locus:c345eb86f313761266d2649f	25	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	19403332	GATK4	T	C	hybrid incompatibility	DGS1	SNP
+ricenavi_locus:0cdc028bfd32b643090261b1	26	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	31212801	GATK4	A	G	decreasing leaf width and yield	NAL1	SNP
+ricenavi_locus:55df286d189462ed0e3952cc	27	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	2604473	GATK4	G	A	increasing setting rate	PTB1	SNP
+ricenavi_locus:dc8bf0dea38d0623ec105d70	28	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	3444274	GATK4	C	T	decreasing grain width	GS5	SNP
+ricenavi_locus:6f2f26bcb2bd3c552cec9d7a	29	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	3444712	GATK4	G	A	decreasing grain width	GS5	SNP
+ricenavi_locus:e1fd0d82bed64adda0507ffd	30	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	5365256	GATK4	G	A	increasing grain width	GW5	SNP
+ricenavi_locus:dc11821bef3146e1d77bd031	31	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	1468526	GATK4	T	TCTCTCACTCTCA,TCTCTCA,TCTCTCACTCTCACTCTCA	decreasing grain size	GS6	Indel_or_complex
+ricenavi_locus:f14c5d132028de5d24133c89	32	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	4201227	GATK4	C	T	hybrid incompatibility	DPL2	SNP
+ricenavi_locus:6a12424dcfccdcdc6058ed75	33	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5745402	GATK4	C	CCAGTGATCGAAAT	hybrid incompatibility	ORF3	Indel_or_complex
+ricenavi_locus:ed180999b554803838a5c05a	34	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5758523	GATK4	AGCCGCGTAGCT	A	hybrid incompatibility	ORF4	Indel_or_complex
+ricenavi_locus:94577200fded64e7a526af08	35	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5759744	GATK3	A	ATTAAATTT	hybrid compatibility	S5	Indel_or_complex
+ricenavi_locus:f76556a0d8f644204b03c796	36	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5761369	GATK4	TACAACGATCC	T	hybrid compatibility	S5	Indel_or_complex
+ricenavi_locus:ef073afa0fa5183f21fe2023	37	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	25093552	GATK4	CG	C	increasing grain weight	TGW6	Indel_or_complex
+ricenavi_locus:5eccbec2196d4aa3781d9af0	38	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	25093498	GATK4	CCGCT	C	increasing grain weight	TGW6	Indel_or_complex
+ricenavi_locus:b3241e8a963039dcd3ba1ce2	39	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	26592357	GATK4	C	T	increasing grain weight and plant height	GW6a	SNP
+ricenavi_locus:2da613d77e7328a7a8bbf420	40	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	15787003	GATK4	G	T	hybrid compatibility	S7	SNP
+ricenavi_locus:11e06447053f71a66f29302f	41	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	19103249	GATK3	AGTGGAAGGC	A	increasing grain size	OsSPL13	Indel_or_complex
+ricenavi_locus:2ef38c3179480f8108fc57f1	42	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	24669233	GATK4	CTATCACTTTCT	C	increasing grain length	GW7	Indel_or_complex
+ricenavi_locus:a6830a484415210c7658b27b	43	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	24714487	GATK4	A	C	increasing grain size	CYP78A13	SNP
+ricenavi_locus:7bc2ae19befcae4bf5ceb4d8	44	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	24714768	GATK4	G	T	increasing grain size	CYP78A13	SNP
+ricenavi_locus:132a9d25974f6b9a92568f6a	45	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	28306257	GATK4	C	CGCGTGCGCGTCCGTGCGT	loose panicle	FZP	Indel_or_complex
+ricenavi_locus:3262961b7ce078612811c4b9	46	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	26501540	GATK4	TGCG	T	increasing grain width	GW8	Indel_or_complex
+ricenavi_locus:7bff3ee4c2312077a8b5c2d9	47	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	26505387	GATK4	C	A	increasing grain width	GW8	SNP
+ricenavi_locus:f57f2c103c4251ceff0f5f4f	48	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	18835456	GATK4	T	A	fertility restoration	Rf4	SNP
+ricenavi_locus:94576f285decbbe5d3934274	49	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	18952469	GATK3	C	CA	fertility restoration	Rf1a	Indel_or_complex
+ricenavi_locus:31b91a9fa77d2c5353724eb0	50	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	19058375	GATK4	G	A	fertility restoration	Rf1b	SNP
+ricenavi_locus:1a103392eebe0fc8b7a6e686	51	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	19462395	GATK4	CGCG	C,CGCGGCG	decreasing grain-filling rate 	GFR1	Indel_or_complex
+ricenavi_locus:91fd286ccb50376316eb408a	52	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	24647360	GATK4	TA	T	hybrid incompatibility	HSA1a	Indel_or_complex
+ricenavi_locus:a5ccfa000d4717c3e51db289	53	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	24669797	GATK3	GA	G	hybrid incompatibility	HSA1b	Indel_or_complex
+ricenavi_locus:3a5cf394ab3dcebdc44b30b7	54	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	22054886	GATK4	C	G	photoperiod-sensitive male sterility	pms3	SNP
+ricenavi_locus:e4046aa492f413bbdce1927c	55	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	6693475	GATK4	G	T	photoperiod-sensitive male sterility	pms1	SNP
+ricenavi_locus:1f6da08cab7c1c50b3cafa19	56	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	36355847	GATK4	G	A	delaying heading date under LD	HESO1	SNP
+ricenavi_locus:db27b8e00b658ddf56caa28b	57	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	40344413	GATK3	ACACCACCACACACACG	A	delaying heading date	OsMADS51	Indel_or_complex
+ricenavi_locus:7a1ae90a3e341b7515fb2b95	58	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	40363925	GATK4	GAGGA	G	delaying heading date	OsMADS51	Indel_or_complex
+ricenavi_locus:fc316426ed9c00b6adb9630f	59	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	23990288	GATK4	C	A	promoting heading date	OsCOL4	SNP
+ricenavi_locus:8df82d1fc99b8f046eb5ec78	60	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	23991055	GATK4	GTGCA	G	promoting heading date	OsCOL4	Indel_or_complex
+ricenavi_locus:5e1303e68a34f019dd6aec4f	61	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	30096330	GATK4	A	G	delaying heading date under LD	DTH2	SNP
+ricenavi_locus:410313e32aefe9282c8f31b8	62	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	718648	GATK4	A	T	delaying heading date	Ehd4	SNP
+ricenavi_locus:28edf1ca01c8f14b88cff24c	63	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	1270327	GATK4	T	C	delaying heading date	OsSOC1	SNP
+ricenavi_locus:976d2ec923a4ed7a3a103025	64	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	31512460	GATK4	A	T	delaying heading date under LD	Hd6	SNP
+ricenavi_locus:ad270ce6c8aa364f34f3430d	65	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	33002789	GATK4	G	A	promoting heading date under LD	Hd16	SNP
+ricenavi_locus:e6e53b28b9c56bd2b875ba7d	66	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	33001571	GATK4	G	C	promoting heading date under LD	Hd16	SNP
+ricenavi_locus:e0b67e39df16c3b5aa3ed55d	67	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	2235191	GATK4	A	G	delaying heading date	Hd17	SNP
+ricenavi_locus:7f403c972b6fc90360dc719b	68	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	2928178	GATK4	G	A	delaying heading date	RFT1	SNP
+ricenavi_locus:c791f50cd468c7a1e065372b	69	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	2942292	GATK4	C	A	promoting heading date under SD	Hd3a	SNP
+ricenavi_locus:69e0811e45439e38c8583cbe	70	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	2940130	GATK4	A	T	promoting heading date	Hd3a	SNP
+ricenavi_locus:ad58e21fc2ca143b7e74492f	71	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	9337101	GATK4	CG	C	promoting heading date under LD	Hd1	Indel_or_complex
+ricenavi_locus:8ad963cda9e33ec288ea67e1	72	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	9338220	GATK4	CAAGA	C	promoting heading date under LD	Hd1	Indel_or_complex
+ricenavi_locus:5a127f3ea12bfe4e86d93819	73	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	9338004	GATK4	CTT	C	promoting heading date under LD	Hd1	Indel_or_complex
+ricenavi_locus:810dc47425bdc78c96b33474	74	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	9338243	GATK4	C	T	promoting heading date under LD	Hd1	SNP
+ricenavi_locus:70a0f81a775e60bc5f62d440	75	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	9337217	GATK4	AGAAG	A	promoting heading date under LD	Hd1	Indel_or_complex
+ricenavi_locus:cfe33c583ed701782c506f9a	76	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	9337239	GATK3	G	GGTTAT	promoting heading date under LD	Hd1	Indel_or_complex
+ricenavi_locus:96cc66ff11390fdee031ae0c	77	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	9152558	GATK4	G	T	promoting heading date under LD	Ghd7	SNP
+ricenavi_locus:99c62e631cf98cbf7865ea9d	78	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	9154664	GATK4	C	A	promoting heading date under LD	Ghd7	SNP
+ricenavi_locus:dcc6219435496f32fc0595f4	79	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	9152488	GATK4	C	G	delaying heading date under LD	Ghd7	SNP
+ricenavi_locus:741cd3bc15da1251776f81c5	80	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	9154489	GATK4	G	C	promoting heading date under LD	Ghd7	SNP
+ricenavi_locus:f160d8c894f3f49c46a585c6	81	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	29623435	GATK4	C	G	promoting heading date under LD	Ghd7.1	SNP
+ricenavi_locus:a8520d4e947493b0664de392	82	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	29627357	GATK4	AGAACGTTG	A	promoting heading date under LD	Ghd7.1	Indel_or_complex
+ricenavi_locus:20c1acd6c285f31cf552c4f6	83	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	29628481	GATK4	T	C	promoting heading date under LD	Ghd7.1	SNP
+ricenavi_locus:a3e9e98c73fb636c792c3faf	84	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	29628484	GATK4	C	T	promoting heading date under LD	Ghd7.1	SNP
+ricenavi_locus:b209fe3983ccd2909bb7ba8d	85	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	29628500	GATK4	T	C	promoting heading date under LD	Ghd7.1	SNP
+ricenavi_locus:ef950680993af3805fb57097	86	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	29628529	GATK4	C	T	promoting heading date under LD	Ghd7.1	SNP
+ricenavi_locus:450c9c628db17af5f1806571	87	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	2388554	GATK4	T	C	delaying heading date	Hd18	SNP
+ricenavi_locus:3a7d9d13df8df168a8e27ef3	88	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	4332836	GATK3	A	ATGCCC	promoting heading date under LD	DTH8	Indel_or_complex
+ricenavi_locus:3115ca927ab0de6669f5a9c2	89	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	4334416	GATK4	CT	C	promoting heading date under LD	DTH8	Indel_or_complex
+ricenavi_locus:54188930736dd5ec3d4666e4	90	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	4333948	GATK3	G	GTGTAGAGCGCGACA	promoting heading date under LD	DTH8	Indel_or_complex
+ricenavi_locus:f06207f4f73f9c92b7717da0	91	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	4334281	GATK4	GGCCTTCTC	G	promoting heading date under LD	DTH8	Indel_or_complex
+ricenavi_locus:6ec97d844084ba48dd9367eb	92	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	4333871	GATK4	A	C	promoting heading date under LD	DTH8	SNP
+ricenavi_locus:7bbcc39a41ec1d98be487b4d	93	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	4334626	GATK3	CCCGCAGCCGCCGCCGCCAG	C	promoting heading date under LD	DTH8	Indel_or_complex
+ricenavi_locus:5027a87d4a66912bc31ecd73	94	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	17076177	GATK4	T	C	delaying heading date	Ehd1	SNP
+ricenavi_locus:e33db58b2f0947bd4c98da62	95	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	17077589	GATK4	C	T	delaying heading date	Ehd1	SNP
+ricenavi_locus:c231fe55056015e97f7f1e46	96	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	20872491	GATK4	A	AT	promoting heading date under LD	OsMADS56	Indel_or_complex
+ricenavi_locus:dd69f7f7367359ab424b6fb0	97	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	2454121	GATK4	C	T	delaying heading date	RCN1	SNP
+ricenavi_locus:d0f15a5d032bbbdcf067a543	98	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	1666408	GATK3	A	ACTCGT	promoting heading date under LD	MIR528	Indel_or_complex
+ricenavi_locus:807ce40767d2f56028cda3c5	99	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	5244076	GATK4	G	T	larger tiller angle	D2	SNP
+ricenavi_locus:c5e9357b515015660aabf011	100	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	29929465	GATK4	G	A	larger flag leaf angle	OsBRI1	SNP
+ricenavi_locus:2e9fdcdf10e80f7eb71665a8	101	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	29930698	GATK4	C	T	larger flag leaf angle	OsBRI1	SNP
+ricenavi_locus:3dee7ce1a0d31f9fa4e72541	102	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	38382846	GATK3	CCG	C	semi-dwarf	sd1	Indel_or_complex
+ricenavi_locus:d801840c13657c046e833ff1	103	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	38383141	GATK3	TA	T	semi-dwarf	sd1	Indel_or_complex
+ricenavi_locus:04663b93cbf5e14342465b79	104	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	38385057	GATK4	A	G	higher plant height	sd1	SNP
+ricenavi_locus:d83654bcb36215dd00d2c21a	105	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	38385064	GATK3	C	G	semi-dwarf	sd1	SNP
+ricenavi_locus:b69c525fed165847ee73fd72	106	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	38381646	GATK4	GTT	GT,G	flooding adaptation	sd1	Indel_or_complex
+ricenavi_locus:63222eb991ccf85c565c3d13	107	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	3845747	GATK4	G	T	larger flag leaf angle	OsbHLH153	SNP
+ricenavi_locus:a3c2a7e0d6c2673040760c38	108	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	28428731	GATK4	G	GTGTA	increasing lodging resistance	OsTB1	Indel_or_complex
+ricenavi_locus:caab00f70b46c1089fff2fe8	109	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	28513552	GATK4	C	A	higher plant height	SLR1	SNP
+ricenavi_locus:e06d37b4972bd7508f8b1154	110	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	29586015	GATK3	A	C	larger tiller angle	TAC3	SNP
+ricenavi_locus:216b299eb20b3de1784e7aba	111	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	6658027	GATK4	C	T	increasing mesocotyl length	OsGSK2	SNP
+ricenavi_locus:f5c48d14f43e10f6c157f0e0	112	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	25515106	GATK4	G	C	higher plant height	SBI	SNP
+ricenavi_locus:d69dfa33e9b22d29ae330592	113	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	27480778	GATK4	G	C	increasing lodging resistance	APO1	SNP
+ricenavi_locus:54101a16aa0c9686dbf19308	114	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	27484286	GATK4	C	T	increasing grain number	APO1	SNP
+ricenavi_locus:03b8d2e922726e11e7e661b0	115	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	20930988	GATK4	C	T	smaller tiller angle	TIG1	SNP
+ricenavi_locus:9effec495dc470e7f62e6575	116	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	26887943	GATK4	C	T	decreasing tiller number and increasing grain number	OsOTUB1	SNP
+ricenavi_locus:042aa89409cb92aa402f25a3	117	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	27998573	GATK4	G	T	increasing plant height	OsSPY	SNP
+ricenavi_locus:8b8752a19f4dcc688d0efc6c	118	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	14567436	GATK4	CCGG	C	decreasing tiller number	OsTb2	Indel_or_complex
+ricenavi_locus:3c22289544013c001fdb3d16	119	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	14568100	GATK4	T	C	increasing tiller number	OsTb2	SNP
+ricenavi_locus:882258ce1e137dd829f955c6	120	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	17133004	GATK4	CCGCCGCCGCCACCGG	C	increasing root thickness and root length	qRT9	Indel_or_complex
+ricenavi_locus:2d5c849b1d5b298949ffa57f	121	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	20731844	GATK4	C	T	larger tiller angle	TAC1	SNP
+ricenavi_locus:d6124b6592a395b19a9a6721	122	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	13723265	GATK4	A	G	increasing flag leaf angle	OsbHLH174	SNP
+ricenavi_locus:a889ab6ebd72ae1dc5ec02f5	123	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	4433136	GATK3	G	GGCGGCGTCGTCGTCGTCT	delaying heading date and increasing plant height	GATA28	Indel_or_complex
+ricenavi_locus:68852690a53ca86a0aecbd2e	124	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	27206054	GATK4	G	A	decreasing lateral roots number	TIPS-11-9	SNP
+ricenavi_locus:163d6d40fbc953a9bc138058	125	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	25383832	GATK4	G	GA	light red seed coat	Rd	Indel_or_complex
+ricenavi_locus:c8e6750778ff6b9c4fbfac51	126	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	25382824	GATK4	G	T	light red seed coat	Rd	SNP
+ricenavi_locus:43b907bfa9d03945ad701dec	127	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	25383093	GATK4	A	C	red seed coat	Rd	SNP
+ricenavi_locus:1b5869a478e53b3d2c905e92	128	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	36461792	GATK4	T	G	seed shattering	qSH1	SNP
+ricenavi_locus:77b618770ccc2287faa4e1a4	129	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	16734470	GATK4	GC	G	awn absent	An-1	Indel_or_complex
+ricenavi_locus:171b6e8d1150c2d1a14b8252	130	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	16734743	GATK4	GGGC	GGGCGGC,G	awn present	An-1	Indel_or_complex
+ricenavi_locus:cdbeb72e97007c749209d6ee	131	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	25960486	GATK4	C	CTAT	awn present	An-2	Indel_or_complex
+ricenavi_locus:0d6833cb304e7df7a5f8ac30	132	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	25959585	GATK4	TC	T	shorter awn	An-2	Indel_or_complex
+ricenavi_locus:eed9c523912ba3a47f12ae97	133	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	990754	GATK4	T	A	glabrousness of rice leave glumes	OsWOX3B	SNP
+ricenavi_locus:3071ece3195d06a82d40a79a	134	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5316554	GATK3	C	CTGCAGGCTCCG	colorless apiculus 	OsC1	Indel_or_complex
+ricenavi_locus:cf7851fa2ce003cee2d63bfa	135	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5315389	GATK4	C	G	slight pigmentation apiculus	OsC1	SNP
+ricenavi_locus:8a4bde3d9391cc36763769b1	136	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5316049	GATK4	ATC	A	colorless apiculus 	OsC1	Indel_or_complex
+ricenavi_locus:8e3aba099cdd572da48b165d	137	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5316058	GATK4	TACTGGAACAG	T	colorless apiculus 	OsC1	Indel_or_complex
+ricenavi_locus:4d8162e687714cddf3a807b1	138	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	27024794	GATK4	C	CCAAAGTTTAACAGTATAGT	increasing grain weight and plant height	HL6	Indel_or_complex
+ricenavi_locus:91db5dd920f0eaaa61f22bae	139	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	6068071	GATK4	A	AACGCGAAAAGTCGG	red seed coat	Rc	Indel_or_complex
+ricenavi_locus:8e17bf11dcea9e38ef82f683	140	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	6068017	GATK4	C	A	red seed coat	Rc	SNP
+ricenavi_locus:634c2e4b8c5e8b5e4c9f10ca	141	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	23999540	GATK3	G	GC,GCCGC	awn present	RAE2	Indel_or_complex
+ricenavi_locus:cc6887324b2e3c8ace9dc4b5	142	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	23999545	GATK4	G	GC	awn absent	RAE2	Indel_or_complex
+ricenavi_locus:baca6f9f882028cf5d609454	143	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	23999487	GATK3	G	C	awn absent	RAE2	SNP
+ricenavi_locus:c2cff9c623d5aa303998d267	144	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	23996438	GATK4	T	TAGGTGTGGCATGGCAAACAAAGTGTGGCCAACAAATTGTTGGCCAC,C	increasing grain length	RAE2	Indel_or_complex
+ricenavi_locus:74f83bdc493099fda237ab0f	145	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	38137703	GATK4	CTCTGTG	C	increasing seed protein content	OsAAP6	Indel_or_complex
+ricenavi_locus:8e35a856e0365c96a8d1ba57	146	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	3339934	GATK4	G	C	decreasing of chalkiness	Chalk5	SNP
+ricenavi_locus:b87c9897f8b216f628785e08	147	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	1633040	GATK4	A	G	more L-asparagine	OsACS6	SNP
+ricenavi_locus:de20ca51a5b5a9260956d1d6	148	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	1767613	GATK4	G	A	decreasing amylose content	Waxy	SNP
+ricenavi_locus:3b685c380665e205c9a7c517	149	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	1765761	GATK4	T	G	decreasing amylose content	Waxy	SNP
+ricenavi_locus:516963283d591bead2027861	150	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	1767637	GATK4	A	G	decreasing amylose content	Waxy	SNP
+ricenavi_locus:b8b11af627d8a6cdca82c2b7	151	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	1768006	GATK4	A	C	increasing amylose content	Waxy	SNP
+ricenavi_locus:219445705b144769ca974c91	152	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	1768998	GATK4	C	T	increasing amylose content	Waxy	SNP
+ricenavi_locus:c6e16e79fb8f34a04e5d5ad5	153	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	1767006	GATK4	G	GCCACGGGTTCCAGGGCCTCAAGC	glutinous rice	Waxy	Indel_or_complex
+ricenavi_locus:6ae0e24ff9a12688437c4c9f	154	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	6752756	GATK4	A	G	increasing gelatinization temperature	ALK	SNP
+ricenavi_locus:0b99f1a0fa3b41252dd9c7f3	155	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	6752888	GATK4	C	T	increasing gelatinization temperature	ALK	SNP
+ricenavi_locus:e4c4922b6108fef42709d9aa	156	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	20382858	GATK4	AAAGAT	A	fragrance	Badh2	Indel_or_complex
+ricenavi_locus:46b55a2c055ad95230c9d0ee	157	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	20379883	GATK4	ATCG	A	fragrance	Badh2	Indel_or_complex
+ricenavi_locus:e03bff3d5307e75089df0a31	158	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	20385593	GATK4	T	TG	fragrance	Badh2	Indel_or_complex
+ricenavi_locus:04aa3d5bfb4ad1ee286b7a40	159	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	13500469	GATK4	TTATTAGCGCATGATTAATTA	ATATTAGCGCATGATTAATTA,T	increasing protein content	OsGluA2	Indel_or_complex
+ricenavi_locus:af2b57761f09a963fe7f1402	160	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	30712558	GATK4	C	T	more 7-O-glucoside	OsUGT706D1	SNP
+ricenavi_locus:6364437d58f139d5313bb489	161	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	35370598	GATK4	G	T	fewer trigonelline	LOC_Os02g57760	SNP
+ricenavi_locus:3e9d032619e1b616a138fcd2	162	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	35382034	GATK4	T	A	more tricin-lignan-glycosides	OsUGT706C2	SNP
+ricenavi_locus:cb7d2ac563f4aa088c5d4fe5	163	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	6566248	GATK3	G	GAC	more O-methylapigenin C-pentoside	LOC_Os04g11970	Indel_or_complex
+ricenavi_locus:2a4dbf526bdde5ac09524a1d	164	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	2188914	GATK3	G	A	fewer feruloylserotonin	LOC_Os07g04970	SNP
+ricenavi_locus:7c6b605204ac284d2c3d40a1	165	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	2188863	GATK3	C	G	fewer feruloylserotonin	LOC_Os07g04970	SNP
+ricenavi_locus:bef9de9c6335421d45a13de5	166	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	2188150	GATK3	A	G	fewer feruloylserotonin	LOC_Os07g04970	SNP
+ricenavi_locus:7149469fd917ad78dfa17261	167	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	19060398	GATK4	C	T	more 5-O-glucoside	OsUGT707A2	SNP
+ricenavi_locus:c96c4d266c4319ff2b1d69ba	168	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	19061600	GATK4	AC	A	more 5-O-glucoside	OsUGT707A2	Indel_or_complex
+ricenavi_locus:9d8e2c17c2d52dbc94264ea5	169	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	19061609	GATK4	CCCGTGCTGTCGTTCAA	C	more 5-O-glucoside	OsUGT707A2	Indel_or_complex
+ricenavi_locus:a580d7dca1adae5616cc4efa	170	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	21464008	GATK4	G	A	fewer N-feruloylputrescine	OsAT4c	SNP
+ricenavi_locus:806b8986315bdc8086cdc5ab	171	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	25467884	GATK3	A	C	fewer benzoyl tryptamine	Os-TBT1	SNP
+ricenavi_locus:67b55cfc308411ac0aa58566	172	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	25501655	GATK4	C	A	fewer cinnamoyl tryptamine	Os-TBT2	SNP
+ricenavi_locus:4590af979c5bf353249b6bd8	173	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	15970614	GATK4	C	T	fewer N',N''-p-coumaroyl feruloyl spermidine	LOC_Os12g27220	SNP
+ricenavi_locus:f64f9ca3faefd309a2136bc7	174	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	15999119	GATK4	G	A	fewer N',N''-p-coumaroyl feruloyl spermidine	LOC_Os12g27254	SNP
+ricenavi_locus:24f971d0a35c9702bc5f3c09	175	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	16005096	GATK4	C	T	fewer N',N''-p-coumaroyl feruloyl spermidine	LOC_Os12g27254	SNP
+ricenavi_locus:214ddf4311f8fde1de0aac21	176	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	15999070	GATK4	C	T	fewer N',N''-p-coumaroyl feruloyl spermidine	LOC_Os12g27254	SNP
+ricenavi_locus:7b3172c970931089acc518e0	177	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	33144288	GATK4	A	C	increasing blast resistance	Pi35	SNP
+ricenavi_locus:e1c09006fa863acc99fa2624	178	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	18437564	GATK4	T	C	increasing blast resistance	bsr-d1	SNP
+ricenavi_locus:cde6cffbd1a641e6855ff7f2	179	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	6942614	GATK4	T	C	increasing insect resistance	Bph3	SNP
+ricenavi_locus:2d7c7125597375c36df8673b	180	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	6956655	GATK4	C	T	increasing insect resistance	Bph3	SNP
+ricenavi_locus:677e81854b07983437e9a3f4	181	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	6968474	GATK4	A	G	increasing insect resistance	Bph3	SNP
+ricenavi_locus:be83cf6aa568b081662ffa19	182	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	19835833	GATK4	TCGGCGGCGGCTTCTC	T	increasing blast resistance	Pi21	Indel_or_complex
+ricenavi_locus:6338ba527cec84f88bb76f6e	183	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	31600315	GATK4	G	A	decreasing blast tolerance	PiPR1	SNP
+ricenavi_locus:253c181b8076e50d43821fc2	184	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	31602115	GATK4	G	A	decreasing blast tolerance	PiPR1	SNP
+ricenavi_locus:1f8d4f4392639f200aba2a98	185	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	31602847	GATK3	GAA	G	decreasing blast tolerance	PiPR1	Indel_or_complex
+ricenavi_locus:326e6e5daf2f9f2d96b1a8b5	186	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	31640498	GATK4	T	A	increasing blight resistance	Xa1	SNP
+ricenavi_locus:c339a4f5dc30db3b211fe315	187	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	31661301	GATK4	G	A,T	increasing blight resistance	Xa1	SNP
+ricenavi_locus:77625144d8323a2079b3d190	188	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	31662295	GATK4	G	T	increasing blight resistance	Xa1	SNP
+ricenavi_locus:f1a3fd01e87bfa12a407caa3	189	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	437499	GATK4	T	A	increasing blight resistance	xa5	SNP
+ricenavi_locus:5ce04ead1bf02216acecc71a	190	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	485049	GATK4	T	TCGCCGCCGCCGC	increasing brown planthopper resistance	BPH29	Indel_or_complex
+ricenavi_locus:d7f47fbf45fdb8bb6ca0d5ff	191	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	10389573	GATK4	G	A	increasing blast resistance	Pi9	SNP
+ricenavi_locus:51593696e5cfea47ce617079	192	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	10389270	GATK3	C	T	increasing blast resistance	Pi9	SNP
+ricenavi_locus:8ee689f5cde133c05e5df0c5	193	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	10389855	GATK4	C	T	increasing blast resistance	Pi9	SNP
+ricenavi_locus:8015c3fc05d423d614657761	194	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	10389734	GATK4	T	A	increasing blast resistance	Pi9	SNP
+ricenavi_locus:18a44cc23bf7496b5e4c289e	195	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	13058843	GATK4	GCCCTGAAGA	G	increasing blast resistance	Pid3	Indel_or_complex
+ricenavi_locus:dc03471361ca685d66089471	196	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	13055819	GATK4	A	G	increasing blast resistance	Pid3	SNP
+ricenavi_locus:9013d18c5594434c19519853	197	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	13057570	GATK3	A	G	increasing blast resistance	Pid3	SNP
+ricenavi_locus:3482d34b267fad4e343e63ed	198	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	17161791	GATK4	C	T	increasing blast resistance	Pid2	SNP
+ricenavi_locus:f95b1aa45391903688298937	199	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	22119347	GATK4	ATGT	A,GTGT	increasing resistance to tungro spherical virus	eIF4G	Indel_or_complex
+ricenavi_locus:0013f7a4b5446d69b35d3167	200	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	22119350	GATK4	T	C,*	increasing resistance to tungro spherical virus	eIF4G	unresolved
+ricenavi_locus:b2323dfb8c882870b341ea43	201	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	26909531	GATK4	T	C	increasing blast resistance	OsCERK1	SNP
+ricenavi_locus:0c7eb68d40952a8a356bbca1	202	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	9672381	GATK3	A	G	increasing blast resistance	Pi5-1	SNP
+ricenavi_locus:affbd9375290b86446c522a2	203	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	9779736	GATK4	A	G	increasing blast resistance	Pi56	SNP
+ricenavi_locus:76383ab71284d07aa000a397	204	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	6543950	GATK4	C	G	increasing blast resistance	RGA4	SNP
+ricenavi_locus:ed72e58a583f40467d540f97	205	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	6544171	GATK3	G	A	increasing blast resistance	RGA4	SNP
+ricenavi_locus:c9dbe3155bf17dff0445c74f	206	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	6554829	GATK4	T	A	increasing blast resistance	RGA5	SNP
+ricenavi_locus:07e490c99ed3d9d2da6a62a7	207	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	7659694	GATK4	T	C	increasing blast resistance	LHCB5	SNP
+ricenavi_locus:2a7e500bb701df4afc74224c	208	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	17985707	GATK4	A	T	increasing resistance to rice stripe virus	STV11	SNP
+ricenavi_locus:11133e93aa8441d85bbce370	209	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	22800220	GATK4	A	AGAAAGGCTTTG	increasing blast resistance	Pb1	Indel_or_complex
+ricenavi_locus:42cb42c63af7e9dada4fa8cf	210	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	25263992	GATK3	C	T	increasing blast resistance	Pi54	SNP
+ricenavi_locus:256079bdfcad1fe5153bf818	211	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	28399471	GATK4	G	A	increasing blight resistance	Xa3	SNP
+ricenavi_locus:4311f730544688a107e8b840	212	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	28399720	GATK4	A	G	increasing blight resistance	Xa3	SNP
+ricenavi_locus:77f8cc9709cbea03b7144813	213	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	10607554	GATK4	A	C	increasing blast resistance	Pi-ta	SNP
+ricenavi_locus:140292fe5fcc4d6226121408	214	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	10833368	GATK4	TAAAAA	T	increasing blast resistance	Ptr	Indel_or_complex
+ricenavi_locus:f27935154f5efd094af86c3a	215	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	17302804	GATK4	G	A	decreasing blight resistance	xa25	SNP
+ricenavi_locus:bb0b846d114fc28587863445	216	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	17305353	GATK4	CT	CTT,C	decreasing blight resistance	xa25	Indel_or_complex
+ricenavi_locus:c104a166c767b1dbedcc7df0	217	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	11462725	GATK4	C	T	increasing salt tolerance	SKC1	SNP
+ricenavi_locus:9fed65fa15bb67c049ea8f0e	218	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	23663634	GATK4	GT	G	increasing herbicides tolerance	CYP72A31	Indel_or_complex
+ricenavi_locus:ffcd0177ab8f02f0f53f8864	219	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	29568422	GATK4	GGCC	G	decreasing flooding tolerance 	OsCBL10	Indel_or_complex
+ricenavi_locus:a9e0126f6438afb907aa5a42	220	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	36346000	GATK4	T	C	increasing drought tolerance	OsPP15	SNP
+ricenavi_locus:256e01592cb2704cca9d0529	221	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	1663821	GATK4	G	A	decreasing Al tolerance	NRAT1	SNP
+ricenavi_locus:d2f77e1730125f621cb39154	222	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	5410205	GATK4	T	C	preventing copper accumulation	OsHMA4	SNP
+ricenavi_locus:b74fbe8068782631a318ec53	223	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	10389082	GATK3	CATCAGGAACCAAAAGAATTAGAGACGAT	C	decreasing herbicide tolerance	HIS1	Indel_or_complex
+ricenavi_locus:8cc26f8399979fac0580305c	224	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	24771726	GATK4	T	A	decreasing chilling tolerance	LTG1	SNP
+ricenavi_locus:f3eefd605a201f898e735133	225	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	25190881	GATK4	C	G	preventing cd accumulation	CAL1	SNP
+ricenavi_locus:e21e2a790173eb0fa58a2195	226	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	220180	GATK4	AGGCGGTGGCGGTGGCGGT	A	decreasing low-temperature germinability ability	qLTG3-1	Indel_or_complex
+ricenavi_locus:15929a4c210c69f0765699ab	227	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	846037	GATK4	T	A	cadmium accumulation	OsCd1	SNP
+ricenavi_locus:e81f53d5318f28c743e1bcd5	228	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	11326677	GATK4	G	A	decreasing cold tolerance	OsMYB2	SNP
+ricenavi_locus:d63c384d412b7329c6bb58ba	229	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	2032882	GATK4	C	G	increasing chilling tolerance	CTB4a	SNP
+ricenavi_locus:a9c26943b760a4f6607e0f9c	230	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	23886659	GATK4	G	GT	increasing boron-toxicity tolerance	BET1	Indel_or_complex
+ricenavi_locus:2f311c79b85edeeb07c785fc	231	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	30315214	GATK4	T	A,G	decreasing chilling tolerance	COLD1	SNP
+ricenavi_locus:891cb3e777ccd30834bde794	232	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	30726195	GATK4	T	C	increasing root sodium content	OsHKT1;1	SNP
+ricenavi_locus:38a90d774bcebb04be3e6026	233	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	33304910	GATK4	A	G	decreasing root length and weight	OsJAZ1	SNP
+ricenavi_locus:12205caeb7da5445454a6ec0	234	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	29539670	GATK4	T	C	lower potassium use efficiency	OsHKT2;1	SNP
+ricenavi_locus:db0389845815103ef57eb353	235	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	29540384	GATK4	GC	G	lower potassium use efficiency	OsHKT2;1	Indel_or_complex
+ricenavi_locus:ef0e6fbeb02725b0c29a0e03	236	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	7409315	GATK4	C	T	high cadmium accumulation	OsHMA3	SNP
+ricenavi_locus:4d05ce07d1130e9fc5ae915f	237	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	7407917	GATK4	T	G	high cadmium accumulation	OsHMA3	SNP
+ricenavi_locus:8348bc8b880ad569b27d4a6f	238	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	8878858	GATK4	AG	A	high cadmium accumulation	OsNRAMP5	Indel_or_complex
+ricenavi_locus:ff95e5acf0448a26d19af0e2	239	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	8879641	GATK4	A	G	high cadmium accumulation	OsNRAMP5	SNP
+ricenavi_locus:23e30f9ccdeeae2b970befbd	240	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	22930113	GATK4	T	C	increasing resistance to tungro spherical virus	OsSAP16	SNP
+ricenavi_locus:b91cf54ee69a0eaf45d3239a	241	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	86089	GATK4	T	C	decreasing molybdenum accumulation	Os-MOT1;1 	SNP
+ricenavi_locus:218ec2160098d7c79e3cc884	242	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	12251074	GATK4	A	AAT	increasing anaerobic germination tolerance	OsTPP7	Indel_or_complex
+ricenavi_locus:01c6236f9473fc56154221b3	243	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	18122850	GATK4	C	T	decreasing chilling tolerance	bZIP73	SNP
+ricenavi_locus:0d8a480ffc3797cce077155e	244	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	4665777	GATK4	C	G	decreasing UV-B tolerance	qUVR-10	SNP
+ricenavi_locus:3cc5d8f7c1459f1b53dd0813	245	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	4666493	GATK4	C	T	increasing UV-B tolerance	qUVR-10	SNP
+ricenavi_locus:f3238445917fe45338178c02	246	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	16705740	GATK4	T	TA	increasing drought tolerance	DCA1	Indel_or_complex
+ricenavi_locus:9b09ac9007a7773ee15677b3	247	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	19330694	GATK4	G	A	dereasing chilling tolerance	OsLTPL159	SNP
+ricenavi_locus:0b9f1c1694e247aa7f791c96	248	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	16984309	GATK4	A	G	decreasing chilling tolerance	HAN1	SNP
+ricenavi_locus:3e8ff374aa4be91fc6d5e6eb	249	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	14233796	GATK4	C	T	increasing lateral roots number	Nced	SNP
+ricenavi_locus:2abc2c2e51945ea1fdd0ffb5	250	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	178766	GATK4	G	A	higher nitrogen use efficiency	OsNPF6.1	SNP
+ricenavi_locus:f9998e6d879c60f9419a0cf7	251	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	14452591	GATK4	G	C,T	increasing regeneration ablility	psr1	SNP
+ricenavi_locus:78ec0cd972cf61683340699e	252	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	14452823	GATK4	T	G	increasing regeneration ablility	psr1	SNP
+ricenavi_locus:503323ca6844bc92690e49f7	253	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	33453244	GATK4	C	T	more MeOH-Jasmonates	OsPME1	SNP
+ricenavi_locus:17ea038e954ca3a9c8731f60	254	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	31768358	GATK4	A	G	more MeOH-Jasmonates	OsTSD2	SNP
+ricenavi_locus:c186122cc25a6cd7cd9bc76f	255	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	32514337	GATK4	A	T	higher nitrogen use efficiency	OsNR2	SNP
+ricenavi_locus:ecbbda903d5ef0704492ef7f	256	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	6894836	GATK4	CT	C	callus browning	BOC1	Indel_or_complex
+ricenavi_locus:c2d3b3551cda9d6e5b7a29fa	257	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	21067004	GATK4	C	T	increasing salt tolerance	qSE3	SNP
+ricenavi_locus:ff2565bf8cb413c85171fb2b	258	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	31751160	GATK3	G	GTGCTCGTCATCGAGGGGA	grains turns brown in phenol solution	Phr1	Indel_or_complex
+ricenavi_locus:7fdab15e0b521737e38b3fc2	259	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	23797131	GATK3	A	C	decreasing sprouting	Sdr4	SNP
+ricenavi_locus:4d3a26dd8388704834f675b4	260	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	23796771	GATK3	GC	G	increasing sprouting	Sdr4	Indel_or_complex
+ricenavi_locus:7a51c814e66b7b15727dc2cf	261	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	23797130	GATK3	G	T	increasing sprouting	Sdr4	SNP
+ricenavi_locus:41ccacf583f424716bde6d97	262	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	7573789	GATK4	G	GAGAAGA,GAGA	high cadmium accumulation	ARE1	Indel_or_complex
+ricenavi_locus:400df956ac9b151e140b6fb3	263	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	7573877	GATK4	G	GGGCGGT	higher nitrogen use efficiency	ARE1	Indel_or_complex
+ricenavi_locus:c2d29b66754f96e0dfa81bfa	264	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	21759092	GATK4	G	A	higher nitrogen use efficiency	NRT1.1B	SNP
+ricenavi_locus:13cc1ef28d631ab90bc18e23	265	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	26956807	GATK4	G	C	increasing tolerance to nutrition	TOND1	SNP
+ricenavi_locus:293f5ecb079accd6717bdbfb	266	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	2974723	Manta	A	<DEL>	decreasing yield	LRK1	SV_symbolic
+ricenavi_locus:04380a0fd53642854cb11443	267	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	29455208	Manta	AATTTTGTATGGGTACTAGCCATGCAATTGTGCGGATCACCCGGCTAGTTCGACGAATTCAAGCGTTTTTTGGGTTGCAGCGTTTGGAAGGAGGCCCAAATTAAAGTGGTGATCGAAATTGTCAAGTGCTTGAGTAGATAGAGATTTTGTTTGGTTGGCACTACCGAAGCATGCATTGTTGGAGTGGGATGCCATAGAGCTGCGATCAAGATCCGACGGCTCCCAATGGCTCTGGTGACATGTCTCCTTGACACTTTCCAAAAACGGACAATTGGTCGGTTGATGTTGGGTTCCTTATTTGTACTACTCCAGAAGTATATAAAAAGCGGAAGTTCCCAATGCAACAAGAGGAAGACGCCATTGGAGTCCAATTAACTTGAATAATGGCGCGTCGTCGTCTTGTCCTGCTGCTTCTCATCATTGGTACGTTATTATACTCATGGAGTAGGATGGTTAATTTGTTGATTTGCAGTTAGCGGAGGAGTAATTAATTAATTATGTTATTAATCTTGTGTTGGCATGGCAGCCGCGGCGGGTGCGGCGGCGTTTGGGATCCGACGAGATGCGCCCAAGGCATACTGCTTCTACGGCATTGAGTGGACGGGAGTGCCTTACTTGCCGGGCACCGCCGCCGCCATTTATATCGGCAACACCAACTCCTGCATCGCCGGCTACCACTCGCCGCCGGACACGGCCACCTCCTACCGGTTCTGCATCCCCTCCTGGGTGGCCTTCACCGCCAACGCCACCACCCTCTGCGGCCAACCCGCCGTCGACCACTCCGCCGCCATCTCCGGCTTCAAGCGACTCATCGGCCTACAGCCGGGAGATCCTCACGCCAAGAGGGTGGCGCAGATTGCGCCCTACAAGCTGGGGGAAAAGATCGGGAGATGCAGCATCCAGGTCCAACTGGACGATGGCGCCAAGTGCCGTGTGGAGG	A	decreasing plant height and grain number	OsEBS	Indel_or_complex
+ricenavi_locus:a60b53806669d115e2f735bb	268	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5759611	Manta	TCGCTCCTACGAATCCTGCCCCTGAGTAACAATGACTGACTTTTAATTTGTTTGCAGCTAGGGTGGGGATCGAGATGGTGATCTTGGAGCAGCCACAGCTGCTCCTTCTTCTTCTTCTTCTTGTAGCAGCTGCAGCTGCAA	TTAAT	hybrid compatibility	S5	Indel_or_complex
+ricenavi_locus:a772ed876297b76edd7e6dda	269	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	7545012	Manta	TTTCAGGTTACAAG	T	increasing grain length	OsSNB	Indel_or_complex
+ricenavi_locus:f6fd7366816504464ec03d10	270	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	537049	Manta	A	<DUP:TANDEM>	fertility restoration	RF6	SV_symbolic
+ricenavi_locus:957f6ff6d5bb201b59eee68d	271	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	25282468	Manta	G	<DUP:TANDEM>	increasing grain number and lodging resistance	IPA1	SV_symbolic
+ricenavi_locus:99da52ab1f3b7c2d0c39a557	272	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	1257892	Manta	TGGGACAAATCCTGAGAGTTAAAAGTTGTTATATTTTAA	TAG	promoting heading date	Ef-cd	Indel_or_complex
+ricenavi_locus:a91120244cf9ed159c57036e	273	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	38382761	Manta	CCGAGCACGGCGTCGACGCCGCTCTGGCGCGCGCCGCGCTCGACGGCGCCAGCGACTTCTTCCGCCTCCCGCTCGCCGAGAAGCGCCGCGCGCGCCGCGTCCCGGGCACCGTGTCCGGCTACACCAGCGCCCACGCCGACCGCTTCGCCTCCAAGCTCCCATGGAAGGAGACCCTCTCCTTCGGCTTCCACGACCGCGCCGCCGCCCCCGTCGTCGCCGACTACTTCTCCAGCACCCTCGGCCCCGACTTCGCGCCAATGGGGTAATTAAAACGATGGTGGACGACATTGCATTTCAAATTCAAAACAAATTCAAAACACACCGACCGAGATTATGCTGAATTCAAACGCGTTTGTGCGCGCAGGAGGGTGTACCAGAAGTACT	CA	semi-dwarf	sd1	Indel_or_complex
+ricenavi_locus:5ca2c8d74c6787abb8020101	274	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	16415007	Manta	TTTTCATGCTTCAAATCCCTGTACAGCTGCTTCAAGATCCCTTCATGCTTCAAGTCCCAGTGCAACTGCTCTAGCCCCAATTGCTGCACTTGCACCCTTCCAAGCTGTAGCTGCAAGGGCTGTGCCTGTCCAAGCTGTGGATGCAACGGCTGTGGCTGTCCAAGCTGCGGATGCAACGGTTGTGGCTGTCCAAGCTGCGGTTGCAACGGCTGTGGCCTTCCAAGCTGCGGTTGCAACGGCTGCGGCTCGTGCTCTTGCGCCCAATGCAAACCCGATTGTGGCTCGTGCTCTACCAATTGCTGTAGCTGCAAGCCAAGCTGCAACGGCTGCTGCGGCGAGCAGTGCTGCCGCTGCGCGGACTGCTTCTCCTGCTCGTGCCCTCGTTGCTCCAGCTGCTTCAACATCTTCAAATGCTCCTGCGCTGGCTGCTGCTCGAGCCTGTGCAAGTGCCCCTGCACGACGCAGTGCTTCAGCTGCCAGTCGTCATGCTGCAAGCGGCAGCCTTCGTGCTGCAAGTGCCAGTCGTCTTGCTGCGAGGGGCAGCCTTCCTGCTGCGAGGGACACTGCTGCAGCCTCCCGAAACCGTCGTGCCCTGAATGTTCCTGTGGGTGTGTCTGGTCTTGCAAGAATTGTACAGA	TAGATCCTTTTTT	erect panicle and decreasing plant height	DEP1	Indel_or_complex
+ricenavi_locus:5e31f486257eb9cda57c0586	275	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	27940807	Manta	A	<DEL>	black seed coat	Kala4	SV_symbolic
+ricenavi_locus:69ac1a4e94c2aa96b8348d32	276	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	5316231	Manta	AACGGCAGCGGCGGCGGCGGCGGCGACGACGACCACCGTGTGGGCG	AGCAGCCAGCCT	colorless apiculus 	OsC1	Indel_or_complex
+ricenavi_locus:4fccb63cad65ad7c197c0791	277	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	19836043	Manta	ACGGCGGCGGCGGCTGCGGCAG	A	increasing blast resistance	Pi21	Indel_or_complex
+ricenavi_locus:5c290d64f39a138f1234cf24	278	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr8	26729913	Manta	TTTCATCATAAGTCAGTTCTG	T	increasing blight resistance	Xa13	Indel_or_complex
+ricenavi_locus:7176ff2d39bdba113062cb6c	279	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	20805203	Manta	CCGGAATCTT	C	increasing blight resistance	Xa21	Indel_or_complex
+ricenavi_locus:f4f6c60955f5dc47343aeade	280	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	220111	Manta	CCTCCACTTCTTCACCTTCTCCGACGCGTGCGGCTGCCAGTGCGGCTCATGCCCTAGTCCCGGCGGAGGAGG	C	decreasing low-temperature germinability ability	qLTG3-1	Indel_or_complex
+ricenavi_locus:c4443496f19a0fcf8d01c452	281	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	37694037	Manta	A	<DEL>	decreasing nonphotochemical quenching	OsPsbS1	SV_symbolic
+ricenavi_locus:51154b881983796a1b1a9a64	282	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr5	5365122-5366701	depthcall	Present (0|0)	Absent (1|1)	increasing grain width	GW5	presence_absence_region
+ricenavi_locus:1e2f701e268d3df0be2c69f2	283	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr7	9152377-9155030	depthcall	Present (0|0)	Absent (1|1)	promoting heading date under LD	Ghd7	presence_absence_region
+ricenavi_locus:f1002550c13d1af6ca417c6c	284	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	17410000-17412951	depthcall	Present (0|0)	Absent (1|1)	awn absent	Awn3-1	presence_absence_region
+ricenavi_locus:c74818ce42fc4ec20ce643f1	285	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	12251875-12254061	depthcall	Present (0|0)	Absent (1|1)	increasing anaerobic germination tolerance	OsTPP7	presence_absence_region
+ricenavi_locus:24bb19ff8d93e5fb1a067cbe	286	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	29020797-29025975	depthcall	Present (0|0)	Absent (1|1)	fewer strigolactone	SLB1	presence_absence_region
+ricenavi_locus:d42741934d2e42e069d1ae57	287	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	29036327-29041621	depthcall	Present (0|0)	Absent (1|1)	fewer strigolactone	SLB2	presence_absence_region
+ricenavi_locus:840a0278c95297296da32116	288	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	DPL1	Unmapped Reads	Nip (0|0)	nonNip (1|1)	hybrid incompatibility	DPL1	nonreference_sequence
+ricenavi_locus:0ce5d30784bf11822ef5676b	289	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr3	Sc	Unmapped Reads	Nip (0|0)	nonNip (1|1)	hybrid male sterility	Sc	nonreference_sequence
+ricenavi_locus:9ca0eb63d0d273b78e0b1e31	290	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	Rf4-1	Unmapped Reads	Nip (0|0)	nonNip (1|1)	non-restorer	Rf4	nonreference_sequence
+ricenavi_locus:930a435f60913f90507ae0bc	291	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr10	Rf4-2	Unmapped Reads	Nip (0|0)	nonNip (1|1)	non-restorer	Rf4	nonreference_sequence
+ricenavi_locus:fd470e7f9df08308d066695a	292	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	GH3-2	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blight resistance	GH3-2	nonreference_sequence
+ricenavi_locus:92ec0e99c5a80db534ae4d96	293	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr1	Pi64	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pi64	nonreference_sequence
+ricenavi_locus:95fa3cad10cba1b02c5c1ec3	294	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	Pi5-1_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pi5-1	nonreference_sequence
+ricenavi_locus:65b8b1f4af72e3150af58f3c	295	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	Pi5-2_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pi5-2	nonreference_sequence
+ricenavi_locus:42db4ef34ee443e661b67bf3	296	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Xa23_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blight resistance	Xa23	nonreference_sequence
+ricenavi_locus:0200051da41794bfa9792f71	297	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Pik-1_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pik-1	nonreference_sequence
+ricenavi_locus:16e40c3a8f122415eecff889	298	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Pikm1-TS_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pik-1	nonreference_sequence
+ricenavi_locus:cda4dd0f8e81b1719bf8b576	299	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Pikh-1_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pik-1	nonreference_sequence
+ricenavi_locus:15602ca0d388e914639e7920	300	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Pikp-1_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pik-1	nonreference_sequence
+ricenavi_locus:be4ee5ad296de1894dd21b5a	301	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Pi1-5_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pik-1	nonreference_sequence
+ricenavi_locus:311ff8ade7b92f9ad3dcb14e	302	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Pik-2_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pik-2	nonreference_sequence
+ricenavi_locus:cf38a61e5d9587b30a73c68f	303	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Pikp-2_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pik-2	nonreference_sequence
+ricenavi_locus:4705f834fd6025e758da8651	304	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Pi1-6_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pik-2	nonreference_sequence
+ricenavi_locus:23dbb36227681bbca20e7ef5	305	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Xa4	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blight resistance	Xa4	nonreference_sequence
+ricenavi_locus:d1622693040e40f081830a12	306	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	BPH9-1_CDS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing brown planthopper resistance	Bph9	nonreference_sequence
+ricenavi_locus:377e90759e478e9bdbf313e6	307	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	BPH9-7	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing brown planthopper resistance	Bph9	nonreference_sequence
+ricenavi_locus:db2e1acc0690add467c100b7	308	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	BPH9-9	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing brown planthopper resistance	Bph9	nonreference_sequence
+ricenavi_locus:d9670b94e4c1d5807a17c1eb	309	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	BPH26	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing brown planthopper resistance	Bph9	nonreference_sequence
+ricenavi_locus:bc930c70dd2ffe53ffc97d31	310	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr4	Pi63	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pi63	nonreference_sequence
+ricenavi_locus:032748cef5d5c8f0ce0cc8b0	311	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr2	Pib	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	Pib	nonreference_sequence
+ricenavi_locus:4b211af05e951fb01f6d01d2	312	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	PigmR	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blast resistance	PigmR	nonreference_sequence
+ricenavi_locus:f7efdff61e4b691823fd1339	313	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr6	PigmS	Unmapped Reads	Nip (0|0)	nonNip (1|1)	decreasing blast tolerance and increasing setting rate	PigmS	nonreference_sequence
+ricenavi_locus:cdca78b9e72d99efa9843583	314	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	Xa10	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing blight resistance	Xa10	nonreference_sequence
+ricenavi_locus:0a54bcde469d158ac554aea5	315	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr11	HAN1	Unmapped Reads	Nip (0|0)	nonNip (1|1)	losing chilling tolerance	HAN1	nonreference_sequence
+ricenavi_locus:df6ff50d2f49ac0c1372d566	316	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	SNORKEL1	Unmapped Reads	Nip (0|0)	nonNip (1|1)	adaptation to deep water	SNORKEL1	nonreference_sequence
+ricenavi_locus:8f3e805040a54a0551fcdd8e	317	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	SNORKEL2	Unmapped Reads	Nip (0|0)	nonNip (1|1)	adaptation to deep water	SNORKEL2	nonreference_sequence
+ricenavi_locus:71352beaa92027cb2e2ef5bf	318	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr9	Sub1A	Unmapped Reads	Nip (0|0)	nonNip (1|1)	submergence tolerance	Sub1A	nonreference_sequence
+ricenavi_locus:d6bee276f7703263362e0978	319	3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e	Chr12	PSTOL1	Unmapped Reads	Nip (0|0)	nonNip (1|1)	increasing phosphorus tolerance	PSTOL1	nonreference_sequence

@@ -91,3 +91,15 @@ npm run dev
 MSU ID 优先用于显示和精确连接，RAP ID 与已有身份继续兼容；名称与别名支持不区分大小写、标点和部分名称的查询。当前 485 条目录身份中有 449 个唯一 MSU ID，36 条尚无该映射；不从名称猜测映射。477 来源基因输入与484现行条目的不同口径保持不变。
 
 重建表格：`node scripts/export_datasets.mjs`。运行 `npm test` 验证全部原始等位拷贝、表型、缺失、跨数据集身份和原组合计数，再执行 `npm run build`。历史 JSON 原件保留供验收；常规载入不再下载两份大群体 JSON。注释与本体保留 JSON/JSON-LD，分析数据可独立使用 TSV。
+
+### Personal analysis workspace and evidence (2026-11-16)
+
+Use **我的工作区** to reorder, resize, rename, add or hide components, save named analyses in the browser, and export/import settings. **单页概览** places gene, allele frequency, population composition and phenotype on one dashboard. Original components remain available. Public dataset versions must match when restoring a saved workspace; imported datasets are stored only when the user saves the workspace.
+
+**材料比较** supports up to six accessions and eight selectable environment-specific phenotype dimensions. Radar values are midrank percentiles, with raw values, units and reference denominators alongside. No favourable direction or overall score is assumed. The active gene and multi-gene selection also show material-level literature or observed-marker states. Multi-gene comparison calculates within-source-group dosage r² for selected marker pairs, with missingness and fixed-marker statuses.
+
+**基因与证据** consolidates DOI records and functional-event information. Genotype completeness, genotype source and causal confidence stay separate. Population checks show stratified raw means; the previously released 23 model contrasts retain their original cohort scope. A single genotype classification is never treated as universal evidence of a favourable cultivar.
+
+**下载基因数据** exports a ZIP of TXT/TSV tables readable by Excel and analysis software. [Ontology and exchange contract](public/formats/ontology.txt), [trait registry](public/formats/traits.tsv), and [chromosome region annotations](public/formats/genome_regions.tsv) define the standard and its boundaries. GO is a gene-function annotation layer; agronomic traits use the Trait–Method–Scale model with explicit, reviewed CO/TO mappings. Current external trait mappings remain unassigned.
+
+RiceNavi's frozen source catalogue is separately accessible: 319 loci, 404 accessions and 128,876 source calls. [Source manifest](public/sources/ricenavi-20261025/manifest.json) records the exact revision. Per-call QC, physical material identity and phase are not certified, and catalogue phenotypes lack bound trial environments. They are not automatically pooled with RiceAtlas 6044. Future genome/pangenome entities and projections are specified in the ontology contract without adding new genome-wide panels.

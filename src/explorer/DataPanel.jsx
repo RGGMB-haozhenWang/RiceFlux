@@ -1,4 +1,4 @@
-import React,{useMemo,useState} from 'react';
+import React,{useMemo,useState,useEffect} from 'react';
 import {Button,Dialog} from '@radix-ui/themes';
 import {datasetFiles,readPackage,combineDatasets,groupOptions,sampleTable} from './datasets.js';
 import {loadRegistered} from './observed.js';
@@ -13,6 +13,7 @@ export function DataPanel({data,onApply}){
   const [open,setOpen]=useState(false),[entries,setEntries]=useState(data.datasetRegistry),[loaded,setLoaded]=useState(new Map(data.datasetBundles.map(b=>[b.manifest.id,b])));
   const [ids,setIds]=useState(data.meta.datasets.map(d=>d.id)),[group,setGroup]=useState(data.meta.groupBy),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const [previewId,setPreview]=useState(data.meta.datasets[0].id),[table,setTable]=useState('samples');
+  useEffect(()=>{setEntries(data.datasetRegistry);setIds(data.meta.datasets.map(d=>d.id));setGroup(data.meta.groupBy);setLoaded(prev=>new Map([...prev,...data.datasetBundles.map(b=>[b.manifest.id,b])]));setPreview(data.meta.datasets[0].id);},[data]);
   const bundle=loaded.get(previewId);
   const preview=useMemo(()=>{if(!open||!bundle)return null;const lines=bundle.texts[table].trimEnd().split('\n');return {fields:lines[0].split('\t'),count:lines.length-1,rows:lines.slice(1,13).map(line=>line.split('\t'))};},[open,bundle,table]);
   async function upload(event){
@@ -48,12 +49,12 @@ export function DataPanel({data,onApply}){
   return <><Button variant="soft" color="gray" onClick={()=>setOpen(true)}>数据集 · {data.meta.datasets.length}</Button>
   <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Content maxWidth="960px" className="dataset-dialog">
     <Dialog.Title>数据集与群体比较</Dialog.Title><Dialog.Description>选择数据集、比较维度；TSV 可下载、预览及重新导入。</Dialog.Description>
-    <div className="dataset-list">{entries.map(r=><label key={r.id}><input type="checkbox" checked={ids.includes(r.id)} disabled={busy} onChange={e=>setIds(prev=>e.target.checked?[...prev,r.id]:prev.filter(id=>id!==r.id))}/><strong>{r.name}</strong><small>{r.id} · {r.version}{r.local?' · 本次会话':''}</small><button onClick={e=>{e.preventDefault();setPreview(r.id)}} disabled={!loaded.has(r.id)}>预览</button></label>)}</div>
+    <div className="dataset-list">{entries.map(r=><label key={r.id}><input type="checkbox" checked={ids.includes(r.id)} disabled={busy} onChange={e=>setIds(prev=>e.target.checked?[...prev,r.id]:prev.filter(id=>id!==r.id))}/><strong>{r.name}</strong><small>{r.id} · {r.version}{r.local?' · 本地导入':''}</small><button onClick={e=>{e.preventDefault();setPreview(r.id)}} disabled={!loaded.has(r.id)}>预览</button></label>)}</div>
     <div className="compare-tools"><label>比较维度 <select aria-label="比较维度" value={group} onChange={e=>setGroup(e.target.value)}>{groupOptions.map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label>
       <label className="file-button">导入数据集<input aria-label="导入数据集" type="file" multiple accept=".json,.tsv,.txt,.gz" onChange={upload} disabled={busy}/></label>
       <a href="./datasets/README.txt" target="_blank" rel="noreferrer">接口规范</a><a href="./datasets/rice6044-v1.zip" download>6044 完整 TSV 包</a>
       <button onClick={()=>saveFile('riceflux_selected_samples.tsv',sampleTable(data),'text/tab-separated-values')}>当前材料与分组 TSV</button>
-    </div><p className="footnote">导入仅保留在本次浏览器会话；发布新数据集时更新 datasets/index.tsv。不同数据集中的同名材料按独立记录保留，重叠队列请分开统计。</p>
+    </div><p className="footnote">导入后可在“我的工作区”保存或导出设置，以便下次恢复。发布新数据集时更新 datasets/index.tsv。不同数据集中的同名材料按独立记录保留，重叠队列请分开统计。</p>
     {error&&<p role="alert">{error}</p>}{busy&&<p role="status">正在校验并读取数据…</p>}
     {bundle&&<><h3>{bundle.manifest.name} · {bundle.manifest.genotype_evidence} · 表格预览</h3><div className="compare-tools"><select aria-label="预览表格" value={table} onChange={e=>setTable(e.target.value)}>{datasetFiles.map(key=><option key={key}>{key}</option>)}</select><button onClick={()=>saveFile(table+'.tsv',bundle.texts[table],'text/tab-separated-values;charset=utf-8')}>下载当前 TSV</button><button onClick={downloadManifest}>下载输入清单</button></div>
     <p className="footnote">{preview?.count.toLocaleString()} 行 × {preview?.fields.length.toLocaleString()} 列 · 预览前 12 行、8 列</p>

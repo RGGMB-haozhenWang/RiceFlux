@@ -93,12 +93,15 @@ async function readJSON(path,signal){return JSON.parse(await readText(path,signa
 
 export async function loadExplorer(base,demo,signal){
   if(demo)return readJSON(base+'data/explorer_demo.json',signal);
-  const [reference,index,literature,config]=await Promise.all([
+  const [reference,index,literature,config,regions,traitRegistry]=await Promise.all([
     readJSON(base+'datasets/reference.json.gz',signal),readText(base+'datasets/index.tsv',signal),
-    readText(base+'datasets/literature.tsv',signal),readJSON(base+'formats/deployment.json',signal)]);
+    readText(base+'datasets/literature.tsv',signal),readJSON(base+'formats/deployment.json',signal),readText(base+'formats/genome_regions.tsv',signal),readText(base+'formats/traits.tsv',signal)]);
   if(config.version!==1)throw Error('服务器配置版本无效');
   const registry=readTable(index,['id','name','version','manifest'],'index').objects();
   if(!registry.length||new Set(registry.map(r=>r.id)).size!==registry.length||registry.some(r=>!/^[-\w]+\/manifest\.json$/.test(r.manifest)))throw Error('数据集索引无效');
+  reference.genomeRegions=readTable(regions).objects();
+  reference.traitRegistry=readTable(traitRegistry).objects();
+  for(const g of reference.genes)g.genomeRegions=reference.genomeRegions.filter(r=>(r.assembly===g.assembly||g.assembly==='MSU7'&&r.assembly==='IRGSP-1.0')&&Number(r.chr.replace('Chr',''))===Number(g.chromosome?.replace('Chr','')));
   reference.literature=readTable(literature,['gene_id','doi','summary','scope','event_id']).objects();
   if(config.prior_file){
     const path=config.prior_file;

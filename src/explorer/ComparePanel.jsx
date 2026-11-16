@@ -1,3 +1,4 @@
+import {LinkagePanel} from './LinkagePanel.jsx';
 import {findGenes} from './geneSearch.js';
 import {JointPanel} from './JointPanel.jsx';
 import React,{useEffect,useMemo,useState} from 'react';
@@ -18,9 +19,13 @@ function CompareGene({gene,cohort,populations,onRemove,markerId,setMarker}){
   </article>;
 }
 
-export function ComparePanel({data,activeGene,cohort}){
-  const [open,setOpen]=useState(false),[ids,setIds]=useState([]),[choice,setChoice]=useState(''),[filter,setFilter]=useState('');
-  const [markerIds,setMarkerIds]=useState({}),[material,setMaterial]=useState(''),[limit,setLimit]=useState(20);
+export function ComparePanel({data,activeGene,cohort,config={},onConfig}){
+  const open=config.open||false,ids=config.ids||[],markerIds=config.markers||{};
+  const setOpen=value=>onConfig(prev=>({...prev,open:typeof value==='function'?value(prev.open||false):value}));
+  const setIds=value=>onConfig(prev=>({...prev,ids:typeof value==='function'?value(prev.ids||[]):value}));
+  const setMarkerIds=value=>onConfig(prev=>({...prev,markers:typeof value==='function'?value(prev.markers||{}):value}));
+  const [choice,setChoice]=useState(''),[filter,setFilter]=useState('');
+  const [material,setMaterial]=useState(''),[limit,setLimit]=useState(20);
   const [records,setRecords]=useState([]),[filename,setFilename]=useState(''),[error,setError]=useState(''),[custom,setCustom]=useState(false);
   const [showRows,setShowRows]=useState(24),[showPrior,setShowPrior]=useState(false);
   const bundledLibrary=data.deploymentPriorFile==='formats/prior_477.tsv';
@@ -44,9 +49,10 @@ export function ComparePanel({data,activeGene,cohort}){
     }
   }
   useEffect(()=>{
-    if(custom)setRecords(bindPrior(records,data.genes));
+    if(config.input){install(readPrior(config.input),config.inputName||'personal.tsv',false);setCustom(true);}
+    else if(custom)setRecords(bindPrior(records,data.genes));
     else if(data.deploymentPrior)install(data.deploymentPrior,data.deploymentPriorFile.split('/').at(-1),data.compareOnLoad);
-  },[data]);
+  },[data,config.input]);
   const results=useMemo(()=>open&&showPrior&&records.length?priorResults(records,cohort,data.evidence):[],[open,showPrior,records,data,cohort]);
   function contextual(rows){return rows.map(row=>({...row,Dataset_versions:JSON.stringify(data.meta.datasets||[]),Grouping_dimension:data.meta.groupBy||'source_group'}));}
   function exportComparison(){
@@ -58,7 +64,7 @@ export function ComparePanel({data,activeGene,cohort}){
   }
   async function upload(event){
     const file=event.target.files[0];event.target.value='';if(!file)return;
-    try{install(readPrior(await file.text()),file.name);setCustom(true);}catch(e){setError(e.message);}
+    try{const input=await file.text();install(readPrior(input),file.name);setCustom(true);onConfig(prev=>({...prev,input,inputName:file.name}));}catch(e){setError(e.message);}
   }
   return <section className="panel compare-panel"><div className="panel-title"><div><h2>多基因比较</h2></div>
   <button aria-expanded={open} onClick={()=>{if(!open&&!ids.length&&(!records.length||(!data.compareOnLoad&&!custom))){
@@ -73,9 +79,10 @@ export function ComparePanel({data,activeGene,cohort}){
   </div>
   {error&&<p role="alert">{error}</p>}<p>{genes.length} 个基因 · 当前 {cohort.length.toLocaleString()} 份材料</p>
   {genes.length>0&&<div className="compare-tools joint-chips">{genes.map(g=><button key={g.id} aria-label={'从组合移除 '+g.name} onClick={()=>setIds(previous=>previous.filter(id=>id!==g.id))}>{g.name} ×</button>)}</div>}
-  {genes.length>=2?<JointPanel key={JSON.stringify(ids)} data={data} genes={genes} cohort={cohort} records={records}/>:<p>请选择至少两个基因查看跨基因组合。</p>}
+  {genes.length>=2?<JointPanel key={JSON.stringify(ids)} data={data} genes={genes} cohort={cohort} records={records} config={config.joint||{}} onConfig={joint=>onConfig(prev=>({...prev,joint}))}/>:<p>请选择至少两个基因查看跨基因组合。</p>}
   {genes.length>0&&<section className="joint-secondary"><h3>基因区域与分群等位频率</h3><button onClick={exportComparison}>导出位点比较 TSV</button>
   <div className="comparison-grid">{genes.map(g=><CompareGene key={g.id} gene={g} cohort={cohort} populations={data.populations} markerId={markerIds[g.id]} setMarker={id=>setMarkerIds(prev=>({...prev,[g.id]:id}))} onRemove={()=>setIds(ids.filter(id=>id!==g.id))}/>)}</div>
+  {genes.length>=2&&<LinkagePanel cohort={cohort} genes={genes} markers={selectedSites}/>}
   {genes.length>0&&<details className="prior-import"><summary>逐材料对照所选位点</summary><div className="compare-tools">
   <input aria-label="检索多基因材料" type="search" placeholder="名录品种名或编号" value={material} onChange={e=>{setMaterial(e.target.value);setLimit(20);}}/>
   <button onClick={()=>downloadTable(formats.materialMarkers,visibleSamples.map(sampleRow),[...formats.materialMarkers.columns,...siteLabels])}>导出材料对照 TSV</button></div>

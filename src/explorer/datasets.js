@@ -66,6 +66,15 @@ export function parseDataset(manifest,texts,reference){
   unique(environments,'environment_id','环境');
   environments.forEach(e=>requireValue(['trait_id','trait_name','unit','category','family','assay','site','year'].every(k=>e[k]&&!missing(e[k])),'环境元数据不完整：'+e.environment_id));
   for(const e of environments){
+    const registered=reference.traitRegistry?.find(r=>r.trait_id===e.trait_id&&r.method_label===e.assay&&r.unit===e.unit);
+    e.ontology_id=e.ontology_id||registered?.ontology_id||'';
+    e.method_id=e.method_id||registered?.method_id||'RF:method:'+e.trait_id+':'+e.assay;
+    e.scale_id=e.scale_id||registered?.scale_id||'RF:scale:'+e.unit;
+    e.growth_stage=e.growth_stage||'not_recorded';
+    e.mapping_status=e.mapping_status||registered?.mapping_status||'unmapped';
+    requireValue(!e.ontology_id||/^(?:CO_\d+:\d+|TO:\d+)$/.test(e.ontology_id),'性状外部本体 ID 应为 CO 或 TO；GO 请登记在基因功能注释：'+e.environment_id);
+    requireValue(['unmapped','exact','broad','related'].includes(e.mapping_status),'本体映射关系无效');
+    requireValue(e.mapping_status==='unmapped'?!e.ontology_id:!!e.ontology_id,'本体 ID 与映射状态不一致');
     const known=reference.traits.find(t=>t.id===e.trait_id);
     if(known){requireValue(known.environments&&known.name===e.trait_name&&known.family===e.family&&known.category===e.category,'与已登记性状定义冲突：'+e.trait_id);
       const assay=known.environments.find(x=>x.assay===e.assay);requireValue(!assay||assay.unit===e.unit,'与已登记鉴定指标单位冲突：'+e.trait_id+' / '+e.assay);}
@@ -101,9 +110,9 @@ export function combineDatasets(reference,bundles,groupBy='source_group'){
     const meta=b.manifest;
     const envMap=new Map();
     for(const e of b.environments){
-      const definition=JSON.stringify([e.trait_name,e.category,e.family]);
+      const definition=JSON.stringify([e.trait_name,e.category,e.family,e.ontology_id,e.mapping_status]);
       requireValue(!traitMeta.has(e.trait_id)||traitMeta.get(e.trait_id)===definition,'数据集间性状定义或单位冲突：'+e.trait_id);traitMeta.set(e.trait_id,definition);
-      const unitKey=JSON.stringify([e.trait_id,e.assay]);requireValue(!units.has(unitKey)||units.get(unitKey)===e.unit,'数据集间鉴定指标单位冲突：'+e.trait_id+' / '+e.assay);units.set(unitKey,e.unit);
+      const unitKey=JSON.stringify([e.trait_id,e.assay]),scale=JSON.stringify([e.unit,e.method_id,e.scale_id]);requireValue(!units.has(unitKey)||units.get(unitKey)===scale,'数据集间鉴定指标单位冲突：'+e.trait_id+' / '+e.assay);units.set(unitKey,scale);
       const key=multiple?JSON.stringify([meta.id,e.environment_id]):e.environment_id;envMap.set(e.environment_id,key);
       envs.set(key,{...e,id:key,dataset_id:meta.id,display_site:multiple?meta.name+' · '+e.site:e.site,n:0});
     }
@@ -127,7 +136,7 @@ export function combineDatasets(reference,bundles,groupBy='source_group'){
   for(const e of envs.values()){
     let t=traits.find(t=>t.id===e.trait_id);
     if(!t){t={id:e.trait_id,name:e.trait_name,category:e.category,family:e.family};traits.push(t);}
-    t.environments??=[];t.environments.push({id:e.id,assay:e.assay,unit:e.unit,source:{column:e.environment_id.replace(/^env_/,''),site:e.display_site,original_site:e.site,year:e.year,n:e.n,dataset_id:e.dataset_id}});
+    t.environments??=[];t.environments.push({id:e.id,assay:e.assay,unit:e.unit,ontology_id:e.ontology_id,mapping_status:e.mapping_status,method_id:e.method_id,scale_id:e.scale_id,growth_stage:e.growth_stage,source:{column:e.environment_id.replace(/^env_/,''),site:e.display_site,original_site:e.site,year:e.year,n:e.n,dataset_id:e.dataset_id}});
   }
   const extra=traits.filter(t=>!reference.traits.some(r=>r.id===t.id)).map(t=>t.id);
   const genes=reference.genes.map(g=>{

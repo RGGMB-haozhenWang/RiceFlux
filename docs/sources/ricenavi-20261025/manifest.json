@@ -1,0 +1,29 @@
+{
+  "schema": "RiceFlux external source 1.0",
+  "name": "RiceNavi frozen catalogue",
+  "source": "https://github.com/xhhuanglab/RiceNavi",
+  "commit": "3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e",
+  "catalog_date": "2026-10-25",
+  "assembly_label": "source Pos_7.0; per-event coordinate equivalence not certified",
+  "call_quality": "source reported; no per-call QC or raw VCF binding",
+  "phase": "not certified; source pipe is not proof of phase",
+  "same_material_across_datasets": false,
+  "files": {
+    "loci.tsv": {
+      "rows": 319,
+      "bytes": 52748,
+      "sha256": "10295769d6633548bf8e0ee8537e3f7b01ca5d38d5469ae681e455cab2ed6afc"
+    },
+    "materials.tsv": {
+      "rows": 404,
+      "bytes": 102009,
+      "sha256": "845c98a96e6412776a20e661c463500b08c09b2e0f758594fef22c5e270d829f"
+    },
+    "calls.tsv.gz": {
+      "rows": 128876,
+      "bytes": 419644,
+      "sha256": "99a01cae007de4bca3314ad99a46d69068373fb8bf6d4e96bde745eb5e604f43"
+    }
+  },
+  "restrictions": "No automatic favorable-state assertion, 6044 merge, or booting-stage cold evidence integration."
+}

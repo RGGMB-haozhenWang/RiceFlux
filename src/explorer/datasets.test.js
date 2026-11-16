@@ -92,3 +92,13 @@ test('environment units and duplicate observations cannot be silently merged',()
  const both=combineDatasets(reference,[one,parseDataset(b.manifest,b.texts,reference)]);
  const envs=both.traits.find(t=>t.id==='length').environments;assert.equal(envs.length,2);assert.notEqual(envs[0].source.site,envs[1].source.site);assert.equal(Object.values(both.individuals[1].phenotypes)[0],0);
 });
+
+
+test('trait ontology separates CO/TO from GO, binds method/scale and rejects cross-dataset semantic conflicts',()=>{
+ const a=small('A'),b=small('B');
+ for(const x of [a,b]){x.texts.environments='environment_id\ttrait_id\ttrait_name\tunit\tcategory\tfamily\tassay\tsite\tyear\tontology_id\tmapping_status\tmethod_id\tscale_id\tgrowth_stage\nE1\tcustom_trait\tTest\tmm\tTest\tcustom\tm\tS\t2023\tTO:0000001\trelated\tmethod1\tscale1\tmaturity\n';x.texts.phenotypes='sample_id\tE1\nS1\t1\n';}
+ const one=parseDataset(a.manifest,a.texts,reference),data=combineDatasets(reference,[one]);
+ const env=data.traits.find(t=>t.id==='custom_trait').environments[0];assert.equal(env.method_id,'method1');assert.equal(env.growth_stage,'maturity');
+ assert.throws(()=>parseDataset(a.manifest,{...a.texts,environments:a.texts.environments.replace('TO:0000001','GO:0000001')},reference),/GO/);
+ b.texts.environments=b.texts.environments.replace('TO:0000001','TO:0000002');assert.throws(()=>combineDatasets(reference,[one,parseDataset(b.manifest,b.texts,reference)]),/定义/);
+});

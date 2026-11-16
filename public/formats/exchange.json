@@ -21,7 +21,7 @@
     "owl": "http://www.w3.org/2002/07/owl#"
   },
   "@id": "rf:exchange_v3",
-  "version": 3,
+  "version": 4,
   "@graph": [
     {
       "@id": "rf:RiceFlux",
@@ -304,6 +304,77 @@
       "rdfs:range": {
         "@id": "rf:GeneIdentity"
       }
+    },
+    {
+      "@id": "rf:ObservationVariable",
+      "@type": "owl:Class",
+      "rdfs:label": "Trait × Method × Scale; environment-qualified observations"
+    },
+    {
+      "@id": "rf:EvidenceAssertion",
+      "@type": "owl:Class",
+      "rdfs:label": "Event-scoped claim with source and separate causal/genotyping evidence"
+    },
+    {
+      "@id": "rf:AlleleAssessment",
+      "@type": "owl:Class",
+      "rdfs:label": "Conditional assessment against a target, comparator, background and environment; unspecified by default"
+    },
+    {
+      "@id": "rf:AnalysisWorkspace",
+      "@type": "owl:Class",
+      "rdfs:label": "User layout and analysis configuration bound to dataset versions"
+    },
+    {
+      "@id": "rf:RegionAnnotation",
+      "@type": "owl:Class",
+      "rdfs:label": "Assembly-qualified interval or approximate point with source and resolution"
+    },
+    {
+      "@id": "rf:SequencePath",
+      "@type": "owl:Class",
+      "rdfs:label": "An assembly or graph path with its own coordinate system"
+    },
+    {
+      "@id": "rf:CoordinateProjection",
+      "@type": "owl:Class",
+      "rdfs:label": "Explicit, potentially ambiguous mapping between assembly paths"
+    },
+    {
+      "@id": "rf:Orthogroup",
+      "@type": "owl:Class",
+      "rdfs:label": "Homology relation independent of symbol and coordinate mapping"
+    },
+    {
+      "@id": "rf:geneTables",
+      "@type": "TableBundle",
+      "filename": "riceflux_{gene_id}_tables.zip",
+      "schema": "RiceFlux gene export 1.0",
+      "tables": [
+        "context",
+        "materials",
+        "variants",
+        "genotypes",
+        "allele_frequencies",
+        "phenotypes",
+        "environments",
+        "evidence",
+        "definitions",
+        "datasets",
+        "combinations",
+        "combination_members"
+      ],
+      "serialization": "UTF-8 TSV/TXT in ZIP"
+    },
+    {
+      "@id": "rf:workspaceSettings",
+      "@type": "AnalysisConfiguration",
+      "filename": "riceflux_workspace.json",
+      "schema": "RiceFlux workspace 1.0",
+      "rowType": {
+        "@id": "rf:AnalysisWorkspace"
+      },
+      "serialization": "JSON configuration only"
     }
   ]
 }

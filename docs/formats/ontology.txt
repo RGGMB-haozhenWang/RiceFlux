@@ -1,0 +1,39 @@
+RiceFlux ontology contract 4.0 — 2026-11-16
+
+Identity
+Gene = assembly + annotation namespace + stable locus ID. Prefer MSU7 LOC_Os IDs in this release, retain RAP IDs and original source IDs. Symbols and aliases are searchable labels, not unique event or material identities. Ambiguous aliases never merge automatically.
+Accession = dataset_id + sample_id. Population is a membership rule over independent fields: genetic subgroup, origin region, source group, material category. Trial site belongs to Environment, not accession origin.
+
+Phenotype intake (backward compatible RiceFlux tables 1.0)
+Required environments.tsv columns remain:
+environment_id trait_id trait_name unit category family assay site year
+Optional standard columns:
+ontology_id mapping_status method_id scale_id growth_stage
+Use a stable trait_id. An observation variable = Trait × Method × Scale. A trial observation additionally binds dataset, material, site, year, growth stage and experimental unit. Repeated plot measurements need an explicitly documented aggregation or a new environment identity; do not duplicate a sample/environment cell.
+ontology_id uses CO_<crop>:<id> or TO:<id>; mapping_status = exact, broad, related, or unmapped. An unmapped row leaves ontology_id blank. method_id/scale_id default to stable RF local identifiers derived from trait/assay/unit for legacy tables. For curated external mappings, method/scale correspondence and source must be reviewed. Supplied mappings are source assertions, not automatic external validation.
+traits.tsv registers existing traits and prior collections separately. Current external mappings remain unmapped. These are not invented CO IDs. All default directions are unspecified. Prior collections (e.g. core50, all_prior) are not measured traits.
+GO molecular_function, biological_process and cellular_component describe gene products; use a separate GeneAnnotation relation (gene_id, GO_id, evidence_code, reference, qualifier, assembly), never use GO as a phenotype identifier.
+Primary references: https://cropontology.org/term/CO_320%3A0000690 ; https://doi.org/10.1093/nar/gkad1028 ; https://geneontology.org/docs/go-annotations/
+
+Evidence and functional states
+Publication (normalized DOI) -> EvidenceAssertion -> Event/Allele/Haplotype -> Gene/ReferenceLocation.
+A normalized DOI appears once in the evidence list with multiple roles. Events merge only when position, REF/state, type, trait and effect match; unlocated records also need their original label. Original rows remain downloadable. Site coverage alone is not a causal assertion.
+Causal evidence and genotype evidence are independent axes. G_chip = observed cohort call; G_projected = projection/imputation; G_direct = explicitly supplied target-event call; G_mixed = mixed origins. None of these dataset labels certifies per-call depth, quality, phase or allele identity.
+A high-confidence functional call requires correct event and assembly/REF, all defining components, sample identity, validated assay/call QC, and required phase. Missing/heterozygous/uncovered states stay distinct. A variant-only absence is missing, not reference.
+
+Favourable / Un-Favourable
+An assessment is keyed by event_id + allele/haplotype_id + target_trait + comparison + genetic_background + environment + objective. Fields: literature_direction, literature_reference, genotype_evidence, population_result, effect, uncertainty, tradeoffs, validation_status, decision. decision is favourable, unfavourable, conditional, conflicting or undetermined. It never applies unconditionally to a whole gene or cultivar.
+This release leaves objective and decision unspecified. Literature reports retain their source conditions. Current raw-phenotype group means are descriptive associations, not independent confirmation or adjusted effects. Existing 23 contrasts retain their original 2347 modern-indica cohort/model scope; they are not relabeled as new 6044 results. No comprehensive breeding score is calculated.
+
+Browser descriptive analysis
+Radar: raw values plus 100*(n_below+0.5*n_equal)/n_valid within the explicitly selected reference set and a single environment/assay/unit. All tied values have percentile 50; no valid reference -> missing. The reference ignores the highlighted-individual-only filter. No imputation, best/worst axis direction or total score. Axes and reference membership are exported.
+Linkage: selected marker pairs, separately within dataset × source_group; complete diploid ALT dosages 0/1/2 only. r2 = squared Pearson correlation. n<3 or fixed dosage -> undefined; report N, missing and pairwise MAF. Not phased haplotype LD or D-prime; no LD pruning or independent-gene score. Small samples and structure can make estimates unstable.
+
+Chromosome and future genome/pangenome views
+Coordinates are assembly-qualified, 1-based inclusive. genome_regions.tsv provides the RGAP approximate centromere points, not precise functional intervals. Geometric distal annotation = gene within terminal 10% of chromosome length; this is a display convention, not a recombination-rate claim.
+Reserve entities Assembly, SequencePath, GeneModel, RegionAnnotation, StructuralEvent, Orthogroup and CoordinateProjection. A future pangenome panel must bind path-specific coordinates and mapping method/status, handle one-to-many genes and unplaced insertions, retain graph path/sample provenance, and not assume an MSU ID exists on every assembly. No genome/pangenome-wide board is rendered now.
+
+Exports
+Gene export 1.0 is ZIP of UTF-8 TSV/TXT files: context, datasets, materials, variants, genotypes, allele_frequencies, combinations, combination_members, phenotypes, environments, evidence, definitions. Tables use tab delimiters; import identifiers into Excel as text. Empty values mean unavailable. The context records current filters, dataset versions and grouping. All loaded markers are retained with qc_retained, so filtering is transparent.
+Analysis configurations use versioned JSON only for restoring application settings. Workspaces store layouts, filters, material/radar/combination settings and selected locally imported datasets in IndexedDB. Public datasets are restored by exact registry version. Browser data deletion removes stored workspaces; export settings for migration. No user upload is sent to a server.
+RiceNavi uses an independent source-table adapter. Source calls and phenotype catalogue are queryable/downloadable, with QC, phase and environment gaps explicit. No automatic cross-dataset material/event equivalence.

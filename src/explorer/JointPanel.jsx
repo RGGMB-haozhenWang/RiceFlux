@@ -22,14 +22,17 @@ function Definition({gene,schemes,current,onChange}){
     </details></div>;
 }
 
-export function JointPanel({data,genes,cohort,records}){
-  const [chosen,setChosen]=useState({}),[selection,setSelection]=useState('all'),[query,setQuery]=useState('');
+export function JointPanel({data,genes,cohort,records,config={},onConfig}){
+  const chosen=config.chosen||{},setChosen=chosen=>onConfig({...config,chosen});
+  const policy=config.policy||'all';
+  const eligible=policy==='direct'?cohort.filter(s=>s.genotype_evidence==='G_direct'):cohort;
+  const [selection,setSelection]=useState('all'),[query,setQuery]=useState('');
   const [limit,setLimit]=useState(24),[comboLimit,setComboLimit]=useState(24);
   const menus=useMemo(()=>{
     return genes.map(g=>geneSchemes(g,data.evidence,records.filter(r=>r.gene===g)));
   },[data.evidence,genes,records]);
   const methods=useMemo(()=>menus.map((menu,i)=>menu.find(s=>s.id===chosen[genes[i].id])||menu[0]),[menus,genes,chosen]);
-  const result=useMemo(()=>jointCalls(cohort,methods),[cohort,methods]);
+  const result=useMemo(()=>jointCalls(eligible,methods),[eligible,methods]);
   const popIds=data.populations.map(p=>p.id).filter(id=>result.population.has(id));
   const memberHeading=useRef(null);
   const mode=selection==='unresolved'?'unresolved':selection==='all'?'all':'group';
@@ -47,7 +50,7 @@ export function JointPanel({data,genes,cohort,records}){
       return key==='definition|{gene_id}'?definitionFields:[key];
     });
     const out=[];
-    for(const [pop,n,typed] of [['ALL',cohort.length,result.assigned],...popIds.map(p=>[p,result.population.get(p).all,result.population.get(p).assigned])]){
+    for(const [pop,n,typed] of [['ALL',eligible.length,result.assigned],...popIds.map(p=>[p,result.population.get(p).all,result.population.get(p).assigned])]){
       for(const group of result.groups){
         const count=pop==='ALL'?group.n:group.pops.get(pop)||0;
         out.push({...Object.fromEntries(group.labels.map((l,i)=>[geneFields[i],l])),source_group:pop,population_n:n,joint_typed_n:typed,joint_unresolved_n:n-typed,member_n:count,frequency_within_typed:typed?count/typed:null,...schemeValues});
@@ -66,9 +69,10 @@ export function JointPanel({data,genes,cohort,records}){
     downloadTable(formats.jointMaterials,out,[...formats.jointMaterials.columns,...cols]);
   }
   return <div className="joint-panel">
+    <label className="call-policy">分型证据范围 <select aria-label="分型证据范围" value={policy} onChange={e=>{onConfig({...config,policy:e.target.value});filterMembers('all');}}><option value="all">全部来源（保留各自证据标签）</option><option value="direct">仅声明 G_direct 的数据集</option></select><small>来源标签不替代逐位点 QC。当前保留 {eligible.length} / {cohort.length} 份材料；6044 为 G_chip。</small></label>
     <div className="joint-definitions">{genes.map((gene,i)=><Definition key={gene.id} gene={gene} schemes={menus[i]} current={methods[i]} onChange={id=>{setChosen({...chosen,[gene.id]:id});filterMembers('all');setComboLimit(24);}}/>)}</div>
     <div className="joint-counters" aria-label="联合判型统计">
-      {[['当前材料',cohort.length],['完整判型',result.assigned],['未完整判型',cohort.length-result.assigned],['观察到的组合',result.groups.length]].map(([label,n])=><div key={label}><span>{label}</span><strong>{n.toLocaleString()}</strong></div>)}
+      {[['当前材料',eligible.length],['完整判型',result.assigned],['未完整判型',eligible.length-result.assigned],['观察到的组合',result.groups.length]].map(([label,n])=><div key={label}><span>{label}</span><strong>{n.toLocaleString()}</strong></div>)}
     </div>
     <h3>单倍型组合与群体分布</h3>
     <p>每行是一种实际观察到的组合。各来源群体格内为份数和组内频率，分母是该群体在全部所选基因均已判型的材料数。</p>

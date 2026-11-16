@@ -10,7 +10,12 @@ export function literatureDefinitions(gene,evidence) {
     id:d['@id'], label:d.label, doi:d.supportedBy.map(url => url.slice('https://doi.org/'.length)),
     components:d.orderedComponents.map(c => ({pos:c.position, ref:c.reference, state:c.reportedState}))
   }));
-  return records.concat(extra);
+  const catalog=gene.records.length?[]:(gene.catalog?.events||[]).filter(e=>e.doi?.length&&chromNum(e.chr)===chromNum(gene.chromosome)).flatMap(e=>{
+    const pos=(e.pos||'').split(','),refs=(e.ref||'').split(','),states=(e.state||'').split(',');
+    if(pos.length!==refs.length||pos.length!==states.length||!pos.every(p=>/^\d+$/.test(p)&&Number(p)>0))return [];
+    return [{id:e.key,label:e.label||e.key,doi:e.doi,components:pos.map((p,i)=>({pos:Number(p),ref:refs[i],state:states[i]}))}];
+  });
+  return records.concat(extra,catalog);
 }
 
 export const statusText={called:'已判型',missing:'分型缺失',heterozygous:'含杂合位点',both:'缺失且含杂合',unmatched:'纯合型未匹配定义',ambiguous:'匹配多个型名',uncovered:'定义位点未覆盖',no_sites:'无分型位点'};

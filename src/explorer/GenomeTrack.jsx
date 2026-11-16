@@ -3,6 +3,8 @@ import {chromNum,lengths} from './exchange.js';
 
 export function GenomeTrack({gene,variants,selected,onSelect}) {
   const extent=lengths[chromNum(gene.chromosome)]||gene.end;
+  const centromere=gene.genomeRegions?.find(r=>r.feature==='centromere_approximate_point');
+  const terminalDistance=Math.min(gene.gene_start-1,extent-gene.gene_end),relative=terminalDistance/extent;
   const home={left:gene.start,right:gene.end};
   const [view,setView]=useState(home),drag=useRef(null), suppressClick=useRef(false);
   const width=view.right-view.left+1;
@@ -36,6 +38,7 @@ export function GenomeTrack({gene,variants,selected,onSelect}) {
       onPointerUp={()=>drag.current=null} onPointerCancel={()=>drag.current=null} onPointerLeave={()=>{if(!suppressClick.current)drag.current=null;}}>
       {[0,.25,.5,.75,1].map(t=><g key={t}><line x1={42+t*710} x2={42+t*710} y1="30" y2="118" stroke="#e3eaec"/><text x={42+t*710} y="139" className="axis" textAnchor="middle">{Math.round(view.left+t*(width-1)).toLocaleString()}</text></g>)}
       <text x="42" y="20" className="track-name">{gene.name} {gene.strand==='+'?'→':gene.strand==='-'?'←':''}</text>
+      {centromere&&Number(centromere.position)>=view.left&&Number(centromere.position)<=view.right&&<g><line x1={scale(Number(centromere.position))} x2={scale(Number(centromere.position))} y1="28" y2="118" stroke="#bc8c55" strokeDasharray="4 3"/><text x={scale(Number(centromere.position))} y="22" textAnchor="middle" className="axis">约着丝粒</text></g>}
       {gene.gene_start!=null&&interval(gene.gene_start,gene.gene_end,'#487e73',61,3,'body')}
       {promoter&&interval(promoter.start,promoter.end,'#cbded6',52,18,'promoter')}
       {features.map((f,i)=>interval(f.start,f.end,'#659d8d',50,24,i))}
@@ -44,5 +47,5 @@ export function GenomeTrack({gene,variants,selected,onSelect}) {
         onKeyDown={e=>{if(['Enter',' '].includes(e.key)&&variants.includes(v)){e.preventDefault();onSelect(v.id);}}}>
         <line x1={scale(v.pos)} x2={scale(v.pos)} y1="78" y2="98" stroke="#839ead"/><circle cx={scale(v.pos)} cy="104" r={v.id===selected?.id?6:4} fill={v.id===selected?.id?'#3572c5':'#7796ac'}/><title>{v.id} · {v.ref} / {v.alt??'—'}</title></g>)}
     </svg><p className="track-range">窗口 {view.left.toLocaleString()}–{view.right.toLocaleString()} bp · 拖动平移 · 窗内 {visible.length} 个标记</p>
-  </div>;
+  <p className="chromosome-context">距最近染色体端 {terminalDistance.toLocaleString()} bp（全长的 {(relative*100).toFixed(1)}%）{relative<=.1?' · 端部 10% 几何区域':''} · {centromere?<a href={centromere.source} target="_blank" rel="noreferrer">着丝粒约 {(Number(centromere.position)/1e6).toFixed(1)} Mb</a>:'着丝粒位置未接入'}<small>近似点不代表功能边界；端部比例不等于重组率。</small></p></div>;
 }
