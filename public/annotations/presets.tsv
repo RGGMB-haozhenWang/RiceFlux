@@ -1,0 +1,2 @@
+gene_id	source_tag	title	doi	locator	summary	caveat
+Os07g0695100	FPLS1097622	Zhang et al. 2022 · DTH7 · GNP	10.3389/fpls.2022.1097622	Haplotype analysis; Supplementary Figure 5B,C	4 个启动子 SNP 与 3 个非同义 SNP 定义 5 型，研究每穗粒数。/ Four promoter and three nonsynonymous SNPs define five haplotypes for grain number per panicle.	文献关联单倍型组分；不是每个 SNP 均经独立因果验证。坐标与碱基继承已验收先验。/ Association haplotype components, not seven independently validated causal variants; coordinates and bases inherited from the accepted prior.

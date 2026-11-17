@@ -36,9 +36,13 @@ export function phenotypeAxes(data){
 }
 export function radarRows(samples,reference,axes){
   return axes.flatMap(e=>{
-    const values=reference.map(s=>s.phenotypes[e.id]).filter(Number.isFinite);
+    const values=reference.map(s=>s.phenotypes[e.id]).filter(Number.isFinite).sort((a,b)=>a-b);
+    const ranks=new Map();
+    for(let i=0;i<values.length;){let j=i+1;while(j<values.length&&values[j]===values[i])j++;ranks.set(values[i],100*(i+(j-i)/2)/values.length);i=j;}
+    const rank=value=>{if(!Number.isFinite(value)||!values.length)return null;if(ranks.has(value))return ranks.get(value);
+      let lo=0,hi=values.length;while(lo<hi){const mid=(lo+hi)>>>1;if(values[mid]<value)lo=mid+1;else hi=mid;}return 100*lo/values.length;};
     return samples.map(s=>({sample_id:s.id,name:s.name,dataset_id:s.dataset_id,trait_id:e.trait_id,environment_id:e.id,assay:e.assay,site:e.source.site,year:e.source.year,unit:e.unit,
-      value:s.phenotypes[e.id]??null,percentile:percentile(s.phenotypes[e.id],values),reference_n:values.length,direction:'unspecified'}));
+      value:s.phenotypes[e.id]??null,percentile:rank(s.phenotypes[e.id]),reference_n:values.length,direction:'unspecified'}));
   });
 }
 export function stateSummary(cohort,marker,environment){

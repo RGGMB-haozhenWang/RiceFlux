@@ -1,113 +1,33 @@
 # RiceFlux
 
-[打开 RiceFlux 群体与等位变异面板](https://rggmb-haozhenwang.github.io/RiceFlux/)。原面板直接读取实测群体和基因注释。性状选择器按生育期、粒形和抗病分类。表型图按地点列出当年各基因型组合的分布，可切换年份与鉴定指标；地区明细联动原始个体值。导出包含当前地点的个体值与该次比较的各原表列，个体选择器支持品种名或材料编号。基因轨道、群体频率、基因型组合、表型分布与个体表按当前筛选同步更新。在“数据、算法与参考”中可查看当前基因的文献单倍型与来源。原图谱链接也会打开此面板。
+[打开面板 / Open dashboard](https://rggmb-haozhenwang.github.io/RiceFlux/) · [教程 / Guide](https://rggmb-haozhenwang.github.io/RiceFlux/tutorial.html)
 
-| 数据 | 范围 |
-|---|---|
-| 材料 | 6,044 份，分为 5,222 份现代品种、822 份地方品种与 7 个登记来源群体。可切换到历史 2,347 份现代籼稻分析子集。 |
-| 基因与位点 | 原核心 50 个基因，425 条先验事件。原核心集 255 个有原始分型的坐标覆盖 32 个基因，其中 10 个对应原文功能位点、225 个为文献单倍型组分、20 个为其他单个位点记录。 |
-| 实测表型 | 3,605 份材料有至少一项实测值，66 个性状环境列合计 186,556 个有效值。地区图按当前选择及实际有值的材料统计。 |
-| 文献证据 | 基因与位点详情列出功能、事件和背景 DOI。文献单倍型按原文的完整组分匹配，保留杂合与缺失。原始 MAP 缺少 83 个有结构化坐标的先验位点。 |
+面向水稻育种的基因、位点组合与材料比较。原始表型与群体百分位不设置优劣方向。
+A static rice genetics workbench for genes, genotype combinations and accessions. Phenotypes and percentiles are descriptive, without a universal favourable score.
 
-在“材料范围”选择全部、现代品种、地方品种或历史分析子集，再按来源组或个体筛选。等位频率、组合、地区表型和导出使用相同的选择。历史 23 项主环境效应对比保留其现代籼稻分析范围。登记编号与 PED 编号有 6,030 项精确匹配，14 项带作者脚注 #1，保留两套编号和原登记群体。原始 0/N 表示缺失，表型空格表示未测。[群体研究](https://doi.org/10.1016/j.molp.2025.03.007) · [作者材料名录](https://ars.els-cdn.com/content/image/1-s2.0-S1674205225000978-mmc2.xlsx)
+- **D1**: 6044 份名录材料（5222 现代品种、822 地方品种），1067 SNP。
+- **D2**: RiceNavi 404 份材料，23 个严格匹配 SNP，18 个基因；完整来源库另保留 319 条位点记录。
+- **先验 / Prior**: 477 基因输入库。查询包含补充及历史身份；MSU ID 未解决的条目明确标记。
+- **证据 / Evidence**: 数据集覆盖、文献功能位点、单倍型组分与调用质量分别标注。当前逐调用 HC 尚未认证；部分鉴定规程待原文绑定。
 
-ALK 的三个坐标为 Chr6 上的 6,752,756、6,752,887 和 6,752,888。新增的中间位点有 1,950 份 GG、4,056 份 TT、35 份 GT、3 份缺失。文献定义的组合可以按当前人群查看完整纯合匹配数。[ALK 原文](https://doi.org/10.1186/s12284-020-00393-5)
+## 使用 / Use
 
-[全名录分型](public/prior/accession_genotypes_6044.tsv.gz) · [全名录表型](public/prior/phenotypes_6044.tsv.gz) · [广义 QTN 与 DOI](public/prior/broad_qtn_sites.tsv) · [425 条先验事件覆盖](public/prior/event_panel_coverage.tsv) · [83 个未测坐标](public/prior/absent_coordinates.tsv) · [数据清单与哈希](public/prior/data_manifest.json)
+1. 数据接口选择数据集；以 MSU/RAP ID 或别名查询基因。
+2. 自选位点或文献定义，查看频率、组合、地区表型与材料比较。
+3. 下载 TSV 数据包；Excel 按制表符导入，材料 ID 设为文本。工作区设置可保存与迁移。
 
-**完整 V4 先验库。** 左栏「基因查询」跨性状查找基因名、别名、MSU / RAP 编号；「性状」仍可按实测性状或 V4 性状类别选取。V4 完整表有 940 行、476 个基因标识；曾用于筛选的 251 行是五列已填全的记录，并非完整名录。原核心 50 中 42 个与 V4 重合。合并后公开 **484 个现行先验条目**；LOGL1 仅作旧版身份另列，不恢复已排除的事件。原始标识待定或仅定位到区域的条目保留原状态。460 个现行条目有可追溯 DOI；基因档案文献、事件 DOI 和功能定位证据分别标注。
+Choose datasets → search a gene → select sites → compare → export TSV. The material selector has no six-accession cap; charts paginate six accessions per page.
 
-| 现行条目的群体覆盖 | 基因数 | 实际可见内容 |
-|---|---:|---|
-| 广义文献位点已分型 | 33 | 276 个位点；原核心集 255 个，加上 SUG1/DEP2 的 21 个有分型的文献组分。原文的部分组分仍未覆盖。 |
-| 仅有区域 SNP | 412 | 791 个 CDS 或按链方向上游 2 kb 内的实测 SNP。每个区域最多一个，按距转录起始端的坐标顺序选取。未验证标记与功能等位的连锁，不用于指认因果或有利等位。 |
-| 本次没有可展示的分型 | 39 | 可查看已有先验、身份核验情况及来源。缺少调用不代表参考型。 |
+## 本地与发布 / Run and deploy
 
-两套公开分型表的材料轴均是原名录 6,044 份。分母、缺失处理和表型筛选规则不变。全库表包含 513 条可展示的 V4 事件；与原有 425 条核心事件有重叠，两者不得相加。新增区域标记未进行性状效应检验，不能用频率或图表作为贡献已验证的证据。
-
-[全库基因目录](public/prior/v4_prior_genes.tsv) · [V4 事件、状态和 DOI](public/prior/v4_prior_events.tsv.gz) · [扩展位点字典](public/prior/v4_marker_dictionary.tsv) · [扩展位点逐材料分型](public/prior/v4_accession_calls.tsv.gz) · [V4 坐标覆盖](public/prior/v4_site_coverage.tsv.gz) · [扩展本体 JSON-LD](public/prior/v4_catalog.jsonld.gz)
-
-**合成数据演示** [群体与等位变异探索](https://rggmb-haozhenwang.github.io/RiceFlux/?view=demo)
-
-面向育种家的群体与等位变异探索演示，参考 [EasyHap](https://github.com/Guangqi-He/EasyHap) 的基因区域、变异、群体组成与表型查看流程。选择性状、基因、群体或感兴趣的个体后，可查看各群体的等位基因频率、基因型组合和模拟表型，并导出当前筛选结果。
-
-> **原群体演示的数据声明**：材料、基因、群体、坐标、基因型与表型均为合成数据；未使用真实水稻材料、1001 Genomes 或 AtFLM 实测数据。结果不能用于育种决策或论文结论。
-
-## 运行
-
-```bash
+```sh
 npm ci
 npm test
 npm run build
-npm run dev
+python3 -m http.server 4173 --directory docs
 ```
 
-运行 `npm run dev` 后按终端显示的网址查看。构建产物位于 `docs/`，可作为 GitHub Pages 静态页面发布，不需要 Python 服务。
+构建到 `docs/`，可直接发布到静态服务器，无服务器插件。输入为 manifest 加五张 TSV 表；[接口规范](public/datasets/README.txt)、[输入样表](public/formats/prior.tsv)、[完整技术说明](docs-reference.md)。
+Build output is a static site. Add versioned datasets through `public/datasets/index.tsv`; see the input contract above.
 
-## 合成演示的数据口径
-
-- ALT 频率按已检出的等位基因拷贝计数，部分缺失调用只计入已知拷贝。无调用时显示 `—`。
-- MAF 和缺失率根据当前筛选队列计算。基因型组合按所有保留位点均完整的个体统计；未分相数据不会被称作已解析的单倍型。
-- 表型图仅展示模拟分布，不包含显著性检验，也不表示优良等位基因。
-- 本项目是独立实现的交互演示；不执行 EasyHap，不上传或解析 VCF，也没有在线数据库和用户账户。
-
-## 源码结构
-
-`src/explorer/` 包含 React 界面、样式、统计逻辑与测试；`data/` 和 `public/data/` 是相同的固定种子合成数据；`generate_explorer_data.py` 用于再生成数据。重生成后将 `data/explorer_demo.json` 同步至 `public/data/`，重新构建 `docs/`。
-
-项目由 React、Vite 和 Radix Themes 构建。所用第三方组件各自保留原有许可证。
-
-在「多基因比较」加入多个基因，可以在同一材料群体中查看坐标、拖动与缩放轨道、查询位点频率或导入八列先验表。材料展示和检索使用原始名录的品种名和编号。
-
-[输入样表](public/formats/prior.tsv) · [输入、输出与静态部署说明](public/formats/README.txt) · [原始材料名录](public/prior/accessions_6044.tsv.gz)
-
-多基因比较的主表按材料汇总各基因的单倍型组合。每列对应一个基因，每行给出实际组合、全体份数和各来源群体的组内频率。点击「查看成员」可查询该组合每份材料的原始有序等位状态。选择「未完整判型材料」可检查缺失、杂合及定义不完整等情况。组合及逐材料分型可分别导出 TSV。下方直接展示每个基因的区域变异和分群等位频率，点击位点同步更新。
-
-## 数据交换与本体
-
-输入保留八列 TSV，可在末尾追加 `Source_DOI`。浏览器按基因身份解析记录，按参考组装、染色体、位置及 REF 匹配有序组分。导出包含输入行号、组分序号、基因及位点 IRI、分型状态、当前材料范围内的拷贝计数，以及分别标注的输入来源、功能、事件和基因文献。输入记录的“导出先验关系图 JSON-LD”可与全库已发布本体按 IRI 连接。逐材料导出统一使用名录编号、原始名称、材料类别与来源群体。
-
-[领域词汇](CONTEXT.md) · [机器可读交换合同](public/formats/exchange.json) · [格式和静态部署](public/formats/README.txt)
-
-## 477 基因全库输入
-
-面板默认读取 477 个来源基因的 941 条先验记录。在「多基因比较」打开当前基因组合后，可查看来源记录并导出组分匹配结果。全库包含 534 条事件、406 条基因档案和一条 LOGL1 历史身份。OsESV1 与 LA3 的别名重叠，保留未解析状态。
-
-[全库 TSV](public/formats/prior_477.tsv) · [逐基因索引](public/formats/gene_index.tsv) · [全套输入 ZIP](public/formats/riceflux_prior_477.zip) · [逐行来源](public/formats/audit/row_lineage.tsv) · [群体位点覆盖](public/formats/audit/panel_coverage.tsv)
-
-索引中的 file 路径相对于索引所在目录，可直接下载对应基因文件。静态部署配置中 `compare_on_load: false` 让全库成为可用的先验定义，比较面板按用户选中的基因计算。手动导入自己的表仍会选中该表中能解析的基因。
-
-
-## 多数据集接口
-
-页面默认读取标准 TSV 群体数据。右上角「数据集」可导入多个数据包、选择比较维度、预览表格并下载未压缩 TSV。数据包包含材料、位点、分型、环境、表型五张表和一个版本清单；服务器只需提供静态文件。数据集索引允许持续添加版本，额外数据按需加载。
-
-- [完整 6044 表格包](public/datasets/rice6044-v1.zip)：6,044 份材料、1,067 个位点、66 个表型环境。
-- [输入格式、缺失规则及发布方式](public/datasets/README.txt) · [数据集索引](public/datasets/index.tsv) · [清单与文本 SHA256](public/datasets/rice6044-v1/manifest.json)。
-- [文献概述表](public/datasets/literature.tsv)：分别标明已整理事件/位点概述、先验记录概述和论文题名。未补读全部论文，不将题名或区域 SNP 作为功能验证。
-
-材料身份按 `(dataset_id, sample_id)` 保留；遗传亚群、来源地区、材料类别和来源组分别存储。当前名录的 region 未单独核定，保持 NA；表型试验地点单独记录。重叠数据集的同一材料不会自动去重，跨队列比较应选择数据集分组或先核验身份。
-
-MSU ID 优先用于显示和精确连接，RAP ID 与已有身份继续兼容；名称与别名支持不区分大小写、标点和部分名称的查询。当前 485 条目录身份中有 449 个唯一 MSU ID，36 条尚无该映射；不从名称猜测映射。477 来源基因输入与484现行条目的不同口径保持不变。
-
-重建表格：`node scripts/export_datasets.mjs`。运行 `npm test` 验证全部原始等位拷贝、表型、缺失、跨数据集身份和原组合计数，再执行 `npm run build`。历史 JSON 原件保留供验收；常规载入不再下载两份大群体 JSON。注释与本体保留 JSON/JSON-LD，分析数据可独立使用 TSV。
-
-### Personal analysis workspace and evidence (2026-11-16)
-
-Use **我的工作区** to reorder, resize, rename, add or hide components, save named analyses in the browser, and export/import settings. **单页概览** places gene, allele frequency, population composition and phenotype on one dashboard. Original components remain available. Public dataset versions must match when restoring a saved workspace; imported datasets are stored only when the user saves the workspace.
-
-**材料比较** supports up to six accessions and eight selectable environment-specific phenotype dimensions. Radar values are midrank percentiles, with raw values, units and reference denominators alongside. No favourable direction or overall score is assumed. The active gene and multi-gene selection also show material-level literature or observed-marker states. Multi-gene comparison calculates within-source-group dosage r² for selected marker pairs, with missingness and fixed-marker statuses.
-
-**基因与证据** consolidates DOI records and functional-event information. Genotype completeness, genotype source and causal confidence stay separate. Population checks show stratified raw means; the previously released 23 model contrasts retain their original cohort scope. A single genotype classification is never treated as universal evidence of a favourable cultivar.
-
-**下载基因数据** exports a ZIP of TXT/TSV tables readable by Excel and analysis software. [Ontology and exchange contract](public/formats/ontology.txt), [trait registry](public/formats/traits.tsv), and [chromosome region annotations](public/formats/genome_regions.tsv) define the standard and its boundaries. GO is a gene-function annotation layer; agronomic traits use the Trait–Method–Scale model with explicit, reviewed CO/TO mappings. Current external trait mappings remain unassigned.
-
-RiceNavi's frozen source catalogue is separately accessible: 319 loci, 404 accessions and 128,876 source calls. [Source manifest](public/sources/ricenavi-20261025/manifest.json) records the exact revision. Per-call QC, physical material identity and phase are not certified, and catalogue phenotypes lack bound trial environments. They are not automatically pooled with RiceAtlas 6044. Future genome/pangenome entities and projections are specified in the ontology contract without adding new genome-wide panels.
-
-### 自选位点与电脑总览（2026-11-16）
-
-默认电脑视图将基因结构、等位频率、基因型组合和地区表型放在四个可展开面板；文献、多基因、材料和个体明细由标签页切换。正文 16px、主要数据 14px，提供 18px 大字模式。总览内按试验地点切换表型，展开后分地区并列展示；原组件编辑功能保留在“自由布局”。
-
-单基因和多基因均可使用“自选位点”，逐项勾选或采用 CDS、启动子、文献位点集合预设。单基因以完整未分相调用重算组合及地区表型，多基因以完整纯合序列生成“自选型”，并联动区域轨道和频率菜单。自选组合不继承文献型名；缺少请求位点时保留未覆盖状态，空集合不生成组合。手动选择绕过 MAF/缺失阈值，仍展示当前质控数值，可恢复自动 QC。
-
-工作区保存两种分析范围各自的位点集合、字号和标签页。基因数据包升级为 export 1.1，新增 `analysis_sites.tsv` 保存位点顺序、参考版本、REF、选择方式及覆盖状态；`variants.tsv` 分别记录阈值结果和实际纳入状态。联合成员表也包含完整方案定义与数据版本。6044 原始分型、表型和 477 基因先验未改变。
+来源：[6044](https://doi.org/10.1016/j.molp.2025.03.007) · [RiceNavi](https://doi.org/10.1038/s41588-020-00769-9)。保留来源名录和调用，不自动合并同名材料，不将缺失改为参考等位。

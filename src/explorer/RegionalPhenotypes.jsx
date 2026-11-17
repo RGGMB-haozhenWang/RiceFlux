@@ -33,6 +33,7 @@ export function RegionalPhenotypes({trait, groups, view, onChange, selectedIds,c
         </select></label>}
     </div>
     {compact&&<label className="site-select">试验地点<select aria-label="表型试验地点" value={activeSite} onChange={e=>onChange({site:e.target.value})}>{sites.map(({site})=><option key={site} value={site}>{siteName(site)}</option>)}</select><span>各地分别展示</span></label>}
+    {view.active.source.provenance&&<details className="phenotype-provenance"><summary>鉴定与地点溯源 / Trial source</summary><p>{view.active.source.provenance.site_label} / {view.active.source.original_site} · {view.year} · {view.active.source.provenance.original_trait}</p><p>{view.active.source.provenance.source_table} · 列 {view.active.source.column} · <a href={'https://doi.org/'+view.active.source.provenance.source_doi} target="_blank" rel="noreferrer">原文 DOI</a></p><p>{view.active.source.provenance.protocol_gap}</p></details>}
     <details className="region-description" open={!compact}><summary>统计口径 · {view.unit}</summary><p>各地共用同一横轴。箱体为四分位区间，中线为中位数，两端为最小值和最大值。n 为有测值的组合成员数。</p></details>
     <div className="region-grid">{sites.filter(s=>!compact||s.site===activeSite).map(({site,endpoint,rows,total}) => {
       const active = site===activeSite, name = siteName(site);

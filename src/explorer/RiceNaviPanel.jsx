@@ -11,7 +11,7 @@ export function RiceNaviPanel({gene}){
   const selected=useMemo(()=>calls?.filter(r=>r.external_id===active?.external_id&&(!material||r.material_id===material))||[],[calls,active,material]);
   async function loadCalls(){setBusy(true);setError('');try{setCalls(readTable(await readText(import.meta.env.BASE_URL+path+'calls.tsv.gz')).objects());}catch(e){setError(e.message)}finally{setBusy(false)}}
   return <section className="panel"><div className="panel-title"><h2>RiceNavi · 独立来源</h2><button aria-expanded={open} onClick={()=>setOpen(!open)}>{open?'收起来源':'打开来源'}</button></div>{open&&<>
-    <p>319 个来源位点 · 404 份材料 · 128,876 条原始调用。基因别名用于检索，未与 6044 自动认定为同一事件或同一材料。</p>
+    <p>319 个来源位点 · 404 份材料 · 128,876 条原始调用。其中 23 个严格匹配 SNP 已可在“数据接口 → D2 → 应用”进入主面板；其余保留为来源记录。材料不与 6044 自动合并。</p>
     <p className="footnote">来源分型缺少逐调用 QC 与原始 VCF 绑定；“|”不证明分相，SV/缺失编码按原值保留。来源效应描述不直接转成有利等位判断。材料表型未绑定试验环境，暂不进入 6044 雷达图。</p>
     <div className="compare-tools">{['loci.tsv','materials.tsv','calls.tsv.gz','manifest.json'].map(f=><a href={'./'+path+f} download key={f}>{f}</a>)}<a href="https://github.com/xhhuanglab/RiceNavi/tree/3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e" target="_blank" rel="noreferrer">冻结来源 ↗</a></div>
     {error&&<p role="alert">{error}</p>}{!data?<p>正在读取来源目录…</p>:<><div className="compare-tools"><label><input type="checkbox" checked={all} onChange={e=>{setAll(e.target.checked);setLocus('')}}/>查看全部来源位点</label><select aria-label="RiceNavi 位点" value={active?.external_id||''} onChange={e=>setLocus(e.target.value)}>{loci.map(r=><option value={r.external_id} key={r.external_id}>{r.gene_symbol} · {r.chromosome}:{r.position_literal} · {r.variant_type}</option>)}</select></div>

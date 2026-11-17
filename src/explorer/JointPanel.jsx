@@ -1,3 +1,4 @@
+import {presetTitle,readableDefinition} from './provenance.js';
 import {PopulationComposition} from './PopulationComposition.jsx';
 import React,{useMemo,useRef,useState} from 'react';
 import {geneSchemes,jointCalls,statusText} from './jointHaplotypes.js';
@@ -6,10 +7,10 @@ import {SitePicker} from './SitePicker.jsx';
 
 const kinds={literature:'文献命名型',input:'导入状态型',observed:'群体纯合标记型',custom:'自选纯合标记型'};
 const pct=(n,d)=>d?(100*n/d).toFixed(1)+'%':'—';
-const displayCall=c=>c.status==='called'?c.label:statusText[c.status]+(c.label?' · '+c.label:'');
+const displayCall=c=>c.status==='called'?readableDefinition(c.label):statusText[c.status]+(c.label?' · '+c.label:'');
 function schemeTitle(s){
   const title=kinds[s.kind]+' · '+s.positions.length+' 位点';
-  return title+(s.definitions.length?' · '+s.definitions[0].label+(s.definitions.length>1?' 等':''):'')+(!s.ready?'（无法完整判型）':'');
+  return title+(s.definitions.length?' · '+presetTitle(s):'')+(!s.ready?'（无法完整判型）':'');
 }
 function Definition({gene,cohort,schemes,current,custom,onChange,onCustom}){
   return <div className="joint-definition"><label><strong>{gene.name}</strong>
@@ -19,8 +20,9 @@ function Definition({gene,cohort,schemes,current,custom,onChange,onCustom}){
     <details><summary>位点顺序与型名依据</summary>
       <p>{gene.chromosome} · {current.positions.map(p=>p??'未覆盖').join(' → ')||'暂无可用位置'}</p>
       {current.kind==='custom'&&<p>自选位点组合，不继承文献型名。{current.missing.length>0&&'未覆盖：'+current.missing.join('、')}{current.assemblyMismatch&&'参考版本不匹配，需重新选点。'}</p>}
+      {current.provenance&&<p>{current.provenance.title} · {current.provenance.locator}<br/>{current.provenance.summary}<br/>{current.provenance.caveat}</p>}
       {current.doi.map(d=><a key={d} href={'https://doi.org/'+d} target="_blank" rel="noreferrer">{d} </a>)}
-      {current.definitions.length?<ul>{current.definitions.map((d,i)=><li key={i}>{d.label} · {d.sequence}{!d.valid&&'（状态未解析）'}</li>)}</ul>:
+      {current.definitions.length?<ul>{current.definitions.map((d,i)=><li key={i}>{readableDefinition(d.label)} · {d.sequence}{!d.valid&&'（状态未解析）'}</li>)}</ul>:
       <p>按本面板已有标记的坐标顺序，用实测纯合碱基序列命名。单个位点仅显示单标记型。</p>}
     </details></div>;
 }
@@ -83,7 +85,7 @@ export function JointPanel({data,genes,cohort,records,config={},onConfig}){
       {genes.map(g=><th key={g.id}>{g.name}</th>)}<th>合计 / 频率</th><th>群体组成</th>
       {popIds.map(id=><th key={id}>{data.populations.find(p=>p.id===id)?.name}<small>已判 {result.population.get(id).assigned} / {result.population.get(id).all}</small></th>)}<th>成员</th></tr></thead>
       <tbody>{result.groups.slice(0,comboLimit).map(g=><tr key={g.key} className={g.key===selection?'joint-selected':''}>
-        {g.labels.map((l,i)=><td key={genes[i].id}>{l}</td>)}<td><strong>{g.n.toLocaleString()}</strong><small>{pct(g.n,result.assigned)}</small></td><td><PopulationComposition populations={data.populations} counts={g.pops} total={g.n}/></td>
+        {g.labels.map((l,i)=><td key={genes[i].id}>{readableDefinition(l)}</td>)}<td><strong>{g.n.toLocaleString()}</strong><small>{pct(g.n,result.assigned)}</small></td><td><PopulationComposition populations={data.populations} counts={g.pops} total={g.n}/></td>
         {popIds.map(id=><td key={id}>{g.pops.get(id)||0}<small>{pct(g.pops.get(id)||0,result.population.get(id).assigned)}</small></td>)}
         <td><button onClick={()=>{filterMembers(g.key);memberHeading.current?.focus();}}>查看成员</button></td></tr>)}</tbody></table></div>
     {!result.groups.length&&<p>当前材料及判型方案下没有完整组合。可在材料明细查看各基因的判型状态。</p>}

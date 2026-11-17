@@ -16,7 +16,7 @@ function CompareGene({gene,variants,cohort,populations,onRemove,markerId,setMark
     <p>{[gene.catalog?.msu||gene.id,gene.model?gene.chromosome+' '+gene.gene_start.toLocaleString()+'–'+gene.gene_end.toLocaleString()+' bp':'基因模型待定位'].join(' · ')}</p>
     {gene.model&&<GenomeTrack gene={gene} variants={variants} selected={v} onSelect={setMarker}/>}
     {v?<><label>查看位点 <select value={v.id} onChange={e=>setMarker(e.target.value)}>{variants.map(m=><option key={m.id}>{m.id}</option>)}</select></label>
-    <div className="compare-frequency" aria-label={gene.name+' 分群等位频率'}>{populations.filter(p=>cohort.some(s=>s.population_id===p.id)).map(p=>{const a=alleleStats(cohort.filter(s=>s.population_id===p.id),v);return <div key={p.id}><span>{p.name}</span><div className="af-bar">{a.called>0&&<><div style={{width:percent(1-a.af)}}/><div style={{width:percent(a.af)}}/></>}</div><strong>{percent(a.af)}</strong><small>ALT {a.alt}/{a.called} · n={a.n}</small></div>;})}</div><p>{v.ref} → {v.alt??'—'} · ALT {stats.alt} / {stats.called} 个已检出拷贝（{percent(stats.af)}） · {v.classified||'广义文献位点'}</p></>:<p>当前没有可比较的实测位点。</p>}
+    <div className="compare-frequency" aria-label={gene.name+' 分群等位频率'}>{populations.filter(p=>cohort.some(s=>s.population_id===p.id)).map(p=>{const a=alleleStats(cohort.filter(s=>s.population_id===p.id),v);return <div key={p.id}><span>{p.name}</span><div className="af-bar">{a.called>0&&<><div style={{width:percent(1-a.af)}}/><div style={{width:percent(a.af)}}/></>}</div><strong>{percent(a.af)}</strong><small>ALT {a.alt}/{a.called} · n={a.n}</small></div>;})}</div><p>{v.ref} → {v.alt??'—'} · ALT {stats.alt} / {stats.called} 个有效等位（{percent(stats.af)}） · {v.classified||'广义文献位点'}</p></>:<p>当前没有可比较的实测位点。</p>}
   </article>;
 }
 

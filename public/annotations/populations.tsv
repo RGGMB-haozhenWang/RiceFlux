@@ -1,0 +1,8 @@
+dataset_id	code	label_zh	label_en	expected_subspecies	n	source	interpretation
+rice6044	SC	华南	South China	indica	994	6044_accession.xlsx; https://doi.org/10.1016/j.molp.2025.03.007	source_ecological_group; not_planting_site; retain_original_subspecies
+rice6044	CC-I	华中籼稻	Central China indica	indica	1295	6044_accession.xlsx; https://doi.org/10.1016/j.molp.2025.03.007	source_ecological_group; not_planting_site; retain_original_subspecies
+rice6044	SW-I	西南籼稻	Southwest China indica	indica	417	6044_accession.xlsx; https://doi.org/10.1016/j.molp.2025.03.007	source_ecological_group; not_planting_site; retain_original_subspecies
+rice6044	NE	东北	Northeast China	japonica	1998	6044_accession.xlsx; https://doi.org/10.1016/j.molp.2025.03.007	source_ecological_group; not_planting_site; retain_original_subspecies
+rice6044	CC-J	华中粳稻	Central China japonica	japonica	478	6044_accession.xlsx; https://doi.org/10.1016/j.molp.2025.03.007	source_ecological_group; not_planting_site; retain_original_subspecies
+rice6044	NC	华北	North China	japonica	397	6044_accession.xlsx; https://doi.org/10.1016/j.molp.2025.03.007	source_ecological_group; not_planting_site; retain_original_subspecies
+rice6044	SW-J	西南粳稻	Southwest China japonica	japonica	465	6044_accession.xlsx; https://doi.org/10.1016/j.molp.2025.03.007	source_ecological_group; not_planting_site; retain_original_subspecies

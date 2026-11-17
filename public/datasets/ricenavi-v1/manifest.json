@@ -1,0 +1,40 @@
+{
+  "schema": "RiceFlux tables 1.0",
+  "id": "ricenavi404",
+  "name": "RiceNavi 404",
+  "version": "2026-11-17.1",
+  "assembly": "IRGSP-1.0/MSU7",
+  "source": "https://doi.org/10.1038/s41588-020-00769-9",
+  "genotype_evidence": "G_chip",
+  "assay_description": "Source-reported sequence calls; legacy G_chip means observed call, not a chip assay",
+  "confidence": "not_certified",
+  "badge": "D2",
+  "files": {
+    "samples": "samples.tsv",
+    "variants": "variants.tsv",
+    "genotypes": "genotypes.tsv",
+    "environments": "environments.tsv",
+    "phenotypes": "phenotypes.tsv"
+  },
+  "sha256": {
+    "samples": "42259a4bf6d55c68e96f5d3d839bc25c31f2598823956a23a402e7120a9cf2c5",
+    "variants": "ab3859beb40ae6b39b506c1b4ec2d31dc5334f97041d8a497d6b001ead71076e",
+    "genotypes": "4514e272674176e575f67dd5404829cad4f4761e8aefd8e7c47621aa3515d863",
+    "environments": "b036fbb7c50d114e91f2b1ece567e8120b9321aad216177c22369dd487ea7b1a",
+    "phenotypes": "b5f2faa133a1b5685b8bf70991fe9b8d315c357f46cd69c744dc3d780e728a6c"
+  },
+  "counts": {
+    "samples": 404,
+    "variants": 23,
+    "environments": 0
+  },
+  "notes": "Only exact gene + chromosome + coordinate + REF/ALT matches are admitted. Unphased diploid calls. No per-call depth/quality audit. Materials remain independent of 6044; original phenotypes lack bound site/year/method and stay in the source catalog.",
+  "source_commit": "3f62be31b91c1cc1d1730dd92d4b2d48d3baa22e",
+  "admission_table": "../../annotations/ricenavi_admission.tsv",
+  "call_counts": {
+    "complete": 9040,
+    "partial": 0,
+    "missing": 252,
+    "heterozygous": 60
+  }
+}

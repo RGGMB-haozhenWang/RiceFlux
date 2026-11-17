@@ -101,6 +101,13 @@ export async function loadExplorer(base,demo,signal){
   if(!registry.length||new Set(registry.map(r=>r.id)).size!==registry.length||registry.some(r=>!/^[-\w]+\/manifest\.json$/.test(r.manifest)))throw Error('数据集索引无效');
   reference.genomeRegions=readTable(regions).objects();
   reference.traitRegistry=readTable(traitRegistry).objects();
+  const names={identities:'gene_identity',support:'dataset_gene_support',populations:'populations',environments:'environments',presets:'presets'};
+  reference.annotations=Object.fromEntries(await Promise.all(Object.entries(names).map(async([key,file])=>[key,readTable(await readText(base+'annotations/'+file+'.tsv',signal)).objects()])));
+  for(const g of reference.genes){
+    const audit=reference.annotations.identities.find(r=>r.gene_id===g.id);
+    if(audit){g.name=audit.display_name;g.catalog.aliases=[...new Set([...g.catalog.aliases,...audit.aliases.split(';')])];}
+    g.presets=reference.annotations.presets.filter(r=>r.gene_id===g.id);
+  }
   for(const g of reference.genes)g.genomeRegions=reference.genomeRegions.filter(r=>(r.assembly===g.assembly||g.assembly==='MSU7'&&r.assembly==='IRGSP-1.0')&&Number(r.chr.replace('Chr',''))===Number(g.chromosome?.replace('Chr','')));
   reference.literature=readTable(literature,['gene_id','doi','summary','scope','event_id']).objects();
   if(config.prior_file){

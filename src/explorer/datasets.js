@@ -130,13 +130,15 @@ export function combineDatasets(reference,bundles,groupBy='source_group'){
     const keys=groupBy==='dataset'?[s.dataset_id]:groupBy==='subspecies'?[unknown(s.subspecies)]:groupBy==='region'?[unknown(s.region)]:groupBy==='subspecies_region'?[unknown(s.subspecies),unknown(s.region)]:groupBy==='dataset_group'?[s.dataset_id,unknown(s.source_group)]:[unknown(s.source_group)];
     s.population_id=keys.length===1?keys[0]:JSON.stringify(keys);
     const label=groupBy==='dataset'?s.dataset_name:groupBy==='dataset_group'?s.dataset_name+' · '+keys[1]:keys.join(' · ');
-    if(!populations.has(s.population_id))populations.set(s.population_id,{id:s.population_id,name:label,color:groupBy==='source_group'&&legacyColors[label]||colors[populations.size%colors.length]});
+    const annotation=reference.annotations?.populations.find(r=>r.dataset_id===s.dataset_id&&r.code===s.source_group);
+    if(!populations.has(s.population_id))populations.set(s.population_id,{id:s.population_id,name:label,short_name:groupBy==='source_group'&&s.dataset_id==='ricenavi404'?label.replace(/^RiceNavi:/,''):label,description:annotation?[annotation.label_zh,annotation.label_en].join(' / '):label,color:groupBy==='source_group'&&legacyColors[label]||colors[populations.size%colors.length]});
   }
   const traits=reference.traits.map(({environments,...t})=>({...t,unit:t.unit??'无配对表型'}));
   for(const e of envs.values()){
     let t=traits.find(t=>t.id===e.trait_id);
     if(!t){t={id:e.trait_id,name:e.trait_name,category:e.category,family:e.family};traits.push(t);}
-    t.environments??=[];t.environments.push({id:e.id,assay:e.assay,unit:e.unit,ontology_id:e.ontology_id,mapping_status:e.mapping_status,method_id:e.method_id,scale_id:e.scale_id,growth_stage:e.growth_stage,source:{column:e.environment_id.replace(/^env_/,''),site:e.display_site,original_site:e.site,year:e.year,n:e.n,dataset_id:e.dataset_id}});
+    const provenance=reference.annotations?.environments.find(r=>r.dataset_id===e.dataset_id&&r.environment_id===e.environment_id);
+    t.environments??=[];t.environments.push({id:e.id,assay:e.assay,unit:e.unit,ontology_id:e.ontology_id,mapping_status:e.mapping_status,method_id:e.method_id,scale_id:e.scale_id,growth_stage:e.growth_stage,source:{column:e.environment_id.replace(/^env_/,''),site:e.display_site,original_site:e.site,year:e.year,n:e.n,dataset_id:e.dataset_id,provenance}});
   }
   const extra=traits.filter(t=>!reference.traits.some(r=>r.id===t.id)).map(t=>t.id);
   const genes=reference.genes.map(g=>{

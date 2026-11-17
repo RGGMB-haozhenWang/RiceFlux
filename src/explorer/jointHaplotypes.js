@@ -55,7 +55,7 @@ export function geneSchemes(gene,evidence,imported=[],custom){
     insertDefinition(sets,gene,{label:bases.join(''),doi:rec.inputDOI??[],components:rec.sites.map((s,i)=>({...s,state:bases[i]}))},'input');
   }
   const schemes=[...sets.values()];
-  for(const s of schemes)s.ready=s.ready&&s.lookup.size>0;
+  for(const s of schemes){s.ready=s.ready&&s.lookup.size>0;s.provenance=gene.presets?.find(p=>s.doi.includes(p.doi));}
   const markers=gene.variants.slice().sort((a,b)=>a.pos-b.pos);
   const observed={id:'observed',kind:'observed',positions:markers.map(m=>m.pos),markers,ready:!!markers.length,doi:[],definitions:[]};
   return [...schemes.filter(s=>s.ready),observed,...(custom?[customScheme(gene,custom)]:[]),...schemes.filter(s=>!s.ready)];
