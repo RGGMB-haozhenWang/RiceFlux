@@ -1,486 +1,486 @@
 gene_id	msu_id	rap_id	display_name	original_name	aliases	identity_status	shared_aliases	prior_records	identity_source	review_scope
-Os07g0695100	LOC_Os07g49460	Os07g0695100	DTH7	DTH7	dth7;ghd7.1;hd2;loc_os07g49460;os07g0695100;osprr37;prr37;qpc7-2;unresolved_gene_99c6f23f547a78cb	matched_prior		1	https://www.ricedata.cn/gene/list/2659.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os06g0229800	LOC_Os06g12450	Os06g0229800	ALK	ALK	alk;osssii-3;osssiia	supplemental_identity		0	https://www.ricedata.cn/gene/list/40.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os08g0224300	LOC_Os08g12780	Os08g0224300	ARE1	ARE1	are1;loc_os08g12780;os08g0224300	matched_prior		1	https://www.ricedata.cn/gene/list/21707.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os03g0437200	LOC_Os03g32230	Os03g0437200	Bsr-d1	Bsr-d1	bsr-d1;bsrd1;zfp36;zos3-12	supplemental_identity		0	https://www.ricedata.cn/gene/list/2723.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os05g0156900	LOC_Os05g06480	Os05g0156900	Chalk5	Chalk5	chalk5;loc_os05g06480;os05g0156900;vpp5	matched_prior		1	https://www.ricedata.cn/gene/list/2598.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os04g0580700	LOC_Os04g49150	Os04g0580700	COG1/OsMADS17	COG1/OsMADS17	cog1;loc_os04g49150;os04g0580700;osmads17	matched_prior		1	https://www.ricedata.cn/gene/list/48615.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0197100	LOC_Os01g10040	Os01g0197100	D2	D2	cyp90d2;d2;loc_os01g10040;os01g0197100;smg11	matched_prior		1	https://www.ricedata.cn/gene/list/20.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os09g0441900	LOC_Os09g26999	Os09g0441900	DEP1/qPE9-1	DEP1/qPE9-1	dep1;dn1;ep;loc_os09g26999;os09g0441900;osdep1;qngr9;qpe9-1;unresolved_gene_bf26190fccc3f8bf	matched_prior		1	https://www.ricedata.cn/gene/list/774.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0667400	LOC_Os01g47710	Os01g0667400	DWT1	DWT1	dwt1;loc_os01g47710;os01g0667400;oswox9a	matched_prior		1	https://www.ricedata.cn/gene/list/2564.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os10g0463400	LOC_Os10g32600	Os10g0463400	Ehd1	Ehd1	ehd1;loc_os10g32600;os10g0463400	matched_prior		1	https://www.ricedata.cn/gene/list/24.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os07g0261200	LOC_Os07g15770	Os07g0261200	Ghd7	Ghd7	e1;ghd7;hd4;loc_os07g15770;os07g0261200	matched_prior		1	https://www.ricedata.cn/gene/list/265.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os08g0174500	LOC_Os08g07740	Os08g0174500	Ghd8/DTH8	Ghd8/DTH8	car8;dth8;ef8;ghd8;lh2;lhd1;loc_os08g07740;os08g0174500;oshap3h;osnf-yb11;sog7	matched_prior		1	https://www.ricedata.cn/gene/list/1190.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os07g0603300	LOC_Os07g41200	Os07g0603300	GL7	GL7	flw7;gl7;gw7;loc_os07g41200;os07g0603300;slg7	matched_prior		1	https://www.ricedata.cn/gene/list/10208.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0197700	LOC_Os01g10110	Os01g0197700	Gn1a	Gn1a	gn1a;loc_os01g10110;os01g0197700;osckx2	matched_prior		1	https://www.ricedata.cn/gene/list/2.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0205700	LOC_Os01g10840	Os01g0205700	GNP2/OsGSK1	GNP2/OsGSK1	est1;gnp2;loc_os01g10840;os01g0205700;osgsk1;ossk21	matched_prior		1	https://www.ricedata.cn/gene/list/722.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os02g0701300	LOC_Os02g47280	Os02g0701300	GS2/OsGRF4	GS2/OsGRF4	gl2;glw2;grf4;gs2;lgs1;loc_os02g47280;os02g0701300;osgrf4;pt2	matched_prior		1	https://www.ricedata.cn/gene/list/20815.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os03g0407400		Os03g0407400	GS3	GS3	gs3;gs3 (positional candidate);os03g0407400;ossyl3;tt2;unresolved_gene_8eef176fe0a874e7;unresolved_gene_9599db827ae2e8db;unresolved_gene_bb993b22c23a2999	msu_unresolved		1	https://www.ricedata.cn/gene/list/410.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os05g0158500	LOC_Os05g06660	Os05g0158500	GS5	GS5	gs5;loc_os05g06660;os05g0158500;osscp26	matched_prior		1	https://www.ricedata.cn/gene/list/1833.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os02g0244100	LOC_Os02g14720	Os02g0244100	GW2	GW2	gnl44;gw2;gw2.1;loc_os02g14720;os02g0244100	matched_prior		1	https://www.ricedata.cn/gene/list/667.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os05g0187500	LOC_Os05g09520	Os05g0187500	GW5/GSE5	GW5/GSE5	gse5;gw5;loc_os05g09520;mpc5;os05g0187500;qsw5	matched_prior		1	https://www.ricedata.cn/gene/list/29956.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os08g0531600	LOC_Os08g41940	Os08g0531600	GW8/OsSPL16	GW8/OsSPL16	gw8;loc_os08g41940;os08g0531600;osspl16	matched_prior		1	https://www.ricedata.cn/gene/list/2335.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os06g0275000	LOC_Os06g16370	Os06g0275000	Hd1	Hd1	hd1;lm;loc_os06g16370;os06g0275000;oshd1;se1;unresolved_gene_5fd55bdc700183ec	matched_prior		1	https://www.ricedata.cn/gene/list/21.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os03g0793500	LOC_Os03g57940	Os03g0793500	Hd16	Hd16	cki;el1;hd16;loc_os03g57940;os03g0793500	matched_prior		1	https://www.ricedata.cn/gene/list/1091.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os06g0157700	LOC_Os06g06320	Os06g0157700	Hd3a	Hd3a	hd3a;loc_os06g06320;os06g0157700;osftl2	matched_prior		1	https://www.ricedata.cn/gene/list/254.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os03g0762000	LOC_Os03g55389	Os03g0762000	Hd6	Hd6	ck2α;hd6	supplemental_identity		0	https://www.ricedata.cn/gene/list/22.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os08g0509600	LOC_Os08g39890	Os08g0509600	IPA1/OsSPL14	IPA1/OsSPL14	ipa1;ipa1-2d;loc_os08g39890;os08g0509600;osspl14;wfp	matched_prior		1	https://www.ricedata.cn/gene/list/1027.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os04g0615000	LOC_Os04g52479	Os04g0615000	NAL1	NAL1	epn4;loc_os04g52479;lschl4;lvpa4;nal1;nal5;os04g0615000;qflw4;spike;ss1;unresolved_gene_16cf48c03f24419a;unresolved_gene_b6a28d998f3ef66c	matched_prior	ss1	1	https://www.ricedata.cn/gene/list/154.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os08g0424500	LOC_Os08g32870	Os08g0424500	OsBADH2	OsBADH2	aro;fgr;loc_os08g32870;os08g0424500;osaldh10a8;osbadh2	matched_prior		1	https://www.ricedata.cn/gene/list/921.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os07g0662900	LOC_Os07g46790	Os07g0662900	OsDPE2	OsDPE2	loc_os07g46790;os07g0662900;osdpe2	matched_prior		1	https://www.ricedata.cn/gene/list/3727.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0681900	LOC_Os01g48960	Os01g0681900	OsGOGAT1	OsGOGAT1	loc_os01g48960;nadh-gogat1;os01g0681900;osglt1;osgogat1;osnadh-gogat1	matched_prior		1	https://www.ricedata.cn/gene/list/58821.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os07g0232900	LOC_Os07g12900	Os07g0232900	OsHMA3	OsHMA3	oshma3;qcdt7	supplemental_identity		0	https://www.ricedata.cn/gene/list/1080.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os03g0186600	LOC_Os03g08754	Os03g0186600	OsMADS47	OsMADS47	loc_os03g08754;os03g0186600;osmads47;osmdp1	matched_prior		1	https://www.ricedata.cn/gene/list/933.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0236700	LOC_Os01g13540	Os01g0236700	OsNLP3	OsNLP3	loc_os01g13540;os01g0236700;osnlp3	matched_prior		1	https://www.ricedata.cn/gene/list/17105.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os02g0770800	LOC_Os02g53130	Os02g0770800	OsNR2	OsNR2	loc_os02g53130;os02g0770800;osnia2;osnr2;qcr2	matched_prior	osnia2	1	https://www.ricedata.cn/gene/list/4857.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os07g0257200	LOC_Os07g15370	Os07g0257200	OsNRAMP5	OsNRAMP5	loc_os07g15370;os07g0257200;osnramp5	matched_prior		1	https://www.ricedata.cn/gene/list/2058.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os03g0150600	LOC_Os03g05620	Os03g0150600	OsPT1	OsPT1	1;loc_os03g05620;os03g0150600;ospht1;ospt1	matched_prior	1	1	https://www.ricedata.cn/gene/list/1563.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0823900	LOC_Os01g60860	Os01g0823900	OsPUB3	OsPUB3	loc_os01g60860;os01g0823900;ospub3;qgs1-35.2	matched_prior		1	https://www.ricedata.cn/gene/list/53528.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os07g0505200	LOC_Os07g32170	Os07g0505200	OsSPL13	OsSPL13	glw7;loc_os07g32170;os07g0505200;osspl13	matched_prior		1	https://www.ricedata.cn/gene/list/69391.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os07g0616800	LOC_Os07g42490	Os07g0616800	OsSUS3	OsSUS3	apq1;loc_os07g42490;os07g0616800;ossus3;rsus3;ss7	matched_prior		1	https://www.ricedata.cn/gene/list/370.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os06g0330100	LOC_Os06g22460	Os06g0330100	Pid3	Pid3	pi25;pid3;pid3-i1;qbrm6.2	supplemental_identity		0	https://www.ricedata.cn/gene/list/220.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os12g0285100	LOC_Os12g18729	Os12g0285100	Ptr	Ptr	ptr	supplemental_identity		0	https://www.ricedata.cn/gene/list/26606.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os03g0646900	LOC_Os03g44500	Os03g0646900	qGL3	qGL3	gl3.1;loc_os03g44500;os03g0646900;osppkl1;ppkl1;qgl3;qgl3-1;unresolved_gene_0729b91946557a6e	matched_prior		1	https://www.ricedata.cn/gene/list/910.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os06g0157500	LOC_Os06g06300	Os06g0157500	RFT1	RFT1	ft-l3;loc_os06g06300;os06g0157500;osftl3;rft1	matched_prior		1	https://www.ricedata.cn/gene/list/1108.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0690600	LOC_Os01g49580	Os01g0690600	RGN1a	RGN1a	loc_os01g49580;os01g0690600;qgnp1.3;rgn1a	matched_prior		1	https://www.ricedata.cn/gene/list/30114.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os06g0665400	LOC_Os06g45460	Os06g0665400	SCM2/APO1	SCM2/APO1	apo1;apo1 (known locus);loc_os06g45460;nal1 (hypotheses);os06g0665400;pbl6;qpl6;qws6;scm2	matched_prior		1	https://www.ricedata.cn/gene/list/746.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0883800	LOC_Os01g66100	Os01g0883800	sd1	sd1	att1;ga20ox2;loc_os01g66100;os01g0883800;osga20ox2;qpa1;qsd1-2;sd1;sd1 (cited rice);unresolved_gene_6dcb7e507fb56d12;unresolved_gene_eee1ef4f0b16706b	matched_prior		1	https://www.ricedata.cn/gene/list/30.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os02g0450000	LOC_Os02g25230	Os02g0450000	TAC4	TAC4	loc_os02g25230;os02g0450000;sg2;tac4	matched_prior		1	https://www.ricedata.cn/gene/list/46802.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0610300	LOC_Os01g42460	Os01g0610300	TN1/OsASI1	TN1/OsASI1	loc_os01g42460;os01g0610300;osasi1;osibm2;qtn2;tn1	matched_prior		1	https://www.ricedata.cn/gene/list/56259.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os06g0133000	LOC_Os06g04200	Os06g0133000	Wx	Wx	osgbssi;qgc-6;waxy;wx;wx-mq;wx-op	supplemental_identity		0	https://www.ricedata.cn/gene/list/420.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os05g0107700	LOC_Os05g01710	Os05g0107700	xa5	xa5	osgrw5.1;ostfiiaγ5;qblsr5a;xa5	supplemental_identity		0	https://www.ricedata.cn/gene/list/41.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g56610	LOC_Os02g56610	Os02g0811000	AFD1	AFD1	afd1;bh1;bls1;bsg1;loc_os02g56610;os02g0811000;th1	matched_prior	bls1	1	https://www.ricedata.cn/gene/list/2041.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g29040	LOC_Os02g29040	Os02g0492000	ANK1	ANK1	ank1;loc_os02g29040;os02g0492000;osank1	matched_prior		1	https://www.ricedata.cn/gene/list/22321.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g29210	LOC_Os02g29210	Os02g0494400	ANK2	ANK2	ank2;loc_os02g29210;os02g0494400;osank2	matched_prior		1	https://www.ricedata.cn/gene/list/22318.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g04740	LOC_Os05g04740	Os05g0139100	APG	APG	apg;loc_os05g04740;os05g0139100;ospil16	matched_prior		1	https://www.ricedata.cn/gene/list/2061.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g41240	LOC_Os07g41240	Os07g0603700	BG2/CYP78A13	BG2/CYP78A13	bg2;cyp78a13;ge;loc_os07g41240;os07g0603700	matched_prior		1	https://www.ricedata.cn/gene/list/2586.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g35010	LOC_Os04g35010	Os04g0429400	bHLH144	bHLH144	bhlh144;loc_os04g35010;os04g0429400;oszou-1	matched_prior		1	https://www.ricedata.cn/gene/list/16884.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g64150	LOC_Os03g64150	Os03g0858800	BIRG1	BIRG1	birg1;loc_os03g64150;os03g0858800	matched_prior		1	https://www.ricedata.cn/gene/list/26527.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g13150	LOC_Os04g13150	Os04g0208400	BRT1	BRT1	brt1;loc_os04g13150;os04g0208400;osfbx125	matched_prior		1	https://www.ricedata.cn/gene/list/19539.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g40170	LOC_Os08g40170	Os08g0512600	CDKB2	CDKB2	1;cdc2os3;cdkb2;loc_os08g40170;os08g0512600	matched_prior	1	1	https://www.ricedata.cn/gene/list/1350.htm	frozen_prior_ID_consistency; not_new_external_validation
+Os07g0695100	LOC_Os07g49460	Os07g0695100	DTH7	DTH7	dth7;ghd7.1;hd2;loc_os07g49460;os07g0695100;osprr37;prr37;qpc7-2;unresolved_gene_99c6f23f547a78cb	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os06g0229800	LOC_Os06g12450	Os06g0229800	ALK	ALK	alk;osssii-3;osssiia	supplemental_identity		0		frozen_prior_ID_consistency; not_new_external_validation
+Os08g0224300	LOC_Os08g12780	Os08g0224300	ARE1	ARE1	are1;loc_os08g12780;os08g0224300	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os03g0437200	LOC_Os03g32230	Os03g0437200	Bsr-d1	Bsr-d1	bsr-d1;bsrd1;zfp36;zos3-12	supplemental_identity		0		frozen_prior_ID_consistency; not_new_external_validation
+Os05g0156900	LOC_Os05g06480	Os05g0156900	Chalk5	Chalk5	chalk5;loc_os05g06480;os05g0156900;vpp5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os04g0580700	LOC_Os04g49150	Os04g0580700	COG1/OsMADS17	COG1/OsMADS17	cog1;loc_os04g49150;os04g0580700;osmads17	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0197100	LOC_Os01g10040	Os01g0197100	D2	D2	cyp90d2;d2;loc_os01g10040;os01g0197100;smg11	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os09g0441900	LOC_Os09g26999	Os09g0441900	DEP1/qPE9-1	DEP1/qPE9-1	dep1;dn1;ep;loc_os09g26999;os09g0441900;osdep1;qngr9;qpe9-1;unresolved_gene_bf26190fccc3f8bf	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0667400	LOC_Os01g47710	Os01g0667400	DWT1	DWT1	dwt1;loc_os01g47710;os01g0667400;oswox9a	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os10g0463400	LOC_Os10g32600	Os10g0463400	Ehd1	Ehd1	ehd1;loc_os10g32600;os10g0463400	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os07g0261200	LOC_Os07g15770	Os07g0261200	Ghd7	Ghd7	e1;ghd7;hd4;loc_os07g15770;os07g0261200	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os08g0174500	LOC_Os08g07740	Os08g0174500	Ghd8/DTH8	Ghd8/DTH8	car8;dth8;ef8;ghd8;lh2;lhd1;loc_os08g07740;os08g0174500;oshap3h;osnf-yb11;sog7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os07g0603300	LOC_Os07g41200	Os07g0603300	GL7	GL7	flw7;gl7;gw7;loc_os07g41200;os07g0603300;slg7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0197700	LOC_Os01g10110	Os01g0197700	Gn1a	Gn1a	gn1a;loc_os01g10110;os01g0197700;osckx2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0205700	LOC_Os01g10840	Os01g0205700	GNP2/OsGSK1	GNP2/OsGSK1	est1;gnp2;loc_os01g10840;os01g0205700;osgsk1;ossk21	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os02g0701300	LOC_Os02g47280	Os02g0701300	GS2/OsGRF4	GS2/OsGRF4	gl2;glw2;grf4;gs2;lgs1;loc_os02g47280;os02g0701300;osgrf4;pt2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os03g0407400		Os03g0407400	GS3	GS3	gs3;gs3 (positional candidate);os03g0407400;ossyl3;tt2;unresolved_gene_8eef176fe0a874e7;unresolved_gene_9599db827ae2e8db;unresolved_gene_bb993b22c23a2999	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
+Os05g0158500	LOC_Os05g06660	Os05g0158500	GS5	GS5	gs5;loc_os05g06660;os05g0158500;osscp26	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os02g0244100	LOC_Os02g14720	Os02g0244100	GW2	GW2	gnl44;gw2;gw2.1;loc_os02g14720;os02g0244100	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os05g0187500	LOC_Os05g09520	Os05g0187500	GW5/GSE5	GW5/GSE5	gse5;gw5;loc_os05g09520;mpc5;os05g0187500;qsw5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os08g0531600	LOC_Os08g41940	Os08g0531600	GW8/OsSPL16	GW8/OsSPL16	gw8;loc_os08g41940;os08g0531600;osspl16	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os06g0275000	LOC_Os06g16370	Os06g0275000	Hd1	Hd1	hd1;lm;loc_os06g16370;os06g0275000;oshd1;se1;unresolved_gene_5fd55bdc700183ec	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os03g0793500	LOC_Os03g57940	Os03g0793500	Hd16	Hd16	cki;el1;hd16;loc_os03g57940;os03g0793500	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os06g0157700	LOC_Os06g06320	Os06g0157700	Hd3a	Hd3a	hd3a;loc_os06g06320;os06g0157700;osftl2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os03g0762000	LOC_Os03g55389	Os03g0762000	Hd6	Hd6	ck2α;hd6	supplemental_identity		0		frozen_prior_ID_consistency; not_new_external_validation
+Os08g0509600	LOC_Os08g39890	Os08g0509600	IPA1/OsSPL14	IPA1/OsSPL14	ipa1;ipa1-2d;loc_os08g39890;os08g0509600;osspl14;wfp	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os04g0615000	LOC_Os04g52479	Os04g0615000	NAL1	NAL1	epn4;loc_os04g52479;lschl4;lvpa4;nal1;nal5;os04g0615000;qflw4;spike;ss1;unresolved_gene_16cf48c03f24419a;unresolved_gene_b6a28d998f3ef66c	matched_prior	ss1	1		frozen_prior_ID_consistency; not_new_external_validation
+Os08g0424500	LOC_Os08g32870	Os08g0424500	OsBADH2	OsBADH2	aro;fgr;loc_os08g32870;os08g0424500;osaldh10a8;osbadh2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os07g0662900	LOC_Os07g46790	Os07g0662900	OsDPE2	OsDPE2	loc_os07g46790;os07g0662900;osdpe2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0681900	LOC_Os01g48960	Os01g0681900	OsGOGAT1	OsGOGAT1	loc_os01g48960;nadh-gogat1;os01g0681900;osglt1;osgogat1;osnadh-gogat1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os07g0232900	LOC_Os07g12900	Os07g0232900	OsHMA3	OsHMA3	oshma3;qcdt7	supplemental_identity		0		frozen_prior_ID_consistency; not_new_external_validation
+Os03g0186600	LOC_Os03g08754	Os03g0186600	OsMADS47	OsMADS47	loc_os03g08754;os03g0186600;osmads47;osmdp1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0236700	LOC_Os01g13540	Os01g0236700	OsNLP3	OsNLP3	loc_os01g13540;os01g0236700;osnlp3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os02g0770800	LOC_Os02g53130	Os02g0770800	OsNR2	OsNR2	loc_os02g53130;os02g0770800;osnia2;osnr2;qcr2	matched_prior	osnia2	1		frozen_prior_ID_consistency; not_new_external_validation
+Os07g0257200	LOC_Os07g15370	Os07g0257200	OsNRAMP5	OsNRAMP5	loc_os07g15370;os07g0257200;osnramp5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os03g0150600	LOC_Os03g05620	Os03g0150600	OsPT1	OsPT1	1;loc_os03g05620;os03g0150600;ospht1;ospt1	matched_prior	1	1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0823900	LOC_Os01g60860	Os01g0823900	OsPUB3	OsPUB3	loc_os01g60860;os01g0823900;ospub3;qgs1-35.2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os07g0505200	LOC_Os07g32170	Os07g0505200	OsSPL13	OsSPL13	glw7;loc_os07g32170;os07g0505200;osspl13	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os07g0616800	LOC_Os07g42490	Os07g0616800	OsSUS3	OsSUS3	apq1;loc_os07g42490;os07g0616800;ossus3;rsus3;ss7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os06g0330100	LOC_Os06g22460	Os06g0330100	Pid3	Pid3	pi25;pid3;pid3-i1;qbrm6.2	supplemental_identity		0		frozen_prior_ID_consistency; not_new_external_validation
+Os12g0285100	LOC_Os12g18729	Os12g0285100	Ptr	Ptr	ptr	supplemental_identity		0		frozen_prior_ID_consistency; not_new_external_validation
+Os03g0646900	LOC_Os03g44500	Os03g0646900	qGL3	qGL3	gl3.1;loc_os03g44500;os03g0646900;osppkl1;ppkl1;qgl3;qgl3-1;unresolved_gene_0729b91946557a6e	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os06g0157500	LOC_Os06g06300	Os06g0157500	RFT1	RFT1	ft-l3;loc_os06g06300;os06g0157500;osftl3;rft1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0690600	LOC_Os01g49580	Os01g0690600	RGN1a	RGN1a	loc_os01g49580;os01g0690600;qgnp1.3;rgn1a	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os06g0665400	LOC_Os06g45460	Os06g0665400	SCM2/APO1	SCM2/APO1	apo1;apo1 (known locus);loc_os06g45460;nal1 (hypotheses);os06g0665400;pbl6;qpl6;qws6;scm2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0883800	LOC_Os01g66100	Os01g0883800	sd1	sd1	att1;ga20ox2;loc_os01g66100;os01g0883800;osga20ox2;qpa1;qsd1-2;sd1;sd1 (cited rice);unresolved_gene_6dcb7e507fb56d12;unresolved_gene_eee1ef4f0b16706b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os02g0450000	LOC_Os02g25230	Os02g0450000	TAC4	TAC4	loc_os02g25230;os02g0450000;sg2;tac4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0610300	LOC_Os01g42460	Os01g0610300	TN1/OsASI1	TN1/OsASI1	loc_os01g42460;os01g0610300;osasi1;osibm2;qtn2;tn1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os06g0133000	LOC_Os06g04200	Os06g0133000	Wx	Wx	osgbssi;qgc-6;waxy;wx;wx-mq;wx-op	supplemental_identity		0		frozen_prior_ID_consistency; not_new_external_validation
+Os05g0107700	LOC_Os05g01710	Os05g0107700	xa5	xa5	osgrw5.1;ostfiiaγ5;qblsr5a;xa5	supplemental_identity		0		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g56610	LOC_Os02g56610	Os02g0811000	AFD1	AFD1	afd1;bh1;bls1;bsg1;loc_os02g56610;os02g0811000;th1	matched_prior	bls1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g29040	LOC_Os02g29040	Os02g0492000	ANK1	ANK1	ank1;loc_os02g29040;os02g0492000;osank1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g29210	LOC_Os02g29210	Os02g0494400	ANK2	ANK2	ank2;loc_os02g29210;os02g0494400;osank2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g04740	LOC_Os05g04740	Os05g0139100	APG	APG	apg;loc_os05g04740;os05g0139100;ospil16	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g41240	LOC_Os07g41240	Os07g0603700	BG2/CYP78A13	BG2/CYP78A13	bg2;cyp78a13;ge;loc_os07g41240;os07g0603700	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g35010	LOC_Os04g35010	Os04g0429400	bHLH144	bHLH144	bhlh144;loc_os04g35010;os04g0429400;oszou-1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g64150	LOC_Os03g64150	Os03g0858800	BIRG1	BIRG1	birg1;loc_os03g64150;os03g0858800	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g13150	LOC_Os04g13150	Os04g0208400	BRT1	BRT1	brt1;loc_os04g13150;os04g0208400;osfbx125	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g40170	LOC_Os08g40170	Os08g0512600	CDKB2	CDKB2	1;cdc2os3;cdkb2;loc_os08g40170;os08g0512600	matched_prior	1	1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_36ad38cc5d23b335			Chr8 salt-response region (source 142)	Chr8 salt-response region (source 142)	chr8 salt-response region (source 142);unresolved_gene_36ad38cc5d23b335	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g23200	LOC_Os09g23200	Os09g0395300	CL1	CL1	ah2;cl1;loc_os09g23200;osadd1;oskan1;oskanadi1;rl9;sll1	matched_prior		1	https://www.ricedata.cn/gene/list/928.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g47780	LOC_Os05g47780	Os05g0551000	CLG1	CLG1	clg1;loc_os05g47780;os05g0551000;oshrz2	matched_prior		1	https://www.ricedata.cn/gene/list/13041.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g23200	LOC_Os09g23200	Os09g0395300	CL1	CL1	ah2;cl1;loc_os09g23200;osadd1;oskan1;oskanadi1;rl9;sll1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g47780	LOC_Os05g47780	Os05g0551000	CLG1	CLG1	clg1;loc_os05g47780;os05g0551000;oshrz2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_7a72a67cac1d9d10			CYP704A3	CYP704A3	cyp704a3;os4g48460;unresolved_gene_7a72a67cac1d9d10	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g39880	LOC_Os06g39880	Os06g0600400	CYP734A4	CYP734A4	brd3;cyp734a4;loc_os06g39880;os06g0600400	matched_prior		1	https://www.ricedata.cn/gene/list/1962.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g39880	LOC_Os06g39880	Os06g0600400	CYP734A4	CYP734A4	brd3;cyp734a4;loc_os06g39880;os06g0600400	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_576d1b26f25cd5a1			CYP92A8	CYP92A8	cyp92a8;loc_os09g26970;unresolved_gene_576d1b26f25cd5a1	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g54270	LOC_Os01g54270	Os01g0746400	D10	D10	d10;gsor23;loc_os01g54270;os01g0746400;osccd8	matched_prior		1	https://www.ricedata.cn/gene/list/119.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g54270	LOC_Os01g54270	Os01g0746400	D10	D10	d10;gsor23;loc_os01g54270;os01g0746400;osccd8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os03g10620	LOC_Os03g10620		D14	D14	d14;d88;loc_os03g10620;os03g0203200;qppb3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g06050	LOC_Os06g06050	Os06g0154200	D3	D3	d3;loc_os06g06050;os06g0154200;osfbl27;sol1;sols	matched_prior		1	https://www.ricedata.cn/gene/list/67580.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g01330	LOC_Os11g01330	Os11g0104300	D53	D53	d53;loc_os11g01330;os11g0104300	matched_prior		1	https://www.ricedata.cn/gene/list/2565.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g31850	LOC_Os10g31850	Os10g0456800	DCA1	DCA1	dca1;loc_os10g31850;os10g0456800	matched_prior		1	https://www.ricedata.cn/gene/list/30963.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g67430	LOC_Os01g67430	Os01g0900400	DF1/Os01g0900400	DF1/Os01g0900400	df1;eg1;gy1;loc_os01g67430;os01g0900400;ospla1-iα2	matched_prior		1	https://www.ricedata.cn/gene/list/766.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g62060	LOC_Os01g62060	Os01g0837600	DGP1	DGP1	dgp1;loc_os01g62060;os01g0837600;ospel1	matched_prior		1	https://www.ricedata.cn/gene/list/52163.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g47920	LOC_Os11g47920	Os11g0706200	DHD1	DHD1	dhd1;loc_os11g47920;os11g0706200	matched_prior		1	https://www.ricedata.cn/gene/list/46824.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g08270	LOC_Os01g08270	Os01g0178000	DNR1	DNR1	dnr1;loc_os01g08270;os01g0178000;osdnr1	matched_prior		1	https://www.ricedata.cn/gene/list/21398.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g26840	LOC_Os09g26840	Os09g0439800	DRO1	DRO1	dro1;loc_os09g26840;loc_os09g26840.1;os09g0439800	matched_prior		1	https://www.ricedata.cn/gene/list/2546.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g35460	LOC_Os10g35460	Os10g0497700	DROT1	DROT1	drot1;loc_os10g35460;os10g0497700;qdr10b	matched_prior		1	https://www.ricedata.cn/gene/list/37512.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g03370	LOC_Os03g03370	Os03g0125100	DSM2	DSM2	dsm2;loc_os03g03370;os03g0125100;osbch1;oshyd2	matched_prior		1	https://www.ricedata.cn/gene/list/1294.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g57240	LOC_Os03g57240	Os03g0786400	DST	DST	dst;loc_os03g57240;os03g0786400;wl1	matched_prior		1	https://www.ricedata.cn/gene/list/857.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g32948	LOC_Os09g32948	Os09g0507200	DTE9/OsMADS8/OsMADS24	DTE9/OsMADS8/OsMADS24	dte9;loc_os09g32948;os09g0507200;osmads24;osmads8	matched_prior		1	https://www.ricedata.cn/gene/list/1090.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g48990	LOC_Os05g48990	Os05g0564500	DWL2	DWL2	dwl2;loc_os05g48990;os05g0564500;oswox9c;oswox9d	matched_prior		1	https://www.ricedata.cn/gene/list/10804.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g28330	LOC_Os10g28330	Os10g0419200	Ehd2	Ehd2	ehd2;ghd10;loc_os10g28330;os10g0419200;osid1;rid1	matched_prior		1	https://www.ricedata.cn/gene/list/949.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g15950	LOC_Os02g15950	Os02g0260200	EP3	EP3	ep3;loc_os02g15950;lp;os02g0260200	matched_prior		1	https://www.ricedata.cn/gene/list/1031.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0356951		Os01g0356951	ESP	ESP	esp;os01g0356951	msu_unresolved		1	https://www.ricedata.cn/gene/list/57821.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g40384	LOC_Os05g40384	Os05g0482400	EUI1	EUI1	cyp714d1;eui1;i-sd-1(t);lg5;loc_os05g40384;os05g0482400	matched_prior		1	https://www.ricedata.cn/gene/list/29.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g55230	LOC_Os04g55230	Os04g0645100	FLO2	FLO2	cse-2;flo2;loc_os04g55230;os04g0645100	matched_prior		1	https://www.ricedata.cn/gene/list/273.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g38270	LOC_Os11g38270	Os11g0595400	FON2/FON4	FON2/FON4	fon2;fon4;loc_os11g38270;os11g0595400;os11g38270	matched_prior		1	https://www.ricedata.cn/gene/list/753.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g41590	LOC_Os10g41590	Os10g0565600	FRRP1	FRRP1	frrp1;loc_os10g41590;os10g0565600;oshub2	matched_prior		1	https://www.ricedata.cn/gene/list/51246.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g13950	LOC_Os02g13950	Os02g0234200	FUWA	FUWA	fuwa;loc_os02g13950;os02g0234200	matched_prior		1	https://www.ricedata.cn/gene/list/21334.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g47330	LOC_Os07g47330	Os07g0669500	FZP	FZP	bfl1;fzp;loc_os07g47330;os07g0669500;sgdp7	matched_prior		1	https://www.ricedata.cn/gene/list/672.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g02144	LOC_Os06g02144	Os06g0111500	G6PGH1	G6PGH1	g6pgh1;loc_os06g02144;os6pgdh1;osg6pgh1;pgd1	matched_prior		1	https://www.ricedata.cn/gene/list/2678.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g63970	LOC_Os03g63970	Os03g0856700	GA20ox1	GA20ox1	att2;ga20ox1;gnp1;loc_os03g63970;os03g0856700;osga20ox1;qepd2	matched_prior		1	https://www.ricedata.cn/gene/list/630.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g12790	LOC_Os03g12790	Os03g0229500	GFD1	GFD1	dg1;gfd1;gs3.1;loc_os03g12790;os03g0229500	matched_prior		1	https://www.ricedata.cn/gene/list/20953.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g33740	LOC_Os04g33740	Os04g0413500	GIF1	GIF1	gif1;loc_os04g33740;os04g0413500;oscin2;wb1	matched_prior		1	https://www.ricedata.cn/gene/list/663.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g05930	LOC_Os11g05930	Os11g0157600	GL11	GL11	gl11;loc_os11g05930;os11g0157600;oscct38;osprr59	matched_prior		1	https://www.ricedata.cn/gene/list/10288.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g37890	LOC_Os08g37890	Os08g0485500	GLA/GAD1/RAE2	GLA/GAD1/RAE2	gad1;gla;loc_os08g37890;os08g0485500;osepfl1;osrae2;rae2	matched_prior		1	https://www.ricedata.cn/gene/list/44549.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g02730	LOC_Os05g02730	Os05g0118700	GLR1	GLR1	dep;gl-1;glr1;loc_os05g02730;lsy1;nuda;os05g0118700;oswox3b	matched_prior	glr1	1	https://www.ricedata.cn/gene/list/1116.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g06050	LOC_Os06g06050	Os06g0154200	D3	D3	d3;loc_os06g06050;os06g0154200;osfbl27;sol1;sols	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g01330	LOC_Os11g01330	Os11g0104300	D53	D53	d53;loc_os11g01330;os11g0104300	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g31850	LOC_Os10g31850	Os10g0456800	DCA1	DCA1	dca1;loc_os10g31850;os10g0456800	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g67430	LOC_Os01g67430	Os01g0900400	DF1/Os01g0900400	DF1/Os01g0900400	df1;eg1;gy1;loc_os01g67430;os01g0900400;ospla1-iα2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g62060	LOC_Os01g62060	Os01g0837600	DGP1	DGP1	dgp1;loc_os01g62060;os01g0837600;ospel1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g47920	LOC_Os11g47920	Os11g0706200	DHD1	DHD1	dhd1;loc_os11g47920;os11g0706200	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g08270	LOC_Os01g08270	Os01g0178000	DNR1	DNR1	dnr1;loc_os01g08270;os01g0178000;osdnr1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g26840	LOC_Os09g26840	Os09g0439800	DRO1	DRO1	dro1;loc_os09g26840;loc_os09g26840.1;os09g0439800	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g35460	LOC_Os10g35460	Os10g0497700	DROT1	DROT1	drot1;loc_os10g35460;os10g0497700;qdr10b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g03370	LOC_Os03g03370	Os03g0125100	DSM2	DSM2	dsm2;loc_os03g03370;os03g0125100;osbch1;oshyd2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g57240	LOC_Os03g57240	Os03g0786400	DST	DST	dst;loc_os03g57240;os03g0786400;wl1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g32948	LOC_Os09g32948	Os09g0507200	DTE9/OsMADS8/OsMADS24	DTE9/OsMADS8/OsMADS24	dte9;loc_os09g32948;os09g0507200;osmads24;osmads8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g48990	LOC_Os05g48990	Os05g0564500	DWL2	DWL2	dwl2;loc_os05g48990;os05g0564500;oswox9c;oswox9d	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g28330	LOC_Os10g28330	Os10g0419200	Ehd2	Ehd2	ehd2;ghd10;loc_os10g28330;os10g0419200;osid1;rid1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g15950	LOC_Os02g15950	Os02g0260200	EP3	EP3	ep3;loc_os02g15950;lp;os02g0260200	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0356951		Os01g0356951	ESP	ESP	esp;os01g0356951	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g40384	LOC_Os05g40384	Os05g0482400	EUI1	EUI1	cyp714d1;eui1;i-sd-1(t);lg5;loc_os05g40384;os05g0482400	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g55230	LOC_Os04g55230	Os04g0645100	FLO2	FLO2	cse-2;flo2;loc_os04g55230;os04g0645100	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g38270	LOC_Os11g38270	Os11g0595400	FON2/FON4	FON2/FON4	fon2;fon4;loc_os11g38270;os11g0595400;os11g38270	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g41590	LOC_Os10g41590	Os10g0565600	FRRP1	FRRP1	frrp1;loc_os10g41590;os10g0565600;oshub2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g13950	LOC_Os02g13950	Os02g0234200	FUWA	FUWA	fuwa;loc_os02g13950;os02g0234200	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g47330	LOC_Os07g47330	Os07g0669500	FZP	FZP	bfl1;fzp;loc_os07g47330;os07g0669500;sgdp7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g02144	LOC_Os06g02144	Os06g0111500	G6PGH1	G6PGH1	g6pgh1;loc_os06g02144;os6pgdh1;osg6pgh1;pgd1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g63970	LOC_Os03g63970	Os03g0856700	GA20ox1	GA20ox1	att2;ga20ox1;gnp1;loc_os03g63970;os03g0856700;osga20ox1;qepd2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g12790	LOC_Os03g12790	Os03g0229500	GFD1	GFD1	dg1;gfd1;gs3.1;loc_os03g12790;os03g0229500	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g33740	LOC_Os04g33740	Os04g0413500	GIF1	GIF1	gif1;loc_os04g33740;os04g0413500;oscin2;wb1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g05930	LOC_Os11g05930	Os11g0157600	GL11	GL11	gl11;loc_os11g05930;os11g0157600;oscct38;osprr59	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g37890	LOC_Os08g37890	Os08g0485500	GLA/GAD1/RAE2	GLA/GAD1/RAE2	gad1;gla;loc_os08g37890;os08g0485500;osepfl1;osrae2;rae2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g02730	LOC_Os05g02730	Os05g0118700	GLR1	GLR1	dep;gl-1;glr1;loc_os05g02730;lsy1;nuda;os05g0118700;oswox3b	matched_prior	glr1	1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_d08a32f807ea15c8			GLW9	GLW9	glw9;loc_os09g29960;osdof25;unresolved_gene_d08a32f807ea15c8	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g31310	LOC_Os09g31310	Os09g0488000	GNA1	GNA1	gna1;loc_os09g31310;osgna1	matched_prior		1	https://www.ricedata.cn/gene/list/711.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g49640	LOC_Os03g49640	Os03g0703400	GNP3/OsMKKK22	GNP3/OsMKKK22	gnp3;loc_os03g49640;os03g0703400;oscsl1;osmkkk22	matched_prior		1	https://www.ricedata.cn/gene/list/6593.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g32510	LOC_Os04g32510	Os04g0396500	Gnp4	Gnp4	gnp4;lax2;loc_os04g32510;orl4;os04g0396500	matched_prior		1	https://www.ricedata.cn/gene/list/1719.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g31310	LOC_Os09g31310	Os09g0488000	GNA1	GNA1	gna1;loc_os09g31310;osgna1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g49640	LOC_Os03g49640	Os03g0703400	GNP3/OsMKKK22	GNP3/OsMKKK22	gnp3;loc_os03g49640;os03g0703400;oscsl1;osmkkk22	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g32510	LOC_Os04g32510	Os04g0396500	Gnp4	Gnp4	gnp4;lax2;loc_os04g32510;orl4;os04g0396500	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os06g40780	LOC_Os06g40780		GNP6/MOC1/Os06g0610350	GNP6/MOC1/Os06g0610350	gnp6;loc_os06g40780;moc1;os06g0610350;osmoc1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g16010	LOC_Os03g16010	Os03g0266800	GOM1	GOM1	gom1;loc_os03g16010	matched_prior		1	https://www.ricedata.cn/gene/list/7367.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g27590	LOC_Os09g27590	Os09g0448500	GS9	GS9	gs9;loc_os09g27590;os09g0448500	matched_prior		1	https://www.ricedata.cn/gene/list/12317.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g55040	LOC_Os03g55040	Os03g0757500	GSA1	GSA1	gsa1;loc_os03g55040;os03g0757500;ugt83a1	matched_prior		1	https://www.ricedata.cn/gene/list/45874.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g08170	LOC_Os03g08170	Os03g0179400	GUDK	GUDK	gudk;loc_os03g08170;os03g0179400	matched_prior		1	https://www.ricedata.cn/gene/list/2657.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g37640	LOC_Os10g37640	Os10g0520700	GW10.2	GW10.2	gw10.2;lip1;loc_os10g37640;os10g0520700	matched_prior		1	https://www.ricedata.cn/gene/list/23076.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g37120	LOC_Os10g37120	Os10g0515400	GW10/CYP89A2	GW10/CYP89A2	cyp89a2;gw10;loc_os10g37120;os10g0515400	matched_prior		1	https://www.ricedata.cn/gene/list/23095.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g15620	LOC_Os06g15620	Os06g0266800	GW6	GW6	gw6;loc_os06g15620;os06g0266800;osgasr7;osgsr1	matched_prior		1	https://www.ricedata.cn/gene/list/1010.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g44100	LOC_Os06g44100	Os06g0650300	GW6a	GW6a	gw6a;loc_os06g44100;os06g0650300;osglhat1	matched_prior		1	https://www.ricedata.cn/gene/list/2691.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g13630	LOC_Os09g13630	Os09g0306800	GW9/OsEMF2b	GW9/OsEMF2b	gw9;loc_os09g13630;os09g0306800;osemf2b	matched_prior		1	https://www.ricedata.cn/gene/list/381.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g39210	LOC_Os08g39210	Os08g0501500	GWN1	GWN1	gwn1;loc_os08g39210;oswak74;qgl8a	matched_prior	gwn1;oswak74	1	https://www.ricedata.cn/gene/list/42722.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g16010	LOC_Os03g16010	Os03g0266800	GOM1	GOM1	gom1;loc_os03g16010	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g27590	LOC_Os09g27590	Os09g0448500	GS9	GS9	gs9;loc_os09g27590;os09g0448500	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g55040	LOC_Os03g55040	Os03g0757500	GSA1	GSA1	gsa1;loc_os03g55040;os03g0757500;ugt83a1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g08170	LOC_Os03g08170	Os03g0179400	GUDK	GUDK	gudk;loc_os03g08170;os03g0179400	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g37640	LOC_Os10g37640	Os10g0520700	GW10.2	GW10.2	gw10.2;lip1;loc_os10g37640;os10g0520700	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g37120	LOC_Os10g37120	Os10g0515400	GW10/CYP89A2	GW10/CYP89A2	cyp89a2;gw10;loc_os10g37120;os10g0515400	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g15620	LOC_Os06g15620	Os06g0266800	GW6	GW6	gw6;loc_os06g15620;os06g0266800;osgasr7;osgsr1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g44100	LOC_Os06g44100	Os06g0650300	GW6a	GW6a	gw6a;loc_os06g44100;os06g0650300;osglhat1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g13630	LOC_Os09g13630	Os09g0306800	GW9/OsEMF2b	GW9/OsEMF2b	gw9;loc_os09g13630;os09g0306800;osemf2b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g39210	LOC_Os08g39210	Os08g0501500	GWN1	GWN1	gwn1;loc_os08g39210;oswak74;qgl8a	matched_prior	gwn1;oswak74	1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_95c70ba83e74aa33			GWN1/OsWAK74（历史身份待核）	GWN1/OsWAK74（历史身份待核）	gwn1;oswak74;oswak74（历史身份待核）;unresolved_gene_95c70ba83e74aa33	msu_unresolved	gwn1;oswak74	1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g06530	LOC_Os06g06530	Os06g0160400	HGW	HGW	hgw;loc_os06g06530;os06g0160400	matched_prior		1	https://www.ricedata.cn/gene/list/2112.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g02650	LOC_Os03g02650	Os03g0117900	HYR	HYR	hyr;loc_os03g02650;os03g0117900	matched_prior		1	https://www.ricedata.cn/gene/list/2655.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g42690	LOC_Os10g42690	Os10g0577600	JMJ706/ISPL10/Os10g0577600	JMJ706/ISPL10/Os10g0577600	ispl10;jmj706;loc_os10g42690;os10g0577600	matched_prior		1	https://www.ricedata.cn/gene/list/1129.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g06530	LOC_Os06g06530	Os06g0160400	HGW	HGW	hgw;loc_os06g06530;os06g0160400	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g02650	LOC_Os03g02650	Os03g0117900	HYR	HYR	hyr;loc_os03g02650;os03g0117900	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g42690	LOC_Os10g42690	Os10g0577600	JMJ706/ISPL10/Os10g0577600	JMJ706/ISPL10/Os10g0577600	ispl10;jmj706;loc_os10g42690;os10g0577600	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_821f39a34694fec7			KIN14M	KIN14M	kin14m;kin14m@doi:10.1186;loc_os06g36080@msu7@doi:10.1186;s12284-020-00387-3;unresolved_gene_821f39a34694fec7	msu_unresolved	s12284-020-00387-3	1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_419c7f3e68c2d42b			KIN7L	KIN7L	kin7l;kin7l@doi:10.1186;loc_os11g35090@msu7@doi:10.1186;s12284-020-00387-3;unresolved_gene_419c7f3e68c2d42b	msu_unresolved	s12284-020-00387-3	1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g29840	LOC_Os11g29840	Os11g0490600	LA1	LA1	la1;lazy1;loc_os11g29840;os11g0490600	matched_prior		1	https://www.ricedata.cn/gene/list/754.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g04100	LOC_Os03g04100	Os03g0133300	LA3	LA3	bta2;la3;loc_os03g04100;os03g0133300;osesv1	matched_prior	osesv1	1	https://www.ricedata.cn/gene/list/50109.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g31290	LOC_Os02g31290	Os02g0517531	LARGE1	LARGE1	ehd6;large1;loc_os02g31290;oml4;os02g0517531	matched_prior		1	https://www.ricedata.cn/gene/list/43460.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g61480	LOC_Os01g61480	Os01g0831000	LAX1	LAX1	bhlh123;lax1;loc_os01g61480;os01g0831000	matched_prior		1	https://www.ricedata.cn/gene/list/728.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g49930	LOC_Os05g49930	Os05g0574900	LCG1	LCG1	lcg1;loc_os05g49930;osgras30;slrl2	matched_prior		1	https://www.ricedata.cn/gene/list/10514.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g29840	LOC_Os11g29840	Os11g0490600	LA1	LA1	la1;lazy1;loc_os11g29840;os11g0490600	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g04100	LOC_Os03g04100	Os03g0133300	LA3	LA3	bta2;la3;loc_os03g04100;os03g0133300;osesv1	matched_prior	osesv1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g31290	LOC_Os02g31290	Os02g0517531	LARGE1	LARGE1	ehd6;large1;loc_os02g31290;oml4;os02g0517531	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g61480	LOC_Os01g61480	Os01g0831000	LAX1	LAX1	bhlh123;lax1;loc_os01g61480;os01g0831000	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g49930	LOC_Os05g49930	Os05g0574900	LCG1	LCG1	lcg1;loc_os05g49930;osgras30;slrl2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_963350fcd2ddc698			LDP1	LDP1	ldp1;unresolved_gene_963350fcd2ddc698	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g56160	LOC_Os04g56160	Os04g0656100	LMPA	LMPA	lmpa;loc_os04g56160;os04g0656100;osa7	matched_prior		1	https://www.ricedata.cn/gene/list/31754.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g17350	LOC_Os03g17350	Os03g0281900	LOC_Os03g17350	LOC_Os03g17350	la5;lazy5;loc_os03g17350;os03g0281900;osabcg5;rcn1	matched_prior	rcn1	1	https://www.ricedata.cn/gene/list/2639.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g21040	LOC_Os03g21040	Os03g0327600	LOC_Os03g21040	LOC_Os03g21040	loc_os03g21040;os03g0327600;oseuld1b;osr40c1	matched_prior		1	https://www.ricedata.cn/gene/list/25074.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g52320	LOC_Os03g52320	Os03g0733600	LOC_Os03g52320	LOC_Os03g52320	grf-interacting factor1;loc_os03g52320;os03g0733600;osgif1;osmkb3	matched_prior		1	https://www.ricedata.cn/gene/list/37600.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g54440	LOC_Os04g54440	Os04g0636900	LOC_Os04g54440	LOC_Os04g54440	dht1;loc_os04g54440;os04g0636900	matched_prior		1	https://www.ricedata.cn/gene/list/21679.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g06920	LOC_Os05g06920	Os05g0161500	LOC_Os05g06920	LOC_Os05g06920	loc_os05g06920;os05g0161500;oscrsh2	matched_prior		1	https://www.ricedata.cn/gene/list/10103.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g13810	LOC_Os06g13810	Os06g0247500	LOC_Os06g13810	LOC_Os06g13810	loc_os06g13810;os06g0247500;ospfp1β;pfp1-3;pfpβ	matched_prior		1	https://www.ricedata.cn/gene/list/17188.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g02650	LOC_Os09g02650	Os09g0114500	LOC_Os09g02650	LOC_Os09g02650	bc12;loc_os09g02650;os09g0114500;swb9	matched_prior		1	https://www.ricedata.cn/gene/list/1037.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g40630	LOC_Os01g40630	Os01g0588900	LOG	LOG	loc_os01g40630;log;os01g0588900	matched_prior		1	https://www.ricedata.cn/gene/list/729.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g13400	LOC_Os03g13400	Os03g0237250	LPA1	LPA1	loc_os03g13400;lpa1;os03g0237250;osidd14	matched_prior		1	https://www.ricedata.cn/gene/list/2466.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g02640	LOC_Os08g02640	Os08g0120000	LPS1	LPS1	loc_os08g02640;lps1;os08g0120000;ossdh2-1	matched_prior		1	https://www.ricedata.cn/gene/list/52388.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g35840	LOC_Os10g35840	Os10g0502400	LSD3	LSD3	loc_os10g35840;lsd3;os10g0502400;osglutr	matched_prior		1	https://www.ricedata.cn/gene/list/25317.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g38260	LOC_Os02g38260	Os02g0596200	LSSR1	LSSR1	loc_os02g38260;lssr1	matched_prior		1	https://www.ricedata.cn/gene/list/39224.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g25780	LOC_Os10g25780	Os10g0397400	LTBSG1	LTBSG1	brd2;lhdd10;loc_os10g25780;ltbsg1;os10g0397400;osdwf1;rub2	matched_prior		1	https://www.ricedata.cn/gene/list/3479.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g36440	LOC_Os11g36440	Os11g0572700	MHZ5	MHZ5	loc_os11g36440;mhz5;os11g0572700;oscrtiso;osygl54;pgl13;phs3;zebra2;zl2	matched_prior		1	https://www.ricedata.cn/gene/list/755.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g56160	LOC_Os04g56160	Os04g0656100	LMPA	LMPA	lmpa;loc_os04g56160;os04g0656100;osa7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g17350	LOC_Os03g17350	Os03g0281900	LOC_Os03g17350	LOC_Os03g17350	la5;lazy5;loc_os03g17350;os03g0281900;osabcg5;rcn1	matched_prior	rcn1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g21040	LOC_Os03g21040	Os03g0327600	LOC_Os03g21040	LOC_Os03g21040	loc_os03g21040;os03g0327600;oseuld1b;osr40c1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g52320	LOC_Os03g52320	Os03g0733600	LOC_Os03g52320	LOC_Os03g52320	grf-interacting factor1;loc_os03g52320;os03g0733600;osgif1;osmkb3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g54440	LOC_Os04g54440	Os04g0636900	LOC_Os04g54440	LOC_Os04g54440	dht1;loc_os04g54440;os04g0636900	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g06920	LOC_Os05g06920	Os05g0161500	LOC_Os05g06920	LOC_Os05g06920	loc_os05g06920;os05g0161500;oscrsh2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g13810	LOC_Os06g13810	Os06g0247500	LOC_Os06g13810	LOC_Os06g13810	loc_os06g13810;os06g0247500;ospfp1β;pfp1-3;pfpβ	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g02650	LOC_Os09g02650	Os09g0114500	LOC_Os09g02650	LOC_Os09g02650	bc12;loc_os09g02650;os09g0114500;swb9	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g40630	LOC_Os01g40630	Os01g0588900	LOG	LOG	loc_os01g40630;log;os01g0588900	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g13400	LOC_Os03g13400	Os03g0237250	LPA1	LPA1	loc_os03g13400;lpa1;os03g0237250;osidd14	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g02640	LOC_Os08g02640	Os08g0120000	LPS1	LPS1	loc_os08g02640;lps1;os08g0120000;ossdh2-1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g35840	LOC_Os10g35840	Os10g0502400	LSD3	LSD3	loc_os10g35840;lsd3;os10g0502400;osglutr	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g38260	LOC_Os02g38260	Os02g0596200	LSSR1	LSSR1	loc_os02g38260;lssr1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g25780	LOC_Os10g25780	Os10g0397400	LTBSG1	LTBSG1	brd2;lhdd10;loc_os10g25780;ltbsg1;os10g0397400;osdwf1;rub2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g36440	LOC_Os11g36440	Os11g0572700	MHZ5	MHZ5	loc_os11g36440;mhz5;os11g0572700;oscrtiso;osygl54;pgl13;phs3;zebra2;zl2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 MI0001703			MIR396e	MIR396e	mi0001703;mir396e	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
 MI0010563			MIR396f	MIR396f	mi0010563;mir396f	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g64660	LOC_Os01g64660	Os01g0866400	MOC2	MOC2	fbp1;loc_os01g64660;moc2;os01g0866400;oscfbp1	matched_prior		1	https://www.ricedata.cn/gene/list/2642.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g56780	LOC_Os04g56780	Os04g0663600	MOC3	MOC3	dc1;loc_os04g56780;moc3;os04g0663600;osmoc3;oswus;srt1;tab1	matched_prior		1	https://www.ricedata.cn/gene/list/2749.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g13250	LOC_Os01g13250	Os01g0233400	MSHB1	MSHB1	hwe2;loc_os01g13250;mshb1;oseaf6	matched_prior		1	https://www.ricedata.cn/gene/list/17136.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g11900	LOC_Os03g11900	Os03g0218400	MST4	MST4	loc_os03g11900;mst4;os03g0218400;osmst4	matched_prior		1	https://www.ricedata.cn/gene/list/1142.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g27620	LOC_Os02g27620	Os02g0477700	MTS1/D50	MTS1/D50	d50;f71;loc_os02g27620;mts1;os02g0477700	matched_prior		1	https://www.ricedata.cn/gene/list/2388.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g18240	LOC_Os01g18240	Os01g0285300	MYB61	MYB61	61;jmtf1;loc_os01g18240;myb61;os01g0285300;osmyb55;osmyb61;qcel1;qnla1	matched_prior		1	https://www.ricedata.cn/gene/list/25551.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g09450	LOC_Os07g09450	Os07g0192300	NAL25	NAL25	lm7;loc_os07g09450;nal11;nal25;osdjc58;oshsp40;osnal11	matched_prior		1	https://www.ricedata.cn/gene/list/13718.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g39430	LOC_Os04g39430	Os04g0469800	NBG4/D11	NBG4/D11	cl4;cpb1;cyp724b1;d11;gns4;loc_os04g39430;nbg4;os04g0469800;osd11;sg4	matched_prior		1	https://www.ricedata.cn/gene/list/25.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g14890	LOC_Os03g14890	Os03g0253800	NLG1	NLG1	loc_os03g14890;nlg1	matched_prior		1	https://www.ricedata.cn/gene/list/19369.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g54860	LOC_Os01g54860	Os01g0752200	NOG1	NOG1	loc_os01g54860;nog1;os01g0752200	matched_prior		1	https://www.ricedata.cn/gene/list/3782.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g12690	LOC_Os01g12690	Os01g0226700	OFP1	OFP1	loc_os01g12690;ofp1;os01g0226700	matched_prior		1	https://www.ricedata.cn/gene/list/17749.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g10080	LOC_Os08g10080	Os08g0200600	OMTN6	OMTN6	loc_os08g10080;omtn6;os08g0200600	matched_prior		1	https://www.ricedata.cn/gene/list/2577.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g12310	LOC_Os02g12310	Os02g0214500	ONAC023	ONAC023	loc_os02g12310;onac023;os02g0214500;osnac23	matched_prior		1	https://www.ricedata.cn/gene/list/1189.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g31330	LOC_Os11g31330	Os11g0512000	ONAC025	ONAC025	loc_os11g31330;onac025;os11g0512000;osnac025;osnac25;ss1	matched_prior	ss1	1	https://www.ricedata.cn/gene/list/53257.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g04560	LOC_Os07g04560	Os07g0138200	ONAC096	ONAC096	loc_os07g04560;onac096;os07g0138200	matched_prior		1	https://www.ricedata.cn/gene/list/40058.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g40600	LOC_Os03g40600	Os03g0603100	Os03g0603100	Os03g0603100	bg2l1;cyp78a11;loc_os03g40600;os03g0603100	matched_prior		1	https://www.ricedata.cn/gene/list/24065.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g40640	LOC_Os10g40640	Os10g0555100	Os10g0555100	Os10g0555100	loc_os10g40640;os10g0555100;osggt	matched_prior		1	https://www.ricedata.cn/gene/list/8342.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g05470	LOC_Os11g05470	Os11g0152500	RCN1	Os11g0152500	fdr2;loc_os11g05470;os11g0152500;oscen2;rcn1	matched_prior	rcn1	1	https://www.ricedata.cn/gene/list/33494.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g12890	LOC_Os02g12890	Os02g0221900	Os1900	Os1900	cyp711a5;loc_os02g12890;os02g0221900;os1900;osmax1-1900;osmax1e	matched_prior		1	https://www.ricedata.cn/gene/list/22162.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g36920	LOC_Os06g36920	Os06g0565100	Os5100	Os5100	cyp711a6;loc_os06g36920;os06g0565100;os5100;osmax1-5100;osmax1b	matched_prior		1	https://www.ricedata.cn/gene/list/35507.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g04180	LOC_Os07g04180	Os07g0134000	OsAAP1	OsAAP1	loc_os07g04180;os07g0134000;osaap1	matched_prior		1	https://www.ricedata.cn/gene/list/7212.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g36180	LOC_Os06g36180	Os06g0556000	OsAAP3	OsAAP3	loc_os06g36180;os06g0556000;osaap3	matched_prior		1	https://www.ricedata.cn/gene/list/24926.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g65670	LOC_Os01g65670	Os01g0878700	OsAAP6	OsAAP6	loc_os01g65670;os01g0878700;osaap6;qpc1	matched_prior		1	https://www.ricedata.cn/gene/list/2654.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g07010	LOC_Os08g07010	Os08g0167000	OsABCG18	OsABCG18	leaf1;loc_os08g07010;os08g0167000;osabcg18;rst31	matched_prior		1	https://www.ricedata.cn/gene/list/48894.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g64730	LOC_Os01g64730	Os01g0867300	OsABF1	OsABF1	loc_os01g64730;os01g0867300;osabf1;osbzip12	matched_prior		1	https://www.ricedata.cn/gene/list/1079.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g64660	LOC_Os01g64660	Os01g0866400	MOC2	MOC2	fbp1;loc_os01g64660;moc2;os01g0866400;oscfbp1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g56780	LOC_Os04g56780	Os04g0663600	MOC3	MOC3	dc1;loc_os04g56780;moc3;os04g0663600;osmoc3;oswus;srt1;tab1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g13250	LOC_Os01g13250	Os01g0233400	MSHB1	MSHB1	hwe2;loc_os01g13250;mshb1;oseaf6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g11900	LOC_Os03g11900	Os03g0218400	MST4	MST4	loc_os03g11900;mst4;os03g0218400;osmst4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g27620	LOC_Os02g27620	Os02g0477700	MTS1/D50	MTS1/D50	d50;f71;loc_os02g27620;mts1;os02g0477700	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g18240	LOC_Os01g18240	Os01g0285300	MYB61	MYB61	61;jmtf1;loc_os01g18240;myb61;os01g0285300;osmyb55;osmyb61;qcel1;qnla1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g09450	LOC_Os07g09450	Os07g0192300	NAL25	NAL25	lm7;loc_os07g09450;nal11;nal25;osdjc58;oshsp40;osnal11	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g39430	LOC_Os04g39430	Os04g0469800	NBG4/D11	NBG4/D11	cl4;cpb1;cyp724b1;d11;gns4;loc_os04g39430;nbg4;os04g0469800;osd11;sg4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g14890	LOC_Os03g14890	Os03g0253800	NLG1	NLG1	loc_os03g14890;nlg1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g54860	LOC_Os01g54860	Os01g0752200	NOG1	NOG1	loc_os01g54860;nog1;os01g0752200	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g12690	LOC_Os01g12690	Os01g0226700	OFP1	OFP1	loc_os01g12690;ofp1;os01g0226700	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g10080	LOC_Os08g10080	Os08g0200600	OMTN6	OMTN6	loc_os08g10080;omtn6;os08g0200600	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g12310	LOC_Os02g12310	Os02g0214500	ONAC023	ONAC023	loc_os02g12310;onac023;os02g0214500;osnac23	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g31330	LOC_Os11g31330	Os11g0512000	ONAC025	ONAC025	loc_os11g31330;onac025;os11g0512000;osnac025;osnac25;ss1	matched_prior	ss1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g04560	LOC_Os07g04560	Os07g0138200	ONAC096	ONAC096	loc_os07g04560;onac096;os07g0138200	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g40600	LOC_Os03g40600	Os03g0603100	Os03g0603100	Os03g0603100	bg2l1;cyp78a11;loc_os03g40600;os03g0603100	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g40640	LOC_Os10g40640	Os10g0555100	Os10g0555100	Os10g0555100	loc_os10g40640;os10g0555100;osggt	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g05470	LOC_Os11g05470	Os11g0152500	RCN1	Os11g0152500	fdr2;loc_os11g05470;os11g0152500;oscen2;rcn1	matched_prior	rcn1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g12890	LOC_Os02g12890	Os02g0221900	Os1900	Os1900	cyp711a5;loc_os02g12890;os02g0221900;os1900;osmax1-1900;osmax1e	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g36920	LOC_Os06g36920	Os06g0565100	Os5100	Os5100	cyp711a6;loc_os06g36920;os06g0565100;os5100;osmax1-5100;osmax1b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g04180	LOC_Os07g04180	Os07g0134000	OsAAP1	OsAAP1	loc_os07g04180;os07g0134000;osaap1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g36180	LOC_Os06g36180	Os06g0556000	OsAAP3	OsAAP3	loc_os06g36180;os06g0556000;osaap3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g65670	LOC_Os01g65670	Os01g0878700	OsAAP6	OsAAP6	loc_os01g65670;os01g0878700;osaap6;qpc1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g07010	LOC_Os08g07010	Os08g0167000	OsABCG18	OsABCG18	leaf1;loc_os08g07010;os08g0167000;osabcg18;rst31	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g64730	LOC_Os01g64730	Os01g0867300	OsABF1	OsABF1	loc_os01g64730;os01g0867300;osabf1;osbzip12	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_fa9d83715d6110fe			OsACL5	OsACL5	os02g0237100;osacl5;unresolved_gene_fa9d83715d6110fe	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g35590	LOC_Os04g35590	Os04g0436100	OsACOT	OsACOT	loc_os04g35590;os04g0436100;osacot	matched_prior		1	https://www.ricedata.cn/gene/list/16413.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g08850	LOC_Os03g08850	Os03g0187500	OsAFB6	OsAFB6	loc_os03g08850;os03g0187500;osafb5;osafb6	matched_prior		1	https://www.ricedata.cn/gene/list/13380.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g33650	LOC_Os03g33650	Os03g0449200	OsAGO7	OsAGO7	dh2;loc_os03g33650;os03g0449200;osago7;shl4;sho2	matched_prior		1	https://www.ricedata.cn/gene/list/451.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g13380	LOC_Os12g13380	Os12g0236400	OsAK3	OsAK3	loc_os12g13380;os12g0236400;osak3	matched_prior		1	https://www.ricedata.cn/gene/list/31638.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g43070	LOC_Os04g43070	Os04g0509600	OsAMT1；1.1	OsAMT1；1.1	1;1.1;loc_os04g43070;loc_os04g43070.1;osamt1;osamt1-1;osamt1.1	matched_prior	1	1	https://www.ricedata.cn/gene/list/1910.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g52090	LOC_Os04g52090	Os04g0610400	OsAP2-39	OsAP2-39	erebp149;loc_os04g52090;os04g0610400;osap2-39;oserf77	matched_prior		1	https://www.ricedata.cn/gene/list/1313.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g57610	LOC_Os04g57610	Os04g0671900	OsARF12	OsARF12	loc_os04g57610;os04g0671900;osarf12;osarf8	matched_prior		1	https://www.ricedata.cn/gene/list/1712.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g46410	LOC_Os06g46410	Os06g0677800	OsARF17	OsARF17	loc_os06g46410;os06g0677800;osarf17	matched_prior		1	https://www.ricedata.cn/gene/list/2766.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g47150	LOC_Os06g47150	Os06g0685700	OsARF18	OsARF18	glr1;loc_os06g47150;os06g0685700;osarf18;rst1	matched_prior	glr1	1	https://www.ricedata.cn/gene/list/2757.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g41950	LOC_Os12g41950	Os12g0613700	OsARF25	OsARF25	loc_os12g41950;os12g0613700;osarf25;osarf6b	matched_prior		1	https://www.ricedata.cn/gene/list/1718.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g18130	LOC_Os03g18130	Os03g0291500	OsAS1	OsAS1	loc_os03g18130;os03g0291500;osas1	matched_prior		1	https://www.ricedata.cn/gene/list/38645.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g32800	LOC_Os07g32800	Os07g0512200	OsATG8a	OsATG8a	loc_os07g32800;os07g0512200;osatg8;osatg8a	matched_prior		1	https://www.ricedata.cn/gene/list/1333.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g53240	LOC_Os04g53240	Os04g0624000	OsATG8b	OsATG8b	loc_os04g53240;os04g0624000;osatg8b	matched_prior		1	https://www.ricedata.cn/gene/list/56051.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g09240	LOC_Os08g09240	Os08g0191600	OsATG8c	OsATG8c	loc_os08g09240;os08g0191600;osatg8c	matched_prior		1	https://www.ricedata.cn/gene/list/14466.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g07760	LOC_Os08g07760	Os08g0174700	OsBAK1	OsBAK1	08sg2;loc_os08g07760;os08g0174700;osbak1;osbiserk1;osserk1;ostbp1	matched_prior		1	https://www.ricedata.cn/gene/list/1959.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g42470	LOC_Os08g42470	Os08g0536800	OsBCL1	OsBCL1	loc_os08g42470;os08g0536800;osbcl1;osbhlh080	matched_prior		1	https://www.ricedata.cn/gene/list/49528.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g47660	LOC_Os02g47660	Os02g0705500	OsBCL2	OsBCL2	loc_os02g47660;os02g0705500;osbcl2;osbhlh079;osblr1;oscib1l	matched_prior		1	https://www.ricedata.cn/gene/list/42780.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g31530	LOC_Os11g31530	Os11g0514400	OsBDG1	OsBDG1	loc_os11g31530;os11g0514400;osbdg1	matched_prior		1	https://www.ricedata.cn/gene/list/52335.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g39330	LOC_Os01g39330	Os01g0575200	OsbHLH024	OsbHLH024	loc_os01g39330;os01g0575200;osbhlh024	matched_prior		1	https://www.ricedata.cn/gene/list/47575.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g42180	LOC_Os05g42180	Os05g0501200	OsbHLH067	OsbHLH067	loc_os05g42180;os05g0501200;osbhlh067	matched_prior		1	https://www.ricedata.cn/gene/list/6023.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g57580	LOC_Os01g57580	Os01g0784900	OsbHLH069	OsbHLH069	loc_os01g57580;nsp1;os01g0784900;osbhlh069	matched_prior		1	https://www.ricedata.cn/gene/list/22681.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g53020	LOC_Os03g53020	Os03g0741100	OsbHLH148	OsbHLH148	loc_os03g53020;os03g0741100;osbhlh148	matched_prior		1	https://www.ricedata.cn/gene/list/14837.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g41030	LOC_Os04g41030	Os04g0487200	OsBIR3	OsBIR3	loc_os04g41030;osbir3;ossla1;osspl41;rub1	matched_prior		1	https://www.ricedata.cn/gene/list/45559.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g52050	LOC_Os01g52050	Os01g0718300	OsBRI1	OsBRI1	d61;loc_os01g52050;os01g0718300;osbri1;smg12	matched_prior		1	https://www.ricedata.cn/gene/list/175.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g42020	LOC_Os08g42020	Os08g0532500	OsBRP5	OsBRP5	loc_os08g42020;osbrp5;osptf2;ptf2	matched_prior		1	https://www.ricedata.cn/gene/list/49564.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g04050	LOC_Os03g04050	Os03g0132800	OsBSK1-1	OsBSK1-1	loc_os03g04050;os03g0132800;osbsk1-1	matched_prior		1	https://www.ricedata.cn/gene/list/50106.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g58750	LOC_Os04g58750	Os04g0684200	OsBSK3	OsBSK3	loc_os04g58750;os04g0684200;osbsk3;osrlck173	matched_prior		1	https://www.ricedata.cn/gene/list/6340.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g35590	LOC_Os04g35590	Os04g0436100	OsACOT	OsACOT	loc_os04g35590;os04g0436100;osacot	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g08850	LOC_Os03g08850	Os03g0187500	OsAFB6	OsAFB6	loc_os03g08850;os03g0187500;osafb5;osafb6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g33650	LOC_Os03g33650	Os03g0449200	OsAGO7	OsAGO7	dh2;loc_os03g33650;os03g0449200;osago7;shl4;sho2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g13380	LOC_Os12g13380	Os12g0236400	OsAK3	OsAK3	loc_os12g13380;os12g0236400;osak3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g43070	LOC_Os04g43070	Os04g0509600	OsAMT1；1.1	OsAMT1；1.1	1;1.1;loc_os04g43070;loc_os04g43070.1;osamt1;osamt1-1;osamt1.1	matched_prior	1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g52090	LOC_Os04g52090	Os04g0610400	OsAP2-39	OsAP2-39	erebp149;loc_os04g52090;os04g0610400;osap2-39;oserf77	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g57610	LOC_Os04g57610	Os04g0671900	OsARF12	OsARF12	loc_os04g57610;os04g0671900;osarf12;osarf8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g46410	LOC_Os06g46410	Os06g0677800	OsARF17	OsARF17	loc_os06g46410;os06g0677800;osarf17	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g47150	LOC_Os06g47150	Os06g0685700	OsARF18	OsARF18	glr1;loc_os06g47150;os06g0685700;osarf18;rst1	matched_prior	glr1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g41950	LOC_Os12g41950	Os12g0613700	OsARF25	OsARF25	loc_os12g41950;os12g0613700;osarf25;osarf6b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g18130	LOC_Os03g18130	Os03g0291500	OsAS1	OsAS1	loc_os03g18130;os03g0291500;osas1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g32800	LOC_Os07g32800	Os07g0512200	OsATG8a	OsATG8a	loc_os07g32800;os07g0512200;osatg8;osatg8a	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g53240	LOC_Os04g53240	Os04g0624000	OsATG8b	OsATG8b	loc_os04g53240;os04g0624000;osatg8b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g09240	LOC_Os08g09240	Os08g0191600	OsATG8c	OsATG8c	loc_os08g09240;os08g0191600;osatg8c	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g07760	LOC_Os08g07760	Os08g0174700	OsBAK1	OsBAK1	08sg2;loc_os08g07760;os08g0174700;osbak1;osbiserk1;osserk1;ostbp1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g42470	LOC_Os08g42470	Os08g0536800	OsBCL1	OsBCL1	loc_os08g42470;os08g0536800;osbcl1;osbhlh080	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g47660	LOC_Os02g47660	Os02g0705500	OsBCL2	OsBCL2	loc_os02g47660;os02g0705500;osbcl2;osbhlh079;osblr1;oscib1l	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g31530	LOC_Os11g31530	Os11g0514400	OsBDG1	OsBDG1	loc_os11g31530;os11g0514400;osbdg1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g39330	LOC_Os01g39330	Os01g0575200	OsbHLH024	OsbHLH024	loc_os01g39330;os01g0575200;osbhlh024	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g42180	LOC_Os05g42180	Os05g0501200	OsbHLH067	OsbHLH067	loc_os05g42180;os05g0501200;osbhlh067	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g57580	LOC_Os01g57580	Os01g0784900	OsbHLH069	OsbHLH069	loc_os01g57580;nsp1;os01g0784900;osbhlh069	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g53020	LOC_Os03g53020	Os03g0741100	OsbHLH148	OsbHLH148	loc_os03g53020;os03g0741100;osbhlh148	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g41030	LOC_Os04g41030	Os04g0487200	OsBIR3	OsBIR3	loc_os04g41030;osbir3;ossla1;osspl41;rub1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g52050	LOC_Os01g52050	Os01g0718300	OsBRI1	OsBRI1	d61;loc_os01g52050;os01g0718300;osbri1;smg12	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g42020	LOC_Os08g42020	Os08g0532500	OsBRP5	OsBRP5	loc_os08g42020;osbrp5;osptf2;ptf2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g04050	LOC_Os03g04050	Os03g0132800	OsBSK1-1	OsBSK1-1	loc_os03g04050;os03g0132800;osbsk1-1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g58750	LOC_Os04g58750	Os04g0684200	OsBSK3	OsBSK3	loc_os04g58750;os04g0684200;osbsk3;osrlck173	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_460e1053109413ad			OsbZIP06	OsbZIP06	osbzip06;unresolved_gene_460e1053109413ad	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g59350	LOC_Os01g59350	Os01g0808100	OsbZIP08	OsbZIP08	loc_os01g59350;os01g0808100;osbzip08;osbzip28;ostga2;ostgal1	matched_prior		1	https://www.ricedata.cn/gene/list/2142.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g52780	LOC_Os02g52780	Os02g0766700	OsbZIP23	OsbZIP23	loc_os02g52780;os02g0766700;osbzip23	matched_prior		1	https://www.ricedata.cn/gene/list/938.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g10880	LOC_Os06g10880	Os06g0211200	OsbZIP46	OsbZIP46	abl1;loc_os06g10880;os06g0211200;osabf2;osareb1;osareb8;osbzip46	matched_prior		1	https://www.ricedata.cn/gene/list/1880.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g15480	LOC_Os06g15480	Os06g0265400	OsbZIP47	OsbZIP47	loc_os06g15480;os06g0265400;osbzip47	matched_prior		1	https://www.ricedata.cn/gene/list/2175.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g48660	LOC_Os07g48660	Os07g0686100	OsbZIP62	OsbZIP62	loc_os07g48660;os07g0686100;osbzip62;osfd7	matched_prior		1	https://www.ricedata.cn/gene/list/2186.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g36790	LOC_Os08g36790	Os08g0472000	OsbZIP66	OsbZIP66	loc_os08g36790;os08g0472000;osbzip66;ostrab1	matched_prior		1	https://www.ricedata.cn/gene/list/1693.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g13570	LOC_Os09g13570	Os09g0306400	OsbZIP71	OsbZIP71	loc_os09g13570;os09g0306400;osbzip71	matched_prior		1	https://www.ricedata.cn/gene/list/2193.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g39220	LOC_Os07g39220	Os07g0580500	OsBZR1	OsBZR1	loc_os07g39220;os07g0580500;osbes1-6;osbzr1	matched_prior		1	https://www.ricedata.cn/gene/list/643.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g41510	LOC_Os10g41510	Os10g0564800	OsCBL1	OsCBL1	loc_os10g41510;os10g0564800;oscbl1	matched_prior		1	https://www.ricedata.cn/gene/list/2614.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g06110	LOC_Os08g06110	Os08g0157600	OsCCA1	OsCCA1	loc_os08g06110;nhd1;os08g0157600;oscca1;oslhy	matched_prior		1	https://www.ricedata.cn/gene/list/5166.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g56700	LOC_Os02g56700	Os02g0811800	OsCCR10	OsCCR10	loc_os02g56700;os02g0811800;osccr10	matched_prior		1	https://www.ricedata.cn/gene/list/56865.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g37070	LOC_Os08g37070	Os08g0475500	OsCEP6.1	OsCEP6.1	loc_os08g37070;os08g0475500;oscep13;oscep6.1	matched_prior		1	https://www.ricedata.cn/gene/list/45308.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g36270	LOC_Os05g36270	Os05g0438600	OscFBP2	OscFBP2	loc_os05g36270;os05g0438600;oscfbp2	matched_prior		1	https://www.ricedata.cn/gene/list/33716.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g33110	LOC_Os02g33110	Os02g0534400	OsCIN1	OsCIN1	loc_os02g33110;os02g0534400;oscin1	matched_prior		1	https://www.ricedata.cn/gene/list/1240.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g04550	LOC_Os05g04550	Os05g0136200	OsCIPK17	OsCIPK17	loc_os05g04550;os05g0136200;oscipk17	matched_prior		1	https://www.ricedata.cn/gene/list/45695.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g59350	LOC_Os01g59350	Os01g0808100	OsbZIP08	OsbZIP08	loc_os01g59350;os01g0808100;osbzip08;osbzip28;ostga2;ostgal1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g52780	LOC_Os02g52780	Os02g0766700	OsbZIP23	OsbZIP23	loc_os02g52780;os02g0766700;osbzip23	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g10880	LOC_Os06g10880	Os06g0211200	OsbZIP46	OsbZIP46	abl1;loc_os06g10880;os06g0211200;osabf2;osareb1;osareb8;osbzip46	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g15480	LOC_Os06g15480	Os06g0265400	OsbZIP47	OsbZIP47	loc_os06g15480;os06g0265400;osbzip47	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g48660	LOC_Os07g48660	Os07g0686100	OsbZIP62	OsbZIP62	loc_os07g48660;os07g0686100;osbzip62;osfd7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g36790	LOC_Os08g36790	Os08g0472000	OsbZIP66	OsbZIP66	loc_os08g36790;os08g0472000;osbzip66;ostrab1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g13570	LOC_Os09g13570	Os09g0306400	OsbZIP71	OsbZIP71	loc_os09g13570;os09g0306400;osbzip71	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g39220	LOC_Os07g39220	Os07g0580500	OsBZR1	OsBZR1	loc_os07g39220;os07g0580500;osbes1-6;osbzr1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g41510	LOC_Os10g41510	Os10g0564800	OsCBL1	OsCBL1	loc_os10g41510;os10g0564800;oscbl1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g06110	LOC_Os08g06110	Os08g0157600	OsCCA1	OsCCA1	loc_os08g06110;nhd1;os08g0157600;oscca1;oslhy	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g56700	LOC_Os02g56700	Os02g0811800	OsCCR10	OsCCR10	loc_os02g56700;os02g0811800;osccr10	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g37070	LOC_Os08g37070	Os08g0475500	OsCEP6.1	OsCEP6.1	loc_os08g37070;os08g0475500;oscep13;oscep6.1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g36270	LOC_Os05g36270	Os05g0438600	OscFBP2	OscFBP2	loc_os05g36270;os05g0438600;oscfbp2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g33110	LOC_Os02g33110	Os02g0534400	OsCIN1	OsCIN1	loc_os02g33110;os02g0534400;oscin1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g04550	LOC_Os05g04550	Os05g0136200	OsCIPK17	OsCIPK17	loc_os05g04550;os05g0136200;oscipk17	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_ae99c8b1ab49969e			OsCKq1	OsCKq1	osckq1;osckq1@doi:10.1186;s12284-024-00726-8;unresolved_gene_ae99c8b1ab49969e	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g35860	LOC_Os08g35860	Os08g0460600	OsCKX11	OsCKX11	loc_os08g35860;os08g0460600;osckx11	matched_prior		1	https://www.ricedata.cn/gene/list/35606.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g06100	LOC_Os08g06100	Os08g0157500	OsCOMT	OsCOMT	loc_os08g06100;os08g0157500;oscaldomt1;oscomt;oscomt15;oscomt5;romt-9;romt9	matched_prior		1	https://www.ricedata.cn/gene/list/5165.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g48270	LOC_Os03g48270	Os03g0688300	OsCPK9	OsCPK9	loc_os03g48270;os03g0688300;oscpk9	matched_prior		1	https://www.ricedata.cn/gene/list/2558.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g43670	LOC_Os03g43670	Os03g0637800	OsCR4	OsCR4	loc_os03g43670;mis2;os03g0637800;oscr4	matched_prior		1	https://www.ricedata.cn/gene/list/2207.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g23650	LOC_Os06g23650	Os06g0344900	OsCUC1	OsCUC1	loc_os06g23650;omtn5;os06g0344900;oscuc1;osnam	matched_prior		1	https://www.ricedata.cn/gene/list/2576.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g40030	LOC_Os08g40030	Os08g0511200	OsCUC3	OsCUC3	loc_os08g40030;os08g0511200;oscuc3	matched_prior		1	https://www.ricedata.cn/gene/list/8960.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g01270	LOC_Os05g01270	Os05g0103200	OsCYP20-2	OsCYP20-2	loc_os05g01270;os05g0103200;oscyp20-2;osnucyp20-2	matched_prior		1	https://www.ricedata.cn/gene/list/2609.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g08400	LOC_Os06g08400	Os06g0182500	OsDA1	OsDA1	loc_os06g08400;osda1	matched_prior		1	https://www.ricedata.cn/gene/list/34140.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g24460	LOC_Os03g24460	Os03g0359100	OsDAAT1	OsDAAT1	loc_os03g24460;osdaat1;wsd1	matched_prior		1	https://www.ricedata.cn/gene/list/54755.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g51230	LOC_Os03g51230	Os03g0722400	OsDDM1b	OsDDM1b	chr741;loc_os03g51230;os03g0722400;osddm1b	matched_prior		1	https://www.ricedata.cn/gene/list/2441.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g35240	LOC_Os08g35240	Os08g0454000	OsDERF1	OsDERF1	loc_os08g35240;os08g0454000;osderf1	matched_prior		1	https://www.ricedata.cn/gene/list/2040.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g31570	LOC_Os03g31570	Os03g0430000	OsDES1	OsDES1	adt1;loc_os03g31570;os03g0430000;osdes1	matched_prior		1	https://www.ricedata.cn/gene/list/28478.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g24040	LOC_Os03g24040	Os03g0356414	OsDIS1	OsDIS1	loc_os03g24040;os03g0356414;osdis1;osring80;rip5;sinar1	matched_prior		1	https://www.ricedata.cn/gene/list/1628.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g07120	LOC_Os01g07120	Os01g0165000	OsDREB2A	OsDREB2A	loc_os01g07120;os01g0165000;osdreb2a;oserf040	matched_prior		1	https://www.ricedata.cn/gene/list/1707.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g04680	LOC_Os03g04680	Os03g0140400	OsDSS1	OsDSS1	bsh1;loc_os03g04680;os03g0140400;oscyp96b4;osdss1;sd37	matched_prior		1	https://www.ricedata.cn/gene/list/1947.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g04020	LOC_Os07g04020	Os07g0132300	OsEPFL5	OsEPFL5	loc_os07g04020;os07g0132300;osepfl5	matched_prior		1	https://www.ricedata.cn/gene/list/7226.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g06610	LOC_Os03g06610	Os03g0161600	OsEPFL6	OsEPFL6	loc_os03g06610;os03g0161600;osepfl6	matched_prior		1	https://www.ricedata.cn/gene/list/15357.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g37190	LOC_Os11g37190	Os11g0581700	OsEPFL7	OsEPFL7	loc_os11g37190;os11g0581700;osepfl7	matched_prior		1	https://www.ricedata.cn/gene/list/14269.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g39880	LOC_Os05g39880	Os05g0476400	OsEPFL8	OsEPFL8	loc_os05g39880;os05g0476400;osepfl8	matched_prior		1	https://www.ricedata.cn/gene/list/52124.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g60900	LOC_Os01g60900	Os01g0824500	OsEPFL9	OsEPFL9	loc_os01g60900;os01g0824500;osepfl9	matched_prior		1	https://www.ricedata.cn/gene/list/53509.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g10230	LOC_Os06g10230	Os06g0203800	OsER1	OsER1	loc_os06g10230;os06g0203800;oser1;oserecta;osrlck204	matched_prior		1	https://www.ricedata.cn/gene/list/2562.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g41030	LOC_Os08g41030	Os08g0521600	OsERF115	OsERF115	ap2erebp110;loc_os08g41030;os08g0521600;oserf115	matched_prior		1	https://www.ricedata.cn/gene/list/17728.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g32270	LOC_Os05g32270	Os05g0389000	OsERF142/SMOS1	OsERF142/SMOS1	loc_os05g32270;ngr5;os05g0389000;oserf142;osngr5;rla1;shb;smos1;unresolved_gene_e7c1fd2ba71d599b	matched_prior		1	https://www.ricedata.cn/gene/list/2618.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g58420	LOC_Os01g58420	Os01g0797600	OsERF3	OsERF3	loc_os01g58420;os01g0797600;osap37;osbierf2;oserf3	matched_prior		1	https://www.ricedata.cn/gene/list/1755.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g31580	LOC_Os08g31580	Os08g0408500	OsERF48	OsERF48	loc_os08g31580;os08g0408500;osdrap1;oserf48	matched_prior		1	https://www.ricedata.cn/gene/list/17328.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g41780	LOC_Os05g41780	Os05g0497300	OsERF74	OsERF74	loc_os05g41780;oserf74	matched_prior		1	https://www.ricedata.cn/gene/list/29079.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g35860	LOC_Os08g35860	Os08g0460600	OsCKX11	OsCKX11	loc_os08g35860;os08g0460600;osckx11	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g06100	LOC_Os08g06100	Os08g0157500	OsCOMT	OsCOMT	loc_os08g06100;os08g0157500;oscaldomt1;oscomt;oscomt15;oscomt5;romt-9;romt9	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g48270	LOC_Os03g48270	Os03g0688300	OsCPK9	OsCPK9	loc_os03g48270;os03g0688300;oscpk9	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g43670	LOC_Os03g43670	Os03g0637800	OsCR4	OsCR4	loc_os03g43670;mis2;os03g0637800;oscr4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g23650	LOC_Os06g23650	Os06g0344900	OsCUC1	OsCUC1	loc_os06g23650;omtn5;os06g0344900;oscuc1;osnam	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g40030	LOC_Os08g40030	Os08g0511200	OsCUC3	OsCUC3	loc_os08g40030;os08g0511200;oscuc3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g01270	LOC_Os05g01270	Os05g0103200	OsCYP20-2	OsCYP20-2	loc_os05g01270;os05g0103200;oscyp20-2;osnucyp20-2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g08400	LOC_Os06g08400	Os06g0182500	OsDA1	OsDA1	loc_os06g08400;osda1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g24460	LOC_Os03g24460	Os03g0359100	OsDAAT1	OsDAAT1	loc_os03g24460;osdaat1;wsd1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g51230	LOC_Os03g51230	Os03g0722400	OsDDM1b	OsDDM1b	chr741;loc_os03g51230;os03g0722400;osddm1b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g35240	LOC_Os08g35240	Os08g0454000	OsDERF1	OsDERF1	loc_os08g35240;os08g0454000;osderf1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g31570	LOC_Os03g31570	Os03g0430000	OsDES1	OsDES1	adt1;loc_os03g31570;os03g0430000;osdes1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g24040	LOC_Os03g24040	Os03g0356414	OsDIS1	OsDIS1	loc_os03g24040;os03g0356414;osdis1;osring80;rip5;sinar1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g07120	LOC_Os01g07120	Os01g0165000	OsDREB2A	OsDREB2A	loc_os01g07120;os01g0165000;osdreb2a;oserf040	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g04680	LOC_Os03g04680	Os03g0140400	OsDSS1	OsDSS1	bsh1;loc_os03g04680;os03g0140400;oscyp96b4;osdss1;sd37	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g04020	LOC_Os07g04020	Os07g0132300	OsEPFL5	OsEPFL5	loc_os07g04020;os07g0132300;osepfl5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g06610	LOC_Os03g06610	Os03g0161600	OsEPFL6	OsEPFL6	loc_os03g06610;os03g0161600;osepfl6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g37190	LOC_Os11g37190	Os11g0581700	OsEPFL7	OsEPFL7	loc_os11g37190;os11g0581700;osepfl7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g39880	LOC_Os05g39880	Os05g0476400	OsEPFL8	OsEPFL8	loc_os05g39880;os05g0476400;osepfl8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g60900	LOC_Os01g60900	Os01g0824500	OsEPFL9	OsEPFL9	loc_os01g60900;os01g0824500;osepfl9	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g10230	LOC_Os06g10230	Os06g0203800	OsER1	OsER1	loc_os06g10230;os06g0203800;oser1;oserecta;osrlck204	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g41030	LOC_Os08g41030	Os08g0521600	OsERF115	OsERF115	ap2erebp110;loc_os08g41030;os08g0521600;oserf115	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g32270	LOC_Os05g32270	Os05g0389000	OsERF142/SMOS1	OsERF142/SMOS1	loc_os05g32270;ngr5;os05g0389000;oserf142;osngr5;rla1;shb;smos1;unresolved_gene_e7c1fd2ba71d599b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g58420	LOC_Os01g58420	Os01g0797600	OsERF3	OsERF3	loc_os01g58420;os01g0797600;osap37;osbierf2;oserf3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g31580	LOC_Os08g31580	Os08g0408500	OsERF48	OsERF48	loc_os08g31580;os08g0408500;osdrap1;oserf48	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g41780	LOC_Os05g41780	Os05g0497300	OsERF74	OsERF74	loc_os05g41780;oserf74	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_3584b42c78b5ede4			OsESV1	OsESV1	osesv1;unresolved_gene_3584b42c78b5ede4	msu_unresolved	osesv1	1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g60720	LOC_Os03g60720	Os03g0822000	OsEXPA7	OsEXPA7	loc_os03g60720;os03g0822000;osexpa7	matched_prior		1	https://www.ricedata.cn/gene/list/29789.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g48560	LOC_Os02g48560	Os02g0716500	OsFAD2-1	OsFAD2-1	loc_os02g48560;osfad2-1	matched_prior		1	https://www.ricedata.cn/gene/list/2130.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g03610	LOC_Os09g03610	Os09g0123200	OsFCA	OsFCA	loc_os09g03610;os09g0123200;osfca;osfca-γ	matched_prior		1	https://www.ricedata.cn/gene/list/837.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g36910	LOC_Os09g36910	Os09g0540800	OsFD1	OsFD1	loc_os09g36910;os09g0540800;osbzip77;osfd1	matched_prior		1	https://www.ricedata.cn/gene/list/2197.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g04270	LOC_Os08g04270	Os08g0137100	OsFIE2	OsFIE2	loc_os08g04270;os08g0137100;osfie2	matched_prior		1	https://www.ricedata.cn/gene/list/1745.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g14110	LOC_Os01g14110	Os01g0243400	OsFIF3	OsFIF3	loc_os01g14110;os01g0243400;osfif3	matched_prior		1	https://www.ricedata.cn/gene/list/39149.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g34460	LOC_Os11g34460	Os11g0547000	OsFKF1	OsFKF1	loc_os11g34460;os11g0547000;osfbo10;osfkf1	matched_prior		1	https://www.ricedata.cn/gene/list/27986.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g33350	LOC_Os01g33350	Os01g0517800	OsFl3	OsFl3	loc_os01g33350;os01g0517800;osfl3	matched_prior		1	https://www.ricedata.cn/gene/list/18023.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g11734	LOC_Os03g11734	Os03g0216700	OsFRDL1	OsFRDL1	loc_os03g11734;os03g0216700;osfrdl1	matched_prior		1	https://www.ricedata.cn/gene/list/1011.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g11940	LOC_Os01g11940	Os01g0218500	OsFTL1	OsFTL1	gn1.1;loc_os01g11940;os01g0218500;osftl1;qhd1b	matched_prior		1	https://www.ricedata.cn/gene/list/51115.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g44180	LOC_Os05g44180	Os05g0518000	OsFTL10	OsFTL10	loc_os05g44180;os05g0518000;osftl10	matched_prior		1	https://www.ricedata.cn/gene/list/4711.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g52550	LOC_Os02g52550	Os02g0763000	OsFWL1	OsFWL1	loc_os02g52550;os02g0763000;oscnr1;osfwl1;qtgw2	matched_prior		1	https://www.ricedata.cn/gene/list/16313.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g61440	LOC_Os03g61440	Os03g0829900	OsFWL4	OsFWL4	loc_os03g61440;os03g0829900;osfwl4	matched_prior		1	https://www.ricedata.cn/gene/list/6942.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g60720	LOC_Os03g60720	Os03g0822000	OsEXPA7	OsEXPA7	loc_os03g60720;os03g0822000;osexpa7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g48560	LOC_Os02g48560	Os02g0716500	OsFAD2-1	OsFAD2-1	loc_os02g48560;osfad2-1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g03610	LOC_Os09g03610	Os09g0123200	OsFCA	OsFCA	loc_os09g03610;os09g0123200;osfca;osfca-γ	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g36910	LOC_Os09g36910	Os09g0540800	OsFD1	OsFD1	loc_os09g36910;os09g0540800;osbzip77;osfd1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g04270	LOC_Os08g04270	Os08g0137100	OsFIE2	OsFIE2	loc_os08g04270;os08g0137100;osfie2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g14110	LOC_Os01g14110	Os01g0243400	OsFIF3	OsFIF3	loc_os01g14110;os01g0243400;osfif3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g34460	LOC_Os11g34460	Os11g0547000	OsFKF1	OsFKF1	loc_os11g34460;os11g0547000;osfbo10;osfkf1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g33350	LOC_Os01g33350	Os01g0517800	OsFl3	OsFl3	loc_os01g33350;os01g0517800;osfl3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g11734	LOC_Os03g11734	Os03g0216700	OsFRDL1	OsFRDL1	loc_os03g11734;os03g0216700;osfrdl1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g11940	LOC_Os01g11940	Os01g0218500	OsFTL1	OsFTL1	gn1.1;loc_os01g11940;os01g0218500;osftl1;qhd1b	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g44180	LOC_Os05g44180	Os05g0518000	OsFTL10	OsFTL10	loc_os05g44180;os05g0518000;osftl10	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g52550	LOC_Os02g52550	Os02g0763000	OsFWL1	OsFWL1	loc_os02g52550;os02g0763000;oscnr1;osfwl1;qtgw2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g61440	LOC_Os03g61440	Os03g0829900	OsFWL4	OsFWL4	loc_os03g61440;os03g0829900;osfwl4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os05g06280	LOC_Os05g06280		OSG/OsSRS3	OSG/OsSRS3	loc_os05g06280;os05g0154700;osg;ossrs3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g07030	LOC_Os02g07030	Os02g0166800	OsG1L1	OsG1L1	loc_os02g07030;os02g0166800;osg1l1	matched_prior		1	https://www.ricedata.cn/gene/list/47903.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g46030	LOC_Os06g46030	Os06g0672400	OsG1L2	OsG1L2	loc_os06g46030;os06g0672400;osg1l2	matched_prior		1	https://www.ricedata.cn/gene/list/48428.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g55240	LOC_Os01g55240	Os01g0757200	OsGA2ox3	OsGA2ox3	loc_os01g55240;os01g0757200;osga2ox3	matched_prior		1	https://www.ricedata.cn/gene/list/2656.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g01340	LOC_Os07g01340	Os07g0103500	OsGA2ox5	OsGA2ox5	loc_os07g01340;os07g0103500;osga2ox5	matched_prior		1	https://www.ricedata.cn/gene/list/2708.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g44150	LOC_Os04g44150	Os04g0522500	OsGA2ox6	OsGA2ox6	loc_os04g44150;os04g0522500;osga2ox6	matched_prior		1	https://www.ricedata.cn/gene/list/1166.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g48700	LOC_Os05g48700	Os05g0560900	OsGA2ox8	OsGA2ox8	loc_os05g48700;os05g0560900;osga2ox8	matched_prior		1	https://www.ricedata.cn/gene/list/2710.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g43290	LOC_Os04g43290	Os04g0512300	OsGASD	OsGASD	loc_os04g43290;os04g0512300;osgasd	matched_prior		1	https://www.ricedata.cn/gene/list/10357.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g24070	LOC_Os01g24070	Os01g0343300	OsGATA8	OsGATA8	loc_os01g24070;os01g0343300;osgata8	matched_prior		1	https://www.ricedata.cn/gene/list/55700.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g39540	LOC_Os11g39540	Os11g0609600	OsGF14h	OsGF14h	14-3-3;loc_os11g39540;os11g0609600;osgf14h;qltg11	matched_prior		1	https://www.ricedata.cn/gene/list/34295.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g08700	LOC_Os01g08700	Os01g0182600	OsGI	OsGI	loc_os01g08700;os01g0182600;osgi	matched_prior		1	https://www.ricedata.cn/gene/list/27.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g44300	LOC_Os06g44300	Os06g0653000	OsGL1-3	OsGL1-3	loc_os06g44300;os06g0653000;osgl1-3	matched_prior		1	https://www.ricedata.cn/gene/list/1636.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g56920	LOC_Os02g56920	Os02g0814200	OsGL1-6	OsGL1-6	cer1l;loc_os02g56920;os02g0814200;osgl1-6	matched_prior		1	https://www.ricedata.cn/gene/list/1639.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g24070	LOC_Os06g24070	Os06g0348800	OsGLK1	OsGLK1	loc_os06g24070;os06g0348800;osglk1	matched_prior		1	https://www.ricedata.cn/gene/list/1701.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g13740	LOC_Os01g13740	Os01g0239000	OsGLK2	OsGLK2	loc_os01g13740;os01g0239000;osglk2	matched_prior		1	https://www.ricedata.cn/gene/list/17102.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g53210	LOC_Os04g53210	Os04g0623500	OsGLO3	OsGLO3	loc_os04g53210;os04g0623500;osglo3	matched_prior		1	https://www.ricedata.cn/gene/list/2340.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g35030	LOC_Os11g35030	Os11g0551900	OsGRF8	OsGRF8	loc_os11g35030;os11g0551900;osgrf8	matched_prior		1	https://www.ricedata.cn/gene/list/27935.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g43530	LOC_Os11g43530	Os11g0656000	OsGRX24	OsGRX24	loc_os11g43530;os11g0656000;osgrx24	matched_prior		1	https://www.ricedata.cn/gene/list/1929.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g30850	LOC_Os02g30850	Os02g0512400	OsGRX8/WG1	OsGRX8/WG1	loc_os02g30850;os02g0512400;osgrx8;osroxy2;wg1	matched_prior		1	https://www.ricedata.cn/gene/list/1922.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g42930	LOC_Os04g42930	Os04g0508300	OsGrxC2.2	OsGrxC2.2	2;loc_os04g42930;os04g0508300;osgrx14;osgrxc2;osgrxc2.2	matched_prior		1	https://www.ricedata.cn/gene/list/1942.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g14130	LOC_Os02g14130	Os02g0236200	OsGSK3	OsGSK3	loc_os02g14130;os02g0236200;osgsk3;ossk23	matched_prior		1	https://www.ricedata.cn/gene/list/21315.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g03770	LOC_Os07g03770	Os07g0129700	OSH15	OSH15	d6;loc_os07g03770;os07g0129700;osh15;oskn3;rlb	matched_prior		1	https://www.ricedata.cn/gene/list/102.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os02g0663100	LOC_Os02g44370	Os02g0663100	OsHAM2	OsHAM2	os02g0663100;osham2;scl6-iia	matched_prior		1	https://www.ricedata.cn/gene/list/56177.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g14669	LOC_Os03g14669	Os03g0251350	OsHAP5C	OsHAP5C	loc_os03g14669;os03g0251350;oshap5c;osnf-yc2;osnf-yc4	matched_prior		1	https://www.ricedata.cn/gene/list/2397.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g38780	LOC_Os08g38780	Os08g0496500	OsHAP5D	OsHAP5D	loc_os08g38780;os08g0496500;oshap5d;osnf-yc6	matched_prior		1	https://www.ricedata.cn/gene/list/2398.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g07030	LOC_Os02g07030	Os02g0166800	OsG1L1	OsG1L1	loc_os02g07030;os02g0166800;osg1l1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g46030	LOC_Os06g46030	Os06g0672400	OsG1L2	OsG1L2	loc_os06g46030;os06g0672400;osg1l2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g55240	LOC_Os01g55240	Os01g0757200	OsGA2ox3	OsGA2ox3	loc_os01g55240;os01g0757200;osga2ox3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g01340	LOC_Os07g01340	Os07g0103500	OsGA2ox5	OsGA2ox5	loc_os07g01340;os07g0103500;osga2ox5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g44150	LOC_Os04g44150	Os04g0522500	OsGA2ox6	OsGA2ox6	loc_os04g44150;os04g0522500;osga2ox6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g48700	LOC_Os05g48700	Os05g0560900	OsGA2ox8	OsGA2ox8	loc_os05g48700;os05g0560900;osga2ox8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g43290	LOC_Os04g43290	Os04g0512300	OsGASD	OsGASD	loc_os04g43290;os04g0512300;osgasd	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g24070	LOC_Os01g24070	Os01g0343300	OsGATA8	OsGATA8	loc_os01g24070;os01g0343300;osgata8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g39540	LOC_Os11g39540	Os11g0609600	OsGF14h	OsGF14h	14-3-3;loc_os11g39540;os11g0609600;osgf14h;qltg11	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g08700	LOC_Os01g08700	Os01g0182600	OsGI	OsGI	loc_os01g08700;os01g0182600;osgi	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g44300	LOC_Os06g44300	Os06g0653000	OsGL1-3	OsGL1-3	loc_os06g44300;os06g0653000;osgl1-3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g56920	LOC_Os02g56920	Os02g0814200	OsGL1-6	OsGL1-6	cer1l;loc_os02g56920;os02g0814200;osgl1-6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g24070	LOC_Os06g24070	Os06g0348800	OsGLK1	OsGLK1	loc_os06g24070;os06g0348800;osglk1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g13740	LOC_Os01g13740	Os01g0239000	OsGLK2	OsGLK2	loc_os01g13740;os01g0239000;osglk2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g53210	LOC_Os04g53210	Os04g0623500	OsGLO3	OsGLO3	loc_os04g53210;os04g0623500;osglo3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g35030	LOC_Os11g35030	Os11g0551900	OsGRF8	OsGRF8	loc_os11g35030;os11g0551900;osgrf8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g43530	LOC_Os11g43530	Os11g0656000	OsGRX24	OsGRX24	loc_os11g43530;os11g0656000;osgrx24	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g30850	LOC_Os02g30850	Os02g0512400	OsGRX8/WG1	OsGRX8/WG1	loc_os02g30850;os02g0512400;osgrx8;osroxy2;wg1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g42930	LOC_Os04g42930	Os04g0508300	OsGrxC2.2	OsGrxC2.2	2;loc_os04g42930;os04g0508300;osgrx14;osgrxc2;osgrxc2.2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g14130	LOC_Os02g14130	Os02g0236200	OsGSK3	OsGSK3	loc_os02g14130;os02g0236200;osgsk3;ossk23	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g03770	LOC_Os07g03770	Os07g0129700	OSH15	OSH15	d6;loc_os07g03770;os07g0129700;osh15;oskn3;rlb	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os02g0663100	LOC_Os02g44370	Os02g0663100	OsHAM2	OsHAM2	os02g0663100;osham2;scl6-iia	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g14669	LOC_Os03g14669	Os03g0251350	OsHAP5C	OsHAP5C	loc_os03g14669;os03g0251350;oshap5c;osnf-yc2;osnf-yc4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g38780	LOC_Os08g38780	Os08g0496500	OsHAP5D	OsHAP5D	loc_os08g38780;os08g0496500;oshap5d;osnf-yc6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_08aa0c4d87680627			OsHsp40-1	OsHsp40-1	oshsp40-1;unresolved_gene_08aa0c4d87680627	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_375a8acb1ceaedf4			OsHsp70-2	OsHsp70-2	oshsp70-2;unresolved_gene_375a8acb1ceaedf4	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g26540	LOC_Os07g26540	Os07g0446800	OsHXK1	OsHXK1	loc_os07g26540;os07g0446800;oshxk1	matched_prior		1	https://www.ricedata.cn/gene/list/22607.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g43400	LOC_Os03g43400	Os03g0633500	OsIAA11	OsIAA11	loc_os03g43400;os03g0633500;osiaa11	matched_prior		1	https://www.ricedata.cn/gene/list/1708.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g26540	LOC_Os07g26540	Os07g0446800	OsHXK1	OsHXK1	loc_os07g26540;os07g0446800;oshxk1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g43400	LOC_Os03g43400	Os03g0633500	OsIAA11	OsIAA11	loc_os03g43400;os03g0633500;osiaa11	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_df4dd3292ec36664			OsIAA17q5	OsIAA17q5	os05g0230700;osiaa17q5;unresolved_gene_df4dd3292ec36664	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g44810	LOC_Os05g44810	Os05g0523300	OsIAA18	OsIAA18	loc_os05g44810;os05g0523300;osiaa18	matched_prior		1	https://www.ricedata.cn/gene/list/37734.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g44810	LOC_Os05g44810	Os05g0523300	OsIAA18	OsIAA18	loc_os05g44810;os05g0523300;osiaa18	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_61e0ce4fcbbd5815			OsIAA19	OsIAA19	osiaa19;unresolved_gene_61e0ce4fcbbd5815	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g53880	LOC_Os01g53880	Os01g0741900	OsIAA6	OsIAA6	loc_os01g53880;os01g0741900;osiaa6	matched_prior		1	https://www.ricedata.cn/gene/list/26915.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g60430	LOC_Os03g60430	Os03g0818800	OsIDS1	OsIDS1	ap2-2;loc_os03g60430;os03g0818800;osids1	matched_prior		1	https://www.ricedata.cn/gene/list/1832.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g45290	LOC_Os04g45290	Os04g0535600	OsINV2	OsINV2	loc_os04g45290;os04g0535600;osinv2	matched_prior		1	https://www.ricedata.cn/gene/list/51614.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g02250	LOC_Os08g02250	Os08g0115200	OsIQD14	OsIQD14	loc_os08g02250;os08g0115200;osiqd14	matched_prior		1	https://www.ricedata.cn/gene/list/52959.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g08320	LOC_Os03g08320	Os03g0180900	OsJAZ11	OsJAZ11	loc_os03g08320;os03g0180900;osjaz11;ostify11c	matched_prior		1	https://www.ricedata.cn/gene/list/2452.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g28940	LOC_Os03g28940	Os03g0402800	OsJAZ6	OsJAZ6	loc_os03g28940;os03g0402800;osjaz6;ostify10a	matched_prior		1	https://www.ricedata.cn/gene/list/2450.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g08310	LOC_Os03g08310	Os03g0180800	OsJAZ9	OsJAZ9	dt3;loc_os03g08310;os03g0180800;osjaz9;ostify11a	matched_prior		1	https://www.ricedata.cn/gene/list/2439.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g53880	LOC_Os01g53880	Os01g0741900	OsIAA6	OsIAA6	loc_os01g53880;os01g0741900;osiaa6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g60430	LOC_Os03g60430	Os03g0818800	OsIDS1	OsIDS1	ap2-2;loc_os03g60430;os03g0818800;osids1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g45290	LOC_Os04g45290	Os04g0535600	OsINV2	OsINV2	loc_os04g45290;os04g0535600;osinv2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g02250	LOC_Os08g02250	Os08g0115200	OsIQD14	OsIQD14	loc_os08g02250;os08g0115200;osiqd14	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g08320	LOC_Os03g08320	Os03g0180900	OsJAZ11	OsJAZ11	loc_os03g08320;os03g0180900;osjaz11;ostify11c	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g28940	LOC_Os03g28940	Os03g0402800	OsJAZ6	OsJAZ6	loc_os03g28940;os03g0402800;osjaz6;ostify10a	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g08310	LOC_Os03g08310	Os03g0180800	OsJAZ9	OsJAZ9	dt3;loc_os03g08310;os03g0180800;osjaz9;ostify11a	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_a55b2d5693911664			OsJMJ703	OsJMJ703	loc_os05g10770;osjmj703;unresolved_gene_a55b2d5693911664	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-Os11g0648100	LOC_Os11g42800	Os11g0648100	OsKIF14.3	OsKIF14.3	os11g0648100;oskif14.3	matched_prior		1	https://www.ricedata.cn/gene/list/41530.htm	frozen_prior_ID_consistency; not_new_external_validation
+Os11g0648100	LOC_Os11g42800	Os11g0648100	OsKIF14.3	OsKIF14.3	os11g0648100;oskif14.3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os04g48010	LOC_Os04g48010		OsKRN2/Os04g0568400	OsKRN2/Os04g0568400	loc_os04g48010;os04g0568400;oskrn2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g52480	LOC_Os02g52480	Os02g0762400	OsKRP1	OsKRP1	loc_os02g52480;os02g0762400;oskrp1	matched_prior		1	https://www.ricedata.cn/gene/list/823.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g52480	LOC_Os02g52480	Os02g0762400	OsKRP1	OsKRP1	loc_os02g52480;os02g0762400;oskrp1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os06g11050	LOC_Os06g11050		OsKRP2	OsKRP2	loc_os06g11050;os06g0213700;oskrp2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g46480	LOC_Os05g46480	Os05g0542500	OsLEA3	OsLEA3	loc_os05g46480;os05g0542500;oslea3;oslea3-1	matched_prior		1	https://www.ricedata.cn/gene/list/1480.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g46480	LOC_Os05g46480	Os05g0542500	OsLEA3	OsLEA3	loc_os05g46480;os05g0542500;oslea3;oslea3-1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_3b94771acd11b806			OsLESV	OsLESV	oslesv;unresolved_gene_3b94771acd11b806	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g56170	LOC_Os04g56170	Os04g0656500	OsLG1	OsLG1	glr2;loc_os04g56170;os04g0656500;osgar18;oslg1;osspl8	matched_prior		1	https://www.ricedata.cn/gene/list/719.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g08470	LOC_Os03g08470	Os03g0183000	OsLG3/OsAP2-125	OsLG3/OsAP2-125	loc_os03g08470;os03g0183000;osap2-125;oserf62;oslg3;osraf;osstap1	matched_prior		1	https://www.ricedata.cn/gene/list/2134.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g03350	LOC_Os08g03350	Os08g0127100	OsLHT1	OsLHT1	loc_os08g03350;os08g0127100;osht;oslht1	matched_prior		1	https://www.ricedata.cn/gene/list/700.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g06480	LOC_Os08g06480	Os08g0162100	OsLIS-L1	OsLIS-L1	asp1;loc_os08g06480;os08g0162100;oslis-l1;osrel2;ostopless2;ostpl2;ostpr2	matched_prior		1	https://www.ricedata.cn/gene/list/2225.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g01700	LOC_Os03g01700	Os03g0107300	OsLsi2	OsLsi2	loc_os03g01700;os03g0107300;osat2;oslsi2	matched_prior		1	https://www.ricedata.cn/gene/list/739.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g47900	LOC_Os01g47900	Os01g0669100	OsLSK1	OsLSK1	loc_os01g47900;os01g0669100;oslsk1	matched_prior		1	https://www.ricedata.cn/gene/list/20072.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g11614	LOC_Os03g11614	Os03g0215400	OsMADS1/qLGY3	OsMADS1/qLGY3	afo;gw3p6;lgy3;lhs1;loc_os03g11614;os03g0215400;oslg3b;osmads1;qgt3;qlgy3	matched_prior		1	https://www.ricedata.cn/gene/list/738.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g52340	LOC_Os02g52340	Os02g0761000	OsMADS22	OsMADS22	loc_os02g52340;os02g0761000;osmads22	matched_prior		1	https://www.ricedata.cn/gene/list/800.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g33488	LOC_Os08g33488	Os08g0431900	OsMADS23	OsMADS23	loc_os08g33488;os08g0431900;osmads23	matched_prior		1	https://www.ricedata.cn/gene/list/15715.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g54170	LOC_Os03g54170	Os03g0753100	OsMADS34	OsMADS34	loc_os03g54170;os03g0753100;osmads34;pap2	matched_prior		1	https://www.ricedata.cn/gene/list/1032.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g49840	LOC_Os02g49840	Os02g0731200	OsMADS57	OsMADS57	loc_os02g49840;os02g0731200;osmads57	matched_prior		1	https://www.ricedata.cn/gene/list/2498.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g17700	LOC_Os03g17700	Os03g0285800	OsMAPK5/OsMAPK3 (paper alias)	OsMAPK5/OsMAPK3 (paper alias)	loc_os03g17700;os03g0285800;osbimk1;osmap1;osmapk2;osmapk3;osmapk3 (paper alias);osmapk5;osmpk3;osmpk5;osmsrmk2	matched_prior		1	https://www.ricedata.cn/gene/list/1246.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g06090	LOC_Os06g06090	Os06g0154500	OsMAPK6	OsMAPK6	bls1;dsg1;loc_os06g06090;log6;os06g0154500;osmapk6;osmpk1;osmpk6;ossipk	matched_prior	bls1	1	https://www.ricedata.cn/gene/list/1905.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g55560	LOC_Os03g55560	Os03g0764300	OsMAPKKK5	OsMAPKKK5	loc_os03g55560;os03g0764300;osmapkkk18;osmapkkk5;ostmapkkk5	matched_prior		1	https://www.ricedata.cn/gene/list/22782.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g56170	LOC_Os04g56170	Os04g0656500	OsLG1	OsLG1	glr2;loc_os04g56170;os04g0656500;osgar18;oslg1;osspl8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g08470	LOC_Os03g08470	Os03g0183000	OsLG3/OsAP2-125	OsLG3/OsAP2-125	loc_os03g08470;os03g0183000;osap2-125;oserf62;oslg3;osraf;osstap1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g03350	LOC_Os08g03350	Os08g0127100	OsLHT1	OsLHT1	loc_os08g03350;os08g0127100;osht;oslht1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g06480	LOC_Os08g06480	Os08g0162100	OsLIS-L1	OsLIS-L1	asp1;loc_os08g06480;os08g0162100;oslis-l1;osrel2;ostopless2;ostpl2;ostpr2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g01700	LOC_Os03g01700	Os03g0107300	OsLsi2	OsLsi2	loc_os03g01700;os03g0107300;osat2;oslsi2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g47900	LOC_Os01g47900	Os01g0669100	OsLSK1	OsLSK1	loc_os01g47900;os01g0669100;oslsk1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g11614	LOC_Os03g11614	Os03g0215400	OsMADS1/qLGY3	OsMADS1/qLGY3	afo;gw3p6;lgy3;lhs1;loc_os03g11614;os03g0215400;oslg3b;osmads1;qgt3;qlgy3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g52340	LOC_Os02g52340	Os02g0761000	OsMADS22	OsMADS22	loc_os02g52340;os02g0761000;osmads22	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g33488	LOC_Os08g33488	Os08g0431900	OsMADS23	OsMADS23	loc_os08g33488;os08g0431900;osmads23	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g54170	LOC_Os03g54170	Os03g0753100	OsMADS34	OsMADS34	loc_os03g54170;os03g0753100;osmads34;pap2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g49840	LOC_Os02g49840	Os02g0731200	OsMADS57	OsMADS57	loc_os02g49840;os02g0731200;osmads57	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g17700	LOC_Os03g17700	Os03g0285800	OsMAPK5/OsMAPK3 (paper alias)	OsMAPK5/OsMAPK3 (paper alias)	loc_os03g17700;os03g0285800;osbimk1;osmap1;osmapk2;osmapk3;osmapk3 (paper alias);osmapk5;osmpk3;osmpk5;osmsrmk2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g06090	LOC_Os06g06090	Os06g0154500	OsMAPK6	OsMAPK6	bls1;dsg1;loc_os06g06090;log6;os06g0154500;osmapk6;osmpk1;osmpk6;ossipk	matched_prior	bls1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g55560	LOC_Os03g55560	Os03g0764300	OsMAPKKK5	OsMAPKKK5	loc_os03g55560;os03g0764300;osmapkkk18;osmapkkk5;ostmapkkk5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_5c9b98856a65ae40			OsMED23	OsMED23	loc_os02g49992;osmed23;unresolved_gene_5c9b98856a65ae40	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g30370	LOC_Os06g30370	Os06g0498800	OsMFT1	OsMFT1	loc_os06g30370;os06g0498800;osmft1	matched_prior		1	https://www.ricedata.cn/gene/list/17060.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g30370	LOC_Os06g30370	Os06g0498800	OsMFT1	OsMFT1	loc_os06g30370;os06g0498800;osmft1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_a2e56be9a64ad31d			OsMGD1	OsMGD1	osmgd1;unresolved_gene_a2e56be9a64ad31d	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g37860	LOC_Os12g37860	Os12g0566200	OsMOS1	OsMOS1	loc_os12g37860;os12g0566200;osmos1	matched_prior		1	https://www.ricedata.cn/gene/list/17823.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g51260	LOC_Os01g51260	Os01g0709000	OsMYB26	OsMYB26	ita1;loc_os01g51260;os01g0709000;osmyb26	matched_prior		1	https://www.ricedata.cn/gene/list/50207.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g29614	LOC_Os03g29614	Os03g0410000	OsMYB3	OsMYB3	al2;loc_os03g29614;os03g0410000;osgl1d;oskala3;osmyb3;smg3	matched_prior		1	https://www.ricedata.cn/gene/list/1974.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g37860	LOC_Os12g37860	Os12g0566200	OsMOS1	OsMOS1	loc_os12g37860;os12g0566200;osmos1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g51260	LOC_Os01g51260	Os01g0709000	OsMYB26	OsMYB26	ita1;loc_os01g51260;os01g0709000;osmyb26	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g29614	LOC_Os03g29614	Os03g0410000	OsMYB3	OsMYB3	al2;loc_os03g29614;os03g0410000;osgl1d;oskala3;osmyb3;smg3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_64e1842e951b300d			OsMYB73	OsMYB73	osmyb73;unresolved_gene_64e1842e951b300d	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g33940	LOC_Os08g33940	Os08g0437300	OsMYB99	OsMYB99	loc_os08g33940;osmyb99	matched_prior		1	https://www.ricedata.cn/gene/list/3965.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g33940	LOC_Os08g33940	Os08g0437300	OsMYB99	OsMYB99	loc_os08g33940;osmyb99	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os10g20990	LOC_Os10g20990		OsMYBR1	OsMYBR1	loc_os10g20990;osmybr1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-Os06g0675600	LOC_Os06g46270	Os06g0675600	OsNAC092	OsNAC092	omtn4;onac011;os06g0675600;osnac092;osy37	matched_prior		1	https://www.ricedata.cn/gene/list/2575.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g31380	LOC_Os11g31380	Os11g0512600	OsNAC129	OsNAC129	loc_os11g31380;onac129;os11g0512600;osnac129	matched_prior		1	https://www.ricedata.cn/gene/list/53273.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g38720	LOC_Os04g38720	Os04g0460600	OsNAC2	OsNAC2	loc_os04g38720;omtn2;os04g0460600;osnac2;ostil1	matched_prior		1	https://www.ricedata.cn/gene/list/2573.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g32040	LOC_Os09g32040	Os09g0493700	OsNAC42	OsNAC42	loc_os09g32040;os09g0493700;osnac42	matched_prior		1	https://www.ricedata.cn/gene/list/19473.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g08210	LOC_Os11g08210	Os11g0184900	OsNAC5	OsNAC5	loc_os11g08210;os11g0184900;osnac5	matched_prior		1	https://www.ricedata.cn/gene/list/954.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g66120	LOC_Os01g66120	Os01g0884300	OsNAC6	OsNAC6	loc_os01g66120;os01g0884300;osnac6;snac2	matched_prior		1	https://www.ricedata.cn/gene/list/849.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g48200	LOC_Os05g48200	Os05g0555600	OsNADH-GOGAT2	OsNADH-GOGAT2	loc_os05g48200;os05g0555600;osnadh-gogat2	matched_prior		1	https://www.ricedata.cn/gene/list/1744.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g38230	LOC_Os02g38230	Os02g0595900	OsNAR2.1	OsNAR2.1	loc_os02g38230;os02g0595900;osnar2.1	matched_prior		1	https://www.ricedata.cn/gene/list/2687.htm	frozen_prior_ID_consistency; not_new_external_validation
+Os06g0675600	LOC_Os06g46270	Os06g0675600	OsNAC092	OsNAC092	omtn4;onac011;os06g0675600;osnac092;osy37	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g31380	LOC_Os11g31380	Os11g0512600	OsNAC129	OsNAC129	loc_os11g31380;onac129;os11g0512600;osnac129	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g38720	LOC_Os04g38720	Os04g0460600	OsNAC2	OsNAC2	loc_os04g38720;omtn2;os04g0460600;osnac2;ostil1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g32040	LOC_Os09g32040	Os09g0493700	OsNAC42	OsNAC42	loc_os09g32040;os09g0493700;osnac42	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g08210	LOC_Os11g08210	Os11g0184900	OsNAC5	OsNAC5	loc_os11g08210;os11g0184900;osnac5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g66120	LOC_Os01g66120	Os01g0884300	OsNAC6	OsNAC6	loc_os01g66120;os01g0884300;osnac6;snac2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g48200	LOC_Os05g48200	Os05g0555600	OsNADH-GOGAT2	OsNADH-GOGAT2	loc_os05g48200;os05g0555600;osnadh-gogat2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g38230	LOC_Os02g38230	Os02g0595900	OsNAR2.1	OsNAR2.1	loc_os02g38230;os02g0595900;osnar2.1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_92982bc4dcd70c43			OsNAR2.2	OsNAR2.2	osnar2.2;unresolved_gene_92982bc4dcd70c43	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g19427	LOC_Os03g19427	Os03g0307300	OsNAS1	OsNAS1	loc_os03g19427;os03g0307300;osnas1	matched_prior		1	https://www.ricedata.cn/gene/list/2008.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g44380	LOC_Os03g44380	Os03g0645900	OsNCED3	OsNCED3	loc_os03g44380;os03g0645900;osnced3	matched_prior		1	https://www.ricedata.cn/gene/list/967.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g25850	LOC_Os10g25850	Os10g0397900	OsNF-YA8	OsNF-YA8	loc_os10g25850;os10g0397900;oshap2i;osnf-ya8	matched_prior		1	https://www.ricedata.cn/gene/list/3483.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g49410	LOC_Os02g49410	Os02g0725900	OsNF-YB1	OsNF-YB1	loc_os02g49410;os02g0725900;osens-41;oshap3k;osnf-yb1	matched_prior		1	https://www.ricedata.cn/gene/list/2408.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g24460	LOC_Os01g24460	Os01g0346900	OsNF-YC10	OsNF-YC10	loc_os01g24460;os01g0346900;oshap5i;osnf-yc10	matched_prior		1	https://www.ricedata.cn/gene/list/44502.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g11580	LOC_Os10g11580	Os10g0191900	OsNF-YC11	OsNF-YC11	loc_os10g11580;os10g0191900;oshap5l;osnf-yc11;osnf-yc12	matched_prior		1	https://www.ricedata.cn/gene/list/22503.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g50270	LOC_Os05g50270	Os05g0578900	OsNL1	OsNL1	loc_os05g50270;osgata15;osnl1;snfl1	matched_prior		1	https://www.ricedata.cn/gene/list/999.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g37710	LOC_Os09g37710	Os09g0549450	OsNLP4	OsNLP4	loc_os09g37710;os09g0549450;osnlp4	matched_prior		1	https://www.ricedata.cn/gene/list/12945.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g19427	LOC_Os03g19427	Os03g0307300	OsNAS1	OsNAS1	loc_os03g19427;os03g0307300;osnas1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g44380	LOC_Os03g44380	Os03g0645900	OsNCED3	OsNCED3	loc_os03g44380;os03g0645900;osnced3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g25850	LOC_Os10g25850	Os10g0397900	OsNF-YA8	OsNF-YA8	loc_os10g25850;os10g0397900;oshap2i;osnf-ya8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g49410	LOC_Os02g49410	Os02g0725900	OsNF-YB1	OsNF-YB1	loc_os02g49410;os02g0725900;osens-41;oshap3k;osnf-yb1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g24460	LOC_Os01g24460	Os01g0346900	OsNF-YC10	OsNF-YC10	loc_os01g24460;os01g0346900;oshap5i;osnf-yc10	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g11580	LOC_Os10g11580	Os10g0191900	OsNF-YC11	OsNF-YC11	loc_os10g11580;os10g0191900;oshap5l;osnf-yc11;osnf-yc12	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g50270	LOC_Os05g50270	Os05g0578900	OsNL1	OsNL1	loc_os05g50270;osgata15;osnl1;snfl1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g37710	LOC_Os09g37710	Os09g0549450	OsNLP4	OsNLP4	loc_os09g37710;os09g0549450;osnlp4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_3b1419d3f994899d			OsNLP6	OsNLP6	osnlp6;unresolved_gene_3b1419d3f994899d	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g47090	LOC_Os02g47090	Os02g0699000	OsNPF7.2	OsNPF7.2	loc_os02g47090;os02g0699000;osnpf7.2	matched_prior		1	https://www.ricedata.cn/gene/list/10652.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g50950	LOC_Os04g50950	Os04g0597800	OsNPF7.3	OsNPF7.3	loc_os04g50950;os04g0597800;osnpf7.3;osptr6	matched_prior		1	https://www.ricedata.cn/gene/list/1231.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g50930	LOC_Os04g50930	Os04g0597400	OsNPF7.6	OsNPF7.6	loc_os04g50930;os04g0597400;osnpf7.6	matched_prior		1	https://www.ricedata.cn/gene/list/65954.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g36500	LOC_Os08g36500	Os08g0468700	OsNR1.2	OsNR1.2	loc_os08g36500;os08g0468700;osnia2;osnr1.2;osnr3	matched_prior	osnia2	1	https://www.ricedata.cn/gene/list/56760.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g02170	LOC_Os02g02170	Os02g0112100	OsNRT2.1	OsNRT2.1	loc_os02g02170;os02g0112100;osnrt2.1	matched_prior		1	https://www.ricedata.cn/gene/list/1169.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g60810	LOC_Os01g60810	Os01g0823500	OsOFP6	OsOFP6	loc_os01g60810;os01g0823500;osofp6	matched_prior		1	https://www.ricedata.cn/gene/list/53524.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g42540	LOC_Os08g42540	Os08g0537800	OsOTUB1	OsOTUB1	loc_os08g42540;os08g0537800;osotub1;osotub1.1;qnpt1;wtg1	matched_prior		1	https://www.ricedata.cn/gene/list/49535.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g23970	LOC_Os07g23970	Os07g0421800	OsPAGN1	OsPAGN1	loc_os07g23970;os07g0421800;ospagn1	matched_prior		1	https://www.ricedata.cn/gene/list/3475.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g43640	LOC_Os11g43640	Os11g0657400	OsPEX1	OsPEX1	loc_os11g43640;os11g0657400;ospex1	matched_prior		1	https://www.ricedata.cn/gene/list/18261.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g41650	LOC_Os12g41650	Os12g0610200	OsPIL11	OsPIL11	loc_os12g41650;os12g0610200;ospil11	matched_prior		1	https://www.ricedata.cn/gene/list/1891.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g50960	LOC_Os02g50960	Os02g0743400	OsPIN1a	OsPIN1a	loc_os02g50960;os02g0743400;ospin1a;ospin1b;reh1	matched_prior		1	https://www.ricedata.cn/gene/list/1160.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g45550	LOC_Os01g45550	Os01g0643300	OsPIN3t	OsPIN3t	loc_os01g45550;os01g0643300;ospin10a;ospin3a;ospin3t	matched_prior		1	https://www.ricedata.cn/gene/list/2418.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g10980	LOC_Os11g10980	Os11g0216000	OsPK10	OsPK10	loc_os11g10980;os11g0216000;ospk10;ospk5;qsg11.1	matched_prior	ospk5	1	https://www.ricedata.cn/gene/list/26796.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g08340	LOC_Os07g08340	Os07g0181000	OsPK2	OsPK2	loc_os07g08340;os07g0181000;ospk2;ospkpα1;w59	matched_prior		1	https://www.ricedata.cn/gene/list/15090.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g58110	LOC_Os04g58110	Os04g0677500	OsPK3	OsPK3	loc_os04g58110;os04g0677500;ospk3;ospk5	matched_prior	ospk5	1	https://www.ricedata.cn/gene/list/29269.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g05110	LOC_Os12g05110	Os12g0145700	OsPK4	OsPK4	loc_os12g05110;os12g0145700;ospk4	matched_prior		1	https://www.ricedata.cn/gene/list/7614.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g47080	LOC_Os01g47080	Os01g0660300	OsPK6	OsPK6	loc_os01g47080;os01g0660300;ospk6	matched_prior		1	https://www.ricedata.cn/gene/list/52928.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g20880	LOC_Os03g20880	Os03g0325000	OsPK7	OsPK7	loc_os03g20880;os03g0325000;ospk7	matched_prior		1	https://www.ricedata.cn/gene/list/25065.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g46910	LOC_Os03g46910	Os03g0672300	OsPK8	OsPK8	loc_os03g46910;os03g0672300;ospk8	matched_prior		1	https://www.ricedata.cn/gene/list/8425.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g56780	LOC_Os01g56780	Os01g0775100	OsPL3	OsPL3	loc_os01g56780;os01g0775100;ospl3	matched_prior		1	https://www.ricedata.cn/gene/list/23493.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g07760	LOC_Os01g07760	Os01g0172400	OsPLDα1	OsPLDα1	loc_os01g07760;os01g0172400;ospldα1	matched_prior		1	https://www.ricedata.cn/gene/list/1508.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g62760	LOC_Os01g62760	Os01g0846300	OsPP2C09	OsPP2C09	loc_os01g62760;os01g0846300;ospp2c09	matched_prior		1	https://www.ricedata.cn/gene/list/19924.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g38290	LOC_Os05g38290	Os05g0457200	OsPP2C49	OsPP2C49	loc_os05g38290;os05g0457200;ospp2c49;ospp76	matched_prior		1	https://www.ricedata.cn/gene/list/43351.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g29560	LOC_Os10g29560	Os10g0431000	OsPQT3	OsPQT3	loc_os10g29560;os10g0431000;ospqt3	matched_prior		1	https://www.ricedata.cn/gene/list/54229.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g64960	LOC_Os01g64960	Os01g0869800	OsPsbS1	OsPsbS1	loc_os01g64960;ospsbs1	matched_prior		1	https://www.ricedata.cn/gene/list/2054.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g34410	LOC_Os02g34410	Os02g0548700	OsPUB43	OsPUB43	loc_os02g34410;os02g0548700;ospub43	matched_prior		1	https://www.ricedata.cn/gene/list/8625.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g49500	LOC_Os04g49500	Os04g0584500	OsPUB77	OsPUB77	loc_os04g49500;ospub77	matched_prior		1	https://www.ricedata.cn/gene/list/15813.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g08880	LOC_Os03g08880	Os03g0187800	OsPUP1	OsPUP1	loc_os03g08880;os03g0187800;ospup1	matched_prior		1	https://www.ricedata.cn/gene/list/2793.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g48800	LOC_Os01g48800	Os01g0680200	OsPUP4/BG3/Os01g0680200	OsPUP4/BG3/Os01g0680200	bg3;loc_os01g48800;os01g0680200;ospup4	matched_prior		1	https://www.ricedata.cn/gene/list/2796.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g48300	LOC_Os05g48300	Os05g0556800	OsPUP7	OsPUP7	loc_os05g48300;os05g0556800;ospup7	matched_prior		1	https://www.ricedata.cn/gene/list/2792.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g15640	LOC_Os05g15640		OsPYL10	OsPYL10	loc_os05g15640;ospyl10	matched_prior		1	https://www.ricedata.cn/gene/list/48278.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g12260	LOC_Os05g12260	Os05g0213500	OsPYL5	OsPYL5	loc_os05g12260;os05g0213500;ospyl;ospyl11;ospyl5;rcar5	matched_prior		1	https://www.ricedata.cn/gene/list/2042.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g07480	LOC_Os01g07480	Os01g0169400	OsRA2	OsRA2	loc_os01g07480;os01g0169400;oscrll4;osra2;osramosa2	matched_prior		1	https://www.ricedata.cn/gene/list/2286.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os05g0574500	LOC_Os05g49890	Os05g0574500	OsRAN2	OsRAN2	ab015972;os05g0574500;osran2	matched_prior		1	https://www.ricedata.cn/gene/list/1075.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g25820	LOC_Os01g25820	Os01g0360200	OsRbohB	OsRbohB	loc_os01g25820;os01g0360200;osnox1;osrboh1;osrbohb	matched_prior		1	https://www.ricedata.cn/gene/list/2114.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g02460	LOC_Os03g02460	Os03g0115700	OsRDH	OsRDH	ds2;loc_os03g02460;osrdh	matched_prior		1	https://www.ricedata.cn/gene/list/51535.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g10130	LOC_Os01g10130	Os01g0197900	OsRDR3	OsRDR3	loc_os01g10130;os01g0197900;osrdr3	matched_prior		1	https://www.ricedata.cn/gene/list/30941.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g10140	LOC_Os01g10140	Os01g0198000	OsRDR4	OsRDR4	loc_os01g10140;os01g0198000;osrdr4	matched_prior		1	https://www.ricedata.cn/gene/list/30942.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g30160	LOC_Os09g30160	Os09g0478600	OsRF1	OsRF1	loc_os09g30160;os09g0478600;osrf1	matched_prior		1	https://www.ricedata.cn/gene/list/43010.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g43670	LOC_Os07g43670	Os07g0630400	OsRNS1	OsRNS1	loc_os07g43670;os07g0630400;osrns1	matched_prior		1	https://www.ricedata.cn/gene/list/7425.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g38000	LOC_Os05g38000	Os05g0454200	OsRopGEF10	OsRopGEF10	bgl;loc_os05g38000;os05g0454200;osropgef10	matched_prior		1	https://www.ricedata.cn/gene/list/1873.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g11900	LOC_Os01g11900	Os01g0218032	OsROS1	OsROS1	dng702;loc_os01g11900;os01g0218032;osros1;ros1a;ta2	matched_prior		1	https://www.ricedata.cn/gene/list/57435.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g12730	LOC_Os09g12730	Os09g0298700	OsRRM	OsRRM	loc_os09g12730;os09g0298700;osrrm	matched_prior		1	https://www.ricedata.cn/gene/list/986.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g27280	LOC_Os03g27280	Os03g0390200	OsSAPK1	OsSAPK1	loc_os03g27280;os03g0390200;ossapk1	matched_prior		1	https://www.ricedata.cn/gene/list/2318.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g41460	LOC_Os03g41460	Os03g0610900	OsSAPK10	OsSAPK10	loc_os03g41460;os03g0610900;ossapk10	matched_prior		1	https://www.ricedata.cn/gene/list/2324.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g42940	LOC_Os07g42940	Os07g0622000	OsSAPK2	OsSAPK2	loc_os07g42940;os07g0622000;ossapk2	matched_prior		1	https://www.ricedata.cn/gene/list/2325.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g41490	LOC_Os10g41490	Os10g0564500	OsSAPK3	OsSAPK3	loc_os10g41490;os10g0564500;ossapk3;rek	matched_prior		1	https://www.ricedata.cn/gene/list/2319.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g55600	LOC_Os03g55600	Os03g0764800	OsSAPK8	OsSAPK8	loc_os03g55600;os03g0764800;ossapk8	matched_prior		1	https://www.ricedata.cn/gene/list/2322.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g39630	LOC_Os12g39630	Os12g0586100	OsSAPK9	OsSAPK9	loc_os12g39630;os12g0586100;ossapk9	matched_prior		1	https://www.ricedata.cn/gene/list/2323.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g48850	LOC_Os06g48850	Os06g0701900	OsSAUR27	OsSAUR27	loc_os06g48850;os06g0701900;ossaur27;qtn6.12	matched_prior		1	https://www.ricedata.cn/gene/list/13095.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g16680	LOC_Os04g16680	Os04g0234600	OsSBPase	OsSBPase	loc_os04g16680;os04g0234600;ossbpase	matched_prior		1	https://www.ricedata.cn/gene/list/6109.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g03130	LOC_Os03g03130	Os03g0123100	OsSCE1a	OsSCE1a	loc_os03g03130;os03g0123100;ossce1a;ossce2;osubc2	matched_prior		1	https://www.ricedata.cn/gene/list/51280.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g01134	LOC_Os10g01134	Os10g0101200	OsSCP46	OsSCP46	loc_os10g01134;os10g0101200;osscp46	matched_prior		1	https://www.ricedata.cn/gene/list/9489.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g36200	LOC_Os09g36200	Os09g0532000	OsSGR	OsSGR	loc_os09g36200;os09g0532000;ossgr	matched_prior		1	https://www.ricedata.cn/gene/list/2622.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g39820	LOC_Os07g39820	Os07g0586900	OsSHR1	OsSHR1	loc_os07g39820;os07g0586900;osgras38;osshr1	matched_prior		1	https://www.ricedata.cn/gene/list/10926.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g37530	LOC_Os04g37530	Os04g0448100	OsSIDP301	OsSIDP301	loc_os04g37530;os04g0448100;ossidp301	matched_prior		1	https://www.ricedata.cn/gene/list/37926.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g44860	LOC_Os06g44860	Os06g0659100	OsSPL10	OsSPL10	loc_os06g44860;os06g0659100;osspl10;sst	matched_prior		1	https://www.ricedata.cn/gene/list/50128.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g49010	LOC_Os06g49010	Os06g0703500	OsSPL12	OsSPL12	loc_os06g49010;os06g0703500;osspl12	matched_prior		1	https://www.ricedata.cn/gene/list/12494.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g04680	LOC_Os02g04680	Os02g0139400	OsSPL3	OsSPL3	lcrn1;loc_os02g04680;os02g0139400;osspl3	matched_prior		1	https://www.ricedata.cn/gene/list/28956.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g07780	LOC_Os02g07780	Os02g0174100	OsSPL4	OsSPL4	loc_os02g07780;os02g0174100;osspl4	matched_prior		1	https://www.ricedata.cn/gene/list/14874.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g33810	LOC_Os05g33810	Os05g0408200	OsSPL9	OsSPL9	lgn5;loc_os05g33810;os05g0408200;osspl9	matched_prior		1	https://www.ricedata.cn/gene/list/3543.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g47090	LOC_Os02g47090	Os02g0699000	OsNPF7.2	OsNPF7.2	loc_os02g47090;os02g0699000;osnpf7.2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g50950	LOC_Os04g50950	Os04g0597800	OsNPF7.3	OsNPF7.3	loc_os04g50950;os04g0597800;osnpf7.3;osptr6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g50930	LOC_Os04g50930	Os04g0597400	OsNPF7.6	OsNPF7.6	loc_os04g50930;os04g0597400;osnpf7.6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g36500	LOC_Os08g36500	Os08g0468700	OsNR1.2	OsNR1.2	loc_os08g36500;os08g0468700;osnia2;osnr1.2;osnr3	matched_prior	osnia2	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g02170	LOC_Os02g02170	Os02g0112100	OsNRT2.1	OsNRT2.1	loc_os02g02170;os02g0112100;osnrt2.1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g60810	LOC_Os01g60810	Os01g0823500	OsOFP6	OsOFP6	loc_os01g60810;os01g0823500;osofp6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g42540	LOC_Os08g42540	Os08g0537800	OsOTUB1	OsOTUB1	loc_os08g42540;os08g0537800;osotub1;osotub1.1;qnpt1;wtg1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g23970	LOC_Os07g23970	Os07g0421800	OsPAGN1	OsPAGN1	loc_os07g23970;os07g0421800;ospagn1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g43640	LOC_Os11g43640	Os11g0657400	OsPEX1	OsPEX1	loc_os11g43640;os11g0657400;ospex1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g41650	LOC_Os12g41650	Os12g0610200	OsPIL11	OsPIL11	loc_os12g41650;os12g0610200;ospil11	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g50960	LOC_Os02g50960	Os02g0743400	OsPIN1a	OsPIN1a	loc_os02g50960;os02g0743400;ospin1a;ospin1b;reh1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g45550	LOC_Os01g45550	Os01g0643300	OsPIN3t	OsPIN3t	loc_os01g45550;os01g0643300;ospin10a;ospin3a;ospin3t	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g10980	LOC_Os11g10980	Os11g0216000	OsPK10	OsPK10	loc_os11g10980;os11g0216000;ospk10;ospk5;qsg11.1	matched_prior	ospk5	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g08340	LOC_Os07g08340	Os07g0181000	OsPK2	OsPK2	loc_os07g08340;os07g0181000;ospk2;ospkpα1;w59	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g58110	LOC_Os04g58110	Os04g0677500	OsPK3	OsPK3	loc_os04g58110;os04g0677500;ospk3;ospk5	matched_prior	ospk5	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g05110	LOC_Os12g05110	Os12g0145700	OsPK4	OsPK4	loc_os12g05110;os12g0145700;ospk4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g47080	LOC_Os01g47080	Os01g0660300	OsPK6	OsPK6	loc_os01g47080;os01g0660300;ospk6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g20880	LOC_Os03g20880	Os03g0325000	OsPK7	OsPK7	loc_os03g20880;os03g0325000;ospk7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g46910	LOC_Os03g46910	Os03g0672300	OsPK8	OsPK8	loc_os03g46910;os03g0672300;ospk8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g56780	LOC_Os01g56780	Os01g0775100	OsPL3	OsPL3	loc_os01g56780;os01g0775100;ospl3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g07760	LOC_Os01g07760	Os01g0172400	OsPLDα1	OsPLDα1	loc_os01g07760;os01g0172400;ospldα1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g62760	LOC_Os01g62760	Os01g0846300	OsPP2C09	OsPP2C09	loc_os01g62760;os01g0846300;ospp2c09	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g38290	LOC_Os05g38290	Os05g0457200	OsPP2C49	OsPP2C49	loc_os05g38290;os05g0457200;ospp2c49;ospp76	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g29560	LOC_Os10g29560	Os10g0431000	OsPQT3	OsPQT3	loc_os10g29560;os10g0431000;ospqt3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g64960	LOC_Os01g64960	Os01g0869800	OsPsbS1	OsPsbS1	loc_os01g64960;ospsbs1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g34410	LOC_Os02g34410	Os02g0548700	OsPUB43	OsPUB43	loc_os02g34410;os02g0548700;ospub43	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g49500	LOC_Os04g49500	Os04g0584500	OsPUB77	OsPUB77	loc_os04g49500;ospub77	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g08880	LOC_Os03g08880	Os03g0187800	OsPUP1	OsPUP1	loc_os03g08880;os03g0187800;ospup1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g48800	LOC_Os01g48800	Os01g0680200	OsPUP4/BG3/Os01g0680200	OsPUP4/BG3/Os01g0680200	bg3;loc_os01g48800;os01g0680200;ospup4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g48300	LOC_Os05g48300	Os05g0556800	OsPUP7	OsPUP7	loc_os05g48300;os05g0556800;ospup7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g15640	LOC_Os05g15640		OsPYL10	OsPYL10	loc_os05g15640;ospyl10	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g12260	LOC_Os05g12260	Os05g0213500	OsPYL5	OsPYL5	loc_os05g12260;os05g0213500;ospyl;ospyl11;ospyl5;rcar5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g07480	LOC_Os01g07480	Os01g0169400	OsRA2	OsRA2	loc_os01g07480;os01g0169400;oscrll4;osra2;osramosa2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os05g0574500	LOC_Os05g49890	Os05g0574500	OsRAN2	OsRAN2	ab015972;os05g0574500;osran2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g25820	LOC_Os01g25820	Os01g0360200	OsRbohB	OsRbohB	loc_os01g25820;os01g0360200;osnox1;osrboh1;osrbohb	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g02460	LOC_Os03g02460	Os03g0115700	OsRDH	OsRDH	ds2;loc_os03g02460;osrdh	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g10130	LOC_Os01g10130	Os01g0197900	OsRDR3	OsRDR3	loc_os01g10130;os01g0197900;osrdr3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g10140	LOC_Os01g10140	Os01g0198000	OsRDR4	OsRDR4	loc_os01g10140;os01g0198000;osrdr4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g30160	LOC_Os09g30160	Os09g0478600	OsRF1	OsRF1	loc_os09g30160;os09g0478600;osrf1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g43670	LOC_Os07g43670	Os07g0630400	OsRNS1	OsRNS1	loc_os07g43670;os07g0630400;osrns1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g38000	LOC_Os05g38000	Os05g0454200	OsRopGEF10	OsRopGEF10	bgl;loc_os05g38000;os05g0454200;osropgef10	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g11900	LOC_Os01g11900	Os01g0218032	OsROS1	OsROS1	dng702;loc_os01g11900;os01g0218032;osros1;ros1a;ta2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g12730	LOC_Os09g12730	Os09g0298700	OsRRM	OsRRM	loc_os09g12730;os09g0298700;osrrm	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g27280	LOC_Os03g27280	Os03g0390200	OsSAPK1	OsSAPK1	loc_os03g27280;os03g0390200;ossapk1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g41460	LOC_Os03g41460	Os03g0610900	OsSAPK10	OsSAPK10	loc_os03g41460;os03g0610900;ossapk10	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g42940	LOC_Os07g42940	Os07g0622000	OsSAPK2	OsSAPK2	loc_os07g42940;os07g0622000;ossapk2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g41490	LOC_Os10g41490	Os10g0564500	OsSAPK3	OsSAPK3	loc_os10g41490;os10g0564500;ossapk3;rek	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g55600	LOC_Os03g55600	Os03g0764800	OsSAPK8	OsSAPK8	loc_os03g55600;os03g0764800;ossapk8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g39630	LOC_Os12g39630	Os12g0586100	OsSAPK9	OsSAPK9	loc_os12g39630;os12g0586100;ossapk9	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g48850	LOC_Os06g48850	Os06g0701900	OsSAUR27	OsSAUR27	loc_os06g48850;os06g0701900;ossaur27;qtn6.12	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g16680	LOC_Os04g16680	Os04g0234600	OsSBPase	OsSBPase	loc_os04g16680;os04g0234600;ossbpase	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g03130	LOC_Os03g03130	Os03g0123100	OsSCE1a	OsSCE1a	loc_os03g03130;os03g0123100;ossce1a;ossce2;osubc2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g01134	LOC_Os10g01134	Os10g0101200	OsSCP46	OsSCP46	loc_os10g01134;os10g0101200;osscp46	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g36200	LOC_Os09g36200	Os09g0532000	OsSGR	OsSGR	loc_os09g36200;os09g0532000;ossgr	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g39820	LOC_Os07g39820	Os07g0586900	OsSHR1	OsSHR1	loc_os07g39820;os07g0586900;osgras38;osshr1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g37530	LOC_Os04g37530	Os04g0448100	OsSIDP301	OsSIDP301	loc_os04g37530;os04g0448100;ossidp301	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g44860	LOC_Os06g44860	Os06g0659100	OsSPL10	OsSPL10	loc_os06g44860;os06g0659100;osspl10;sst	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g49010	LOC_Os06g49010	Os06g0703500	OsSPL12	OsSPL12	loc_os06g49010;os06g0703500;osspl12	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g04680	LOC_Os02g04680	Os02g0139400	OsSPL3	OsSPL3	lcrn1;loc_os02g04680;os02g0139400;osspl3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g07780	LOC_Os02g07780	Os02g0174100	OsSPL4	OsSPL4	loc_os02g07780;os02g0174100;osspl4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g33810	LOC_Os05g33810	Os05g0408200	OsSPL9	OsSPL9	lgn5;loc_os05g33810;os05g0408200;osspl9	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_81aa416900d52808			OsSTP28	OsSTP28	osstp28;unresolved_gene_81aa416900d52808	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g40720	LOC_Os04g40720	Os04g0483400	OsSUBSrP1	OsSUBSrP1	apa1331;loc_os04g40720;os04g0483400;ossubsrp1	matched_prior		1	https://www.ricedata.cn/gene/list/35712.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g40720	LOC_Os04g40720	Os04g0483400	OsSUBSrP1	OsSUBSrP1	apa1331;loc_os04g40720;os04g0483400;ossubsrp1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os03g28330	LOC_Os03g28330		OsSUS1	OsSUS1	loc_os03g28330;os03g0401300;ossus1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os06g09450	LOC_Os06g09450		OsSUS2	OsSUS2	loc_os06g09450;os06g0194900;ossus2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g22120	LOC_Os03g22120	Os03g0340500	OsSUS4	OsSUS4	loc_os03g22120;os03g0340500;ossus4	matched_prior		1	https://www.ricedata.cn/gene/list/1721.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g24430	LOC_Os04g24430	Os04g0309600	OsSUS5	OsSUS5	loc_os04g24430;os04g0309600;ossus5	matched_prior		1	https://www.ricedata.cn/gene/list/1722.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g22120	LOC_Os03g22120	Os03g0340500	OsSUS4	OsSUS4	loc_os03g22120;os03g0340500;ossus4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g24430	LOC_Os04g24430	Os04g0309600	OsSUS5	OsSUS5	loc_os04g24430;os04g0309600;ossus5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os02g58480	LOC_Os02g58480		OsSUS6	OsSUS6	loc_os02g58480;os02g0831500;ossus6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g07480	LOC_Os03g07480	Os03g0170900	OsSUT1	OsSUT1	loc_os03g07480;os03g0170900;ossut1	matched_prior		1	https://www.ricedata.cn/gene/list/690.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g44380	LOC_Os12g44380	Os12g0641400	OsSUT2	OsSUT2	loc_os12g44380;os12g0641400;ossut2;ossut2m	matched_prior		1	https://www.ricedata.cn/gene/list/1188.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g42350	LOC_Os08g42350	Os08g0535200	OsSWEET11	OsSWEET11	loc_os08g42350;os-8n3;ossweet11;xa13	matched_prior		1	https://www.ricedata.cn/gene/list/50.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g30910	LOC_Os02g30910	Os02g0513100	OsSWEET15	OsSWEET15	loc_os02g30910;ossweet15	matched_prior		1	https://www.ricedata.cn/gene/list/33227.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g49740	LOC_Os06g49740	Os06g0711600	OsSYF2	OsSYF2	loc_os06g49740;os06g0711600;ossyf2	matched_prior		1	https://www.ricedata.cn/gene/list/22879.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g49880	LOC_Os03g49880	Os03g0706500	OsTB1	OsTB1	fc1;loc_os03g49880;mp3;os03g0706500;ostb1;scm3;unresolved_gene_154b8b30bceee431;unresolved_gene_1cbb18c85c90709a;unresolved_gene_f0a6a9147c3b24ee	matched_prior		1	https://www.ricedata.cn/gene/list/896.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g24480	LOC_Os09g24480	Os09g0410500	OsTb2	OsTb2	dbop;loc_os09g24480;os09g0410500;ostb2;ostcp17;rep1	matched_prior		1	https://www.ricedata.cn/gene/list/1006.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g29660	LOC_Os10g29660	Os10g0432300	OsTBP2.2	OsTBP2.2	loc_os10g29660;os10g0432300;ostbp2.2	matched_prior		1	https://www.ricedata.cn/gene/list/54194.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g12230	LOC_Os06g12230	Os06g0226700	OsTCP19	OsTCP19	loc_os06g12230;os06g0226700;ostcp19	matched_prior		1	https://www.ricedata.cn/gene/list/40967.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g07480	LOC_Os03g07480	Os03g0170900	OsSUT1	OsSUT1	loc_os03g07480;os03g0170900;ossut1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g44380	LOC_Os12g44380	Os12g0641400	OsSUT2	OsSUT2	loc_os12g44380;os12g0641400;ossut2;ossut2m	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g42350	LOC_Os08g42350	Os08g0535200	OsSWEET11	OsSWEET11	loc_os08g42350;os-8n3;ossweet11;xa13	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g30910	LOC_Os02g30910	Os02g0513100	OsSWEET15	OsSWEET15	loc_os02g30910;ossweet15	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g49740	LOC_Os06g49740	Os06g0711600	OsSYF2	OsSYF2	loc_os06g49740;os06g0711600;ossyf2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g49880	LOC_Os03g49880	Os03g0706500	OsTB1	OsTB1	fc1;loc_os03g49880;mp3;os03g0706500;ostb1;scm3;unresolved_gene_154b8b30bceee431;unresolved_gene_1cbb18c85c90709a;unresolved_gene_f0a6a9147c3b24ee	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g24480	LOC_Os09g24480	Os09g0410500	OsTb2	OsTb2	dbop;loc_os09g24480;os09g0410500;ostb2;ostcp17;rep1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g29660	LOC_Os10g29660	Os10g0432300	OsTBP2.2	OsTBP2.2	loc_os10g29660;os10g0432300;ostbp2.2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g12230	LOC_Os06g12230	Os06g0226700	OsTCP19	OsTCP19	loc_os06g12230;os06g0226700;ostcp19	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_580b5803e79ded74			OsTPR	OsTPR	os02g0741400;os02g0741500;ostpr;unresolved_gene_580b5803e79ded74	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g34850	LOC_Os12g34850	Os12g0533500	OsVIL2	OsVIL2	loc_os12g34850;os12g0533500;osvil2	matched_prior		1	https://www.ricedata.cn/gene/list/2424.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g34850	LOC_Os12g34850	Os12g0533500	OsVIL2	OsVIL2	loc_os12g34850;os12g0533500;osvil2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_a345c42411ccf8d5			OsVIN2	OsVIN2	osvin2;unresolved_gene_a345c42411ccf8d5	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g59410	LOC_Os01g59410	Os01g0808900	OsVQ4	OsVQ4	loc_os01g59410;os01g0808900;osvq4	matched_prior		1	https://www.ricedata.cn/gene/list/54905.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g31679	LOC_Os03g31679	Os03g0431100	OsWIH2	OsWIH2	loc_os03g31679;os03g0431100;oswih2	matched_prior		1	https://www.ricedata.cn/gene/list/28471.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g02520	LOC_Os11g02520	Os11g0117400	OsWRKY104	OsWRKY104	loc_os11g02520;os11g0117400;oswrky100;oswrky104;oswrky89	matched_prior		1	https://www.ricedata.cn/gene/list/1200.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g53260	LOC_Os01g53260	Os01g0734000	OsWRKY23	OsWRKY23	loc_os01g53260;os01g0734000;oswrky23	matched_prior		1	https://www.ricedata.cn/gene/list/1761.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g04640	LOC_Os05g04640	Os05g0137500	OsWRKY5	OsWRKY5	loc_os05g04640;os05g0137500;oswrky5	matched_prior		1	https://www.ricedata.cn/gene/list/1791.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g29870	LOC_Os11g29870	Os11g0490900	OsWRKY72	OsWRKY72	loc_os11g29870;os11g0490900;oswrky72	matched_prior		1	https://www.ricedata.cn/gene/list/1154.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g16510	LOC_Os09g16510	Os09g0334500	OsWRKY74	OsWRKY74	loc_os09g16510;os09g0334500;oswrky74	matched_prior		1	https://www.ricedata.cn/gene/list/2265.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g45330	LOC_Os04g45330	Os04g0536300	OsYABBY5	OsYABBY5	loc_os04g45330;os04g0536300;osyab3;osyab5;osyabby5;tob1	matched_prior		1	https://www.ricedata.cn/gene/list/1115.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g43370	LOC_Os02g43370	Os02g0649900	OsYSL2	OsYSL2	loc_os02g43370;os02g0649900;osysl2	matched_prior		1	https://www.ricedata.cn/gene/list/939.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g08780	LOC_Os12g08780	Os12g0189500	OsYUC11	OsYUC11	loc_os12g08780;os12g0189500;osyuc11	matched_prior		1	https://www.ricedata.cn/gene/list/2469.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g10490	LOC_Os07g10490	Os07g0204900	OsZDS	OsZDS	loc_os07g10490;os07g0204900;osft;oszds;phs2	matched_prior		1	https://www.ricedata.cn/gene/list/22942.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os09g29130	LOC_Os09g29130	Os09g0466400	OsZHD1	OsZHD1	acl-d;loc_os09g29130;os09g0466400;oszhd1	matched_prior		1	https://www.ricedata.cn/gene/list/2559.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g52310	LOC_Os04g52310	Os04g0613000	OsZIP3	OsZIP3	loc_os04g52310;os04g0613000;oszip3	matched_prior		1	https://www.ricedata.cn/gene/list/23842.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g59410	LOC_Os01g59410	Os01g0808900	OsVQ4	OsVQ4	loc_os01g59410;os01g0808900;osvq4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g31679	LOC_Os03g31679	Os03g0431100	OsWIH2	OsWIH2	loc_os03g31679;os03g0431100;oswih2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g02520	LOC_Os11g02520	Os11g0117400	OsWRKY104	OsWRKY104	loc_os11g02520;os11g0117400;oswrky100;oswrky104;oswrky89	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g53260	LOC_Os01g53260	Os01g0734000	OsWRKY23	OsWRKY23	loc_os01g53260;os01g0734000;oswrky23	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g04640	LOC_Os05g04640	Os05g0137500	OsWRKY5	OsWRKY5	loc_os05g04640;os05g0137500;oswrky5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g29870	LOC_Os11g29870	Os11g0490900	OsWRKY72	OsWRKY72	loc_os11g29870;os11g0490900;oswrky72	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g16510	LOC_Os09g16510	Os09g0334500	OsWRKY74	OsWRKY74	loc_os09g16510;os09g0334500;oswrky74	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g45330	LOC_Os04g45330	Os04g0536300	OsYABBY5	OsYABBY5	loc_os04g45330;os04g0536300;osyab3;osyab5;osyabby5;tob1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g43370	LOC_Os02g43370	Os02g0649900	OsYSL2	OsYSL2	loc_os02g43370;os02g0649900;osysl2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g08780	LOC_Os12g08780	Os12g0189500	OsYUC11	OsYUC11	loc_os12g08780;os12g0189500;osyuc11	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g10490	LOC_Os07g10490	Os07g0204900	OsZDS	OsZDS	loc_os07g10490;os07g0204900;osft;oszds;phs2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os09g29130	LOC_Os09g29130	Os09g0466400	OsZHD1	OsZHD1	acl-d;loc_os09g29130;os09g0466400;oszhd1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g52310	LOC_Os04g52310	Os04g0613000	OsZIP3	OsZIP3	loc_os04g52310;os04g0613000;oszip3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_bcaad9c604bdb3dc			OsαCA1	OsαCA1	osαca1;unresolved_gene_bcaad9c604bdb3dc	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g07880	LOC_Os07g07880	Os07g0175100	PANDA	PANDA	hpy1;loc_os07g07880;os07g0175100;panda;pow1	matched_prior		1	https://www.ricedata.cn/gene/list/26123.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g31470	LOC_Os08g31470	Os08g0407200	PAY1	PAY1	loc_os08g31470;os08g0407200;pay1	matched_prior		1	https://www.ricedata.cn/gene/list/17334.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g09280	LOC_Os11g09280	Os11g0199200	PDIL1-1	PDIL1-1	1;esp2;loc_os11g09280;os11g0199200;ospdil1;pdil1-1	matched_prior	1	1	https://www.ricedata.cn/gene/list/1736.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os10g41780	LOC_Os10g41780	Os10g0567400	PGL	PGL	loc_os10g41780;os10g0567400;oscao1;pgl;ygl10	matched_prior		1	https://www.ricedata.cn/gene/list/708.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g07510	LOC_Os03g07510	Os03g0171300	PGL1	PGL1	ili6;loc_os03g07510;os03g0171300;pgl1	matched_prior		1	https://www.ricedata.cn/gene/list/2060.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g51320	LOC_Os02g51320	Os02g0747900	PGL2	PGL2	ili5;loc_os02g51320;os02g0747900;osbhlh170;osbul1;pgl2	matched_prior		1	https://www.ricedata.cn/gene/list/2409.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g05900	LOC_Os07g05900	Os07g0153600	PROG1	PROG1	loc_os07g05900;os07g0153600;prog1	matched_prior		1	https://www.ricedata.cn/gene/list/662.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g05280	LOC_Os05g05280	Os05g0145000	PTB1	PTB1	loc_os05g05280;os05g0145000;ptb1	matched_prior		1	https://www.ricedata.cn/gene/list/2561.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g42790	LOC_Os03g42790	Os03g0626100	qGL3.5	qGL3.5	loc_os03g42790;os03g0626100;osring456;qgl3.5	matched_prior		1	https://www.ricedata.cn/gene/list/45101.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g07880	LOC_Os07g07880	Os07g0175100	PANDA	PANDA	hpy1;loc_os07g07880;os07g0175100;panda;pow1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g31470	LOC_Os08g31470	Os08g0407200	PAY1	PAY1	loc_os08g31470;os08g0407200;pay1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g09280	LOC_Os11g09280	Os11g0199200	PDIL1-1	PDIL1-1	1;esp2;loc_os11g09280;os11g0199200;ospdil1;pdil1-1	matched_prior	1	1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os10g41780	LOC_Os10g41780	Os10g0567400	PGL	PGL	loc_os10g41780;os10g0567400;oscao1;pgl;ygl10	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g07510	LOC_Os03g07510	Os03g0171300	PGL1	PGL1	ili6;loc_os03g07510;os03g0171300;pgl1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g51320	LOC_Os02g51320	Os02g0747900	PGL2	PGL2	ili5;loc_os02g51320;os02g0747900;osbhlh170;osbul1;pgl2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g05900	LOC_Os07g05900	Os07g0153600	PROG1	PROG1	loc_os07g05900;os07g0153600;prog1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g05280	LOC_Os05g05280	Os05g0145000	PTB1	PTB1	loc_os05g05280;os05g0145000;ptb1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g42790	LOC_Os03g42790	Os03g0626100	qGL3.5	qGL3.5	loc_os03g42790;os03g0626100;osring456;qgl3.5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_1f437f88dc904b82			qGL7	qGL7	1471-2156-11-16;qgl7;qgl7@doi:10.1186;unresolved_gene_1f437f88dc904b82	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_7bd5333d89fe0fe3			qgnp7(t)	qgnp7(t)	qgnp7(t);unresolved_gene_7bd5333d89fe0fe3	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g40890	LOC_Os12g40890	Os12g0601300	qPH12	qPH12	loc_os12g40890;os12g0601300;osiaa30;qph12	matched_prior		1	https://www.ricedata.cn/gene/list/13764.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g62920	LOC_Os01g62920	Os01g0848400	qSH1	qSH1	loc_os01g62920;os01g0848400;qsh1;ril1	matched_prior		1	https://www.ricedata.cn/gene/list/180.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g42290	LOC_Os07g42290	Os07g0614400	qSOR1	qSOR1	loc_os07g42290;loc_os07g42290.1;os07g0614400;qsor1	matched_prior		1	https://www.ricedata.cn/gene/list/20637.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g11380	LOC_Os07g11380	Os07g0214300	RAG2	RAG2	loc_os07g11380;os07g0214300;rag2	matched_prior		1	https://www.ricedata.cn/gene/list/56076.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g40890	LOC_Os12g40890	Os12g0601300	qPH12	qPH12	loc_os12g40890;os12g0601300;osiaa30;qph12	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g62920	LOC_Os01g62920	Os01g0848400	qSH1	qSH1	loc_os01g62920;os01g0848400;qsh1;ril1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g42290	LOC_Os07g42290	Os07g0614400	qSOR1	qSOR1	loc_os07g42290;loc_os07g42290.1;os07g0614400;qsor1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g11380	LOC_Os07g11380	Os07g0214300	RAG2	RAG2	loc_os07g11380;os07g0214300;rag2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_d81d495bc87de293			RBG1	RBG1	rbg1;unresolved_gene_d81d495bc87de293	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g32950	LOC_Os02g32950	Os02g0531600	RCN2	RCN2	loc_os02g32950;os02g0531600;rcn2	matched_prior		1	https://www.ricedata.cn/gene/list/9782.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g32950	LOC_Os02g32950	Os02g0531600	RCN2	RCN2	loc_os02g32950;os02g0531600;rcn2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 Os10g0181200		Os10g0181200	RCN22	RCN22	os10g0181200;rcn22	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g51000	LOC_Os04g51000	Os04g0598300	RFL/APO2	RFL/APO2	apo2;loc_os04g51000;os04g0598300;osrfl;rfl	matched_prior		1	https://www.ricedata.cn/gene/list/926.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g26890	LOC_Os05g26890	Os05g0333200	RGA1	RGA1	d1;d89;loc_os05g26890;os05g0333200;rga1;srg5	matched_prior		1	https://www.ricedata.cn/gene/list/1.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g43480	LOC_Os03g43480	Os03g0635100	RGG1	RGG1	loc_os03g43480;os03g0635100;rgg1	matched_prior		1	https://www.ricedata.cn/gene/list/33741.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g04520	LOC_Os02g04520	Os02g0137800	RGG2	RGG2	loc_os02g04520;os02g0137800;rgg2	matched_prior		1	https://www.ricedata.cn/gene/list/28958.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g49160	LOC_Os01g49160	Os01g0685400	RGN1	RGN1	loc_os01g49160;os01g0685400;rgn1	matched_prior		1	https://www.ricedata.cn/gene/list/30162.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g08420	LOC_Os07g08420	Os07g0182000	RISBZ1/FLO27	RISBZ1/FLO27	flo27;loc_os07g08420;os07g0182000;osbzip58;risbz1	matched_prior		1	https://www.ricedata.cn/gene/list/900.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g51000	LOC_Os04g51000	Os04g0598300	RFL/APO2	RFL/APO2	apo2;loc_os04g51000;os04g0598300;osrfl;rfl	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g26890	LOC_Os05g26890	Os05g0333200	RGA1	RGA1	d1;d89;loc_os05g26890;os05g0333200;rga1;srg5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g43480	LOC_Os03g43480	Os03g0635100	RGG1	RGG1	loc_os03g43480;os03g0635100;rgg1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g04520	LOC_Os02g04520	Os02g0137800	RGG2	RGG2	loc_os02g04520;os02g0137800;rgg2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g49160	LOC_Os01g49160	Os01g0685400	RGN1	RGN1	loc_os01g49160;os01g0685400;rgn1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g08420	LOC_Os07g08420	Os07g0182000	RISBZ1/FLO27	RISBZ1/FLO27	flo27;loc_os07g08420;os07g0182000;osbzip58;risbz1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 LOC_Os06g10600	LOC_Os06g10600		ROC8	ROC8	loc_os06g10600;os06g0208100;roc8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g50770	LOC_Os04g50770	Os04g0594100	RRS1	RRS1	63;loc_os04g50770;os04g0594100;osmyb58;osmyb63;rrs1	matched_prior		1	https://www.ricedata.cn/gene/list/26455.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g44034	LOC_Os06g44034	Os06g0649600	SDT/miR156j	SDT/miR156j	loc_os06g44034;mir-156;mir156j;mirna156;os06g0649600;osmir156h;sdt	matched_prior		1	https://www.ricedata.cn/gene/list/18102.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g72090	LOC_Os01g72090	Os01g0949400	Se13	Se13	loc_os01g72090;os01g0949400;oshy2;se13	matched_prior		1	https://www.ricedata.cn/gene/list/1223.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os02g45170	LOC_Os02g45170	Os02g0673500	SEP1	SEP1	loc_os02g45170;os02g0673500;oshlh;oslhw;sep1	matched_prior		1	https://www.ricedata.cn/gene/list/34452.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os04g55560	LOC_Os04g55560	Os04g0649100	SHAT1	SHAT1	loc_os04g55560;os04g0649100;shat1	matched_prior		1	https://www.ricedata.cn/gene/list/2373.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g44840	LOC_Os08g44840	Os08g0562500	SLG	SLG	loc_os08g44840;os08g0562500;osslg;slg;stbr1	matched_prior		1	https://www.ricedata.cn/gene/list/23839.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os03g0707600	LOC_Os03g49990	Os03g0707600	SLR1	SLR1	os03g0707600;osgai;osslr1;slr1;slr1-d	matched_prior		1	https://www.ricedata.cn/gene/list/26.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g62270	LOC_Os03g62270	Os03g0839200	SMG4	SMG4	loc_os03g62270;smg4	matched_prior		1	https://www.ricedata.cn/gene/list/17259.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os05g45410	LOC_Os05g45410	Os05g0530400	SMG5	SMG5	loc_os05g45410;os05g0530400;oshsfa4d;osspl7;smg5;spl7	matched_prior		1	https://www.ricedata.cn/gene/list/1423.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g03710	LOC_Os06g03710	Os06g0127800	SMOS2/DLT	SMOS2/DLT	d62;dlt;gs6;loc_os06g03710;os06g0127800;osgras-32;smos2	matched_prior		1	https://www.ricedata.cn/gene/list/950.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g60080	LOC_Os03g60080	Os03g0815100	SNAC1	SNAC1	loc_os03g60080;os03g0815100;osnac19;osnac9;ossnac1;snac1	matched_prior		1	https://www.ricedata.cn/gene/list/850.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os01g09550	LOC_Os01g09550	Os01g0191300	SNAC3/ONAC003	SNAC3/ONAC003	loc_os01g09550;onac003;os01g0191300;osnac006;snac3	matched_prior		1	https://www.ricedata.cn/gene/list/19980.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g13170	LOC_Os07g13170	Os07g0235800	SNB	SNB	ap2-3;loc_os07g13170;os07g0235800;osae115;ossnb;snb;ssh1	matched_prior		1	https://www.ricedata.cn/gene/list/723.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g03070	LOC_Os03g03070	Os03g0122600	SOC1	SOC1	dth3;loc_os03g03070;os03g0122600;osmads50;ossoc1;soc1	matched_prior		1	https://www.ricedata.cn/gene/list/705.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g12740	LOC_Os11g12740	Os11g0235200	SP1	SP1	loc_os11g12740;os11g0235200;osnpf4;osnpf4.1;sp1	matched_prior		1	https://www.ricedata.cn/gene/list/1060.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g55610	LOC_Os03g55610	Os03g0764900	SP3/Dof15	SP3/Dof15	dlt3;dof15;loc_os03g55610;osdof15;sp3	matched_prior		1	https://www.ricedata.cn/gene/list/2838.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g05160	LOC_Os06g05160	Os06g0143700	SPDT/OsSULTR3；4	SPDT/OsSULTR3；4	4;loc_os06g05160;os06g0143700;osspdt;ossultr3;spdt	matched_prior		1	https://www.ricedata.cn/gene/list/47234.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os11g32160	LOC_Os11g32160	Os11g0524300	SSG7	SSG7	loc_os11g32160;ssg7	matched_prior		1	https://www.ricedata.cn/gene/list/51766.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g42410	LOC_Os07g42410	Os07g0616000	SUG1/DEP2/SRS1/EP2/OsRELA	SUG1/DEP2/SRS1/EP2/OsRELA	dep2;ep2;loc_os07g42410;os07g0616000;osrela;srs1;sug1	matched_prior		1	https://www.ricedata.cn/gene/list/1030.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g51660	LOC_Os03g51660	Os03g0726700	TAC3	TAC3	loc_os03g51660;os03g0726700;osepfl3;qta3;tac3	matched_prior		1	https://www.ricedata.cn/gene/list/27258.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os08g0433500	LOC_Os08g33670	Os08g0433500	TAC5	TAC5	mh08g0424600;onac106;os08g0433500;tac5	matched_prior		1	https://www.ricedata.cn/gene/list/15707.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os03g03150	LOC_Os03g03150	Os03g0123300	TAD1	TAD1	loc_os03g03150;os03g0123300;osccs52a;tad1;te	matched_prior		1	https://www.ricedata.cn/gene/list/1734.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os10g0478000	LOC_Os10g33780	Os10g0478000	TAW1	TAW1	os10g0478000;osg1l5;taw1;tawawa1	matched_prior		1	https://www.ricedata.cn/gene/list/2477.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os12g36660	LOC_Os12g36660	Os12g0552600	TGW12a	TGW12a	loc_os12g36660;os12g0552600;qtgw12a;tgw12a	matched_prior		1	https://www.ricedata.cn/gene/list/31137.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os06g41850	LOC_Os06g41850	Os06g0623700	TGW6	TGW6	loc_os06g41850;os06g0623700;ostgw6;tgw6	matched_prior		1	https://www.ricedata.cn/gene/list/2521.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os07g15270	LOC_Os07g15270	Os07g0256200	TIF1	TIF1	loc_os07g15270;os07g0256200;tif1	matched_prior		1	https://www.ricedata.cn/gene/list/20332.htm	frozen_prior_ID_consistency; not_new_external_validation
-LOC_Os08g34580	LOC_Os08g34580	Os08g0445700	TPS8	TPS8	loc_os08g34580;ostps8;tps8	matched_prior		1	https://www.ricedata.cn/gene/list/1620.htm	frozen_prior_ID_consistency; not_new_external_validation
-Os01g0142100	LOC_Os01g04900	Os01g0142100	ZG	ZG	os01g0142100;zg	matched_prior		1	https://www.ricedata.cn/gene/list/34833.htm	frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g50770	LOC_Os04g50770	Os04g0594100	RRS1	RRS1	63;loc_os04g50770;os04g0594100;osmyb58;osmyb63;rrs1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g44034	LOC_Os06g44034	Os06g0649600	SDT/miR156j	SDT/miR156j	loc_os06g44034;mir-156;mir156j;mirna156;os06g0649600;osmir156h;sdt	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g72090	LOC_Os01g72090	Os01g0949400	Se13	Se13	loc_os01g72090;os01g0949400;oshy2;se13	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os02g45170	LOC_Os02g45170	Os02g0673500	SEP1	SEP1	loc_os02g45170;os02g0673500;oshlh;oslhw;sep1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os04g55560	LOC_Os04g55560	Os04g0649100	SHAT1	SHAT1	loc_os04g55560;os04g0649100;shat1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g44840	LOC_Os08g44840	Os08g0562500	SLG	SLG	loc_os08g44840;os08g0562500;osslg;slg;stbr1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os03g0707600	LOC_Os03g49990	Os03g0707600	SLR1	SLR1	os03g0707600;osgai;osslr1;slr1;slr1-d	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g62270	LOC_Os03g62270	Os03g0839200	SMG4	SMG4	loc_os03g62270;smg4	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os05g45410	LOC_Os05g45410	Os05g0530400	SMG5	SMG5	loc_os05g45410;os05g0530400;oshsfa4d;osspl7;smg5;spl7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g03710	LOC_Os06g03710	Os06g0127800	SMOS2/DLT	SMOS2/DLT	d62;dlt;gs6;loc_os06g03710;os06g0127800;osgras-32;smos2	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g60080	LOC_Os03g60080	Os03g0815100	SNAC1	SNAC1	loc_os03g60080;os03g0815100;osnac19;osnac9;ossnac1;snac1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os01g09550	LOC_Os01g09550	Os01g0191300	SNAC3/ONAC003	SNAC3/ONAC003	loc_os01g09550;onac003;os01g0191300;osnac006;snac3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g13170	LOC_Os07g13170	Os07g0235800	SNB	SNB	ap2-3;loc_os07g13170;os07g0235800;osae115;ossnb;snb;ssh1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g03070	LOC_Os03g03070	Os03g0122600	SOC1	SOC1	dth3;loc_os03g03070;os03g0122600;osmads50;ossoc1;soc1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g12740	LOC_Os11g12740	Os11g0235200	SP1	SP1	loc_os11g12740;os11g0235200;osnpf4;osnpf4.1;sp1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g55610	LOC_Os03g55610	Os03g0764900	SP3/Dof15	SP3/Dof15	dlt3;dof15;loc_os03g55610;osdof15;sp3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g05160	LOC_Os06g05160	Os06g0143700	SPDT/OsSULTR3；4	SPDT/OsSULTR3；4	4;loc_os06g05160;os06g0143700;osspdt;ossultr3;spdt	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os11g32160	LOC_Os11g32160	Os11g0524300	SSG7	SSG7	loc_os11g32160;ssg7	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g42410	LOC_Os07g42410	Os07g0616000	SUG1/DEP2/SRS1/EP2/OsRELA	SUG1/DEP2/SRS1/EP2/OsRELA	dep2;ep2;loc_os07g42410;os07g0616000;osrela;srs1;sug1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g51660	LOC_Os03g51660	Os03g0726700	TAC3	TAC3	loc_os03g51660;os03g0726700;osepfl3;qta3;tac3	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os08g0433500	LOC_Os08g33670	Os08g0433500	TAC5	TAC5	mh08g0424600;onac106;os08g0433500;tac5	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os03g03150	LOC_Os03g03150	Os03g0123300	TAD1	TAD1	loc_os03g03150;os03g0123300;osccs52a;tad1;te	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os10g0478000	LOC_Os10g33780	Os10g0478000	TAW1	TAW1	os10g0478000;osg1l5;taw1;tawawa1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os12g36660	LOC_Os12g36660	Os12g0552600	TGW12a	TGW12a	loc_os12g36660;os12g0552600;qtgw12a;tgw12a	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os06g41850	LOC_Os06g41850	Os06g0623700	TGW6	TGW6	loc_os06g41850;os06g0623700;ostgw6;tgw6	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os07g15270	LOC_Os07g15270	Os07g0256200	TIF1	TIF1	loc_os07g15270;os07g0256200;tif1	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+LOC_Os08g34580	LOC_Os08g34580	Os08g0445700	TPS8	TPS8	loc_os08g34580;ostps8;tps8	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
+Os01g0142100	LOC_Os01g04900	Os01g0142100	ZG	ZG	os01g0142100;zg	matched_prior		1		frozen_prior_ID_consistency; not_new_external_validation
 unresolved_gene_9b78560266e6eb47			LOGL1	LOGL1	logl1	msu_unresolved		1		frozen_prior_ID_consistency; not_new_external_validation

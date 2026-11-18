@@ -68,8 +68,8 @@
     },
     "core50_genes.tsv": {
       "label": "50 基因证据表",
-      "bytes": 23030,
-      "sha256": "8932be5a8f4a997016491cfca2af19c7fa04c387be9b2bcd2589293d42165d17"
+      "bytes": 20948,
+      "sha256": "b1829ef78735b24cb07f2ee6b6ec25a5d33c9aa3872dbf9bc270a83b48082d18"
     },
     "modern_indica_marker_counts.tsv": {
       "label": "历史现代籼稻子集 · 位点覆盖与基因型计数",
@@ -93,8 +93,8 @@
     },
     "ontology.jsonld.gz": {
       "label": "JSON-LD 本体",
-      "bytes": 75833,
-      "sha256": "ed1e8f543ee70af3860c9aaf93545f972d606b05bffb6e252573bef78ab67c5a"
+      "bytes": 75023,
+      "sha256": "74c0d6bd10c05aa2d5d5166fb4a5530f0e24a743f401ed1e7377fd70409c5745"
     },
     "group_marker_counts.tsv": {
       "label": "历史现代籼稻子集 · 分来源组的位点计数",
@@ -178,13 +178,13 @@
     },
     "v4_prior_genes.tsv": {
       "label": "全先验基因目录（含单列历史身份）",
-      "bytes": 184420,
-      "sha256": "9c0e058ed4ffc244f0ccb3e99ad9e5c3e01ecf336e825a1c602df26e6efbb7f0"
+      "bytes": 165802,
+      "sha256": "c87ea915e7bf4478ff17662d4db6d8873b56156adda47c7cf69d31168c50e10e"
     },
     "v4_catalog.json.gz": {
       "label": "全库可视化档案、模型与证据",
-      "bytes": 138741,
-      "sha256": "8262231d007abe7d3935edb55beb456f74652e9de37ad7d8d6f1f00f2fb40fd6"
+      "bytes": 136135,
+      "sha256": "ffa59d71cbb332fab27342ae8c5d6671747915bf5a3d0cc8664037dc847e133e"
     },
     "v4_catalog.jsonld.gz": {
       "label": "扩展本体：基因、事件及探索标记",
@@ -218,8 +218,8 @@
     },
     "accession_names_zh.tsv.gz": {
       "label": "材料中文名、名称证据状态与来源",
-      "sha256": "79f41100f1de7b2bdade2b0ce92d61d34148e81f69bfe0a38ac223bfe568f054",
-      "bytes": 93687
+      "sha256": "635ab3ba67434cf8773f56ff8be84eb2734b0294b97fd9ec9d647ff23d704858",
+      "bytes": 93604
     }
   },
   "availability": "Public rice accession IDs, names, source groups, targeted per-accession genotypes and matched target phenotypes, alongside the corresponding aggregate counts and estimates.",

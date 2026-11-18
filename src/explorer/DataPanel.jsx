@@ -7,7 +7,6 @@ import {DatasetProvenance} from './DatasetProvenance.jsx';
 import {createLocalDataset,extendDataset,fileText} from './dataImport.js';
 import {datasetBadge,datasetTint} from './datasetColors.js';
 const RiceNaviPanel=React.lazy(()=>import('./RiceNaviPanel.jsx').then(m=>({default:m.RiceNaviPanel})));
-const RegionArchive=React.lazy(()=>import('./RegionArchive.jsx').then(m=>({default:m.RegionArchive})));
 import {validateDataset} from './model.js';
 
 const ext=/(?:\.tsv|\.txt)(?:\.gz)?$/i;
@@ -16,7 +15,6 @@ export function DataPanel({data,onApply,gene}){
   const [ids,setIds]=useState(data.meta.datasets.map(d=>d.id)),[group,setGroup]=useState(data.meta.groupBy),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const [previewId,setPreview]=useState(data.meta.datasets[0].id),[table,setTable]=useState('samples');
   const [importMode,setImportMode]=useState('package'),[importName,setImportName]=useState(''),[importSource,setImportSource]=useState(''),[importEvidence,setImportEvidence]=useState('G_chip');
-  const [showRegions,setShowRegions]=useState(false);
   useEffect(()=>{setEntries(data.datasetRegistry);setIds(data.meta.datasets.map(d=>d.id));setGroup(data.meta.groupBy);setLoaded(prev=>new Map([...prev,...data.datasetBundles.map(b=>[b.manifest.id,b])]));setPreview(data.meta.datasets[0].id);},[data]);
   const bundle=loaded.get(previewId);
   const preview=useMemo(()=>{if(!open||!bundle)return null;const lines=bundle.texts[table].trimEnd().split('\n');return {fields:lines[0].split('\t'),count:lines.length-1,rows:lines.slice(1,13).map(line=>line.split('\t'))};},[open,bundle,table]);
@@ -96,7 +94,6 @@ export function DataPanel({data,onApply,gene}){
     {bundle&&<><DatasetProvenance data={data} datasetId={bundle.manifest.id}/><details><summary>原始表格预览 / Source tables · {bundle.manifest.name}</summary><div className="compare-tools"><select aria-label="预览表格" value={table} onChange={e=>setTable(e.target.value)}>{datasetFiles.map(key=><option key={key}>{key}</option>)}</select><button onClick={()=>saveFile(table+'.tsv',bundle.texts[table],'text/tab-separated-values;charset=utf-8')}>下载当前 TSV</button><button onClick={downloadManifest}>下载输入清单</button></div>
     <p className="footnote">{preview?.count.toLocaleString()} 行 × {preview?.fields.length.toLocaleString()} 列 · 预览前 12 行、8 列</p>
     {preview&&<div className="matrix-scroll"><table className="individual-table"><thead><tr>{preview.fields.slice(0,8).map(k=><th key={k}>{k}</th>)}</tr></thead><tbody>{preview.rows.slice(0,12).map((row,i)=><tr key={i}>{row.slice(0,8).map((value,j)=><td key={j}>{value}</td>)}</tr>)}</tbody></table></div>}</details></>}
-    <details onToggle={e=>setShowRegions(e.currentTarget.open)}><summary>RiceData 已克隆基因区段 / Cloned regions</summary>{open&&showRegions&&<React.Suspense fallback={<p>正在读取区段目录…</p>}><RegionArchive/></React.Suspense>}</details>
     <details><summary>RiceNavi 完整来源库 / All source records</summary>{open&&<React.Suspense fallback={<p>Loading…</p>}><RiceNaviPanel gene={gene}/></React.Suspense>}</details><div className="dialog-actions"><span>{ids.length} 个数据集已选择</span><Dialog.Close><Button variant="soft" color="gray">关闭</Button></Dialog.Close><Button disabled={busy||!ids.length} onClick={apply}>应用数据集 / Apply</Button></div>
   </Dialog.Content></Dialog.Root></>;
 }

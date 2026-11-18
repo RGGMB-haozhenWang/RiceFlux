@@ -230,8 +230,6 @@
 .radar-axis-label tspan:not(:first-of-type) { font-size:13px; }
 .radar-layout { grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); }
 .radar { width:100%; max-width:610px; }
-.region-archive .archive-markers { max-height:300px; }
-.region-archive select { max-width:100%; }
 .abstract-excerpt { color:#334f59; }
 @media(max-width:1050px){ .radar-layout { grid-template-columns:minmax(0,1fr); } }
 @media(max-width:680px){ .source-filters { grid-template-columns:1fr; } }

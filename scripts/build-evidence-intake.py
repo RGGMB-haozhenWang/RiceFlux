@@ -29,7 +29,7 @@ def table(path, keys, values):
 
 def aliases(g):
     names = {n.strip().casefold() for x in [g['name'], *g.get('catalog', {}).get('aliases', [])] for n in re.split(r'[;,/；]', x) if n.strip()}
-    if g['id'] == 'Os06g0133000': names.add('waxy')  # RiceData gene/420, checked 2026-11-17.
+    if g['id'] == 'Os06g0133000': names.add('waxy')
     return names
 
 ref = json.loads(read(PUBLIC / 'datasets/reference.json.gz'))

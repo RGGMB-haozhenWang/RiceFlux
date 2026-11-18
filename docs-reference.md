@@ -24,7 +24,3 @@ Gene export 1.3 adds identity, source support, call provenance and population di
 - The 6044 subset contains 66 columns for 7 traits. Endpoint labels, units, sites, years and methods trace to the phenotype workbook, the main Phenotyping section and the Supplementary Note. The grain instrument and grain count remain unspecified on the cited paper page. `Jinhai` and `Jinzhai` are retained separately. The paper’s invalid minute values are kept verbatim and have no decimal conversion.
 - RiceNavi admits 23 of 319 source records (18 genes, 404 accessions). The other 296 have explicit non-admission reasons. Unbound RiceNavi phenotypes remain source metadata.
 - The phenotype panel reports Welch ANOVA and Kruskal–Wallis by dataset and trial, with Holm correction across the current year and assay. The comparisons are exploratory and have no kinship or population structure adjustment. Percentiles use observed values in the selected reference cohort.
-
-## RiceData cloned regions
-
-`public/regions` contains the compact index, loaded only when the region browser is opened. Use a verified `regions.json` directory for genotype calls. Open the directory in Data → RiceData cloned regions, search by an ID, and download the selected gene's marker and genotype tables. The archive uses one source coordinate per site, many-to-many gene links and 277 individually hashed gzip shards. Source MAP absence and unresolved identities remain explicit. `scripts/build-region-archive.py` bundles the browser indexes starting from the accepted local extraction receipt.

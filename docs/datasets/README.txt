@@ -48,4 +48,4 @@ AF 按有效等位计数，ALT 分频逐一报告。Missing = 缺失等位数 / 
 Gene and material exports use UTF-8 TSV in ZIP. Open TSV in Excel with accession IDs imported as text.
 
 静态发布 / Static deployment
-纯静态 HTTP。将包放进 datasets/，在 index.tsv 登记 id、name、version、manifest。打开页面时读取首个内置数据集，其余按选择加载。大规模区段数据使用 regions.json、染色体索引和独立 gzip 分片。目录入口只访问选中的基因所需分片。已验证的本地区段档案从“RiceData 已克隆基因区段”选择目录，不随首次页面下载。
+纯静态 HTTP。将包放进 datasets/，在 index.tsv 登记 id、name、version、manifest。打开页面时读取首个内置数据集，其余按选择加载。

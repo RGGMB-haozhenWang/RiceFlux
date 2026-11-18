@@ -7,7 +7,6 @@ A static rice genetics workbench for genes, genotype combinations and accessions
 
 - **D1**: 6044 份名录材料（5222 现代品种、822 地方品种），1067 SNP。
 - **D2**: RiceNavi 404 份材料，23 个严格匹配 SNP，18 个基因；完整来源库另保留 319 条位点记录。
-- **RiceData**: 4,883 个已定位克隆基因，283,533 个 D1 区段 SNP。网页搜索目录，本地档案按基因读取分片。
 - **先验 / Prior**: 477 基因输入库。查询包含补充及历史身份；MSU ID 未解决的条目明确标记。
 - **证据 / Evidence**: 数据集覆盖、文献功能位点、单倍型组分与调用质量分别标注。6044 的表型列附原文测定规程、地点与指标。
 
