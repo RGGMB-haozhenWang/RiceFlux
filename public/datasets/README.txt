@@ -1,52 +1,51 @@
-RiceFlux 多数据集接口 1.0
+RiceFlux 数据接口 / Load data · Tables 1.1
 
-访问方式
-静态 HTTP 服务即可部署，无需数据库或服务器插件。浏览器读取 datasets/index.tsv；每行登记 id、name、version、manifest（例如 rice6044-v1/manifest.json）。文件路径相对于 datasets/。新版本使用新的数据集 id 和目录，保留原版本。首次打开加载索引第一项，其余按选择读取。
+入口 / Entry
+数据接口 → 导入基因型 / 表型。解压 examples/riceflux_import_examples.zip 可获得完整合成样例。规范表格为 UTF-8 TSV、制表符分隔 TXT 或相同内容的 gzip 文件。保留 ID 的大小写及前导零。表头只写一行，单元格内无 TAB 或换行。值缺失时填 NA，分型还可写 . 或 ./.。
 
-导入与下载
-数据集面板中一次选择 manifest.json 和下列五张表；接受 TSV、制表符分隔的 TXT，或其 gzip 压缩文件。导入数据仅保存在当前会话中，不自动上传。要长期公开，管理员将目录与索引一起部署。面板可以直接下载解压后的 TSV；“下载输入清单”生成对应未压缩文件名的清单。6044 完整包解压后也可重新导入（同一会话已有 id 时须改用独立 id）。
+四种导入方式 / Import modes
+1. 完整数据包。选择 manifest.json 和其中声明的五张表。兼容 RiceFlux tables 1.0。
+2. 新建本地数据集。填写名称与来源。选择 samples.tsv 加 variants.tsv / genotypes.tsv、environments.tsv / phenotypes.tsv，或两对表一起导入。
+3. 追加表型。先预览目标数据集，再选 environments.tsv、phenotypes.tsv。按该数据集的 sample_id 连接。环境 ID 与试验键须新增，既有分型、表型值和底表版本均保留。
+4. 追加基因型。先预览仅表型的数据集，再选 variants.tsv、genotypes.tsv。已有分型的数据集可将另一批基因型作为独立版本导入。
+本地数据在浏览器中处理。点击“应用数据集”生效。我的工作区可保存；基于内置数据集追加时仅保存新增表和底表版本。
+New local datasets may have both measurements and calls, or just one kind. Append traits by exact sample_id to a selected dataset. Append genotypes to phenotype-only datasets. Saving the workspace retains local input.
 
-manifest.json
-必需：schema="RiceFlux tables 1.0"、id（字母/数字/下划线/短横线）、name、version、assembly="IRGSP-1.0/MSU7"、source、genotype_evidence、files。
-genotype_evidence 必须为 G_chip（芯片/VCF观测调用）、G_projected（投影或插补代理）、G_direct（目标事件直接检测）、G_mixed（混合证据）；按来源填写，混合类型不能整体提升为直接检测。不同证据类型合并时总览保留 G_mixed，逐材料输出保留所属数据集类型。
-files 的键为 samples、variants、genotypes、environments、phenotypes，值是同目录下的文件名。
-可选 counts：samples、variants、environments 的行数；可选 sha256：五张表解压后 UTF-8 文本的 SHA256。修改表后必须重算 SHA256，不能沿用旧哈希。内置数据同时验证计数与哈希。
+manifest.json（完整包）
+schema: RiceFlux tables 1.1（兼容 1.0）
+id: 唯一，由字母、数字、下划线、连字符组成。
+name, version, source: 人可读名称、版本、来源说明或链接。
+assembly: IRGSP-1.0/MSU7。
+genotype_evidence: G_chip 实测调用，G_projected 投影/插补，G_direct 靶标直接检测，G_mixed 混合证据。G_none 适用于纯表型（无位点）。
+files: samples, variants, genotypes, environments, phenotypes 五个键，值为本目录相应 .tsv/.txt 或 .gz 文件名。
+可选 counts，记录 samples、variants、environments 行数。可选 sha256，按解压后 UTF-8 文本计算各输入哈希。更改内容后须更新哈希。
 
-表格规范
-UTF-8；首行表头；制表符分隔；单元格内禁止制表符和换行，不使用 CSV 引号转义。空值用 NA 或 .。坐标 1-based、正链。各表 ID 保持大小写和原始值。
+五表 / Input tables
+samples.tsv
+  sample_id name source_group subspecies region material_type [ped_id legacy]
+  一份材料一行。以 (dataset_id, sample_id) 区分材料。region 为来源地，试验地登记到 environments。
+variants.tsv
+  marker_id gene_id chr position ref alt
+  每坐标一行。gene_id 是已登记的唯一 MSU/RAP ID。正链，1-based。坐标须落入模型允许区间。
+  ref 为 A/C/G/T。alt 可有一个或多个正链替代碱基，如 G,C（保留该表的原始顺序）。无已登记 ALT 可填 NA。不同数据集的相同位点使用同 marker_id、基因、染色体、坐标和 REF，ALT 集合可不同。
+genotypes.tsv
+  sample_id <marker_id...>
+  位点列与 variants 相符。samples 的每个编号有一行。分型为未分相二倍体，如 A/G、G/C、A/.、./.；也接受等位编号 0/0、1/2、2/.。0 指 REF，1/2/3 按本表 ALT 顺序。跨数据集合并时以实际碱基重编码。两个 ALT 的杂合状态保留。
+  示例 REF=A、ALT=G,C 时，1/2 表示 G/C。非 SNP、分相、拷贝数和 SV 另有表示方式；当前表格适配器处理 SNP。
+environments.tsv
+  environment_id trait_id trait_name unit category family assay site year
+  可选 ontology_id、mapping_status、method_id、scale_id、growth_stage、method_description、source_note。相同试验键指 trait_id × assay × site × year，须唯一；相同 trait_id 和 assay 需使用兼容单位与方法。
+phenotypes.tsv
+  sample_id <environment_id...>
+  一份材料最多一行，数值或 NA。缺行表示无记录。分型无表型时，环境与表型表可仅含表头。表型无分型时，位点表仅含表头，分型表仅有 sample_id 列。
 
-1. samples.tsv
-sample_id name source_group subspecies region material_type [ped_id legacy]
-一份材料一行，sample_id 在该数据集内唯一。name 使用原始登记品种名。subspecies 可记录 indica、japonica 或更细分的遗传亚群，必须有来源；region 是材料来源地区，不能填表型试验地点。material_type 如 modern cultivar、landrace；未知字段填 NA。source_group 保留原数据分组。legacy 可选 true/false。
+样本名单 / Sample selection
+在侧栏“导入样本名单”粘贴或选 TXT/TSV。可一行一个原编号，或带 sample_id（也接受导出的 source_sample_id）和可选 dataset_id 两列。重复合并。同号跨数据集时指定 dataset_id。预览匹配状态，再应用匹配材料。Excel 导入编号时设单元格为文本。
 
-2. variants.tsv
-marker_id gene_id chr position ref alt
-每个双等位 SNP 一行；gene_id 优先使用唯一 MSU ID，亦接受已登记 RAP ID。名称模糊查询只用于找基因，不参与数据连接。位点须落在本库已核定的基因/上游及已登记标记区间内；参考模型或身份不明确的基因不能导入坐标。alt 未确定时用 NA，不能从缺失调用推断 ALT。
-同一坐标在不同数据集须有相同 marker_id、gene_id、REF 和 ALT；反向链或 REF/ALT 调换必须在导入前校正。当前仅支持已登记基因模型上的二倍体 SNP。SV、拷贝数、分相单倍型和多等位位点需扩展独立 schema。
+统计与输出 / Statistics and export
+AF 按有效等位计数，ALT 分频逐一报告。Missing = 缺失等位数 / 预期等位数。MAF = 第二常见等位频率。部分缺失中的有效等位进入 AF，组合只纳入所选位点均完整的材料。未分相调用保留基因型组合。ALT 剂量 LD 以所选的单个 ALT 为准。
+组间表型检验按数据集、指标、地点和年份分别计算。至少两个组各有 5 份有效值才估计。提供 Welch ANOVA、Kruskal–Wallis、样本数、P 值及视图内 Holm 值。等级指标使用秩检验。下载用 tests.tsv 和 groups.tsv 保存组别定义、分母、比较族、结果及状态。供探索性比较，亲缘和群体结构未校正。
+Gene and material exports use UTF-8 TSV in ZIP. Open TSV in Excel with accession IDs imported as text.
 
-3. genotypes.tsv[.gz]
-sample_id 后接 variants 中全部 marker_id，顺序可不同。
-每份 samples 材料恰好一行；单元格为未分相正链碱基，例如 A/A、A/G、A/.、./.；NA 也表示全部缺失。缺少某材料整行会拒绝导入。不同数据集未检测到的位点按缺失保留，不填 REF。已知的单个拷贝仍进入等位频率分母。
-
-4. environments.tsv
- environment_id trait_id trait_name unit category family assay site year
-（表头起始无空格。）每个表型列一行；相同性状、鉴定指标、地点、年份在一个数据集内唯一。trait_id 标识可比性状，assay 标识评分指标或菌株。相同 trait_id/assay 在不同数据集的单位必须一致。未知单位请用明确文字而非 NA。新增 trait_id 可用于探索性展示，不自动赋予基因关联证据。
-
-5. phenotypes.tsv[.gz]
-sample_id 后接 environments 中全部 environment_id。
-一份材料最多一行，实测值为有限数值或 NA；整行缺失表示该材料未测表型。允许只有表头的空环境表和只含 sample_id 的表型表。多数据集的试验地点分面带数据集标签，原始地点另外保留，避免合并同名试验。
-
-群体与身份
-材料键为 (dataset_id, sample_id)；同名不同编号及不同数据集材料不自动合并。数据集、遗传亚群、来源地区、材料类别、原来源组分别保存；比较时选择来源组、数据集、亚群、地区、亚群×地区、数据集×来源组。
-同一生物材料出现在多个数据集时，合并样本数反映记录数，不代表独立材料数。应使用数据集分组或先完成有来源的身份去重。
-内置6044名录未单独核定 region，因此为 NA；不从组名缩写自动推断。试验地点来自 environments。
-
-文献
-literature.tsv 包含 gene_id、doi、summary、scope、event_id。scope="已整理事件概述" 或 "已整理位点概述" 沿用已审效应/位点说明，句间以分号连接；scope="先验记录概述" 摘录该 DOI 对应的事件身份；scope="论文题名" 仅展示题名，尚未新增全文概述。无概述的 DOI 仍保留，不编造摘要。事件功能证据、单倍型组分、区域探索标记沿用各自来源级别，群体频率不升级因果证据。
-
-输出
-材料、位点对照、单倍型组合与成员使用 TSV；当前分析状态可下载 JSON 快照，关系模型可下载 JSON-LD。材料输出新增 dataset_id、source_sample_id、subspecies、region、display_group、genotype_evidence；source_group 始终为原始分组。组合频率表的 source_group 表示本次选择的比较组，grouping_dimension 记录分组维度，dataset_versions 记录数据集版本。
-等位频率 = ALT 拷贝数 / 已检出拷贝数。组合频率 = 该组合材料数 / 全部所选基因均完成判型的材料数。悬浮群体组成比例 = 该群体在此组合中的材料数 / 此组合总材料数。
-
-重建内置表格
-从原已发布来源运行 node scripts/export_datasets.mjs，然后运行 npm test 和 npm run build -- --configLoader native。原始 JSON 存档仍保留用于逐调用对照；常规页面载入使用 TSV 和精简的参考注释索引。无需重跑 GWAS/GP。
+静态发布 / Static deployment
+纯静态 HTTP。将包放进 datasets/，在 index.tsv 登记 id、name、version、manifest。打开页面时读取首个内置数据集，其余按选择加载。大规模区段数据使用 regions.json、染色体索引和独立 gzip 分片。目录入口只访问选中的基因所需分片。已验证的本地区段档案从“RiceData 已克隆基因区段”选择目录，不随首次页面下载。

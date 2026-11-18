@@ -1,4 +1,5 @@
 import {callOf} from './catalog.js';
+import {datasetBadge} from './datasetColors.js';
 
 export function geneSupport(data,gene){
   const rows=(data.annotations?.support||[]).filter(r=>r.gene_id===gene.id);
@@ -6,11 +7,17 @@ export function geneSupport(data,gene){
     if(rows.some(r=>r.dataset_id===b.manifest.id))continue;
     const markers=b.variants.filter(v=>v.gene===gene.id);if(!markers.length)continue;
     const levels=markers.map(v=>data.evidence?.sites[v.id]?.level);
-    rows.push({dataset_id:b.manifest.id,badge:'D'+((data.datasetRegistry||[]).findIndex(r=>r.id===b.manifest.id)+1),gene_id:gene.id,marker_count:markers.length,
+    rows.push({dataset_id:b.manifest.id,badge:datasetBadge(b.manifest.id,data.datasetRegistry),gene_id:gene.id,marker_count:markers.length,
       functional_sites:levels.filter(s=>s==='原文功能位点').length,haplotype_components:levels.filter(s=>s==='文献单倍型组分').length,
       marker_ids:markers.map(v=>v.id).join(';'),high_confidence_sites:0,confidence_status:'not_certified'});
   }
   return rows;
+}
+export function geneEvidence(data,gene,dataset='all'){
+  const support=geneSupport(data,gene).filter(row=>dataset==='all'||row.dataset_id===dataset);
+  return {support,functional:Math.max(0,...support.map(r=>Number(r.functional_sites))),
+    hap:Math.max(0,...support.map(r=>Number(r.haplotype_components))),
+    papers:gene.catalog?.geneDOI?.length||gene.sources?.length||0};
 }
 export function identityFor(data,gene){return data.annotations?.identities.find(r=>r.gene_id===gene.id);}
 export function datasetCalls(data,gene,cohort){

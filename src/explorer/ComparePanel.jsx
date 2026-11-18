@@ -5,18 +5,19 @@ import React,{useEffect,useMemo,useState} from 'react';
 import {GenomeTrack} from './GenomeTrack.jsx';
 import {callOf} from './catalog.js';
 import {formats,downloadTable,saveFile,matchesMaterial,materialRow} from './formats.js';
-import {alleleStats,percent,gtToken} from './model.js';
+import {AlleleFrequency} from './AlleleFrequency.jsx';
+import {percent,gtToken} from './model.js';
 import {resolveSites} from './siteSelection.js';
 import {readPrior,bindPrior,priorResults,comparisonResults,priorGraph} from './exchange.js';
 
 function CompareGene({gene,variants,cohort,populations,onRemove,markerId,setMarker}){
   const v=variants.find(v=>v.id===markerId)||variants[0];
-  const stats=useMemo(()=>v?alleleStats(cohort,v):null,[v,cohort]);
   return <article className="comp-gene"><header><strong>{gene.name}</strong><button onClick={onRemove} aria-label={'移除 '+gene.name}>移除</button></header>
     <p>{[gene.catalog?.msu||gene.id,gene.model?gene.chromosome+' '+gene.gene_start.toLocaleString()+'–'+gene.gene_end.toLocaleString()+' bp':'基因模型待定位'].join(' · ')}</p>
     {gene.model&&<GenomeTrack gene={gene} variants={variants} selected={v} onSelect={setMarker}/>}
     {v?<><label>查看位点 <select value={v.id} onChange={e=>setMarker(e.target.value)}>{variants.map(m=><option key={m.id}>{m.id}</option>)}</select></label>
-    <div className="compare-frequency" aria-label={gene.name+' 分群等位频率'}>{populations.filter(p=>cohort.some(s=>s.population_id===p.id)).map(p=>{const a=alleleStats(cohort.filter(s=>s.population_id===p.id),v);return <div key={p.id}><span>{p.name}</span><div className="af-bar">{a.called>0&&<><div style={{width:percent(1-a.af)}}/><div style={{width:percent(a.af)}}/></>}</div><strong>{percent(a.af)}</strong><small>ALT {a.alt}/{a.called} · n={a.n}</small></div>;})}</div><p>{v.ref} → {v.alt??'—'} · ALT {stats.alt} / {stats.called} 个有效等位（{percent(stats.af)}） · {v.classified||'广义文献位点'}</p></>:<p>当前没有可比较的实测位点。</p>}
+    <AlleleFrequency variant={v} cohort={cohort} populations={populations.filter(p=>cohort.some(s=>s.population_id===p.id))}/></>:<p>当前没有可比较的实测位点。</p>}
+
   </article>;
 }
 

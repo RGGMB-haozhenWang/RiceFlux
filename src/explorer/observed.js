@@ -99,9 +99,10 @@ export async function loadExplorer(base,demo,signal){
   if(config.version!==1)throw Error('服务器配置版本无效');
   const registry=readTable(index,['id','name','version','manifest'],'index').objects();
   if(!registry.length||new Set(registry.map(r=>r.id)).size!==registry.length||registry.some(r=>!/^[-\w]+\/manifest\.json$/.test(r.manifest)))throw Error('数据集索引无效');
+  reference.datasetRegistry=registry;
   reference.genomeRegions=readTable(regions).objects();
   reference.traitRegistry=readTable(traitRegistry).objects();
-  const names={identities:'gene_identity',support:'dataset_gene_support',populations:'populations',environments:'environments',presets:'presets'};
+  const names={identities:'gene_identity',support:'dataset_gene_support',populations:'populations',environments:'phenotyping',presets:'presets'};
   reference.annotations=Object.fromEntries(await Promise.all(Object.entries(names).map(async([key,file])=>[key,readTable(await readText(base+'annotations/'+file+'.tsv',signal)).objects()])));
   for(const g of reference.genes){
     const audit=reference.annotations.identities.find(r=>r.gene_id===g.id);
@@ -125,4 +126,12 @@ export async function loadRegistered(base,row,reference,signal){
   const path=base+'datasets/'+row.manifest,manifest=await readJSON(path,signal);
   if(manifest.id!==row.id||manifest.version!==row.version)throw Error('数据集索引与版本清单不一致');
   return readPackage(manifest,file=>readText(new URL(file,new URL(path,location.href)),signal),reference);
+}
+
+let abstractRequest;
+export function loadAbstracts(base) {
+  abstractRequest??=readText(base+'datasets/paper_abstracts.tsv.gz').then(text=>new Map(
+    readTable(text,['doi','summary','title','source_url','summary_basis'],'paper abstracts').objects().map(row=>[row.doi,row])
+  )).catch(error=>{abstractRequest=undefined;throw error;});
+  return abstractRequest;
 }

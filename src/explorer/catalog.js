@@ -1,7 +1,12 @@
+import {packedCall} from './alleles.js';
 // Preserve the 50 curated cards; attach the wider V4 registry and separate regional comparisons.
 const pairs=Array.from({length:9},(_,i)=>[i%3,Math.floor(i/3)].map(x=>x===2?null:x));
 export function callOf(sample,variant){
-  return variant.column ? pairs[variant.column[sample.ordinal]] : sample.genotypes[variant.id];
+  if (variant.column) {
+    const code = variant.column[sample.ordinal];
+    return variant.encoding === 5 ? packedCall(code) : pairs[code];
+  }
+  return sample.genotypes?.[variant.id] ?? pairs[8];
 }
 export function catalogStatus(g){
   if(g.catalog.historical)return '历史身份';

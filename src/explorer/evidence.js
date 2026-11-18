@@ -1,5 +1,5 @@
 export const normalizeDOI=d=>String(d||'').trim().replace(/^https?:\/\/(?:dx\.)?doi\.org\//i,'').replace(/^doi:\s*/i,'').toLowerCase();
-export function evidenceRows(gene,evidence,literature=[]){
+export function evidenceRows(gene,evidence={},literature=[],abstracts=new Map()){
   const rows=new Map();
   function add(ds,role,event='',marker=''){
     for(const raw of ds||[]){const doi=normalizeDOI(raw);if(!/^10\.\d{4,9}\/\S+$/.test(doi))continue;
@@ -11,9 +11,21 @@ export function evidenceRows(gene,evidence,literature=[]){
   for(const v of gene.variants){const s=evidence.sites?.[v.id];if(s){add(s.primary,'功能位点','',v.id);add(s.event,s.level,'',v.id);add(s.background,'背景文献','',v.id);}}
   for(const e of gene.catalog?.events||[])add(e.doi,'事件',e.key);
   for(const e of gene.records||[])add(evidence.events?.[e.id]?.doi||e.sources,'分型定义',e.id);
-  for(const x of literature.filter(x=>x.gene_id===gene.id)){const doi=normalizeDOI(x.doi);add([doi],x.scope);if(x.summary)rows.get(doi)?.summaries.add(x.summary);}
-  return [...rows.values()].map(r=>({...r,summary:[...r.summaries].join('；'),roles:[...r.roles].join('；'),event_ids:[...r.event_ids].join(';'),markers:[...r.markers].join(';')}));
+  const ids=new Set([gene.id,gene.catalog?.msu,gene.catalog?.rap].filter(Boolean));
+  for(const x of literature.filter(x=>ids.has(x.gene_id))){
+    const doi=normalizeDOI(x.doi);add([doi],x.scope,x.event_id);
+    const row=rows.get(doi);
+    if(!row||!x.summary)continue;
+    if(x.scope==='论文题名')row.title||=x.summary;
+    else row.summaries.add(x.summary);
+  }
+  return [...rows.values()].map(r=>{
+    const a=abstracts.get(r.doi);
+    return {doi:r.doi,title:a?.title||r.title,summary:a?.summary||'',summary_basis:a?.summary_basis||'',abstract_source:a?.source_url||'',
+      curated_note:[...r.summaries].join('；'),roles:[...r.roles].join('；'),event_ids:[...r.event_ids].join(';'),markers:[...r.markers].join(';')};
+  });
 }
+export const evidenceColumns=['doi','title','summary','summary_basis','abstract_source','curated_note','roles','event_ids','markers'];
 export function eventRows(gene){
   const rows=new Map();
   for(const e of gene.catalog?.events||[]){

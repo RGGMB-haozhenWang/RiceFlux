@@ -12,7 +12,9 @@ const tiny=[sample('a',[0,0]),sample('b',[0,1]),sample('c',[1,1]),sample('d',[1,
 
 test('allele frequency counts known copies, including heterozygotes and partial calls',()=>{
   const s=alleleStats(tiny,v);
-  assert.deepEqual(s,{ref:3,alt:4,called:7,total:10,complete:3,het:1,n:5,af:4/7,maf:3/7,missing:3/10});
+  const {alleleCounts,...summary}=s;
+  assert.deepEqual(summary,{ref:3,alt:4,called:7,total:10,complete:3,het:1,n:5,af:4/7,maf:3/7,missing:3/10});
+  assert.deepEqual(alleleCounts.map(row=>row.count),[3,4]);
   assert.equal(alleleStats([],v).af,null);
   assert.equal(alleleStats([tiny[4]],v).missing,1);
   assert.equal(alleleStats([tiny[4]],v).af,null);
@@ -47,7 +49,7 @@ test('fixture validates, has ordered loci and strand-correct promoter positions'
   }
   for(const s of data.individuals)for(const t of ['quality','restoration'])if(s.phenotypes[t]!==null)assert.ok(s.phenotypes[t]>=0&&s.phenotypes[t]<=100);
   const bad=structuredClone(data);bad.individuals[0].genotypes[bad.genes[0].variants[0].id]=[0,2];
-  assert.throws(()=>validateDataset(bad),/二倍体双等位/);
+  assert.throws(()=>validateDataset(bad),/二倍体等位编号/);
   assert.throws(()=>validateDataset({...data,meta:{synthetic:false}}),/合成数据/);
   assert.throws(()=>validateDataset({...data,populations:[{name:'bad'}]}),/标识缺失/);
 });

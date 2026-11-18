@@ -1,4 +1,5 @@
 import {callOf} from './catalog.js';
+import {alleleNames,baseAt,snpBase} from './alleles.js';
 import {regionalView} from './regions.js';
 export function validateDataset(data) {
   const observed=data?.meta?.synthetic===false && ['RiceFlux modern indica 1.0','RiceFlux registry 2.0'].includes(data.meta.schema);
@@ -8,16 +9,21 @@ export function validateDataset(data) {
   }
   for(const gene of data.genes) {
     if(!Array.isArray(gene.variants)||!Array.isArray(gene.features)||!gene.trait_ids?.length||gene.trait_ids.some(id=>!data.traits.some(t=>t.id===id))||(!(gene.start<gene.end)&&!(observed&&gene.catalog&&!gene.model&&gene.start===null&&gene.end===null&&!gene.variants.length&&!gene.features.length))) throw new Error('基因结构或性状映射无效');
-    if(gene.variants.some(v=>!v.id||!Number.isInteger(v.pos)||v.pos<gene.start||v.pos>gene.end||!['A','C','G','T'].includes(v.ref)||(!['A','C','G','T'].includes(v.alt) && !(observed && v.alt===null))||v.ref===v.alt)) throw new Error('SNP 注释无效');
+    if(gene.variants.some(v=>{
+      const alleles=alleleNames(v);
+      return !v.id||!Number.isInteger(v.pos)||v.pos<gene.start||v.pos>gene.end||
+        !alleles.every(a=>snpBase.test(a))||new Set(alleles).size!==alleles.length||(!observed&&alleles.length<2);
+    })) throw new Error('SNP 注释无效');
   }
   if(data.traits.some(t=>!data.genes.some(g=>g.trait_ids.includes(t.id)))) throw new Error('性状缺少关联的演示基因');
   const variants=data.genes.flatMap(g=>g.variants);
   if(new Set(variants.map(v=>v.id)).size!==variants.length) throw new Error('变异 ID 重复');
+  const siteAlleleCounts=variants.map(v=>alleleNames(v).length);
   for(const individual of data.individuals) {
     if(individual.ploidy!==2||!data.populations.some(p=>p.id===individual.population_id)) throw new Error('群体或倍性无效');
-    for(const v of variants) {
-      const gt=callOf(individual,v);
-      if(!Array.isArray(gt)||gt.length!==2||gt.some(a=>a!==null&&a!==0&&(a!==1||v.alt===null))) throw new Error('位点须使用二倍体双等位编码');
+    for(let i=0;i<variants.length;i++) {
+      const gt=callOf(individual,variants[i]);
+      if(!Array.isArray(gt)||gt.length!==2||gt.some(a=>a!==null&&(!Number.isInteger(a)||a<0||a>=siteAlleleCounts[i]))) throw new Error('位点须使用登记的二倍体等位编号');
     }
     if(!individual.phenotypes||Object.values(individual.phenotypes).some(v=>v!==null&&!Number.isFinite(v))) throw new Error('表型必须为数值或 null');
   }
@@ -31,19 +37,23 @@ export function selectCohort(data,popIds,individualIds,individualOnly,scope) {
   return data.individuals.filter(s=>inMaterialScope(s,scope)&&popIds.includes(s.population_id)&&(!individualOnly||individualIds.includes(s.id)));
 }
 export function alleleStats(samples,variant) {
-  let ref=0,alt=0,complete=0,het=0;
+  const alleles=alleleNames(variant),counts=alleles.map(()=>0);
+  let complete=0,het=0;
   for(const s of samples) {
     const gt=callOf(s,variant);
-    for(const a of gt) {if(a===0)ref++;else if(a===1)alt++;}
+    for(const a of gt) if(a!==null)counts[a]++;
     if(gt.every(a=>a!==null)){complete++;if(gt[0]!==gt[1])het++;}
   }
-  const called=ref+alt,total=samples.reduce((n,s)=>n+s.ploidy,0);
-  return {ref,alt,called,total,complete,het,n:samples.length,af:called?alt/called:null,maf:called?Math.min(ref,alt)/called:null,missing:total?(total-called)/total:null};
+  const called=counts.reduce((n,x)=>n+x,0),ref=counts[0],alt=called-ref,total=samples.reduce((n,s)=>n+s.ploidy,0);
+  const second=counts.slice().sort((a,b)=>b-a)[1]||0;
+  return {ref,alt,called,total,complete,het,n:samples.length,af:called?alt/called:null,
+    maf:called?second/called:null,missing:total?(total-called)/total:null,
+    alleleCounts:alleles.map((allele,i)=>({allele,count:counts[i],frequency:called?counts[i]/called:null}))};
 }
 export function retainedVariants(samples,gene,minMaf,maxMissing) {
   return gene.variants.filter(v=>{const s=alleleStats(samples,v);return s.called>0&&s.maf>=minMaf&&s.missing<=maxMissing;});
 }
-export function gtToken(gt,v) {return gt.map(a=>a===null?'·':a===0?v.ref:v.alt).sort().join('/');}
+export function gtToken(gt,v) {return gt.map(a=>baseAt(v,a)).sort().join('/');}
 export function genotypeGroups(samples,variants) {
   if(!variants.length) return [];
   const groups=new Map();
@@ -61,7 +71,7 @@ export function quantile(values,p) {
   const i=(v.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);
   return v[lo]+(v[hi]-v[lo])*(i-lo);
 }
-export const percent=n=>n===null?'—':`${(100*n).toFixed(1)}%`;
+export const percent=n=>Number.isFinite(n)?`${(100*n).toFixed(1)}%`:'—';
 export function exportSnapshot(data,state) {
   const gene=data.genes.find(g=>g.id===state.geneId);
   const cohort=selectCohort(data,state.popIds,state.individualIds,state.individualOnly,state.materialScope);
@@ -89,7 +99,7 @@ export function literatureMatches(gene,definitions,cohort) {
       const pairs=variants.map(v=>callOf(s,v));
       if(pairs.some(([a,b])=>a===null||a!==b))continue;
       callable++;
-      if(pairs.every(([a],i)=>(a===0?variants[i].ref:variants[i].alt)===row.components[i].state))matched++;
+      if(pairs.every(([a],i)=>baseAt(variants[i],a)===row.components[i].state))matched++;
     }
     return {row,states,matched,callable};
   });

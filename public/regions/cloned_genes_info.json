@@ -1,0 +1,26 @@
+{
+  "source": "RiceData snapshot 2026-08-12",
+  "assembly": "IRGSP-1.0/MSU7",
+  "counts": {
+    "sites": 283533,
+    "samples": 6044,
+    "multiallelic_sites": 0,
+    "biallelic_sites": 283533,
+    "monomorphic_sites": 0,
+    "sites_with_partial_calls": 0,
+    "sites_all_missing": 0,
+    "maximum_observed_alt_count": 1,
+    "source_cloned_rows": 5164,
+    "mapped_source_rows": 4892,
+    "unresolved_source_rows": 257,
+    "excluded_source_rows": 15,
+    "unique_genes": 4883,
+    "genes_with_sites": 4822,
+    "genes_without_sites": 61,
+    "many_to_many_gene_marker_links": 286205
+  },
+  "compressed_genotype_bytes": 218719875,
+  "version": "20261118T125111.030998+0800",
+  "study": "https://doi.org/10.1016/j.molp.2025.03.007",
+  "archive_sha256": "b3ea1422ca3279ed556ada263957657deae1a691dfe3f6ed8c720364f25f6263"
+}

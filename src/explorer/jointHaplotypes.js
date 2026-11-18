@@ -1,4 +1,5 @@
 import {callOf} from './catalog.js';
+import {baseAt} from './alleles.js';
 import {chromNum} from './exchange.js';
 import {resolveSites} from './siteSelection.js';
 
@@ -66,7 +67,7 @@ export function typeMaterial(sample,scheme){
   let missing=false,het=false;
   const bases=scheme.markers.map(v=>{
     const [a,b]=callOf(sample,v);
-    const allele=x=>x===null?'·':x===0?v.ref:v.alt;
+    const allele=x=>baseAt(v,x);
     if(a===null||b===null){missing=true;return [allele(a),allele(b)].sort().join('/');}
     if(a!==b){het=true;return [allele(a),allele(b)].sort().join('/');}
     return allele(a);

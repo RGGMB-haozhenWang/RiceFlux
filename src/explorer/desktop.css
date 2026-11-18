@@ -175,3 +175,70 @@
 
 .overview-grid .freq-label b { min-width:0; }
 .freq-label b span { min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+@media(max-width:1099px) {
+  .embedded.explorer { min-height:0; }
+}
+.control-body { display:contents; }
+.mobile-controls-toggle { display:none; }
+.rt-DialogContent { max-height:calc(100dvh - 48px); overflow:auto; }
+.rt-DialogContent .dialog-actions { position:sticky; bottom:0; padding:14px 0; background:var(--color-panel-solid,#fff); z-index:2; }
+@media(max-width:800px) {
+  .mobile-controls-toggle { display:flex; justify-content:space-between; align-items:center; gap:12px; grid-column:1/-1; min-height:48px; margin-top:8px; padding:10px 12px; border:1px solid #c9dbd2; background:#edf5f0; color:#2c5c47; border-radius:7px; text-align:left; }
+  .mobile-controls-toggle small { font-size:12px; color:#526c5d; }
+  .control-body:not(.is-open) { display:none; }
+  .embedded .controls .logo,.embedded .top { display:none; }
+  .embedded .controls .project { margin:0; }
+}
+@media(max-width:600px) {
+  .controls { grid-template-columns:minmax(0,1fr); gap:8px; }
+  .controls .rt-SelectTrigger,.controls input { max-width:100%; min-width:0; min-height:44px; font-size:16px; }
+  .controls .project,.controls .choice,.controls .quick-gene-search { min-width:0; }
+  .controls .choice>span { display:block; }
+  .top { height:auto; min-height:44px; flex-wrap:wrap; gap:8px; padding:10px 16px; }
+  .top>div { flex-wrap:wrap; }
+  .analysis-tabs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); width:100%; }
+  .analysis-tabs button { min-height:44px; min-width:0; }
+  .workspace-navigation,.reading-tools { width:100%; }
+  .reading-tools { flex-wrap:wrap; }
+  .rt-DialogContent { max-width:calc(100vw - 24px)!important; padding:18px!important; }
+  .track-tools button,.track-tools select,.site-select select { min-height:40px; }
+  .genome-view,.panel,.work-panel { min-width:0; }
+  .track-tools b { width:100%; margin-right:0; }
+  .panel-title { flex-wrap:wrap; }
+  .panel-tag { white-space:normal; }
+}
+
+.dataset-tint[style] {
+  background: hsl(var(--data-hue) 48% 92%);
+  border-color: hsl(var(--data-hue) 34% 74%);
+  color: hsl(var(--data-hue) 52% 28%);
+}
+.controls .cohort-heading { display:flex; align-items:center; justify-content:space-between; gap:6px; }
+.sample-list-input { width:100%; resize:vertical; font:inherit; padding:8px; border:1px solid #c4d3d3; border-radius:5px; }
+.source-filters { grid-template-columns: minmax(155px,1fr) repeat(3,minmax(112px,auto)); }
+.marker-quality { display:flex; gap:8px; flex-wrap:wrap; font-size:13px; color:#465a62; margin:4px 0; }
+.marker-quality span { font-weight:600; }
+.phenotype-tools { display:flex; align-items:flex-start; flex-wrap:wrap; gap:3px 10px; margin:4px 0; font-size:13px; }
+.phenotype-tools label { display:flex; align-items:center; gap:5px; max-width:100%; }
+.phenotype-tools select { max-width:min(245px,70vw); }
+.phenotype-tools details { flex:1 1 auto; }
+.phenotype-tools details[open] { flex-basis:100%; }
+.phenotype-tools summary { cursor:pointer; }
+.trial-coordinates { display:block; color:#506974; }
+.phenotype-tests .matrix-scroll { max-height:260px; }
+.radar-axis-label { font-size:16px; fill:#334f59; }
+.radar-axis-label tspan:not(:first-of-type) { font-size:13px; }
+.radar-layout { grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); }
+.radar { width:100%; max-width:610px; }
+.region-archive .archive-markers { max-height:300px; }
+.region-archive select { max-width:100%; }
+.abstract-excerpt { color:#334f59; }
+@media(max-width:1050px){ .radar-layout { grid-template-columns:minmax(0,1fr); } }
+@media(max-width:680px){ .source-filters { grid-template-columns:1fr; } }
+
+.material-comparison .compare-tools { margin:6px 0; }
+.material-dimensions { display:flex; flex-wrap:wrap; align-items:center; gap:4px 14px; }
+.material-dimensions details[open] { flex-basis:100%; }
+.material-reference { margin:7px 0 0; }
+.radar { max-height:280px; }
+.phenotype-tools select, .phenotype-tests button { color:#34585b; background:#f7faf9; border:1px solid #cfdbdb; border-radius:4px; padding:3px 5px; }
