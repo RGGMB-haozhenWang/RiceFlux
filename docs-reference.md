@@ -8,9 +8,9 @@ Gene display names are aliases. Use MSU/RAP IDs for joins. `annotations/gene_ide
 
 ## Input and output
 
-Use [the five-table contract](public/datasets/README.txt) and [prior input examples](public/formats/README.txt). Reference coordinates are positive-strand, 1-based IRGSP-1.0/MSU7. The table adapter accepts diploid biallelic and multiallelic SNPs. Complex events remain in the source library until a dedicated adapter is verified.
+Use [the five-table contract](public/datasets/README.txt) and [prior input examples](public/formats/README.txt). Reference coordinates are positive-strand, 1-based IRGSP-1.0/MSU7. Tables 1.2 accepts diploid SNPs and short, prefix-anchored InDels with one REF and up to three ALT sequences.
 
-Gene export 1.3 adds identity, source support, call provenance and population dictionaries to the existing TSV bundle. Environment exports include original workbook column, study DOI and unresolved method/site details. Material comparison exports two normalized tables: `phenotypes.tsv` and `reference_members.tsv`; join on `environment_id`. This avoids repeating a large reference-material list in every phenotype row.
+Gene export 1.3 adds identity, source support, call provenance and population dictionaries to the existing TSV bundle. The `marker_type` column in `variants.tsv` records SNP or InDel. Environment exports include the original workbook column, study DOI and unresolved method and site details. Material comparison exports `phenotypes.tsv` and `reference_members.tsv` linked by `environment_id`.
 
 ## Rebuild and extend
 

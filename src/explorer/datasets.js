@@ -1,7 +1,7 @@
 import {chromNum,lengths} from './exchange.js';
 import {writeTSV} from './formats.js';
 import {sha256Text} from './sha256.js';
-import {alleleNames,callPair,missingPair,packedCall,packCall,snpBase} from './alleles.js';
+import {alleleNames,callPair,markerKind,missingPair,packedCall,packCall} from './alleles.js';
 import {sourceColor} from './datasetColors.js';
 
 export const datasetFiles=['samples','variants','genotypes','environments','phenotypes'];
@@ -28,7 +28,7 @@ function unique(rows,key,label){
 function sameMarker(a,b){return a.gene===b.gene&&chromNum(a.chromosome)===chromNum(b.chromosome)&&a.pos===b.pos&&a.ref===b.ref;}
 
 export function parseDatasetAxes(manifest,texts,reference){
-  requireValue(['RiceFlux tables 1.0','RiceFlux tables 1.1'].includes(manifest.schema)&&typeof manifest.id==='string'&&/^[A-Za-z0-9_-]+$/.test(manifest.id)&&typeof manifest.name==='string'&&manifest.name.trim()&&typeof manifest.version==='string'&&manifest.version.trim(),'数据集清单缺少有效的 schema、id、name 或 version');
+  requireValue(['RiceFlux tables 1.0','RiceFlux tables 1.1','RiceFlux tables 1.2'].includes(manifest.schema)&&typeof manifest.id==='string'&&/^[A-Za-z0-9_-]+$/.test(manifest.id)&&typeof manifest.name==='string'&&manifest.name.trim()&&typeof manifest.version==='string'&&manifest.version.trim(),'数据集清单缺少有效的 schema、id、name 或 version');
   requireValue(['G_chip','G_projected','G_direct','G_mixed','G_none'].includes(manifest.genotype_evidence),'请登记分型来源 genotype_evidence');
   requireValue(manifest.assembly==='IRGSP-1.0/MSU7','参考组装不兼容；需要 IRGSP-1.0/MSU7 正链坐标');
   requireValue(typeof manifest.source==='string'&&manifest.source.trim(),'请登记数据来源 source');
@@ -41,15 +41,16 @@ export function parseDatasetAxes(manifest,texts,reference){
     const genes=reference.genes.filter(g=>[g.id,g.catalog?.msu,g.catalog?.rap].filter(Boolean).includes(row.gene_id));
     requireValue(genes.length===1,'gene_id 不能唯一匹配：'+row.gene_id+'；请使用 MSU/RAP ID');
     const g=genes[0],chr=chromNum(row.chr),pos=Number(row.position),ref=row.ref,alt=missing(row.alt)?null:row.alt;
-    requireValue(g.model&&chr===chromNum(g.chromosome)&&Number.isSafeInteger(pos)&&pos>=g.start&&pos<=g.end&&pos<=lengths[chr],'位点坐标与参考模型不符：'+row.marker_id);
+    requireValue(g.model&&chr===chromNum(g.chromosome)&&Number.isSafeInteger(pos)&&pos>=g.start&&pos<=g.end&&pos+ref.length-1<=lengths[chr],'位点坐标与参考模型不符：'+row.marker_id);
     const alleles=alleleNames({ref,alt});
-    requireValue(alleles.every(a=>snpBase.test(a))&&new Set(alleles).size===alleles.length,'SNP 的 REF 与逗号分隔的 ALT 须为互不重复的 A/C/G/T：'+row.marker_id);
+    const markerType=markerKind(alleles,manifest.schema==='RiceFlux tables 1.2');
+    requireValue(markerType,'SNP 或 1.2 锚定短 InDel 的 REF/ALT 须为互不重复的序列（最多 4 种等位）：'+row.marker_id);
     const feature=g.features.some(f=>f.start<=pos&&pos<=f.end)?'CDS':g.promoter.start<=pos&&pos<=g.promoter.end?'上游 2 kb':'其他区域';
     const v={id:row.marker_id,gene:g.id,chromosome:'Chr'+chr,pos,ref,alt,alleles,feature,classified:'导入区域标记'};
     const old=known.get(v.id);requireValue(!old||sameMarker(old,v),'已登记位点的身份或 REF/ALT 不一致：'+v.id);
     const knownId=knownCoordinates.get(chr+':'+pos);
     requireValue(!knownId||knownId===v.id,'同一坐标使用不同 marker_id：'+chr+':'+pos+'（已登记 '+knownId+'）');
-    return old?{...old,alt,alleles}:v;
+    return {...(old||v),alt,alleles,markerType};
   });
   unique(variants,'id','位点');
   requireValue(manifest.genotype_evidence!=='G_none'||!variants.length,'G_none 仅用于无位点的表型数据集');
@@ -132,8 +133,11 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
     if(!old)variants.set(v.id,{...v,encoding:5});
     else{
       const alt=[...new Set([...alleleNames(old).slice(1),...alleleNames(v).slice(1)])].sort();
+      const kind=markerKind([old.ref,...alt],true);
+      requireValue(kind,'合并后的位点等位超出支持范围：'+v.id);
       old.alt=alt.join(',')||null;
       old.alleles=[old.ref,...alt];
+      old.markerType=kind;
     }
   }
   const traitMeta=new Map(),units=new Map();let offset=0;

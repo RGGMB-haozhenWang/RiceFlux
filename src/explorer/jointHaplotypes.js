@@ -1,5 +1,5 @@
 import {callOf,isAssayed} from './catalog.js';
-import {baseAt} from './alleles.js';
+import {baseAt,literalAllele} from './alleles.js';
 import {chromNum} from './exchange.js';
 import {resolveSites} from './siteSelection.js';
 
@@ -21,6 +21,7 @@ export function literatureDefinitions(gene,evidence) {
 }
 
 export const statusText={called:'已判型',missing:'分型缺失',heterozygous:'含杂合位点',both:'缺失且含杂合',unmatched:'纯合型未匹配定义',ambiguous:'匹配多个型名',uncovered:'定义位点未覆盖',no_sites:'无分型位点'};
+const displaySequence=bases=>bases.join(bases.some(a=>a.length>1)?'·':'');
 
 function insertDefinition(sets,gene,entry,kind){
   if(!entry.components.length)return;
@@ -33,7 +34,7 @@ function insertDefinition(sets,gene,entry,kind){
   }
   const scheme=sets.get(key);
   const vector=entry.components.map(c=>c.state);
-  const valid=vector.every(a=>typeof a==='string'&&/^[ACGT]$/.test(a));const sequence=vector.join('');
+  const valid=vector.every(a=>typeof a==='string'&&literalAllele.test(a));const sequence=vector.join('|');
   scheme.definitions.push({label:entry.label,sequence:vector.map(a=>a??'NA').join('·'),valid});
   if(valid){
     if(!scheme.lookup.has(sequence))scheme.lookup.set(sequence,new Set());
@@ -52,8 +53,8 @@ export function geneSchemes(gene,evidence,imported=[],custom){
   for(const d of literatureDefinitions(gene,evidence))insertDefinition(sets,gene,d,'literature');
   for(const rec of imported){
     const bases=rec.row.Hap.split(',').map(s=>s.trim().toUpperCase());
-    if(bases.length!==rec.sites.length||bases.some(b=>!/^[ACGT]$/.test(b))||chromNum(gene.chromosome)!==rec.chromosome)continue;
-    insertDefinition(sets,gene,{label:bases.join(''),doi:rec.inputDOI??[],components:rec.sites.map((s,i)=>({...s,state:bases[i]}))},'input');
+    if(bases.length!==rec.sites.length||bases.some(b=>!literalAllele.test(b))||chromNum(gene.chromosome)!==rec.chromosome)continue;
+    insertDefinition(sets,gene,{label:displaySequence(bases),doi:rec.inputDOI??[],components:rec.sites.map((s,i)=>({...s,state:bases[i]}))},'input');
   }
   const schemes=[...sets.values()];
   for(const s of schemes){s.ready=s.ready&&s.lookup.size>0;s.provenance=gene.presets?.find(p=>s.doi.includes(p.doi));}
@@ -75,9 +76,8 @@ export function typeMaterial(sample,scheme){
   });
   const vector=bases.join(' ');
   if(missing||het)return {status:missing&&het?'both':missing?'missing':'heterozygous',label:'',bases:vector};
-  const sequence=bases.join('');
-  if(scheme.kind==='observed'||scheme.kind==='custom')return {status:'called',label:(scheme.kind==='custom'?'自选型 ':bases.length===1?'单标记 ':'标记型 ')+sequence,bases:vector};
-  const matches=scheme.lookup.get(sequence);
+  if(scheme.kind==='observed'||scheme.kind==='custom')return {status:'called',label:(scheme.kind==='custom'?'自选型 ':bases.length===1?'单标记 ':'标记型 ')+displaySequence(bases),bases:vector};
+  const matches=scheme.lookup.get(bases.join('|'));
   if(!matches)return {status:'unmatched',label:'',bases:vector};
   if(matches.size!==1)return {status:'ambiguous',label:[...matches].join(' / '),bases:vector};
   return {status:'called',label:[...matches][0],bases:vector};

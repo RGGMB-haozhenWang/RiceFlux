@@ -113,6 +113,7 @@ export function DataPanel({data,onApply,gene}){
         <label className="file-button">选择文件<input aria-label="导入数据集" type="file" multiple accept=".json,.tsv,.txt,.gz" onChange={upload} disabled={busy}/></label>
       </div>
       <p className="footnote">{importMode==='package'?'manifest.json + samples、variants、genotypes、environments、phenotypes。':importMode==='new'?'samples.tsv + 分型两表、表型两表或两者。':importMode==='phenotypes'?`${bundle?.manifest.name||'先预览目标'} · environments.tsv + phenotypes.tsv`:`${bundle?.manifest.name||'先预览目标'} · variants.tsv + genotypes.tsv`}</p>
+      {importMode!=='phenotypes'&&<p className="footnote">Tables 1.2 支持 SNP 和短 InDel。短 InDel 填写带共同锚定碱基的 REF/ALT 序列，如 A/AT 或 AT/A。</p>}
     </details>
     {error&&<p role="alert">{error}</p>}{busy&&<p role="status">正在校验并读取数据…</p>}
     {bundle&&<><DatasetProvenance data={data} datasetId={bundle.manifest.id}/><details onToggle={e=>{setShowTables(e.currentTarget.open);if(!e.currentTarget.open)setReadTable(null);}}><summary>原始表格预览 / Source tables · {bundle.manifest.name}</summary><div className="compare-tools"><select aria-label="预览表格" value={table} onChange={e=>setTable(e.target.value)}>{datasetFiles.map(key=><option key={key}>{key}</option>)}</select><button disabled={!tableText} onClick={()=>saveFile(table+'.tsv',tableText,'text/tab-separated-values;charset=utf-8')}>下载当前 TSV</button><button onClick={downloadManifest}>下载输入清单</button></div>

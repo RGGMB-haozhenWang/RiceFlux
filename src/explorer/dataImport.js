@@ -12,12 +12,12 @@ const empty={variants:'marker_id\tgene_id\tchr\tposition\tref\talt\n',environmen
 const compactField=s=>s.trim().replace(/[\t\r\n]+/g,' ');
 
 export function createLocalDataset(patch, metadata, reference) {
-  if(!patch.samples)throw Error('新建数据集需要 samples.tsv');
+  if(!patch.samples)throw Error('新建数据集需要 samples.txt 或 samples.tsv');
   if(Boolean(patch.variants)!==Boolean(patch.genotypes)||Boolean(patch.environments)!==Boolean(patch.phenotypes))throw Error('variants 与 genotypes、environments 与 phenotypes 须分别成对提供');
   if(!patch.genotypes&&!patch.phenotypes)throw Error('请提供分型表、表型表或两者');
   const template=readTable(patch.samples,['sample_id'],'samples');
   const genotypes=writeTSV(['sample_id'],template.objects());
-  const manifest={schema:'RiceFlux tables 1.1',id:metadata.id,name:compactField(metadata.name),version:metadata.version,
+  const manifest={schema:'RiceFlux tables 1.2',id:metadata.id,name:compactField(metadata.name),version:metadata.version,
     assembly:'IRGSP-1.0/MSU7',source:compactField(metadata.source),genotype_evidence:patch.genotypes?metadata.genotype_evidence:'G_none',files};
   return parseDataset(manifest,{...empty,genotypes,...patch},reference);
 }
@@ -55,7 +55,7 @@ export function extendDataset(base, kind, input, metadata, reference) {
     if(!input.variants||!input.genotypes)throw Error('请选择 variants.tsv 和 genotypes.tsv');
     patch={variants:input.variants,genotypes:input.genotypes};
   }
-  const manifest={...base.manifest,version:metadata.version,schema:'RiceFlux tables 1.1',files,
+  const manifest={...base.manifest,version:metadata.version,schema:'RiceFlux tables 1.2',files,
     genotype_evidence:kind==='genotypes'?metadata.genotype_evidence:base.manifest.genotype_evidence,
     source:kind==='genotypes'?source:base.manifest.source,
     supplements:[...(base.manifest.supplements||[]),{kind,source}]};

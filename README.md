@@ -9,6 +9,7 @@ A static rice genetics workbench for genes, genotype combinations and accessions
 - **D2**: RiceNavi 404 份材料，23 个严格匹配 SNP，18 个基因；完整来源库另保留 319 条位点记录。
 - **先验 / Prior**: 477 基因输入库。查询包含补充及历史身份；MSU ID 未解决的条目明确标记。
 - **证据 / Evidence**: 数据集覆盖、文献功能位点、单倍型组分与调用质量分别标注。6044 的表型列附原文测定规程、地点与指标。
+- **InDel**: Tables 1.2 支持导入短插入和缺失，并用于位点统计、基因型组合与导出。
 
 ## 使用 / Use
 

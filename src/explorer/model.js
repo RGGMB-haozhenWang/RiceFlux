@@ -1,5 +1,5 @@
 import {callOf,isAssayed} from './catalog.js';
-import {alleleNames,baseAt,snpBase} from './alleles.js';
+import {alleleNames,baseAt,literalAllele,markerKind} from './alleles.js';
 import {regionalView} from './regions.js';
 export function validateDataset(data) {
   const observed=data?.meta?.synthetic===false && ['RiceFlux modern indica 1.0','RiceFlux registry 2.0'].includes(data.meta.schema);
@@ -12,8 +12,8 @@ export function validateDataset(data) {
     if(gene.variants.some(v=>{
       const alleles=alleleNames(v);
       return !v.id||!Number.isInteger(v.pos)||v.pos<gene.start||v.pos>gene.end||
-        !alleles.every(a=>snpBase.test(a))||new Set(alleles).size!==alleles.length||(!observed&&alleles.length<2);
-    })) throw new Error('SNP 注释无效');
+        !markerKind(alleles,observed)||(!observed&&alleles.length<2);
+    })) throw new Error('变异注释无效');
   }
   if(data.traits.some(t=>!data.genes.some(g=>g.trait_ids.includes(t.id)))) throw new Error('性状缺少关联的演示基因');
   const variants=data.genes.flatMap(g=>g.variants);
@@ -93,7 +93,7 @@ export function literatureMatches(gene,definitions,cohort) {
   return definitions.map(row=>{
     const states=row.components.map(c=>c.state??'—').join('·');
     const variants=row.components.map(c=>byPosition.get(c.pos));
-    const valid=row.components.length>1&&row.components.every((c,i)=>variants[i]&&/^[ACGT]$/.test(c.state)&&c.ref===variants[i].ref);
+    const valid=row.components.length>1&&row.components.every((c,i)=>variants[i]&&literalAllele.test(c.state)&&c.ref===variants[i].ref);
     if(!valid)return {row,states,matched:null,callable:null};
     let matched=0,callable=0,assayed=0;
     for(const s of cohort) {

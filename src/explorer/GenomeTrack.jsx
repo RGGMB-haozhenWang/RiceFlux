@@ -47,7 +47,9 @@ export function GenomeTrack({gene,variants,selected,onSelect}) {
       {visible.map(v=><g key={v.id} role="button" tabIndex={variants.includes(v)?0:-1} aria-label={'选择位点 '+v.id} opacity={variants.includes(v)?1:.27}
         onClick={()=>{if(!suppressClick.current&&variants.includes(v))onSelect(v.id);}}
         onKeyDown={e=>{if(['Enter',' '].includes(e.key)&&variants.includes(v)){e.preventDefault();onSelect(v.id);}}}>
-        <line x1={scale(v.pos)} x2={scale(v.pos)} y1="78" y2="98" stroke="#839ead"/><circle cx={scale(v.pos)} cy="104" r={v.id===selected?.id?6:4} fill={v.id===selected?.id?'#3572c5':'#7796ac'}/><title>{v.id} · {v.ref} / {v.alt??'—'}</title></g>)}
+        <line x1={scale(v.pos)} x2={scale(v.pos)} y1="78" y2="98" stroke="#839ead"/>
+        {v.markerType==='InDel'?<rect x={scale(v.pos)-4} y="100" width="8" height="8" fill={v.id===selected?.id?'#3572c5':'#8b5b27'}/>:<circle cx={scale(v.pos)} cy="104" r={v.id===selected?.id?6:4} fill={v.id===selected?.id?'#3572c5':'#7796ac'}/>}
+        <title>{v.markerType||'SNP'} · {v.id} · {v.ref} / {v.alt??'—'}</title></g>)}
     </svg><p className="track-range">窗口 {view.left.toLocaleString()}–{view.right.toLocaleString()} bp · 拖动平移 · 窗内 {visible.length} 个标记</p>
   <details className="chromosome-context"><summary>染色体区段注释</summary><p>距最近染色体端 {terminalDistance.toLocaleString()} bp（全长的 {(relative*100).toFixed(1)}%）{relative<=.1?' · 端部 10% 几何区域':''} · {centromere?<a href={centromere.source} target="_blank" rel="noreferrer">着丝粒约 {(Number(centromere.position)/1e6).toFixed(1)} Mb</a>:'着丝粒位置未接入'}<small>近似点不代表功能边界；端部比例不等于重组率。</small></p></details></div>;
 }

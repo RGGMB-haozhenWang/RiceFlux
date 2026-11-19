@@ -3,11 +3,22 @@
 export const missingCode = 4;
 export const missingPair = 24;
 export const snpBase = /^[ACGT]$/;
+export const literalAllele = /^[ACGT]{1,51}$/;
 const packedPairs = Array.from({ length: 25 }, (_, code) => [code % 5, Math.floor(code / 5)]
   .map(allele => allele === missingCode ? null : allele));
 
 export function alleleNames(marker) {
   return marker.alleles || [marker.ref, ...(marker.alt?.split(',') || [])];
+}
+
+export function markerKind(alleles, allowIndel = false) {
+  if (!alleles.length || new Set(alleles).size !== alleles.length || alleles.length > 4) return null;
+  if (alleles.every(a => snpBase.test(a))) return 'SNP';
+  if (!allowIndel || !alleles.every(a => literalAllele.test(a))) return null;
+  const [ref, ...alts] = alleles;
+  const simple = alts.every(alt => alt.length === ref.length ? alt.length === 1
+    : alt.startsWith(ref) || ref.startsWith(alt));
+  return simple && alts.some(alt => alt.length !== ref.length) ? 'InDel' : null;
 }
 
 export function baseAt(marker, index) {
@@ -26,7 +37,7 @@ export function callPair(token, alleles) {
   if (pair.length !== 2) throw Error('分型须为未分相二倍体，例如 A/G、1/2、A/. 或 ./.');
   const called = pair.filter(part => part !== '.');
   const numeric = called.every(part => /^[0-3]$/.test(part));
-  if (!numeric && !called.every(part => snpBase.test(part))) throw Error('分型碱基或等位编号无效');
+  if (!numeric && !called.every(part => literalAllele.test(part))) throw Error('分型碱基序列或等位编号无效');
   return pair.map(part => {
     if (part === '.') return null;
     const code = numeric ? Number(part) : alleles.indexOf(part);
