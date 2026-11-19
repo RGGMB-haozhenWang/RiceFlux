@@ -36,5 +36,87 @@
     "partial": 0,
     "missing": 252,
     "heterozygous": 60
+  },
+  "packed": {
+    "schema": "RiceFlux packed 1.0",
+    "axes": {
+      "sha256": "33d3183a94bbb4b63a3e1657d2c0c38f310fe05db125c765fd54b7c9af1f585a",
+      "bytes": 46201
+    },
+    "blocks": [
+      {
+        "sha256": "9d725d5e54e72b45819dc9b4f4a83d1a361f623ed5da9f3da9391d5db882b383",
+        "bytes": 808,
+        "markers": [
+          "Chr01:5244076",
+          "Chr01:35558484"
+        ]
+      },
+      {
+        "sha256": "c856c101ffd666e64a0aa90d91793ca23b8906034f62c2da2851532395f2855c",
+        "bytes": 404,
+        "markers": [
+          "Chr02:32514337"
+        ]
+      },
+      {
+        "sha256": "c76f0137d701856c04dfe647de2b2ba2c3822e6dc8bd94c465889c8d2975b956",
+        "bytes": 1616,
+        "markers": [
+          "Chr03:16733441",
+          "Chr03:18437564",
+          "Chr03:31512460",
+          "Chr03:33002789"
+        ]
+      },
+      {
+        "sha256": "e533725137bfba2447e0fcb115675de3330c23f8dd9db00cf27a031a3a7fa10d",
+        "bytes": 1616,
+        "markers": [
+          "Chr05:3339934",
+          "Chr05:3444274",
+          "Chr05:3444712",
+          "Chr05:5365256"
+        ]
+      },
+      {
+        "sha256": "556e5fae03b5d054b41b3ce7663ef617c88360ef9dddac807694d85546d7f386",
+        "bytes": 2828,
+        "markers": [
+          "Chr06:1765761",
+          "Chr06:2928178",
+          "Chr06:2942292",
+          "Chr06:2940130",
+          "Chr06:6752756",
+          "Chr06:6752888",
+          "Chr06:13055819"
+        ]
+      },
+      {
+        "sha256": "6344f1b7266f092090030564aef7ceb5434867c85a29e67f16e5b3523a024530",
+        "bytes": 808,
+        "markers": [
+          "Chr07:9154664",
+          "Chr07:9154489"
+        ]
+      },
+      {
+        "sha256": "a80d1c560b3ecc2e42885e9f8593c3d02cadcda74c80e89a723922ac5a48c0fc",
+        "bytes": 808,
+        "markers": [
+          "Chr10:17076177",
+          "Chr10:17077589"
+        ]
+      },
+      {
+        "sha256": "9b01bdfa0be32adab6dece9d623bd276cdea297a2983777cddef42e7f3c1389f",
+        "bytes": 404,
+        "markers": [
+          "Chr11:2454121"
+        ]
+      }
+    ],
+    "archive": "ricenavi-v1.zip",
+    "member_prefix": ""
   }
 }

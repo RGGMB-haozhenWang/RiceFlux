@@ -6,13 +6,13 @@ import {phenotypeAxes,stateSummary} from './analysis.js';
 import {loadAbstracts} from './observed.js';
 import {datasetBadge,datasetTint} from './datasetColors.js';
 import {saveFile,writeTSV} from './formats.js';
-export function EvidencePanel({data,gene,cohort,selected}){
+export function EvidencePanel({data,gene,trait,cohort,selected}){
   const [expanded,setExpanded]=useState(false),[env,setEnv]=useState(''),[modern,setModern]=useState(true);
   const [abstracts,setAbstracts]=useState(),[abstractError,setAbstractError]=useState('');
   useEffect(()=>{if(!expanded)return;let active=true;loadAbstracts(import.meta.env.BASE_URL).then(a=>{if(active)setAbstracts(a);}).catch(e=>{if(active)setAbstractError(e.message);});return()=>{active=false;};},[expanded]);
   const papers=useMemo(()=>evidenceRows(gene,data.evidence,data.literature,abstracts),[gene,data,abstracts]);
   const events=useMemo(()=>eventRows(gene),[gene]);
-  const axes=phenotypeAxes(data).filter(e=>gene.trait_ids.includes(e.trait_id)),active=axes.find(e=>e.id===env)||axes[0];
+  const axes=phenotypeAxes(data).filter(e=>trait.id===e.trait_id),active=axes.find(e=>e.id===env)||axes[0];
   const reviewCohort=cohort.filter(s=>!modern||s.kind==='modern cultivar');
   const strata=[...new Set(reviewCohort.map(s=>JSON.stringify([s.dataset_id,s.subspecies,s.source_group||s.population_id])))];
   const review=active&&selected?strata.flatMap(key=>{const [dataset,subspecies,source_group]=JSON.parse(key);return stateSummary(reviewCohort.filter(s=>JSON.stringify([s.dataset_id,s.subspecies,s.source_group||s.population_id])===key),selected,active.id).map(r=>({dataset,subspecies,source_group,...r}));}):[];
@@ -37,6 +37,6 @@ export function EvidencePanel({data,gene,cohort,selected}){
       {review.length?<><div className="matrix-scroll"><table className="individual-table"><thead><tr><th>数据集 / 亚群 / 来源组</th><th>分型</th><th>有效 n</th><th>原始均值 · {active.unit}</th></tr></thead><tbody>{review.map((r,i)=><tr key={i}><td>{r.dataset} / {r.subspecies} / {r.source_group}</td><td>{r.genotype}</td><td>{r.n}</td><td>{r.mean===null?'不可估计':r.mean.toFixed(3)}</td></tr>)}</tbody></table></div><button onClick={()=>saveFile('riceflux_population_review.tsv',writeTSV(['dataset','subspecies','source_group','marker','environment','unit','modern_only','genotype','dosage','n','mean','interpretation'],review.map(r=>({...r,marker:selected.id,environment:active.id,unit:active.unit,modern_only:modern,interpretation:'descriptive_association_only'}))),'text/tab-separated-values')}>下载分层复核 TSV</button></>:<p>当前位点或对应性状缺少可用的配对数据。</p>}
       <p><a href="./prior/primary_contrasts.tsv" download>已完成的原 2,347 份现代籼稻模型结果（23 个预定对照）</a></p>
     </details>
-    <details><summary>性状标准与外部本体</summary><p>性状采用 Crop Ontology 的 Trait–Method–Scale 模型；试验地点、年份和时期独立记录。TO 提供跨作物性状概念，GO 注释基因产物的功能、过程和细胞组分。外部术语未核验时保留本地稳定 ID，不自动映射。</p><a href="./formats/traits.tsv" download>性状注册表 TSV</a> · <a href="./formats/ontology.txt" target="_blank" rel="noreferrer">接入规范</a></details>
+    <details><summary>性状标准与外部本体</summary><p>性状采用 Crop Ontology 的 Trait–Method–Scale 模型；试验地点、年份和时期独立记录。TO 提供跨作物性状概念，GO 注释基因产物的功能、过程和细胞组分。外部术语未核验时保留本地稳定 ID，不自动映射。</p><a href="./formats/traits.tsv" download>性状注册表 TSV</a> · <a href="./formats/ontology.txt" target="_blank" rel="noreferrer">接入规范</a> · <a href="./formats/ontology/v1/README.txt" target="_blank" rel="noreferrer">育种证据本体 V1</a> · <a href="./formats/ontology/v1/manifest.json" download>版本清单</a></details>
   </section>;
 }

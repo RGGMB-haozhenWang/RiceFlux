@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {geneSchemes,typeMaterial,jointCalls} from './jointHaplotypes.js';
+import {geneSchemes,typeMaterial,jointCalls,literatureDefinitions} from './jointHaplotypes.js';
+import {literatureMatches} from './model.js';
 const v1={id:'p1',pos:3,ref:'A',alt:'G'},v2={id:'p2',pos:11,ref:'T',alt:'C'};
 const row=(id,label,a,b,pos=11)=>({id,label,mode:'完整多位点型',components:[{pos:3,ref:'A',state:a},{pos,ref:'T',state:b}]});
 const gene={name:'G',variants:[v1,v2],records:[row('x','H1','A','T'),row('y','H2','G','C'),row('z','H3','G','C'),row('w','Other series','A','T',12)]};
@@ -24,4 +25,18 @@ test('supplement binds literature definitions to catalog identity, with the publ
   assert.deepEqual(known.doi,['10.1186/s12284-020-00393-5']);
   assert.deepEqual(known.definitions.map(d=>d.sequence),['A·G·C','G·T·T','G·G·C']);
   assert.ok(geneSchemes({...alk,id:'different',name:'ALK'},{events:{}}).every(s=>s.kind!=='literature'));
+});
+
+test('combined datasets retain assay coverage separately from missing calls',()=>{
+  const combined={...gene,variants:[v1,{...v2,assayedDatasets:new Set(['D1'])}]};
+  const scheme=geneSchemes(combined,evidence)[0];
+  const covered={...sample('1',[0,0],[0,0]),dataset_id:'D1'};
+  const missing={...sample('2',[0,0],[null,null]),dataset_id:'D1'};
+  const uncovered={...sample('3',[0,0],[null,null]),dataset_id:'D2'};
+  assert.deepEqual([covered,missing,uncovered].map(s=>typeMaterial(s,scheme).status),['called','missing','uncovered']);
+  const [definition]=literatureDefinitions(combined,evidence);
+  const counts=cohort=>literatureMatches(combined,[definition],cohort).map(({matched,callable})=>[matched,callable]);
+  assert.deepEqual(counts([uncovered]),[[null,null]]);
+  assert.deepEqual(counts([missing]),[[0,0]]);
+  assert.deepEqual(counts([covered,missing,uncovered]),[[1,1]]);
 });

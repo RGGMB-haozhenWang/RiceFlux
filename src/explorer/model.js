@@ -1,4 +1,4 @@
-import {callOf} from './catalog.js';
+import {callOf,isAssayed} from './catalog.js';
 import {alleleNames,baseAt,snpBase} from './alleles.js';
 import {regionalView} from './regions.js';
 export function validateDataset(data) {
@@ -21,7 +21,8 @@ export function validateDataset(data) {
   const siteAlleleCounts=variants.map(v=>alleleNames(v).length);
   for(const individual of data.individuals) {
     if(individual.ploidy!==2||!data.populations.some(p=>p.id===individual.population_id)) throw new Error('群体或倍性无效');
-    for(let i=0;i<variants.length;i++) {
+    // Packed columns are checked when their shard is decoded.
+    for(let i=0;!data.loadGenes&&i<variants.length;i++) {
       const gt=callOf(individual,variants[i]);
       if(!Array.isArray(gt)||gt.length!==2||gt.some(a=>a!==null&&(!Number.isInteger(a)||a<0||a>=siteAlleleCounts[i]))) throw new Error('位点须使用登记的二倍体等位编号');
     }
@@ -94,13 +95,16 @@ export function literatureMatches(gene,definitions,cohort) {
     const variants=row.components.map(c=>byPosition.get(c.pos));
     const valid=row.components.length>1&&row.components.every((c,i)=>variants[i]&&/^[ACGT]$/.test(c.state)&&c.ref===variants[i].ref);
     if(!valid)return {row,states,matched:null,callable:null};
-    let matched=0,callable=0;
+    let matched=0,callable=0,assayed=0;
     for(const s of cohort) {
+      if(variants.some(v=>!isAssayed(s,v)))continue;
+      assayed++;
       const pairs=variants.map(v=>callOf(s,v));
       if(pairs.some(([a,b])=>a===null||a!==b))continue;
       callable++;
       if(pairs.every(([a],i)=>baseAt(variants[i],a)===row.components[i].state))matched++;
     }
+    if(cohort.length&&!assayed)return {row,states,matched:null,callable:null};
     return {row,states,matched,callable};
   });
 }

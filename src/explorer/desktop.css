@@ -30,6 +30,8 @@
 .hero-actions { gap:6px; }
 .top { height:36px; padding:0 18px; font-size:13px; }
 .context-strip { padding:5px 10px; margin-bottom:10px; gap:10px; font-size:var(--table-size); }
+.gene-trait-choice select { max-width:min(255px,62vw); padding:2px 6px; border:1px solid #c8d9d5; border-radius:5px; background:#fff; color:#36594e; }
+.gene-trait-choice label { flex-shrink:0; }
 .kpis { margin-bottom:10px; gap:10px; }
 .kpis>div { padding:8px 12px; border-radius:9px; }
 .kpis>div>span { font-size:13px; color:#526772; }
@@ -153,6 +155,7 @@
 .dataset-two { background:#eae3f4; color:#60417e; border-color:#d2c2e5; }
 .functional { background:#f8e7c9; color:#7c5115; border-color:#ead0a5; }
 .haplotype { background:#e0ecf8; color:#385d83; border-color:#c1d5e9; }
+.phenotype-support { background:#f8e3eb; color:#7f2c50; border-color:#ebc4d6; }
 .literature,.pending { background:#edf0f1; color:#51616b; border-color:#d6dde0; }
 .population-description { display:inline; margin-left:6px; font-size:12px; color:#526772; }
 .source-group-key { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:6px; }
@@ -215,7 +218,13 @@
 }
 .controls .cohort-heading { display:flex; align-items:center; justify-content:space-between; gap:6px; }
 .sample-list-input { width:100%; resize:vertical; font:inherit; padding:8px; border:1px solid #c4d3d3; border-radius:5px; }
-.source-filters { grid-template-columns: minmax(155px,1fr) repeat(3,minmax(112px,auto)); }
+.source-filters { grid-template-columns:minmax(155px,1fr) minmax(130px,.8fr) minmax(173px,.9fr); }
+.catalog-list > button { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+.catalog-gene { display:grid; gap:2px; min-width:0; }
+.catalog-gene small { text-align:left; overflow-wrap:anywhere; }
+.catalog-list .source-badges { justify-content:flex-end; }
+.catalog-traits { grid-column:1/-1; display:flex; flex-wrap:wrap; align-items:center; gap:4px 7px; }
+.catalog-unmeasured { color:#526772; font-size:13px; }
 .marker-quality { display:flex; gap:8px; flex-wrap:wrap; font-size:13px; color:#465a62; margin:4px 0; }
 .marker-quality span { font-weight:600; }
 .phenotype-tools { display:flex; align-items:flex-start; flex-wrap:wrap; gap:3px 10px; margin:4px 0; font-size:13px; }
@@ -232,7 +241,10 @@
 .radar { width:100%; max-width:610px; }
 .abstract-excerpt { color:#334f59; }
 @media(max-width:1050px){ .radar-layout { grid-template-columns:minmax(0,1fr); } }
-@media(max-width:680px){ .source-filters { grid-template-columns:1fr; } }
+@media(max-width:680px){
+  .source-filters,.catalog-list > button { grid-template-columns:1fr; }
+  .catalog-list .source-badges { justify-content:flex-start; }
+}
 
 .material-comparison .compare-tools { margin:6px 0; }
 .material-dimensions { display:flex; flex-wrap:wrap; align-items:center; gap:4px 14px; }

@@ -15,9 +15,31 @@ export function DataPanel({data,onApply,gene}){
   const [ids,setIds]=useState(data.meta.datasets.map(d=>d.id)),[group,setGroup]=useState(data.meta.groupBy),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const [previewId,setPreview]=useState(data.meta.datasets[0].id),[table,setTable]=useState('samples');
   const [importMode,setImportMode]=useState('package'),[importName,setImportName]=useState(''),[importSource,setImportSource]=useState(''),[importEvidence,setImportEvidence]=useState('G_chip');
+  const [showTables,setShowTables]=useState(false),[readTable,setReadTable]=useState(null),[retryTable,setRetryTable]=useState(0);
+  function changeOpen(next){
+    setOpen(next);
+    if(!next){setShowTables(false);setReadTable(null);}
+  }
   useEffect(()=>{setEntries(data.datasetRegistry);setIds(data.meta.datasets.map(d=>d.id));setGroup(data.meta.groupBy);setLoaded(prev=>new Map([...prev,...data.datasetBundles.map(b=>[b.manifest.id,b])]));setPreview(data.meta.datasets[0].id);},[data]);
   const bundle=loaded.get(previewId);
-  const preview=useMemo(()=>{if(!open||!bundle)return null;const lines=bundle.texts[table].trimEnd().split('\n');return {fields:lines[0].split('\t'),count:lines.length-1,rows:lines.slice(1,13).map(line=>line.split('\t'))};},[open,bundle,table]);
+  const tableState=readTable&&readTable.bundle===bundle&&readTable.key===table?readTable:null;
+  const tableText=bundle?.texts?.[table]??tableState?.text;
+  useEffect(()=>{
+    if(!open||!showTables||!bundle?.sourceText)return;
+    let active=true;
+    setReadTable(null);
+    bundle.sourceText(table).then(text=>{
+      if(active)setReadTable({bundle,key:table,text});
+    },error=>{
+      if(active)setReadTable({bundle,key:table,error:error.message});
+    });
+    return()=>{active=false;};
+  },[open,showTables,bundle,table,retryTable]);
+  const preview=useMemo(()=>{
+    if(!open||!showTables||!tableText)return null;
+    const lines=tableText.trimEnd().split('\n');
+    return {fields:lines[0].split('\t'),count:lines.length-1,rows:lines.slice(1,13).map(line=>line.split('\t'))};
+  },[open,showTables,tableText]);
   async function upload(event){
     const selected=[...event.target.files];event.target.value='';if(!selected.length)return;
     setError('');setBusy(true);
@@ -39,7 +61,8 @@ export function DataPanel({data,onApply,gene}){
         if(importMode==='new')parsed=createLocalDataset(input,metadata,data.reference);
         else{
           if(!bundle)throw Error('先预览一个目标数据集');
-          parsed=extendDataset(bundle,importMode,input,metadata,data.reference);
+          const source=bundle.sourceBundle?await bundle.sourceBundle():bundle;
+          parsed=extendDataset(source,importMode,input,metadata,data.reference);
           if(!entries.find(e=>e.id===bundle.manifest.id)?.local||bundle.overlays){
             parsed.baseVersion=bundle.baseVersion||bundle.manifest.version;
             parsed.overlays=[...(bundle.overlays||[]),{kind:importMode,input,metadata}];
@@ -66,15 +89,16 @@ export function DataPanel({data,onApply,gene}){
         bundles.push(cache.get(id));
       }
       const next=validateDataset(combineDatasets(data.reference,bundles,group,entries));
-      onApply({...next,reference:data.reference,datasetRegistry:entries,datasetBundles:bundles});setLoaded(cache);setOpen(false);
+      await onApply({...next,reference:data.reference,datasetRegistry:entries,datasetBundles:bundles});setLoaded(cache);changeOpen(false);
     }catch(e){setError(e.message);}finally{setBusy(false);}
   }
   function downloadManifest(){
     const m={...bundle.manifest,files:Object.fromEntries(datasetFiles.map(key=>[key,key+'.tsv']))};
+    delete m.packed;
     saveFile('manifest.json',JSON.stringify(m,null,2)+'\n','application/json');
   }
-  return <><Button variant="soft" color="gray" onClick={()=>setOpen(true)}>数据接口 / Data · {data.meta.datasets.length}</Button>
-  <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Content maxWidth="960px" className="dataset-dialog">
+  return <><Button variant="soft" color="gray" onClick={()=>changeOpen(true)}>数据接口 / Data · {data.meta.datasets.length}</Button>
+  <Dialog.Root open={open} onOpenChange={changeOpen}><Dialog.Content maxWidth="960px" className="dataset-dialog">
     <Dialog.Title>数据集与溯源 / Data sources</Dialog.Title><Dialog.Description>选择数据集，预览或导入材料。</Dialog.Description>
     <div className="dataset-list">{entries.map(r=><label key={r.id}><input type="checkbox" checked={ids.includes(r.id)} disabled={busy} onChange={e=>setIds(prev=>e.target.checked?[...prev,r.id]:prev.filter(id=>id!==r.id))}/><strong><span className="source-badge dataset-tint" style={datasetTint(r.id,entries)}>{datasetBadge(r.id,entries)}</span> {r.name}</strong><small>{r.id} · {r.version}{r.local?' · 本地导入':''}</small><button onClick={e=>{e.preventDefault();previewDataset(r.id)}} disabled={busy}>来源 / 预览</button></label>)}</div>
     <div className="compare-tools"><label>比较维度 <select aria-label="比较维度" value={group} onChange={e=>setGroup(e.target.value)}>{groupOptions.map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label>
@@ -91,8 +115,8 @@ export function DataPanel({data,onApply,gene}){
       <p className="footnote">{importMode==='package'?'manifest.json + samples、variants、genotypes、environments、phenotypes。':importMode==='new'?'samples.tsv + 分型两表、表型两表或两者。':importMode==='phenotypes'?`${bundle?.manifest.name||'先预览目标'} · environments.tsv + phenotypes.tsv`:`${bundle?.manifest.name||'先预览目标'} · variants.tsv + genotypes.tsv`}</p>
     </details>
     {error&&<p role="alert">{error}</p>}{busy&&<p role="status">正在校验并读取数据…</p>}
-    {bundle&&<><DatasetProvenance data={data} datasetId={bundle.manifest.id}/><details><summary>原始表格预览 / Source tables · {bundle.manifest.name}</summary><div className="compare-tools"><select aria-label="预览表格" value={table} onChange={e=>setTable(e.target.value)}>{datasetFiles.map(key=><option key={key}>{key}</option>)}</select><button onClick={()=>saveFile(table+'.tsv',bundle.texts[table],'text/tab-separated-values;charset=utf-8')}>下载当前 TSV</button><button onClick={downloadManifest}>下载输入清单</button></div>
-    <p className="footnote">{preview?.count.toLocaleString()} 行 × {preview?.fields.length.toLocaleString()} 列 · 预览前 12 行、8 列</p>
+    {bundle&&<><DatasetProvenance data={data} datasetId={bundle.manifest.id}/><details onToggle={e=>{setShowTables(e.currentTarget.open);if(!e.currentTarget.open)setReadTable(null);}}><summary>原始表格预览 / Source tables · {bundle.manifest.name}</summary><div className="compare-tools"><select aria-label="预览表格" value={table} onChange={e=>setTable(e.target.value)}>{datasetFiles.map(key=><option key={key}>{key}</option>)}</select><button disabled={!tableText} onClick={()=>saveFile(table+'.tsv',tableText,'text/tab-separated-values;charset=utf-8')}>下载当前 TSV</button><button onClick={downloadManifest}>下载输入清单</button></div>
+    {preview?<p className="footnote">{preview.count.toLocaleString()} 行 × {preview.fields.length.toLocaleString()} 列 · 预览前 12 行、8 列</p>:tableState?.error?<p role="alert">{tableState.error} <button onClick={()=>{setReadTable(null);setRetryTable(n=>n+1);}}>重试</button></p>:showTables&&<p role="status">正在读取原始表…</p>}
     {preview&&<div className="matrix-scroll"><table className="individual-table"><thead><tr>{preview.fields.slice(0,8).map(k=><th key={k}>{k}</th>)}</tr></thead><tbody>{preview.rows.slice(0,12).map((row,i)=><tr key={i}>{row.slice(0,8).map((value,j)=><td key={j}>{value}</td>)}</tr>)}</tbody></table></div>}</details></>}
     <details><summary>RiceNavi 完整来源库 / All source records</summary>{open&&<React.Suspense fallback={<p>Loading…</p>}><RiceNaviPanel gene={gene}/></React.Suspense>}</details><div className="dialog-actions"><span>{ids.length} 个数据集已选择</span><Dialog.Close><Button variant="soft" color="gray">关闭</Button></Dialog.Close><Button disabled={busy||!ids.length} onClick={apply}>应用数据集 / Apply</Button></div>
   </Dialog.Content></Dialog.Root></>;

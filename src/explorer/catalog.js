@@ -1,9 +1,13 @@
 import {packedCall} from './alleles.js';
 // Preserve the 50 curated cards; attach the wider V4 registry and separate regional comparisons.
 const pairs=Array.from({length:9},(_,i)=>[i%3,Math.floor(i/3)].map(x=>x===2?null:x));
+export function isAssayed(sample,variant){
+  return variant.assayedDatasets?.has(sample.dataset_id)??true;
+}
 export function callOf(sample,variant){
-  if (variant.column) {
-    const code = variant.column[sample.ordinal];
+  const column=variant.column;
+  if (column) {
+    const code = column[sample.ordinal];
     return variant.encoding === 5 ? packedCall(code) : pairs[code];
   }
   return sample.genotypes?.[variant.id] ?? pairs[8];

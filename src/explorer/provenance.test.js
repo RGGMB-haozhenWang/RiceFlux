@@ -5,7 +5,7 @@ import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {readTable,parseDataset,combineDatasets} from './datasets.js';
 import {callOf} from './catalog.js';
-import {datasetCalls,geneSupport} from './provenance.js';
+import {datasetCalls,geneSupport,geneTraits,phenotypeSupport} from './provenance.js';
 import {percentile,radarRows} from './analysis.js';
 const base=new URL('../../public/',import.meta.url),bytes=p=>fs.readFileSync(new URL(p,base));
 const text=p=>(p.endsWith('.gz')?gunzipSync(bytes(p)):bytes(p)).toString();
@@ -41,6 +41,33 @@ test('identity audit retains all genes, MSU gaps and shared aliases; supports do
   const gs3=data.genes.find(g=>g.name==='GS3'),row=datasetCalls(data,gs3,data.individuals)[0];
   assert.equal(row.samples,404);assert.equal(row.markers,1);assert.equal(row.total,808);assert.ok(row.complete>0);assert.equal(row.confidence,'not_certified');
   assert.deepEqual(geneSupport(data,gs3).map(r=>r.badge),['D1','D2']);assert.ok(support.every(r=>r.high_confidence_sites==='0'));
+  assert.deepEqual(phenotypeSupport(data,gs3),[]);
+});
+test('P follows curated gene–trait links and observed values in the active datasets',()=>{
+  const dth7=reference.genes.find(g=>g.name==='DTH7'),alk=reference.genes.find(g=>g.name==='ALK');
+  const trait=(id,n)=>({id,environments:[{source:{n}}]});
+  const heading=trait('heading',1),sheath=trait('sheath',1),extra=trait('custom_exploration',1);
+  const data={meta:{synthetic:false},reference,traits:[heading,sheath,extra]};
+  assert.deepEqual(phenotypeSupport(data,{...dth7,trait_ids:[...dth7.trait_ids,extra.id]}),[heading]);
+  assert.deepEqual(phenotypeSupport(data,alk),[]);
+  assert.deepEqual(phenotypeSupport({...data,traits:[trait('heading',0),sheath,extra]},dth7),[]);
+  assert.deepEqual(phenotypeSupport({...data,meta:{synthetic:true}},dth7),[]);
+});
+test('gene trait display links exact curated terms to available endpoints and retains unmeasured terms',()=>{
+  const gl7=reference.genes.find(g=>g.name==='GL7'),dth7=reference.genes.find(g=>g.name==='DTH7');
+  const qgl7=reference.genes.find(g=>g.name==='qGL7'),alk=reference.genes.find(g=>g.name==='ALK');
+  const observed={source:{n:2,dataset_id:'rice6044'}};
+  const width={id:'width',name:'粒宽',family:'width',environments:[observed]};
+  const data={meta:{synthetic:false},reference,traits:[...reference.traits.filter(t=>t.id!=='width').map(({environments,...t})=>t),width]};
+  assert.ok(!gl7.trait_ids.includes('width'));
+  assert.ok(geneTraits(data,gl7).includes(width));
+  assert.deepEqual(phenotypeSupport(data,gl7,'rice6044'),[width]);
+  assert.deepEqual(phenotypeSupport(data,gl7,'ricenavi404'),[]);
+  assert.ok(geneTraits(data,dth7).some(t=>t.id==='prior_株高'&&!t.environments));
+  assert.ok(!geneTraits(data,dth7).some(t=>t.id==='sheath'||t.id.startsWith('v4_')));
+  assert.deepEqual(geneTraits(data,qgl7).map(t=>t.id),['length']);
+  const quality={id:'quality',name:'米质／糊化',family:'quality',environments:[observed]};
+  assert.deepEqual(geneTraits({...data,traits:[...data.traits,quality]},alk).map(t=>t.id),['quality']);
 });
 test('all 66 phenotype columns retain endpoint provenance, including unresolved source spelling and protocols',()=>{
   const envs=readTable(text('annotations/environments.tsv')).objects();assert.equal(envs.length,66);

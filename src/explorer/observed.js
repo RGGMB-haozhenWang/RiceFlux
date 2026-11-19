@@ -1,6 +1,9 @@
 import {readPrior} from './exchange.js';
 import {measuredTraits} from './regions.js';
 import {readTable,readPackage,combineDatasets} from './datasets.js';
+import {fetchBytes,readText,unpackGzip} from './assets.js';
+import {openPackedDataset} from './packedDataset.js';
+export {readText} from './assets.js';
 // Adapt the released cohort and its ontology to the existing explorer data model.
 const groupColors = {'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
 function hasPrior(trait, label) {
@@ -81,29 +84,25 @@ export function observedDataset(cohort, ontology) {
   return {meta:{synthetic:false,schema:cohort.schema,assembly:cohort.assembly,source:'https://pubmed.ncbi.nlm.nih.gov/40083159/'},genes,traits,populations,individuals};
 }
 
-export async function readText(path,signal){
-  const response=await fetch(path,{signal});
-  if(!response.ok)throw new Error('数据读取失败 ('+response.status+')');
-  const raw=await response.arrayBuffer(),bytes=new Uint8Array(raw);
-  if(bytes[0]===31 && bytes[1]===139)return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
-  return new TextDecoder().decode(raw);
-}
-
 async function readJSON(path,signal){return JSON.parse(await readText(path,signal));}
 
-export async function loadExplorer(base,demo,signal){
+export async function loadExplorer(base,demo,signal,initialGene){
   if(demo)return readJSON(base+'data/explorer_demo.json',signal);
-  const [reference,index,literature,config,regions,traitRegistry]=await Promise.all([
-    readJSON(base+'datasets/reference.json.gz',signal),readText(base+'datasets/index.tsv',signal),
-    readText(base+'datasets/literature.tsv',signal),readJSON(base+'formats/deployment.json',signal),readText(base+'formats/genome_regions.tsv',signal),readText(base+'formats/traits.tsv',signal)]);
+  const names={identities:'gene_identity',support:'dataset_gene_support',populations:'populations',environments:'phenotyping',presets:'presets'};
+  const annotationsRequest=Promise.all(Object.entries(names).map(async([key,file])=>[key,readTable(await readText(base+'annotations/'+file+'.tsv',signal)).objects()]));
+  const indexRequest=readText(base+'datasets/index.tsv',signal).then(index=>{
+    const rows=readTable(index,['id','name','version','manifest'],'index').objects();
+    if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||rows.some(r=>!/^[-\w]+\/manifest\.json$/.test(r.manifest)))throw Error('数据集索引无效');
+    return Promise.all([rows,registeredManifest(base,rows[0],signal)]);
+  });
+  const [reference,[registry,manifest],literature,config,regions,traitRegistry,annotations]=await Promise.all([
+    readJSON(base+'datasets/reference.json.gz',signal),indexRequest,
+    readText(base+'datasets/literature.tsv',signal),readJSON(base+'formats/deployment.json',signal),readText(base+'formats/genome_regions.tsv',signal),readText(base+'formats/traits.tsv',signal),annotationsRequest]);
   if(config.version!==1)throw Error('服务器配置版本无效');
-  const registry=readTable(index,['id','name','version','manifest'],'index').objects();
-  if(!registry.length||new Set(registry.map(r=>r.id)).size!==registry.length||registry.some(r=>!/^[-\w]+\/manifest\.json$/.test(r.manifest)))throw Error('数据集索引无效');
   reference.datasetRegistry=registry;
   reference.genomeRegions=readTable(regions).objects();
   reference.traitRegistry=readTable(traitRegistry).objects();
-  const names={identities:'gene_identity',support:'dataset_gene_support',populations:'populations',environments:'phenotyping',presets:'presets'};
-  reference.annotations=Object.fromEntries(await Promise.all(Object.entries(names).map(async([key,file])=>[key,readTable(await readText(base+'annotations/'+file+'.tsv',signal)).objects()])));
+  reference.annotations=Object.fromEntries(annotations);
   for(const g of reference.genes){
     const audit=reference.annotations.identities.find(r=>r.gene_id===g.id);
     if(audit){g.name=audit.display_name;g.catalog.aliases=[...new Set([...g.catalog.aliases,...audit.aliases.split(';')])];}
@@ -114,18 +113,39 @@ export async function loadExplorer(base,demo,signal){
   if(config.prior_file){
     const path=config.prior_file;
     if(typeof path!=='string'||!/^formats\/[a-zA-Z0-9_-]+\.tsv$/.test(path))throw Error('服务器先验文件应位于 formats 目录');
-    reference.deploymentPrior=readPrior(await readText(base+path,signal));
+    let request;
+    reference.loadDeploymentPrior=()=>request??=readText(base+path).then(readPrior).catch(error=>{request=undefined;throw error;});
     reference.deploymentPriorFile=path;
     reference.compareOnLoad=config.compare_on_load!==false;
   }
-  const bundle=await loadRegistered(base,registry[0],reference,signal);
-  return {...combineDatasets(reference,[bundle]),reference,datasetRegistry:registry,datasetBundles:[bundle]};
+  const bundle=await readRegistered(base,registry[0],manifest,reference,signal);
+  const data=combineDatasets(reference,[bundle]);
+  if(data.loadGenes)await data.loadGenes([initialGene?.(data)??(data.genes.find(g=>g.name==='DTH7')||data.genes[0]).id],signal);
+  return {...data,reference,datasetRegistry:registry,datasetBundles:[bundle]};
+}
+
+async function registeredManifest(base,row,signal){
+  const manifest=await readJSON(base+'datasets/'+row.manifest,signal);
+  if(manifest.id!==row.id||manifest.version!==row.version)throw Error('数据集索引与版本清单不一致');
+  return manifest;
+}
+
+async function readRegistered(base,row,manifest,reference,signal){
+  const root=new URL(base+'datasets/',location.href),directory=new URL(row.manifest,root);
+  if(!manifest.packed)return readPackage(manifest,file=>readText(new URL(file,directory),signal),reference);
+  const descriptor=manifest.packed;
+  if(!/^[-\w]+\.zip$/.test(descriptor.archive)||typeof descriptor.member_prefix!=='string'||!/^(?:[-\w]+\/)?$/.test(descriptor.member_prefix))throw Error('TSV 归档路径无效');
+  return openPackedDataset(manifest,(file,requestSignal)=>fetchBytes(new URL(file,root),requestSignal),async key=>{
+    const file=manifest.files?.[key];
+    if(typeof file!=='string'||!/^[-\w.]+\.(?:tsv|txt)(?:\.gz)?$/.test(file))throw Error('清单文件名无效');
+    const {archiveEntry}=await import('./portableArchive.js');
+    const archive=await fetchBytes(new URL(descriptor.archive,root));
+    return new TextDecoder().decode(await unpackGzip(await archiveEntry(archive,descriptor.member_prefix+file)));
+  },reference,signal);
 }
 
 export async function loadRegistered(base,row,reference,signal){
-  const path=base+'datasets/'+row.manifest,manifest=await readJSON(path,signal);
-  if(manifest.id!==row.id||manifest.version!==row.version)throw Error('数据集索引与版本清单不一致');
-  return readPackage(manifest,file=>readText(new URL(file,new URL(path,location.href)),signal),reference);
+  return readRegistered(base,row,await registeredManifest(base,row,signal),reference,signal);
 }
 
 let abstractRequest;

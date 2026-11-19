@@ -20,6 +20,39 @@ export function geneEvidence(data,gene,dataset='all'){
     papers:gene.catalog?.geneDOI?.length||gene.sources?.length||0};
 }
 export function identityFor(data,gene){return data.annotations?.identities.find(r=>r.gene_id===gene.id);}
+const traitName=value=>(value||'').trim().normalize('NFKC');
+export function geneTraits(data,gene){
+  if(data.meta.synthetic)return [];
+  const curated=data.reference?.genes.find(g=>g.id===gene.id)||gene;
+  // Some source records place notes next to endpoint names in the same field.
+  const reported=(curated.catalog?.traits||[]).flatMap(label=>label.split(/[;；]/)).map(label=>label.trim())
+    .filter(label=>label&&!/[。！？：:%％，]/.test(label)&&!/^(作者|已审|样本量|基因背景|基因\/材料背景)/.test(label));
+  const names=new Set(reported.map(traitName));
+  const registry=data.traits.filter(t=>t.family!=='prior'||t.id.startsWith('prior_'));
+  // The shared sheath link serves exploratory comparisons in the core collection.
+  const linked=registry.filter(t=>curated.trait_ids.includes(t.id)&&(t.id!=='sheath'||names.has(traitName(t.name))));
+  const options=new Map();
+  function add(name,registered){
+    const key=traitName(name)||registered?.id;
+    if(options.has(key))return;
+    if(registered&&registered.family!=='prior'){
+      options.set(key,registered);return;
+    }
+    const matches=registry.filter(t=>traitName(t.name)===key);
+    const endpoints=matches.filter(t=>t.family!=='prior'||t.environments?.length);
+    const trait=endpoints.length===1?endpoints[0]:registered??(matches.length===1?matches[0]:{id:'prior_'+name,name,category:'当前基因关联性状',family:'prior',unit:'无配对表型'});
+    options.set(key,trait);
+  }
+  for(const t of linked)add(t.name,t);
+  for(const name of reported)add(name);
+  return [...options.values()];
+}
+export function hasPhenotypes(trait,dataset='all'){
+  return Boolean(trait?.environments?.some(e=>e.source.n>0&&(dataset==='all'||e.source.dataset_id===dataset)));
+}
+export function phenotypeSupport(data,gene,dataset='all'){
+  return geneTraits(data,gene).filter(t=>hasPhenotypes(t,dataset));
+}
 export function datasetCalls(data,gene,cohort){
   return (data.datasetBundles||[]).map(b=>{
     const members=cohort.filter(s=>s.dataset_id===b.manifest.id);

@@ -6,6 +6,7 @@ import {materialTables,zipTables} from './exports.js';
 import {siteName} from './regions.js';
 import {sourceColor} from './datasetColors.js';
 import {geneSchemes,typeMaterial,statusText} from './jointHaplotypes.js';
+import {useGeneCalls} from './useGeneCalls.js';
 const radarCenter=[290,164],radarRadius=108;
 const number=x=>Number.isFinite(x)?Number(x.toFixed(2)):'—';
 export function MaterialPanel({data,reference,genes,settings={},onSettings}){
@@ -15,6 +16,7 @@ export function MaterialPanel({data,reference,genes,settings={},onSettings}){
   const axisIds=settings.axes||defaults,active=axisIds.map(id=>axes.find(e=>e.id===id)).filter(Boolean);
   const ids=settings.samples||[],byId=useMemo(()=>new Map(data.individuals.map(s=>[s.id,s])),[data]);
   const samples=ids.map(id=>byId.get(id)).filter(Boolean),lastPage=Math.max(0,Math.ceil(samples.length/6)-1),currentPage=Math.min(page,lastPage),visible=samples.slice(currentPage*6,currentPage*6+6);
+  const calls=useGeneCalls(data,genes.map(g=>g.id),samples.length>0);
   const refs=[...new Set(reference.map(s=>JSON.stringify([s.dataset_id,s.source_group||s.population_id])))];
   const refKey=refs.includes(settings.reference)?settings.reference:'current';
   const comparison=refKey==='current'?reference:reference.filter(s=>JSON.stringify([s.dataset_id,s.source_group||s.population_id])===refKey);
@@ -44,6 +46,6 @@ export function MaterialPanel({data,reference,genes,settings={},onSettings}){
     <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>表型 / 环境</th>{visible.map((s,i)=><th key={s.id} style={{color:color(s,i)}}>{s.name}<small>{s.id}</small></th>)}</tr></thead><tbody>{active.map((e,i)=><tr key={e.id}><th>{e.trait_name}<small>{e.assay} · {e.source.site} {e.source.year} · {e.unit}</small></th>{visible.map(s=>{const r=rowByKey.get(JSON.stringify([s.id,e.id]));return <td key={s.id}>{number(r.value)}<small>P {number(r.percentile)} · n={r.reference_n}</small></td>;})}</tr>)}</tbody></table></div></div>
     <button onClick={()=>saveFile('riceflux_material_comparison.zip',zipTables(materialTables(rows,comparison,active)),'application/zip')}>下载全部原值与百分位 TSV 包 / Export all</button>
     <h3>关注基因的材料分型</h3>
-    <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>基因 / 定义</th>{visible.map(s=><th key={s.id}>{s.name}</th>)}</tr></thead><tbody>{genes.map(g=>{const schemes=geneSchemes(g,data.evidence),scheme=schemes.find(s=>s.kind==='literature'&&s.ready)||schemes.find(s=>s.kind==='observed');return <tr key={g.id}><th>{g.name}<small>{scheme.kind==='literature'?'文献定义':'区域标记型'} · {scheme.positions.join(', ')}</small></th>{visible.map(s=>{const c=typeMaterial(s,scheme);return <td key={s.id}>{readableDefinition(c.label)||statusText[c.status]}<small>{s.genotype_evidence}</small></td>;})}</tr>;})}</tbody></table></div></>}
+    {!calls.ready?(calls.error?<p role="alert">{calls.error} <button onClick={calls.retry}>重试</button></p>:<p role="status">正在读取材料分型…</p>):<div className="matrix-scroll"><table className="individual-table"><thead><tr><th>基因 / 定义</th>{visible.map(s=><th key={s.id}>{s.name}</th>)}</tr></thead><tbody>{genes.map(g=>{const schemes=geneSchemes(g,data.evidence),scheme=schemes.find(s=>s.kind==='literature'&&s.ready)||schemes.find(s=>s.kind==='observed');return <tr key={g.id}><th>{g.name}<small>{scheme.kind==='literature'?'文献定义':'区域标记型'} · {scheme.positions.join(', ')}</small></th>{visible.map(s=>{const c=typeMaterial(s,scheme);return <td key={s.id}>{readableDefinition(c.label)||statusText[c.status]}<small>{s.genotype_evidence}</small></td>;})}</tr>;})}</tbody></table></div>}</>}
   </section>;
 }

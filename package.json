@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/build-theme.mjs && vite build",
+    "build:packed": "node scripts/build-theme.mjs && node scripts/build-packed-site.mjs",
     "test": "node --test src/explorer/*.test.js"
   },
   "dependencies": {

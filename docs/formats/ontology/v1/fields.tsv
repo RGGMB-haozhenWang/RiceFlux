@@ -1,0 +1,21 @@
+entity	fields	input	rule
+GeneIdentity	locusIdentifier, namespace	datasets/reference.json.gz: genes[].catalog.msu / rap	Prefer a verified MSU7 locus; use RAP-DB when MSU is absent. Names are labels.
+GeneRecord	identityStatus	datasets/reference.json.gz: genes[].catalog	Keep historical and unresolved records addressable.
+ReferenceSite	assembly, chromosome, position, reference	prior/ontology.jsonld.gz; dataset manifest + variants.tsv	Use IRGSP-1.0 pseudomolecules, 1-based forward coordinates and exact REF.
+DatasetVersion	datasetId, version, genotypeEvidence, source	manifest.json: id, version, genotype_evidence, source	Preserve the version and evidence class. G_chip represents source sequence calls in the two published packages.
+AssayedMarker	markerId, datasetVersion, gene, locatedAt, alternate	variants.tsv: marker_id, gene_id, chr, position, ref, alt	Marker identity belongs to the dataset version. ALT order addresses allele indices.
+RegionalComparisonSNP	markerId, datasetVersion, reportedEvent	prior/v4_catalog.jsonld.gz: RegionalComparisonSNP, sourceEvent	Inherit the reported comparison-marker role. Event links record evidence context.
+AccessionIdentity	dataset_id, sample_id	samples.tsv: sample_id	Use the dataset identifier plus the raw sample identifier. Never join packages on sample name.
+GenotypeCall	dataset_version, sample_id, marker_id, genotype	genotypes.tsv + variants.tsv	Diploid slash-separated calls. Explicit 0/0 is reference. NA, dot, blank or a missing allele preserve absence.
+Population	scope, memberCount, memberSha256	samples.tsv: sample_id, source_group, legacy	Hash sorted raw sample ID and source-group pairs. Legacy aliases require exact membership and group agreement.
+Population	historicalGenotyped, historicalEligible, historicalMatrix	prior/ontology.jsonld.gz; prior/population_ontology.jsonld; prior/accessions_6044.tsv.gz	Retain historical matrix and eligibility counts separately from current observations.
+PriorEvent	gene, label, supportedBy, sourceArtifact	prior/v4_catalog.jsonld.gz: PriorEvent	Preserve the source record and its event-level citations.
+LiteratureHaplotypeDefinition	gene, orderedComponents, supportedBy	prior/ontology.jsonld.gz; formats/literature.json	Keep each source definition and its ordered list. Carry DOI from its declared evidence.
+OrderedComponent	ordinal, coordinateStatus, stateStatus, locatedAt, reportedState	orderedComponents: ordinal, locatedAt, reportedState	Retain source order, including unknown coordinates and states.
+ComponentCoverage	ordinal, position, ref, marker_id, status	definition component + versioned variants.tsv	Require the same gene, assembly, chromosome, position and REF. An uncovered component has a null marker_id.
+HaplotypeMatchResult	population_n, complete_homozygous_n, matches, status_counts	definition + versioned calls + selected population	Count all eligible members by status. Matches require complete homozygous calls. Uncovered definitions have null callable and match counts.
+Trait	traitId, label, mappingStatus	formats/traits.tsv: trait_id, name, mapping_status	Local ID for unmapped external terms.
+ObservationVariable	trait, methodId, scaleId, unit	environments.tsv: trait_id, method_id, scale_id, assay, unit	Identify by trait, method and scale. Use a local identifier for an absent method or scale ID.
+TrialEnvironment	datasetVersion, environmentId, observationVariable, site, year, growthStage	environments.tsv: environment_id, site, year, growth_stage	Record the site, year and stage as measurement context.
+InputDataset	QTG, Trait, Function, MSU_ID, Chr, Position, Ref, Hap	formats/prior.tsv; formats/prior_477.tsv; formats/exchange.json	Retain eight ordered columns and optional trailing Source_DOI.
+AnalysisArtifact	produces	prior/ontology.jsonld.gz; formats/exchange.json	AnalyticalTool produces a View or an OutputDataset through their common parent.

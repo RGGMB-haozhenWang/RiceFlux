@@ -1,4 +1,4 @@
-import {callOf} from './catalog.js';
+import {callOf,isAssayed} from './catalog.js';
 import {baseAt} from './alleles.js';
 import {chromNum} from './exchange.js';
 import {resolveSites} from './siteSelection.js';
@@ -64,6 +64,7 @@ export function geneSchemes(gene,evidence,imported=[],custom){
 
 export function typeMaterial(sample,scheme){
   if(!scheme.ready)return {status:scheme.positions.length?'uncovered':'no_sites',label:'',bases:''};
+  if(scheme.markers.some(v=>!isAssayed(sample,v)))return {status:'uncovered',label:'',bases:''};
   let missing=false,het=false;
   const bases=scheme.markers.map(v=>{
     const [a,b]=callOf(sample,v);

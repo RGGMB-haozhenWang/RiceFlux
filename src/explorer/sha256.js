@@ -30,9 +30,11 @@ export function sha256Bytes(bytes){
   }
   return [...state].map(n=>n.toString(16).padStart(8,'0')).join('');
 }
-export async function sha256Text(text){
-  const bytes=new TextEncoder().encode(text);
+export async function sha256Data(bytes){
   if(!globalThis.crypto?.subtle)return sha256Bytes(bytes);
   const digest=await globalThis.crypto.subtle.digest('SHA-256',bytes);
   return [...new Uint8Array(digest)].map(n=>n.toString(16).padStart(2,'0')).join('');
+}
+export function sha256Text(text){
+  return sha256Data(new TextEncoder().encode(text));
 }
