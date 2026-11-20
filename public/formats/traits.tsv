@@ -57,3 +57,4 @@ v4_米质	米质	V4 文献性状	prior	prior_collection		unmapped					not_record
 v4_Secondary metabolism	Secondary metabolism	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
 v4_氮响应	氮响应	V4 文献性状	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
 historical	仅历史身份	历史名录	prior	prior_collection		unmapped					not_recorded	unspecified	https://cropontology.org/ontology/CO_320/Rice
+grains_per_panicle	每穗粒数	产量构成	grain_number	measured_trait		unmapped	RF:method:grains_per_panicle:每穗粒数	每穗粒数	RF:scale:粒/穗	粒/穗	postharvest	unspecified	https://cropontology.org/ontology/CO_320/Rice

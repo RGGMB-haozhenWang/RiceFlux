@@ -1,4 +1,4 @@
-"""Bind the 66 released phenotype columns to Ma et al. 2025 and the cited standard."""
+"""Bind released RiceAtlas phenotype columns to Ma et al. 2025 and the cited standard."""
 import csv
 from pathlib import Path
 
@@ -31,6 +31,7 @@ PROTOCOLS = {
     'heading': ('sowing_to_50_percent_heading', '抽穗期于田间记录。从播种起，至约 50% 的穗露出剑叶叶鞘，按天计。', 'Days from sowing to 50% panicle emergence above the flag-leaf sheath.', METHOD, HAN),
     'length': ('postharvest_grain_length', '收获后在实验室测定粒长，单位 mm。论文按水稻标准鉴定体系记录。', 'Grain length measured after harvest in the laboratory, in millimetres.', METHOD, HAN),
     'width': ('postharvest_grain_width', '收获后在实验室测定粒宽，单位 mm。论文按水稻标准鉴定体系记录。', 'Grain width measured after harvest in the laboratory, in millimetres.', METHOD, HAN),
+    'grains_per_panicle': ('postharvest_grains_per_panicle', '收获后在实验室测定每穗粒数，单位粒/穗。沿用来源表的材料级数值。', 'Grains per panicle measured after harvest in the laboratory. Values are the accession-level counts from the source workbook.', METHOD, HAN),
     'leaf_blast': ('leaf_blast_severity', '以叶片发病程度评分，常规叶瘟等级为 0–9。', 'Leaf blast severity was rated on a 0–9 scale for the standard score.', 'Supplementary Note, Evaluation of blast resistance, PDF pp. 21–22', '水稻品种区域试验稻瘟病抗性鉴定与评价技术规程（2014，原文引）'),
     'neck_blast': ('neck_blast_incidence_grade', '早熟阶段按每份材料 10 个穗的发病率评价，分为 0、1、3、5、7、9 级。', 'Neck blast classified from incidence on ten panicles per accession in early ripening, grades 0, 1, 3, 5, 7 and 9.', 'Supplementary Note, Evaluation of blast resistance, PDF pp. 21–22', '水稻品种区域试验稻瘟病抗性鉴定与评价技术规程（2014，原文引）'),
     'blight': ('bacterial_blight_lesion_length', '北京 2023 年按菌株分别记录叶片病斑长度，单位 cm。每株测定叶片的病斑长度，原法每株系评价 5 株。', 'Leaf lesion length in centimetres at Beijing in 2023, recorded separately by strain, with five plants per strain in the reported protocol.', 'Supplementary Note, Evaluation of leaf bacterial blight, PDF p. 22', 'Wei et al. 2021（补件所引）'),
@@ -43,7 +44,7 @@ with path.open() as src:
 result = []
 for r in rows:
     trait = r['trait_id']
-    field = trait in ('heading','length','width')
+    field = trait in ('heading','length','width','grains_per_panicle')
     key,text,en,locator,standard = PROTOCOLS[trait]
     coords = (FIELD if field else DISEASE).get(r['site'])
     site_status,site_code,coordinate_literal,latitude,longitude = 'standard_site', '', '', '', ''
@@ -71,7 +72,7 @@ for r in rows:
         'site_code':site_code,'site_status':site_status,'coordinate_literal':coordinate_literal,
         'latitude':latitude,'longitude':longitude,'source_doi':DOI})
 
-assert len(result)==66 and len({r['environment_id'] for r in result})==66
+assert len(result)==len({r['environment_id'] for r in result})
 target = PUBLIC / 'annotations/phenotyping.tsv'
 temp = target.with_suffix('.tsv.partial')
 with temp.open('w',newline='') as out:

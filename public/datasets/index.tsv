@@ -1,3 +1,3 @@
-id	name	version	manifest
-rice6044	RiceAtlas 6044	2026-11-14.1	rice6044-v1/manifest.json
-ricenavi404	RiceNavi 404	2026-11-17.1	ricenavi-v1/manifest.json
+id	name	version	manifest	previous_version	previous_manifest
+rice6044	RiceAtlas 6044	2026-11-20.1	rice6044-v2/manifest.json	2026-11-14.1	rice6044-v1/manifest.json
+ricenavi404	RiceNavi 404	2026-11-17.1	ricenavi-v1/manifest.json		

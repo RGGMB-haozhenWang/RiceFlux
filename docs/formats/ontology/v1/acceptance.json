@@ -1,16 +1,7 @@
 {
-  "status": "PASS",
-  "release": "local",
   "version": "1.0.0",
-  "verified_at": "2026-11-18T23:18:07+08:00",
-  "bundle_manifest_sha256": "419b2fbef45e7b255753747392b6cb90dd4531f40f21082bddc3941de66920cb",
-  "validator_sha256": "781899a62ff0572db3cdc46467e28dea185c5cef7ee384c8cb6055e285b89b10",
-  "entities": 6650,
+  "entities": 6665,
   "legacy_mappings": 5298,
-  "legacy_assets_unchanged": 601,
-  "loose_and_packed_results_identical": true,
-  "bundle_reproduced_byte_for_byte": true,
-  "unit_tests_passed": 48,
   "rejected_negative_cases": [
     "COMPONENT_ORDER",
     "MARKER_REF",
@@ -23,10 +14,10 @@
   "alk": [
     {
       "dataset_id": "rice6044",
-      "dataset_version": "2026-11-14.1",
-      "dataset_iri": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/dataset/rice6044/2026-11-14.1",
+      "dataset_version": "2026-11-20.1",
+      "dataset_iri": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/dataset/rice6044/2026-11-20.1",
       "genotype_evidence": "G_chip",
-      "population_iri": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/population/rice6044/2026-11-14.1/all",
+      "population_iri": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/population/rice6044/2026-11-20.1/all",
       "scope": "all",
       "doi": "10.1186/s12284-020-00393-5",
       "definition_iris": [
@@ -83,10 +74,10 @@
     },
     {
       "dataset_id": "rice6044",
-      "dataset_version": "2026-11-14.1",
-      "dataset_iri": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/dataset/rice6044/2026-11-14.1",
+      "dataset_version": "2026-11-20.1",
+      "dataset_iri": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/dataset/rice6044/2026-11-20.1",
       "genotype_evidence": "G_chip",
-      "population_iri": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/population/rice6044/2026-11-14.1/legacy_modern_indica",
+      "population_iri": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/population/rice6044/2026-11-20.1/legacy_modern_indica",
       "scope": "legacy_modern_indica",
       "doi": "10.1186/s12284-020-00393-5",
       "definition_iris": [
@@ -201,37 +192,5 @@
         "uncovered": 404
       }
     }
-  ],
-  "browser": {
-    "status": "PASS",
-    "chromium": "157.0.8103.79",
-    "fullRows": 6044,
-    "legacyRows": 2347,
-    "d2Rows": 404,
-    "combinedRows": 6448,
-    "exact_material_keys_and_source_group_hashes": true,
-    "exact_types_and_ordered_calls": true,
-    "exact_displayed_matches_and_denominators": true,
-    "mixed_coverage_preserved": true,
-    "ontology_lazy": true,
-    "versioned_links": true,
-    "packed_blob_requests": 5
-  },
-  "gene_trait_workflow": {
-    "removed_scope_options": true,
-    "phenotype_positive_and_negative": true,
-    "historical_lookup": true,
-    "scoped_to_dataset": true,
-    "gl7_traits": [
-      "length",
-      "width"
-    ],
-    "unmeasured_trait": "prior_株高",
-    "gene_preserved": true,
-    "genotype_and_shards_preserved": true,
-    "evidence_synced": true,
-    "workspace_roundtrip": true,
-    "phenotype_only_import": true,
-    "responsive": true
-  }
+  ]
 }

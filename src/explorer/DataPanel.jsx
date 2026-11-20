@@ -33,6 +33,7 @@ export function DataPanel({data,onApply,gene}){
     return loadRegistered(import.meta.env.BASE_URL,row,data.reference);
   }
   const bundle=cachedBundle(previewId);
+  const rice6044=entries.find(r=>r.id==='rice6044'&&!r.local)?.manifest?.split('/')[0];
   const tables=bundle?datasetTableKeys(bundle.manifest):datasetFiles;
   const tableState=readTable&&readTable.bundle===bundle&&readTable.key===table?readTable:null;
   const tableText=bundle?.texts?.[table]??tableState?.text;
@@ -91,7 +92,7 @@ export function DataPanel({data,onApply,gene}){
     <Dialog.Title>数据集与溯源 / Data sources</Dialog.Title><Dialog.Description>选择数据集，预览或导入材料。</Dialog.Description>
     <div className="dataset-list">{entries.map(r=><label key={r.id}><input type="checkbox" checked={ids.includes(r.id)} disabled={busy} onChange={e=>setIds(prev=>e.target.checked?[...prev,r.id]:prev.filter(id=>id!==r.id))}/><strong><span className="source-badge dataset-tint" style={datasetTint(r.id,entries)}>{datasetBadge(r.id,entries)}</span> {r.name}</strong><small>{r.id} · {r.version}{r.local?' · 本地导入':''}</small><button onClick={e=>{e.preventDefault();previewDataset(r.id)}} disabled={busy}>来源 / 预览</button></label>)}</div>
     <div className="compare-tools"><label>比较维度 <select aria-label="比较维度" value={group} onChange={e=>setGroup(e.target.value)}>{groupOptions.map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label>
-      <a href="./datasets/README.txt" target="_blank" rel="noreferrer">输入格式 / Load data</a><a href="./formats/dataset-intake.json" target="_blank" rel="noreferrer">本体规范 / Ontology</a><a href="./datasets/examples/riceflux_import_examples.zip" download>导入样例 / Templates</a><a href="./datasets/rice6044-v1.zip" download>6044 TSV</a><a href="./datasets/ricenavi-v1.zip" download>RiceNavi TSV</a>
+      <a href="./datasets/README.txt" target="_blank" rel="noreferrer">输入格式 / Load data</a><a href="./formats/dataset-intake.json" target="_blank" rel="noreferrer">本体规范 / Ontology</a><a href="./datasets/examples/riceflux_import_examples.zip" download>导入样例 / Templates</a>{rice6044&&<a href={'./datasets/'+rice6044+'.zip'} download>6044 TSV</a>}<a href="./datasets/ricenavi-v1.zip" download>RiceNavi TSV</a>
       <button onClick={()=>saveFile('riceflux_selected_samples.tsv',sampleTable(data),'text/tab-separated-values')}>当前材料与分组 TXT</button>
     </div><p className="footnote">同名材料按数据集分别统计；设置可保存到工作区。</p>
     <details className="dataset-import"><summary>导入基因型 / 表型 · Import data</summary>

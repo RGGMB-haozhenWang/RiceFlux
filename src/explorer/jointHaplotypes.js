@@ -39,7 +39,7 @@ function insertDefinition(sets,gene,entry,kind){
   const scheme=sets.get(key);
   const vector=entry.components.map(c=>c.state);
   const valid=vector.every(a=>typeof a==='string'&&literalAllele.test(a));const sequence=vector.join('|');
-  scheme.definitions.push({label:entry.label,sequence:vector.map(a=>a??'NA').join('·'),valid});
+  scheme.definitions.push({id:entry.id,label:entry.label,sequence:vector.map(a=>a??'NA').join('·'),valid});
   if(valid){
     if(!scheme.lookup.has(sequence))scheme.lookup.set(sequence,new Set());
     scheme.lookup.get(sequence).add(entry.label);

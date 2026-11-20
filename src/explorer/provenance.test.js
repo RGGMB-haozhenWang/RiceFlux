@@ -82,8 +82,13 @@ test('gene trait display links exact curated terms to available endpoints and re
   const quality={id:'quality',name:'米质／糊化',family:'quality',environments:[observed]};
   assert.deepEqual(geneTraits({...data,traits:[...data.traits,quality]},alk).map(t=>t.id),['quality']);
 });
-test('all 66 phenotype columns retain endpoint provenance, including unresolved source spelling and protocols',()=>{
-  const envs=readTable(text('annotations/environments.tsv')).objects();assert.equal(envs.length,66);
+test('existing phenotype columns retain provenance and all new grain counts bind to declared workbook columns',()=>{
+  const all=readTable(text('annotations/environments.tsv')).objects();
+  const envs=all.filter(e=>e.trait_id!=='grains_per_panicle');assert.equal(envs.length,66);
+  const grain=all.filter(e=>e.trait_id==='grains_per_panicle');assert.equal(grain.length,13);
+  assert.equal(new Set(grain.map(e=>e.site)).size,7);
+  assert.equal(grain.find(e=>e.column==='BJ').site,'Hefei');
+  for(const e of grain){assert.equal(e.unit,'粒/穗');assert.match(e.source_locator,/调整顺序-确定!B[A-Z]1:B[A-Z]3609/);}
   const dictionary=new Map(readTable(text('prior/phenotype_dictionary.tsv')).objects().map(r=>[r.column,r]));
   for(const e of envs){const source=dictionary.get(e.column);assert.equal(e.site,source.site);assert.equal(e.year,source.year);assert.equal(e.original_trait,source.trait);assert.equal(e.latitude,'');assert.match(e.method_status,/pending/);}
   assert.ok(envs.some(e=>e.site==='Jinhai'&&e.site_status.includes('unresolved')));assert.ok(envs.some(e=>e.site==='Jinzhai'));

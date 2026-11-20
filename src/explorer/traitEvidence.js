@@ -37,16 +37,23 @@ export function loadTraitEvidence(base) {
 export function traitEvidenceFor(data,gene) {
   if(!data||!gene.catalog?.core)return {record:null,claims:[]};
   const record=data.pilot.find(row=>row.RAP&&row.RAP===gene.catalog.rap||row.MSU&&row.MSU===gene.catalog.msu);
-  const claims=data.claims.filter(row=>row.gene_id===gene.id);
+  const claims=data.claims.filter(row=>row.gene_id===gene.id)
+    .sort((a,b)=>Number(b.judgment==='favourable')-Number(a.judgment==='favourable'));
   return {record,claims};
 }
 
-export function countReportedAllele(gene,claim,evidence,cohort) {
-  const [id,state]=claim.marker_state.split('=');
+export function reportedAllele(gene,claim,evidence) {
+  const [id,state]=(claim.marker_state||'').split('=');
   const marker=gene.variants.find(v=>v.id===id);
   const proof=evidence.sites?.[id];
   if(!marker||proof?.level!=='原文功能位点'||!proof.primary?.some(doi=>normalizeDOI(doi)===normalizeDOI(claim.doi)))return null;
-  const index=alleleNames(marker).indexOf(state);
+  return {marker,state,index:alleleNames(marker).indexOf(state)};
+}
+
+export function countReportedAllele(gene,claim,evidence,cohort) {
+  const allele=reportedAllele(gene,claim,evidence);
+  if(!allele)return null;
+  const {marker,index}=allele;
   let callable=0,matched=0;
   for(const sample of cohort){
     if(!isAssayed(sample,marker))continue;

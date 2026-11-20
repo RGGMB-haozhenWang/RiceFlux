@@ -51,9 +51,9 @@ ALK_SITES = (("Chr6", 6752756, "A"), ("Chr6", 6752887, "G"), ("Chr6", 6752888, "
 ALK_NAMES = {"AGC": "ALKᵃ", "GTT": "ALKᵇ", "GGC": "ALKᶜ"}
 MATCH_STATES = ("called", "heterozygous", "missing", "both", "unmatched", "ambiguous", "uncovered")
 AUDIT_SCOPES = (
-    ("rice6044", "2026-11-14.1", "all"),
-    ("rice6044", "2026-11-14.1", "legacy_modern_indica"),
-    ("ricenavi404", "2026-11-17.1", "all"),
+    ("rice6044", "all"),
+    ("rice6044", "legacy_modern_indica"),
+    ("ricenavi404", "all"),
 )
 
 
@@ -918,13 +918,13 @@ def negative_checks(packages, nodes):
     ids.reverse()
     reject("COMPONENT_ORDER", lambda: validate_graph(vocabulary(), {**graph, "@graph": list(malformed.values())}, packages))
     wrong_ref = deepcopy(nodes)
-    marker = iri("marker", "rice6044", "2026-11-14.1", "Chr06:6752756")
+    marker = iri("marker", "rice6044", packages["rice6044"].version, "Chr06:6752756")
     site = iri("site", ASSEMBLY, "Chr6", 6752756, "T")
     wrong_ref[site] = {**wrong_ref[iri("site", ASSEMBLY, "Chr6", 6752756, "A")], "@id": site, "reference": "T"}
     wrong_ref[marker]["locatedAt"] = link(site)
     reject("MARKER_REF", lambda: validate_graph(vocabulary(), {**graph, "@graph": list(wrong_ref.values())}, packages))
     denominator = deepcopy(nodes)
-    key = iri("population", "rice6044", "2026-11-14.1", "legacy_modern_indica")
+    key = iri("population", "rice6044", packages["rice6044"].version, "legacy_modern_indica")
     denominator[key]["memberCount"] += 7
     reject("POPULATION_DENOMINATOR", lambda: validate_graph(vocabulary(), {**graph, "@graph": list(denominator.values())}, packages))
     wrong_source = {**nodes, definition: {**nodes[definition], "supportedBy": []}}
@@ -932,7 +932,7 @@ def negative_checks(packages, nodes):
     reject("GENOTYPE_INDEX", lambda: alleles("0/2", "A", ["G"]))
     need(alleles("NA", "A", ["G"]) == (None, None) and alleles("./1", "A", ["G"]) == (None, "G")
          and alleles("0/0", "A", ["G"]) == ("A", "A"), "MISSING_REFERENCE_SEMANTICS")
-    uncovered = query_alk(packages, nodes, "ricenavi404", "2026-11-17.1", "all")
+    uncovered = query_alk(packages, nodes, "ricenavi404", packages["ricenavi404"].version, "all")
     uncovered["complete_homozygous_n"] = 0
     reject("RESULT_UNCOVERED", lambda: validate_result(uncovered, uncovered["population_n"]))
     reject("QUERY_DATASET_VERSION", lambda: query_alk(packages, nodes, "rice6044", "wrong", "all"))
@@ -965,7 +965,8 @@ def main():
         else:
             result = {"version": VERSION, "entities": len(nodes), "legacy_mappings": aliases,
                       "rejected_negative_cases": negative_checks(packages, nodes),
-                      "alk": [query_alk(packages, nodes, *scope, args.include_members) for scope in AUDIT_SCOPES]}
+                      "alk": [query_alk(packages, nodes, dataset, packages[dataset].version, scope, args.include_members)
+                              for dataset, scope in AUDIT_SCOPES]}
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 

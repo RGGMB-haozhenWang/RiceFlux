@@ -4,6 +4,7 @@ import {assessmentPolicy,isTargetRange,targetKey} from './traitAssessment.js';
 import {regionalView} from './regions.js';
 import {typeMaterial} from './jointHaplotypes.js';
 import {presetTitle,readableDefinition} from './provenance.js';
+import {reportedAllele} from './traitEvidence.js';
 
 function TargetEditor({trait,unit,range,onChange}) {
   const [lower,setLower]=useState(range?.[0]?.toString()??'');
@@ -93,10 +94,44 @@ function DescriptorProfile({cohort,groups}) {
   </details>;
 }
 
-export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,selectedIds,targets,onTarget,onInspect}) {
+export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,claims,selectedIds,targets,onTarget,onInspect}) {
   const [schemeId,setSchemeId]=useState(null);
-  const available=schemes.filter(s=>s.kind==='literature'&&s.ready);
-  const named=available.find(s=>s.id===schemeId)||(schemeId===null?available[0]:null);
+  const available=useMemo(()=>{
+    const definitions=schemes.filter(s=>s.kind==='literature'&&s.ready).map(s=>{
+      const effects=new Map();
+      for(const definition of s.definitions){
+        const matches=claims.filter(c=>c.definition_id===definition.id&&s.doi.includes(c.doi));
+        if(definition.valid&&matches.length)effects.set(definition.sequence.replaceAll('·',' '),matches);
+      }
+      return {...s,effects};
+    });
+    const byMarker=new Map();
+    for(const claim of claims){
+      if(claim.judgment!=='favourable'||!claim.marker_state)continue;
+      const allele=reportedAllele(gene,claim,data.evidence);
+      if(!allele||allele.index<0)continue;
+      const {marker,state}=allele;
+      if(!byMarker.has(marker.id))byMarker.set(marker.id,{
+        id:'allele:'+marker.id,kind:'observed',markers:[marker],positions:[marker.pos],ready:true,
+        title:'文献功能等位 · '+marker.id,effects:new Map(),
+      });
+      const map=byMarker.get(marker.id).effects;
+      map.set(state,[...(map.get(state)||[]),claim]);
+    }
+    return [...definitions,...byMarker.values()];
+  },[claims,data.evidence,gene,schemes]);
+  const axes=useMemo(()=>new Map(data.traits.filter(t=>t.environments?.length).map(t=>[t.id,t.environments.map(e=>e.id)])),[data.traits]);
+  const preferred=useMemo(()=>{
+    return available.find(s=>{
+      const endpoints=new Map([...s.effects].map(([sequence,records])=>[sequence,
+        records.filter(c=>c.judgment==='favourable').flatMap(c=>axes.get(c.trait_id)||[])]).filter(([,ids])=>ids.length));
+      return endpoints.size>0&&cohort.some(sample=>{
+        const typed=typeMaterial(sample,s);
+        return typed.status==='called'&&endpoints.get(typed.bases)?.some(id=>Number.isFinite(sample.phenotypes[id]));
+      });
+    });
+  },[available,cohort,axes]);
+  const named=available.find(s=>s.id===schemeId)||(schemeId!=='selection'?(preferred||available[0]):null);
   const scheme=useMemo(()=>named||{id:'selection',kind:'observed',markers:variants,positions:variants.map(v=>v.pos),ready:variants.length>0},[named,variants]);
   const groups=useMemo(()=>{
     const assigned=new Map();
@@ -104,29 +139,38 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,sele
       const call=typeMaterial(sample,scheme);
       if(call.status!=='called'&&call.status!=='unmatched')continue;
       const key=call.bases;
-      const label=call.status==='called'?readableDefinition(call.label):'观测型 '+call.bases;
-      if(!assigned.has(key))assigned.set(key,{key,label,members:[]});
+      if(!assigned.has(key)){
+        const effects=call.status==='called'?scheme.effects?.get(key):undefined;
+        const label=call.status==='called'?(effects?.[0]?.label||readableDefinition(call.label)):'观测型 '+call.bases;
+        assigned.set(key,{key,label,effects,members:[]});
+      }
       assigned.get(key).members.push(sample);
     }
     return [...assigned.values()].sort((a,b)=>b.members.length-a.members.length||a.label.localeCompare(b.label));
   },[cohort,scheme]);
   const plots=useMemo(()=>groups.length?groups:[{key:'reference',label:'当前全部材料',members:cohort}],[groups,cohort]);
   const associated=new Set(related.map(t=>t.id));
-  const measured=data.traits.filter(t=>t.environments?.length).sort((a,b)=>Number(associated.has(b.id))-Number(associated.has(a.id)));
+  const favourableTraits=new Set(groups.flatMap(g=>(g.effects||[]).filter(c=>c.judgment==='favourable'&&
+    g.members.some(s=>axes.get(c.trait_id)?.some(id=>Number.isFinite(s.phenotypes[id])))).map(c=>c.trait_id)));
+  const paperTraits=new Set([...(scheme.effects?.values()||[])].flatMap(effects=>effects.map(c=>c.trait_id)));
+  const measured=data.traits.filter(t=>t.environments?.length).sort((a,b)=>
+    Number(favourableTraits.has(b.id))-Number(favourableTraits.has(a.id))||
+    Number(paperTraits.has(b.id))-Number(paperTraits.has(a.id))||Number(associated.has(b.id))-Number(associated.has(a.id)));
   const columns=new Map([['relative',[]],['absolute',[]]]);
   for(const trait of measured)columns.get(assessmentPolicy(trait,trait.environments[0]).mode).push(trait);
+  const stacks=[...columns].filter(([,traits])=>traits.length).sort((a,b)=>Number(favourableTraits.has(b[1][0].id))-Number(favourableTraits.has(a[1][0].id)));
   const unmeasured=related.filter(t=>!t.environments?.length).map(t=>t.name);
   return <section className="panel trait-profile" aria-label="全部表型与单倍型评价">
     <header className="panel-title"><div><h2>表型与单倍型评价</h2><p>{measured.length} 项定量表型 · 按鉴定指标、地点和年份比较</p></div></header>
     <div className="profile-toolbar">
       <label>分型方案 <select aria-label="表型分型方案" value={scheme.id} onChange={e=>setSchemeId(e.target.value)}>
         <option value="selection">当前位点纯合型</option>
-        {available.map(s=><option key={s.id} value={s.id}>{presetTitle(s)}</option>)}
+        {available.map(s=><option key={s.id} value={s.id}>{s.title||presetTitle(s)}</option>)}
       </select></label>
       <span>{groups.length?`${groups.length} 型 · ${groups.reduce((n,g)=>n+g.members.length,0).toLocaleString()} 份完成判型`:'当前无完整判型，展示群体原始表型'}</span>
     </div>
     {unmeasured.length>0&&<p className="profile-unmeasured">暂无配对实测 · {unmeasured.join('、')}</p>}
-    {[...columns].filter(([,traits])=>traits.length).map(([mode,traits])=><section className="trait-stack" key={mode}>
+    {stacks.map(([mode,traits])=><section className="trait-stack" key={mode}>
       <h3 className="trait-stack-heading">{mode==='relative'?'相对性状':'绝对性状'}</h3>
       {traits.map(trait=><TraitCard key={trait.id} trait={trait} associated={associated.has(trait.id)} gene={gene}
         cohort={cohort} groups={plots} scheme={scheme} selectedIds={selectedIds} targets={targets} onTarget={onTarget} onInspect={onInspect}/>)}

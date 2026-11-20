@@ -30,9 +30,10 @@ function CompareGene({data,gene,variants,cohort,populations,onRemove,markerId,se
 }
 
 export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspect}){
-  const open=config.open||false,ids=config.ids||[],markerIds=config.markers||{};
-  const setOpen=value=>onConfig(prev=>({...prev,open:typeof value==='function'?value(prev.open||false):value}));
-  const setIds=value=>onConfig(prev=>({...prev,ids:typeof value==='function'?value(prev.ids||[]):value}));
+  const example=data.genes.find(g=>g.name===(activeGene.name==='ALK'?'DTH7':'ALK'));
+  const initialIds=useMemo(()=>[activeGene.id,...(example&&activeGene.id!==example.id?[example.id]:[])],[activeGene.id,example]);
+  const ids=config.ids??initialIds,markerIds=config.markers||{};
+  const setIds=value=>onConfig(prev=>({...prev,ids:typeof value==='function'?value(prev.ids??initialIds):value}));
   const setMarkerIds=value=>onConfig(prev=>({...prev,markers:typeof value==='function'?value(prev.markers||{}):value}));
   const [choice,setChoice]=useState(''),[filter,setFilter]=useState('');
   const [material,setMaterial]=useState(''),[limit,setLimit]=useState(20);
@@ -43,8 +44,8 @@ export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspec
   const available=findGenes(data.genes,filter).filter(g=>!g.catalog?.historical&&!ids.includes(g.id));
   const selected=available.some(g=>g.id===choice)?choice:available[0]?.id||'';
   const genes=useMemo(()=>ids.map(id=>data.genes.find(g=>g.id===id)).filter(Boolean),[ids,data.genes]);
-  const calls=useGeneCalls(data,ids,open);
-  const priorCalls=useGeneCalls(data,[...new Set(records.map(r=>r.gene?.id).filter(Boolean))],open&&showPrior);
+  const calls=useGeneCalls(data,ids,true);
+  const priorCalls=useGeneCalls(data,[...new Set(records.map(r=>r.gene?.id).filter(Boolean))],showPrior);
   const regionSites=genes.map(g=>config.joint?.chosen?.[g.id]==='custom'?resolveSites(g,config.joint.customSites?.[g.id]).variants:g.variants);
   const selectedSites=genes.map((g,i)=>regionSites[i].find(v=>v.id===markerIds[g.id])||regionSites[i][0]);
   const siteLabels=genes.map((g,i)=>g.name+'|'+(selectedSites[i]?.id||'NA'));
@@ -53,12 +54,12 @@ export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspec
     selectedSites.forEach((v,i)=>row[siteLabels[i]]=v?gtToken(callOf(s,v),v):'NA');
     return row;
   }
-  const visibleSamples=open&&genes.length?cohort.filter(s=>matchesMaterial(s,material)):[];
+  const visibleSamples=genes.length?cohort.filter(s=>matchesMaterial(s,material)):[];
   function install(parsed,name,selectGenes=true){
     const bound=bindPrior(parsed,data.genes);
     setRecords(bound);setFilename(name);setShowRows(24);setError('');
     if(selectGenes){
-      setIds([...new Set(bound.map(r=>r.gene?.id).filter(Boolean))]);setOpen(true);
+      setIds([...new Set(bound.map(r=>r.gene?.id).filter(Boolean))]);
     }
   }
   useEffect(()=>{
@@ -71,7 +72,7 @@ export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspec
     },e=>{if(active)setError(e.message);});
     return()=>{active=false;};
   },[data,config.input]);
-  const results=useMemo(()=>open&&showPrior&&priorCalls.ready&&records.length?priorResults(records,cohort,data.evidence):[],[open,showPrior,priorCalls.ready,records,data,cohort]);
+  const results=useMemo(()=>showPrior&&priorCalls.ready&&records.length?priorResults(records,cohort,data.evidence):[],[showPrior,priorCalls.ready,records,data,cohort]);
   function contextual(rows){return rows.map(row=>({...row,Dataset_versions:JSON.stringify(data.meta.datasets||[]),Grouping_dimension:data.meta.groupBy||'source_group'}));}
   function exportComparison(){
     downloadTable(formats.siteComparison,contextual(comparisonResults(genes,cohort,data.evidence)));
@@ -84,12 +85,7 @@ export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspec
     const file=event.target.files[0];event.target.value='';if(!file)return;
     try{const input=await file.text();install(readPrior(input),file.name);setCustom(true);onConfig(prev=>({...prev,input,inputName:file.name}));}catch(e){setError(e.message);}
   }
-  return <section className="panel compare-panel"><div className="panel-title"><div><h2>多基因比较</h2></div>
-  <button aria-expanded={open} onClick={()=>{if(!open&&!ids.length&&(!records.length||(!data.compareOnLoad&&!custom))){
-    const example=data.genes.find(g=>g.name===(activeGene.name==='ALK'?'DTH7':'ALK'));
-    setIds([activeGene.id,...(example&&activeGene.id!==example.id?[example.id]:[])]);
-  }setOpen(!open);}}>{open?'收起比较':'打开比较'}</button></div>
-  {open&&<><div className="compare-tools"><input aria-label="搜索比较基因" type="search" placeholder="基因名或基因编号" value={filter} onChange={e=>setFilter(e.target.value)}/>
+  return <section className="panel compare-panel"><div className="compare-tools"><input aria-label="搜索比较基因" type="search" placeholder="基因名或基因编号" value={filter} onChange={e=>setFilter(e.target.value)}/>
   <select aria-label="选择比较基因" value={selected} onChange={e=>setChoice(e.target.value)}>{!available.length&&<option value="">无匹配基因</option>}{available.map(g=><option key={g.id} value={g.id}>{g.name} · {g.catalog?.msu||g.id}</option>)}</select>
   <button disabled={!selected} onClick={()=>add(selected)}>加入比较</button><label className="file-button">导入八列 TXT / TSV<input aria-label="导入八列 TSV" type="file" accept=".tsv,.txt" onChange={upload}/></label>
   <a href="./formats/prior.tsv" download="prior.txt">样表</a><a href="./formats/README.txt" target="_blank" rel="noreferrer">格式与部署</a><a href="./formats/exchange.json" download>输入输出本体</a>
@@ -110,7 +106,7 @@ export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspec
   {records.length>0&&<div className="prior-import"><button aria-expanded={showPrior} onClick={()=>setShowPrior(v=>!v)}>{filename} · {records.length} 条先验 {showPrior?'收起':'展开'}</button>{showPrior&&(!priorCalls.ready?<Readiness calls={priorCalls}/>:<><h3>{filename}</h3><p>{records.length} 条先验记录 · {results.filter(r=>r.Status==='matched').length} / {results.length} 个组分匹配到群体分型</p>
   <button onClick={()=>downloadTable(formats.priorResults,contextual(results))}>导出输入记录及匹配结果</button> <button onClick={exportGraph}>导出先验关系图 JSON-LD</button>
   <div className="matrix-scroll"><table className="individual-table"><thead><tr>{['基因','性状与功能','Chr / Position','文献 Hap','匹配 / ALT 频率'].map(s=><th key={s}>{s}</th>)}</tr></thead><tbody>{results.slice(0,showRows).map((r,i)=><tr key={i}><td>{r.QTG}</td><td>{r.Trait} · {r.Function}</td><td>{r.Chr} / {r.Position.split(',')[r.Component-1]}</td><td>{r.Hap}</td><td>{r.Marker?r.Marker+' · '+percent(r.ALT_frequency):({gene_unresolved:'基因身份待核',position_missing:'无坐标',site_unmatched:'位点或 REF 未匹配'}[r.Status])}</td></tr>)}</tbody></table></div>
-  {results.length>showRows&&<button onClick={()=>setShowRows(showRows+48)}>查看更多记录</button>}</>)}</div>}</>}
+  {results.length>showRows&&<button onClick={()=>setShowRows(showRows+48)}>查看更多记录</button>}</>)}</div>}
   </section>;
 }
 

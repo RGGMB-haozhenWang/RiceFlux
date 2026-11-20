@@ -6,6 +6,7 @@ import {PhenotypeTests} from './PhenotypeTests.jsx';
 import {typeMaterial} from './jointHaplotypes.js';
 import {presetTitle,readableDefinition} from './provenance.js';
 import {assessPhenotype,isTargetRange} from './traitAssessment.js';
+import {effectDirections} from './traitEvidence.js';
 
 const numberFormat = new Intl.NumberFormat('zh-CN', {maximumFractionDigits:3,useGrouping:false});
 const valueText = value => numberFormat.format(value);
@@ -61,14 +62,17 @@ export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schem
       {available.length>0&&<label>分组 <select aria-label="表型分组方案" value={scheme?.id||''} onChange={e=>setSchemeId(e.target.value)}><option value="">当前位点组合</option>{available.map(s=><option key={s.id} value={s.id}>{presetTitle(s)}</option>)}</select></label>}
       {view.active.source.provenance&&<details className="phenotype-provenance"><summary>鉴定与地点溯源 / Trial source</summary><TrialProtocol record={view.active.source.provenance}/></details>}
       <PhenotypeTests groups={named||allGroups} view={view} definition={{trait:trait.id,gene:gene?.id,mode:scheme?.id||assessment?.scheme||'selected_genotypes',markers:scheme?scheme.markers.map(v=>v.id):markerIds}}/>
-      {onInspect&&<button type="button" className="site-detail" onClick={()=>onInspect(trait,view)}>查看所选试验个体</button>}
+      {onInspect&&<button type="button" className="site-detail" onClick={event=>onInspect(trait,view,event.currentTarget)}>查看所选试验个体</button>}
     </div>
     <details className="region-description" open={!compact}><summary>统计口径 · {view.unit}</summary><p>各地共用同一横轴。箱体为四分位区间，中线为中位数，两端为最小值和最大值。n 为有测值的组合成员数。</p></details>
     <div className="region-grid">{sites.filter(s=>!compact||s.site===activeSite).map(({site,endpoint,rows,total}) => {
       const active = site===activeSite, name = siteName(site);
       const report=policy?assessPhenotype(rows,policy,range):null;
       const candidates=report?.preferred;
-      const displayed=assessment&&!allRows?rows.filter((row,i)=>i<8||candidates?.has(row.key)):rows;
+      const traitEffects=row=>(plotGroups[row.index]?.effects||[]).filter(c=>c.trait_id===trait.id);
+      const favourable=row=>row.n>0&&traitEffects(row).some(c=>c.judgment==='favourable');
+      const sorted=assessment?[...rows].sort((a,b)=>Number(favourable(b))-Number(favourable(a))):rows;
+      const displayed=assessment&&!allRows?sorted.filter((row,i)=>i<8||candidates?.has(row.key)||traitEffects(row).length):sorted;
       return <section className={'region-card'+(active?' is-active':'')} key={site} aria-label={name+' '+view.year} data-site={site}>
         <header><h3>{name}{assessment?' · '+view.year:''}</h3>
           {endpoint && !assessment&&<button type="button" className="site-detail" aria-label={'查看'+name+'个体明细'} aria-pressed={active}
@@ -76,8 +80,13 @@ export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schem
         </header>
         {total ? <>
           <div className="region-row region-labels"><span>{assessment?'单倍型':'组合'}</span><span>分布</span><span>中位数</span><span>n</span>{range&&<span>区间内</span>}</div>
-          {displayed.map(row => <div className={'region-row'+(candidates?.has(row.key)?' preferred-row':'')} key={row.key} data-group={row.index+1}>
-            <span className="region-group-name" title={plotGroups[row.index]?.label}>{plotGroups[row.index]?.label?.match(/Hap\s*\d+/i)?.[0]||plotGroups[row.index]?.label||'G'+String(row.index+1).padStart(2,'0')}
+          {displayed.map(row => <div className={'region-row'+(favourable(row)?' literature-priority':'')+(candidates?.has(row.key)?' preferred-row':'')} key={row.key} data-group={row.index+1}>
+            <span className="region-group-name">{plotGroups[row.index]?.label||'G'+String(row.index+1).padStart(2,'0')}
+              {traitEffects(row).map(claim=><a className={'trait-badge reported-phenotype-link '+(claim.judgment==='favourable'?'literature-positive':claim.judgment==='unfavourable'?'literature-negative':'')} key={claim.doi}
+                href={'https://doi.org/'+claim.doi} target="_blank" rel="noreferrer"
+                title={claim.trait+' '+effectDirections[claim.direction]+' · '+claim.context+' · '+claim.locator}>
+                {claim.judgment==='favourable'?'文献优势':claim.judgment==='unfavourable'?'文献较弱':'文献效应'} {claim.direction==='increase'?'↑':'↓'} ↗
+              </a>)}
               {candidates?.has(row.key)&&<small className="trait-badge target-match">{policy.mode==='relative'?'区间优势':'抗性优势'}{candidates.size>1?' · 并列':''}</small>}
             </span>
             {row.n ? <RangePlot row={row} domain={axis} target={range}/> : <span className="missing-range">—</span>}

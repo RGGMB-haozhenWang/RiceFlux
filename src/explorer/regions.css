@@ -69,6 +69,8 @@
 .reported-effects small,.trait-direction { color:#4d626d; }
 .literature-positive { background:#ede3f5; color:#593873; border-color:#d8c7e5; }
 .literature-negative { background:#faeee8; color:#80492d; border-color:#ebcdbc; }
+.assessed-regions .literature-priority { background:#f5f0f9; border-radius:4px; }
+.reported-phenotype-link:hover,.reported-phenotype-link:focus-visible { text-decoration:underline; }
 @media(max-width:680px){
   .assessed-regions .region-row { grid-template-columns:minmax(68px,25%) minmax(34px,1fr) 42px 29px; gap:3px; }
   .assessed-regions[data-target="active"] .region-row { grid-template-columns:minmax(68px,25%) minmax(34px,1fr) 42px 29px 43px; }

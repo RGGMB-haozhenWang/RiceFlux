@@ -31,7 +31,7 @@ export function HaplotypeMatches({gene,cohort,evidence,review}) {
           <span className="trait-direction">{claim.trait} {effectDirections[claim.direction]}</span>
         </div>
         <p>{claim.effect}</p>
-        <small>{evidenceBasis[claim.basis]} · {claim.context}{' '}
+        <small>{evidenceBasis[claim.basis]} · {claim.context}{claim.marker_state&&' · '+claim.marker_state}{' '}
           {allele?` · 当前同位点纯合匹配 ${allele.matched} / ${allele.callable}`:claim.definition_id&&recordedIds.has(claim.definition_id)?
             (result&&` · 当前群体匹配 ${result.matched??'定义未完整覆盖'}`):
             alleleIds.has(claim.definition_id)?' · 原文单位置等位':' · 原文等位或组分待完整对应'}
@@ -49,7 +49,7 @@ export function HaplotypeMatches({gene,cohort,evidence,review}) {
   {definitions.length>0&&<details className="site-evidence" onToggle={event=>setOpen(event.currentTarget.open)}>
     <summary>文献等位与单倍型匹配</summary>
     {open&&<><p>按原文组分核对当前 {cohort.length.toLocaleString()} 份材料。各位点均纯合且符合文献状态时计入匹配；杂合或缺失保留为未判定。位点质控滑块仅用于上方探索性组合。</p>
-    <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>文献型</th><th>有序状态</th><th>纯合匹配</th><th>纯合可判定</th><th>来源</th></tr></thead>
-    <tbody>{results.map(({row,states,matched,callable})=><tr key={row.id}><td>{readableDefinition(row.label)}</td><td>{states}</td><td>{matched??'未覆盖完整定义'}</td><td>{callable??'—'}</td><td>{row.doi.map(d=>'['+(dois.indexOf(d)+1)+']').join(' ')}</td></tr>)}</tbody></table></div><p>{dois.map((d,i)=><span key={d}>[{i+1}] <DoiLinks values={[d]} papers={evidence.papers}/> </span>)}</p></>}
+    <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>文献型</th><th>有序位点与等位</th><th>纯合匹配</th><th>纯合可判定</th><th>来源</th></tr></thead>
+    <tbody>{results.map(({row,states,matched,callable})=><tr key={row.id}><td>{readableDefinition(row.label)}</td><td>{states}<small>{row.components.map(c=>c.pos?.toLocaleString()??'—').join(' · ')}</small></td><td>{matched??'未覆盖完整定义'}</td><td>{callable??'—'}</td><td>{row.doi.map(d=>'['+(dois.indexOf(d)+1)+']').join(' ')}</td></tr>)}</tbody></table></div><p>{dois.map((d,i)=><span key={d}>[{i+1}] <DoiLinks values={[d]} papers={evidence.papers}/> </span>)}</p></>}
   </details>}</>;
 }

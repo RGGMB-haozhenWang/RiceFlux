@@ -1,11 +1,14 @@
-import React,{Suspense,useEffect,useMemo,useState} from 'react';
+import React,{Suspense,useEffect,useState} from 'react';
 import {Button,Dialog} from '@radix-ui/themes';
 import {saveFile} from './formats.js';
 import {validateSiteSelections} from './siteSelection.js';
 import {validateTraitTargets} from './traitAssessment.js';
 export const panels={locus:'基因区域与变异',frequency:'等位基因频率',composition:'多位点基因型组合',phenotype:'地区表型',evidence:'基因与证据',compare:'多基因比较',materials:'材料比较',individuals:'个体明细',ricenavi:'RiceNavi 来源'};
-const primary={locus:'基因与位点',composition:'单倍型',phenotype:'表型',evidence:'证据'};
-export const expandableSections=['compare','materials','individuals','ricenavi'];
+const pages=[
+  {id:'gene',title:'基因与群体',sections:['locus','frequency','composition']},
+  {id:'results',title:'表型与证据',sections:['phenotype','evidence','ricenavi']},
+];
+export const headerFunctions=['compare','materials','individuals'];
 const panelId=id=>'rf-section-'+id;
 export const defaultLayout=Object.keys(panels).filter(id=>id!=='ricenavi').map(id=>({id,title:panels[id],width:'full'}));
 export function validateWorkspace(value){
@@ -67,40 +70,19 @@ export function jumpToSection(id){
 }
 
 export function WorkspaceNavigation({layout,toolbar,onJump}){
-  const links=useMemo(()=>{
-    const locus=layout.some(p=>p.id==='locus');
-    return layout.flatMap(p=>{
-      const title=primary[p.id]||(!locus&&p.id==='frequency'?primary.locus:null);
-      return title?[{id:p.id,title}]:[];
-    });
-  },[layout]);
-  const [current,setCurrent]=useState('');
   useEffect(()=>{
     const header=toolbar.current;
     if(!header)return;
-    let frame=0;
-    function locate(){
-      frame=0;
-      const line=header.getBoundingClientRect().bottom+36;
-      const visible=layout.findLast(({id})=>document.getElementById(panelId(id))?.getBoundingClientRect().top<=line)?.id;
-      const link=visible==='frequency'&&links.some(l=>l.id==='locus')?'locus':visible;
-      setCurrent(link||links[0]?.id||'');
-    }
-    function schedule(){if(!frame)frame=requestAnimationFrame(locate);}
     const resize=new ResizeObserver(()=>{
       header.parentElement.style.setProperty('--research-header-height',header.offsetHeight+'px');
-      schedule();
     });
     resize.observe(header);
-    const main=document.getElementById('explorer-main');
-    if(main)resize.observe(main);
-    window.addEventListener('scroll',schedule,{passive:true});
-    schedule();
-    return()=>{resize.disconnect();window.removeEventListener('scroll',schedule);cancelAnimationFrame(frame);};
-  },[layout,links,toolbar]);
+    return()=>resize.disconnect();
+  },[toolbar]);
+  const links=pages.flatMap(page=>layout.some(p=>page.sections.includes(p.id))?[page]:[]);
   if(!links.length)return null;
   return <nav className="research-sections" aria-label="分析区段">
-    {links.map(({id,title})=><button type="button" key={id} aria-controls={panelId(id)} aria-current={current===id?'location':undefined}
+    {links.map(({id,title})=><button type="button" key={id} aria-controls={panelId(id)}
       onClick={()=>onJump(id)}>{title}</button>)}
   </nav>;
 }
@@ -113,17 +95,34 @@ function ToolSection({title,children}){
   </details>;
 }
 
-export function WorkspaceLayout({layout,content}){
-  return <div id="analysis-workspace" className="workspace-grid">
-    {layout.map(p=>{
-      const panel=content[p.id];
-      if(!panel)return null;
-      const view=<Suspense fallback={<p className="section-loading" role="status">正在载入{p.title}…</p>}>{panel}</Suspense>;
-      return <section className={'work-panel '+p.width} key={p.id} id={panelId(p.id)} data-panel={p.id} aria-label={p.title} tabIndex={-1}>
-        {expandableSections.includes(p.id)?<ToolSection title={p.title}>{view}</ToolSection>:
-          <>{p.title!==panels[p.id]&&<div className="custom-panel-title">{p.title}</div>}{view}</>}
-      </section>;
-    })}
-    {!layout.length&&<p>可在「我的工作区」添加分析区段。</p>}
-  </div>;
+export function WorkspaceLayout({layout,content,openTool,onCloseTool,toolTrigger}){
+  const visible=pages.map(page=>({...page,panels:layout.filter(p=>page.sections.includes(p.id)&&content[p.id])})).filter(page=>page.panels.length);
+  const tool=layout.find(p=>p.id===openTool&&headerFunctions.includes(p.id)&&content[p.id]);
+  const render=p=><Suspense fallback={<p className="section-loading" role="status">正在载入{p.title}…</p>}>{content[p.id]}</Suspense>;
+  return <>
+    <div id="analysis-workspace" className="reader-columns" data-split={visible.length===2?'true':undefined}>
+      {visible.map(page=><section className="reader-page" key={page.id} data-page={page.id} id={panelId(page.id)} tabIndex={-1} aria-label={page.title}>
+        <header className="reader-page-heading"><h2>{page.title}</h2>
+          {page.panels.some(p=>p.id==='evidence')&&<button className="site-detail" type="button" onClick={()=>jumpToSection('evidence')}>查看证据 ↓</button>}
+        </header>
+        <div className="workspace-grid">{page.panels.map(p=><section className={'work-panel '+p.width} key={p.id} id={panelId(p.id)} data-panel={p.id} aria-label={p.title} tabIndex={-1}>
+          {p.id==='ricenavi'?<ToolSection title={p.title}>{render(p)}</ToolSection>:
+            <>{p.title!==panels[p.id]&&<div className="custom-panel-title">{p.title}</div>}{render(p)}</>}
+        </section>)}</div>
+      </section>)}
+      {!visible.length&&<p>可在「我的工作区」添加分析区段。</p>}
+    </div>
+    <Dialog.Root open={Boolean(tool)} onOpenChange={open=>{if(!open)onCloseTool();}}>
+      <Dialog.Content className="reader-function-dialog" maxWidth="1300px" aria-describedby={undefined}
+        onCloseAutoFocus={event=>{event.preventDefault();toolTrigger.current?.focus({preventScroll:true});}}>
+        {tool&&<>
+          <div className="reader-function-heading">
+            <Dialog.Title>{tool.title}</Dialog.Title>
+            <Dialog.Close><Button variant="soft" color="gray">关闭</Button></Dialog.Close>
+          </div>
+          <div data-panel={tool.id}>{render(tool)}</div>
+        </>}
+      </Dialog.Content>
+    </Dialog.Root>
+  </>;
 }
