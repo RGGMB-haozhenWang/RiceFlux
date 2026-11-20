@@ -15,6 +15,7 @@ import {extendDataset} from './dataImport.js';
 import {DataPanel} from './DataPanel.jsx';
 import {PopulationComposition} from './PopulationComposition.jsx';
 const ComparePanel=React.lazy(()=>import('./ComparePanel.jsx').then(m=>({default:m.ComparePanel})));
+const IndelDetails=React.lazy(()=>import('./IndelDetails.jsx').then(m=>({default:m.IndelDetails})));
 import {SourceBadges} from './SourceBadges.jsx';
 import {Tutorial} from './Tutorial.jsx';
 import {GenomeTrack} from './GenomeTrack.jsx';
@@ -121,11 +122,19 @@ function App() {
   const [breederOpen,setBreederOpen]=useState(initialView==='breeder');
   const [memberLimit,setMemberLimit]=useState(96),[pickerLimit,setPickerLimit]=useState(96);
   const [geneLoad,setGeneLoad]=useState(null),geneRequest=useRef(0);
+  const [inspection,setInspection]=useState(null);
   function update(patch){
     setWorkspace(current=>({...current,...(typeof patch==='function'?patch(current):patch)}));
   }
   const setting=key=>value=>update(current=>({[key]:typeof value==='function'?value(current[key]):value}));
   const setVariant=setting('variantId'),setIndividuals=setting('individualIds'),setLayout=setting('layout');
+  function inspectIndel(gene,markerId,sourceId,trigger){
+    setInspection({gene,markerId,sourceId,trigger});
+  }
+  function selectMarker(variant,trigger){
+    setVariant(variant.id);
+    if(!demo&&variant.markerType==='InDel')inspectIndel(gene,variant.id,undefined,trigger);
+  }
   useEffect(()=>{const c=new AbortController();setError('');
     const requested=decodeURIComponent(location.hash.slice(1))||new URLSearchParams(location.search).get('gene');
     loadExplorer(import.meta.env.BASE_URL,demo,c.signal,d=>initialSelection(d,requested)[1]).then(validateDataset).then(d=>{
@@ -336,7 +345,7 @@ function App() {
     <aside className="controls" aria-label="分析筛选">
       {demo?<><Choice label="性状" value={traitId} options={data.traits} onChange={chooseTrait}/>
         <Choice label="基因" value={geneId} options={data.genes.filter(g=>g.trait_ids.includes(traitId))} onChange={chooseGene}/></>
-      :<PriorFinder data={data} onChoose={(g,preferred)=>chooseGene(g.id,preferred??preferredTrait(data,g),true)}/>}
+      :<PriorFinder data={data} onChoose={(g,preferred)=>chooseGene(g.id,preferred??preferredTrait(data,g),true)} onInspect={inspectIndel}/>}
       {!demo&&<SampleList data={data} onApply={applySampleList}/>}
       <details className="sidebar-section">
         <summary>群体与材料 <small>{cohort.length.toLocaleString()} 份</small></summary>
@@ -356,14 +365,14 @@ function App() {
     </aside>
     <div className="canvas">
       <main id="explorer-main"><div className="hero">
-        <div><h1>{gene.name} <small>{gene.catalog?.msu||gene.id}</small></h1>{!demo&&<SourceBadges data={data} gene={gene}/>}</div>
+        <div><h1>{gene.name} <small>{gene.catalog?.msu||gene.id}</small></h1>{!demo&&<SourceBadges data={data} gene={gene} onInspect={inspectIndel}/>}</div>
         <div className="hero-actions"><span className="synthetic"><span/>{demo?'合成数据 Demo':evidenceName[data.meta.genotype_evidence]}</span><Button onClick={download}><DownloadIcon/>下载基因数据</Button></div>
       </div>
         <div className="context-strip"><GeneTraitChoice trait={trait} options={relatedTraits} onChange={switchGeneTrait}/><span>{popIds.length} 个群体</span><strong>{individualOnly?'仅统计已选个体':'统计已选群体全部个体'}</strong></div>
         {geneLoad&&<p className="notice" role={geneLoad.error?'alert':'status'}>{geneLoad.error?<>{geneLoad.name} · {geneLoad.error} <button onClick={()=>chooseGene(geneLoad.id,geneLoad.trait,geneLoad.clearPlot)}>重试</button></>:`正在读取 ${geneLoad.name} 的分型…`}</p>}
         <div className="kpis"><div><span>统计个体</span><strong>{cohort.length}<small>份</small></strong><p>已关注 {individualIds.length} 份</p></div><div><span>当前位点 ALT 合计频率</span><strong>{percent(stats?.af??null)}</strong><p>{selected?`${selected.ref} → ${selected.alt??'—'} · ${stats.alt} / ${stats.called} 个有效等位`:'没有当前选中的位点'}</p></div><div><span>当前位点 Missing</span><strong>{percent(stats?.missing)}</strong><p>{stats?`MAF ${percent(stats.maf)} · 有效等位 ${stats.called}/${stats.total}`:'选择群体或放宽质控条件'}</p></div><div><span>完整基因型组合</span><strong>{groups.length}<small>类</small></strong><p>{complete} 完整个体 · {cohort.length-complete} 未纳入分类</p></div></div>
         <React.Suspense fallback={<p role="status">正在载入分析组件…</p>}><WorkspaceLayout layout={layout} onLayout={setLayout} display={display} onDisplay={setting('display')} content={{
-          compare: !demo&&<ComparePanel data={data} activeGene={gene} cohort={cohort} config={compareSettings} onConfig={setting('compare')}/>,
+          compare: !demo&&<ComparePanel data={data} activeGene={gene} cohort={cohort} config={compareSettings} onConfig={setting('compare')} onInspect={inspectIndel}/>,
           locus: <Panel title="基因区域 / Locus" tag={`${variants.length} / ${gene.variants.length} 位点`}>
             <div className="site-selection-tools">
               <SitePicker gene={gene} cohort={cohort} selection={siteSelections[geneId]} initialIds={variants.map(v=>v.id)} schemes={schemes}
@@ -373,7 +382,8 @@ function App() {
             {(sites.missing.length>0||sites.assemblyMismatch)&&<p role="alert">所选位点未完整覆盖或参考版本改变，暂停组合判型。请打开自选位点核对。</p>}
             {gene.model||demo?<>{demo?
               <GeneTrack gene={gene} variants={variants} selected={selected} onSelect={setVariant}/>:
-              <GenomeTrack key={gene.id} gene={gene} variants={variants} selected={selected} onSelect={setVariant}/>}
+              <GenomeTrack key={gene.id} gene={gene} variants={variants} selected={selected} onSelect={setVariant}
+                onInspect={(id,trigger)=>inspectIndel(gene,id,undefined,trigger)}/>}
               <div className="track-legend">
                 <span><i className="cds"/>CDS{demo?' 示意':''}</span>
                 <span><i className="promoter"/>{demo?'上游示意':'上游 2 kb'}</span>
@@ -386,7 +396,8 @@ function App() {
               {variants.map(v=>{
                 const {kind,ref,alts}=markerAnnotation(v);
                 const active=v.id===selected?.id;
-                return <button key={v.id} className={active?'selected':''} aria-pressed={active} onClick={()=>setVariant(v.id)}
+                return <button key={v.id} className={active?'selected':''} aria-pressed={active} onClick={e=>selectMarker(v,e.currentTarget)}
+                  aria-haspopup={!demo&&v.markerType==='InDel'?'dialog':undefined}
                   title={markerNames[kind]+' · '+markerQuality(alleleStats(cohort,v))}>
                   <MarkerIcon kind={kind}/>{v.pos.toLocaleString()}<small>{ref} → {alts.join(' / ')||'—'}</small>
                 </button>;
@@ -408,12 +419,12 @@ function App() {
           <AlleleFrequency variant={selected} cohort={cohort} populations={data.populations.filter(p=>popIds.includes(p.id))}/>
           {individualIds.length>0&&<div className="focus-individual"><PersonIcon/><span>关注材料</span><b>{selectedStats?alleleFrequencyText(selectedStats)||percent(selectedStats.af):'—'}</b></div>}
         </Panel>,
-          composition: <Panel title="基因型组合 / Genotypes" sub="完整未分相基因型组合；频率按个体计数。"  className="matrix-panel"><div className="matrix-scroll"><table className="matrix"><thead><tr><th>组合</th>{variants.map(v=><th key={v.id}><button className={v.id===selected?.id?'active-variant':''} onClick={()=>setVariant(v.id)}>{v.pos.toLocaleString()}<small>{v.ref}→{v.alt??'—'}</small></button></th>)}<th>个体数</th><th>占完整个体</th><th>群体组成</th></tr></thead><tbody>{visibleGroups.map((g,i)=><tr key={g.key} className={g.key===group?.key?'active-group':''}><th><button title={g.id} onClick={()=>setGroup(g.key===groupKey?null:g.key)}><i style={{background:COLORS[i%8]}}/>G{String(i+1).padStart(2,'0')}</button></th>{g.tokens.map((t,j)=><td key={variants[j].id}><span className={`gt ${t===`${variants[j].ref}/${variants[j].ref}`?'ref':t.split('/')[0]===t.split('/')[1]?'alt':'het'}`}>{t}</span></td>)}<td><b>{g.members.length}</b></td><td>{percent(g.members.length/complete)}</td><td><PopulationComposition populations={data.populations} members={g.members} selectedIds={individualIds}/></td></tr>)}</tbody></table></div>{!groups.length&&<Empty>没有可分类的完整个体。零位点或含缺失调用时，不生成虚假的单一组合。</Empty>}<div className="panel-bottom"><span>展示 {visibleGroups.length} / {groups.length} 类 · 分母为 {complete} 个完整个体 · G 编号随当前排序变化</span>{groups.length>8&&<Button variant="ghost" size="1" onClick={()=>setShowAll(v=>!v)}>{showAll?'收起稀有组合':'显示全部组合'}</Button>}</div><div className="population-key">{scopeGroups.map(p=><span key={p.id}><i style={{background:p.color}}/>{p.name}</span>)}</div>{!demo&&<HaplotypeMatches key={gene.id} gene={gene} cohort={cohort} evidence={data.evidence}/>}</Panel>,
+          composition: <Panel title="基因型组合 / Genotypes" sub="完整未分相基因型组合；频率按个体计数。"  className="matrix-panel"><div className="matrix-scroll"><table className="matrix"><thead><tr><th>组合</th>{variants.map(v=><th key={v.id}><button className={v.id===selected?.id?'active-variant':''} aria-haspopup={!demo&&v.markerType==='InDel'?'dialog':undefined} onClick={e=>selectMarker(v,e.currentTarget)}>{v.pos.toLocaleString()}<small>{v.ref}→{v.alt??'—'}</small></button></th>)}<th>个体数</th><th>占完整个体</th><th>群体组成</th></tr></thead><tbody>{visibleGroups.map((g,i)=><tr key={g.key} className={g.key===group?.key?'active-group':''}><th><button title={g.id} onClick={()=>setGroup(g.key===groupKey?null:g.key)}><i style={{background:COLORS[i%8]}}/>G{String(i+1).padStart(2,'0')}</button></th>{g.tokens.map((t,j)=><td key={variants[j].id}><span className={`gt ${t===`${variants[j].ref}/${variants[j].ref}`?'ref':t.split('/')[0]===t.split('/')[1]?'alt':'het'}`}>{t}</span></td>)}<td><b>{g.members.length}</b></td><td>{percent(g.members.length/complete)}</td><td><PopulationComposition populations={data.populations} members={g.members} selectedIds={individualIds}/></td></tr>)}</tbody></table></div>{!groups.length&&<Empty>没有可分类的完整个体。零位点或含缺失调用时，不生成虚假的单一组合。</Empty>}<div className="panel-bottom"><span>展示 {visibleGroups.length} / {groups.length} 类 · 分母为 {complete} 个完整个体 · G 编号随当前排序变化</span>{groups.length>8&&<Button variant="ghost" size="1" onClick={()=>setShowAll(v=>!v)}>{showAll?'收起稀有组合':'显示全部组合'}</Button>}</div><div className="population-key">{scopeGroups.map(p=><span key={p.id}><i style={{background:p.color}}/>{p.name}</span>)}</div>{!demo&&<HaplotypeMatches key={gene.id} gene={gene} cohort={cohort} evidence={data.evidence}/>}</Panel>,
           phenotype: <div className="phenotype-section">{view ?
           <Panel title={trait.name+' · 分地区表型 ('+view.unit+')'} tag={view.sites.length+' 个试验地点'}>
             <RegionalPhenotypes trait={trait} groups={visibleGroups} allGroups={groups} gene={gene} schemes={schemes} cohort={cohort} markerIds={variants.map(v=>v.id)} view={view} onChange={changePlot} selectedIds={individualIds} compact={display.mode==='desk'&&display.tab==='overview'}/>
           </Panel> : demo ? <Panel title={`${trait.name} · 表型对照`} sub={`单位：${trait.unit}。仅展示上表当前组合；线框为四分位范围，中线为中位数，端点为最小/最大值。`} tag="DESCRIPTIVE"><Phenotypes groups={visibleGroups} trait={trait} selectedIds={individualIds}/><p className="footnote">各组 n 为有该性状记录的个体数。{demo?'合成表型独立生成，无显著性检验，不据此推断优良等位基因。':trait.source?'各组按所选地点、年份的实测值统计。':'当前为先验浏览，未选择实测表型。'}</p></Panel> : <Panel title={trait.name+' · 表型对照'}><Empty>当前数据集暂无该性状的实测表型。</Empty></Panel>}</div>,
-          evidence: !demo&&<EvidencePanel data={data} gene={gene} trait={trait} cohort={cohort} selected={selected}/>,
+          evidence: !demo&&<EvidencePanel data={data} gene={gene} trait={trait} cohort={cohort} selected={selected} onInspect={inspectIndel}/>,
           materials: !demo&&<MaterialPanel data={data} reference={eligible} genes={[gene,...(compareSettings.ids||[]).filter(id=>id!==gene.id).map(id=>data.genes.find(g=>g.id===id)).filter(Boolean)]} settings={materialSettings} onSettings={setting('material')}/>,
           ricenavi: !demo&&<RiceNaviPanel gene={gene}/>,
           individuals: <Panel title={group?`组合成员 · ${group.members.length} 份`:'个体基因型明细'} sub={group?'点击同一组合可取消成员筛选；这不会改变上方频率分母。':'勾选关注个体后，可开启左侧“仅统计已选个体”重算频率。'} tag={`${tableRows.length} INDIVIDUALS`}><div className="matrix-scroll individual-scroll" onScroll={e=>extendRows(e,()=>setMemberLimit(n=>n+96))}><table className="individual-table"><thead><tr><th>关注</th><th>材料</th><th>群体</th><th>{tableHeading}</th>{variants.map(v=><th key={v.id}>{v.pos.toLocaleString()}</th>)}</tr></thead><tbody>{tableRows.slice(0,memberLimit).map(s=><tr key={s.id} className={individualIds.includes(s.id)?'selected-person':''}><td><Checkbox checked={individualIds.includes(s.id)} onCheckedChange={()=>toggleIndividual(s.id)} aria-label={`关注 ${s.id}`}/></td><th scope="row">{s.id}<small>{s.name}</small></th><td>{data.populations.find(p=>p.id===s.population_id)?.name}</td><td>{fmt(s.phenotypes[tablePhenotype])}</td>{variants.map(v=><td key={v.id}>{gtToken(callOf(s,v),v)}</td>)}</tr>)}</tbody></table></div>{!tableRows.length&&<Empty>没有个体符合当前选择。</Empty>}</Panel>,
@@ -426,6 +437,9 @@ function App() {
         initialGene={geneId} initialTrait={traitId} siteSelections={siteSelections}/>
     </React.Suspense></div>}
     <Dialog.Root open={help} onOpenChange={setHelp}><Dialog.Content maxWidth="860px"><Dialog.Title>使用教程 / RiceFlux guide</Dialog.Title><Dialog.Description>选择基因与位点，比较材料。 / Select genes and sites to compare accessions.</Dialog.Description><Tutorial demo={demo}/><Dialog.Close><Button>关闭 / Close</Button></Dialog.Close></Dialog.Content></Dialog.Root>
+    {inspection&&<React.Suspense fallback={<p className="notice" role="status">正在打开 InDel 位点详情…</p>}>
+      <IndelDetails data={data} cohort={cohort} inspection={inspection} onClose={()=>setInspection(null)}/>
+    </React.Suspense>}
     {notice&&<div className="notice" role="status"><CheckIcon/>{notice}</div>}
   </div></Theme>;
 }

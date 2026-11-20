@@ -1,0 +1,113 @@
+{
+  "@context": {
+    "@vocab": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/dataset-intake.json#",
+    "v1": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/v1/ontology.jsonld#",
+    "intake": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/dataset-intake.json#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "entities": {"@id": "intake:entity", "@type": "@id"},
+    "tables": {"@id": "intake:table", "@container": "@index"},
+    "profiles": {"@id": "intake:profile", "@container": "@index"},
+    "columns": {"@id": "intake:column", "@container": "@list"},
+    "key": {"@id": "intake:key", "@container": "@list"},
+    "pairedTables": {"@id": "intake:pairedTables", "@type": "@json"},
+    "manifestContext": {"@id": "intake:manifestContext", "@type": "@json"}
+  },
+  "@id": "intake:v1",
+  "@type": "intake:DatasetInputContract",
+  "version": "1.0.0",
+  "manifestType": "v1:DatasetVersion",
+  "datasetIriPrefix": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/dataset/",
+  "manifestContext": {
+    "@vocab": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/v1/ontology.jsonld#",
+    "v1": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/v1/ontology.jsonld#",
+    "intake": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/dataset-intake.json#",
+    "id": "v1:datasetId",
+    "genotype_evidence": "v1:genotypeEvidence",
+    "files": {"@id": "intake:files", "@type": "@json"},
+    "sha256": {"@id": "intake:sha256", "@type": "@json"},
+    "counts": {"@id": "intake:counts", "@type": "@json"},
+    "provenance": {"@id": "intake:provenance", "@type": "@json"},
+    "supplements": {"@id": "intake:supplements", "@type": "@json"}
+  },
+  "assembly": "IRGSP-1.0/MSU7",
+  "tableSchemas": ["RiceFlux tables 1.0", "RiceFlux tables 1.1", "RiceFlux tables 1.2"],
+  "genotypeEvidence": ["G_chip", "G_projected", "G_direct", "G_mixed", "G_none"],
+  "identity": {
+    "datasetVersion": ["id", "version"],
+    "accession": ["dataset_id", "sample_id"],
+    "referenceSite": ["assembly", "chr", "position", "ref"],
+    "marker": ["dataset_id", "dataset_version", "marker_id"],
+    "genotypeCall": ["dataset_id", "dataset_version", "sample_id", "marker_id"],
+    "observationVariable": ["trait_id", "method_id", "scale_id"],
+    "trialEnvironment": ["dataset_id", "dataset_version", "environment_id"]
+  },
+  "tables": {
+    "samples": {
+      "entities": ["v1:AccessionIdentity", "v1:Population"],
+      "requiredInPackage": true, "key": ["sample_id"],
+      "columns": ["sample_id", "name", "source_group", "subspecies", "region", "material_type"]
+    },
+    "variants": {
+      "entities": ["v1:AssayedMarker", "v1:ReferenceSite", "v1:GeneIdentity", "v1:Source"],
+      "requiredInPackage": true, "key": ["marker_id"],
+      "columns": ["marker_id", "gene_id", "chr", "position", "ref", "alt"],
+      "joins": {"gene_id": "reference MSU/RAP locus", "source_id": "provenance.sources[].id"}
+    },
+    "genotypes": {
+      "entities": ["v1:GenotypeCall"],
+      "requiredInPackage": true, "key": ["sample_id"],
+      "columns": ["sample_id"],
+      "joins": {"sample_id": "samples.sample_id", "dynamicColumns": "variants.marker_id in dictionary order"}
+    },
+    "environments": {
+      "entities": ["v1:ObservationVariable", "v1:TrialEnvironment", "v1:Source"],
+      "requiredInPackage": true, "key": ["environment_id"],
+      "columns": ["environment_id", "trait_id", "trait_name", "unit", "category", "family", "assay", "site", "year"],
+      "joins": {"source_id": "provenance.sources[].id"}
+    },
+    "phenotypes": {
+      "entities": ["intake:PhenotypeObservation"],
+      "requiredInPackage": true, "key": ["sample_id"],
+      "columns": ["sample_id"],
+      "joins": {"sample_id": "samples.sample_id", "dynamicColumns": "environments.environment_id"}
+    },
+    "pav": {
+      "entities": ["intake:PresenceAbsenceCall"],
+      "key": ["pav_id"], "columns": ["pav_id", "gene_id", "source_gene_id", "source_id", "states"],
+      "joins": {"states": "samples.sample_id in roster order", "source_id": "provenance.sources[].id"}
+    },
+    "pav_summary": {
+      "entities": ["intake:PopulationPresenceSummary"],
+      "key": ["pav_id", "population"],
+      "columns": ["pav_id", "gene_id", "source_gene_id", "source_id", "population", "present", "denominator"],
+      "joins": {"source_id": "provenance.sources[].id"}
+    },
+    "descriptors": {
+      "entities": ["intake:DescriptorObservation"],
+      "key": ["sample_id", "source_id", "descriptor_id", "site", "crop_year", "source_record_id"],
+      "columns": ["sample_id", "descriptor_id", "descriptor", "value_code", "value_label", "site", "crop_year", "dictionary_id", "source_id", "source_record_id"],
+      "joins": {"sample_id": "samples.sample_id", "source_id": "provenance.sources[].id"}
+    }
+  },
+  "pairedTables": [["variants", "genotypes"], ["environments", "phenotypes"]],
+  "profiles": {
+    "package": {"label": "数据包（清单 + 五表）", "manifestNames": ["manifest.json", "manifest.jsonld"], "hint": "选择清单及其登记的表格。"},
+    "new": {"label": "新建本地数据集", "allowVcf": true, "hint": "一份区域 VCF 可同时导入 SNP 和 InDel；可附材料、表型或 PAV。也可使用分型两表。"},
+    "phenotypes": {"label": "给预览数据集追加表型", "tableKeys": ["environments", "phenotypes"], "requires": ["environments", "phenotypes"], "hint": "选择 environments 和 phenotypes 两表。"},
+    "genotypes": {"label": "给仅表型数据集追加基因型", "tableKeys": ["variants", "genotypes"], "requires": ["variants", "genotypes"], "allowVcf": true, "hint": "选择一份区域 VCF 或 variants 和 genotypes 两表。"}
+  },
+  "callStates": {
+    "reference": "Explicit 0/0",
+    "missing": "A missing allele at a marker covered by the dataset",
+    "uncovered": "No matching marker in the dataset version dictionary, including absence from a variant-only VCF"
+  },
+  "sequenceVariantTypes": ["SNP", "InDel"],
+  "scope": "Tables carry observations and source records. Functional claims remain linked evidence.",
+  "@included": [
+    {"@id": "intake:DatasetInputContract", "@type": "owl:Class"},
+    {"@id": "intake:PhenotypeObservation", "@type": "owl:Class"},
+    {"@id": "intake:DescriptorObservation", "@type": "owl:Class"},
+    {"@id": "intake:PresenceAbsenceCall", "@type": "owl:Class"},
+    {"@id": "intake:PopulationPresenceSummary", "@type": "owl:Class"}
+  ]
+}

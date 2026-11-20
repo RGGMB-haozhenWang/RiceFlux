@@ -1,7 +1,9 @@
-import {optionalDatasetTables,parseDataset,readTable} from './datasets.js';
+import {datasetFiles,optionalDatasetTables,parseDataset,readPackage,readTable} from './datasets.js';
 import {writeTSV} from './formats.js';
 import {readVcf} from './vcf.js';
 import {sha256Text} from './sha256.js';
+import {datasetIntake,manifestFields,validateTablePairs} from './inputSchema.js';
+import {provenanceSources} from './provenance.js';
 
 export async function fileText(file) {
   const bytes=new Uint8Array(await file.arrayBuffer());
@@ -80,18 +82,18 @@ export async function importVcfInput(text, patch, metadata, reference, name) {
   return {patch:{...patch,samples,...inputs},provenance,issues:vcf.issues};
 }
 
-const files={samples:'samples.tsv',variants:'variants.tsv',genotypes:'genotypes.tsv',environments:'environments.tsv',phenotypes:'phenotypes.tsv'};
-const empty={variants:'marker_id\tgene_id\tchr\tposition\tref\talt\n',environments:'environment_id\ttrait_id\ttrait_name\tunit\tcategory\tfamily\tassay\tsite\tyear\n',phenotypes:'sample_id\n'};
+const files=Object.fromEntries(datasetFiles.map(key=>[key,key+'.tsv']));
+const empty=Object.fromEntries(datasetFiles.filter(key=>key!=='samples').map(key=>[key,datasetIntake.tables[key].columns.join('\t')+'\n']));
 const compactField=s=>s.trim().replace(/[\t\r\n]+/g,' ');
 
 export function createLocalDataset(patch, metadata, reference) {
   if(!patch.samples)throw Error('新建数据集需要 samples.txt 或 samples.tsv');
-  if(Boolean(patch.variants)!==Boolean(patch.genotypes)||Boolean(patch.environments)!==Boolean(patch.phenotypes))throw Error('variants 与 genotypes、environments 与 phenotypes 须分别成对提供');
+  validateTablePairs(Object.keys(patch).filter(key=>patch[key]));
   if(!patch.genotypes&&!patch.phenotypes&&!optionalDatasetTables.some(key=>patch[key]))throw Error('请提供分型、表型或 PAV');
   const template=readTable(patch.samples,['sample_id'],'samples');
   const genotypes=writeTSV(['sample_id'],template.objects());
   const manifest={schema:'RiceFlux tables 1.2',id:metadata.id,name:compactField(metadata.name),version:metadata.version,
-    assembly:'IRGSP-1.0/MSU7',source:compactField(metadata.source),genotype_evidence:patch.genotypes?metadata.genotype_evidence:'G_none',
+    assembly:datasetIntake.assembly,source:compactField(metadata.source),genotype_evidence:patch.genotypes?metadata.genotype_evidence:'G_none',
     files:{...files,...Object.fromEntries(optionalDatasetTables.filter(key=>patch[key]).map(key=>[key,key+'.tsv']))},
     ...metadata.provenance&&{provenance:metadata.provenance}};
   return parseDataset(manifest,{...empty,genotypes,...patch},reference);
@@ -140,6 +142,59 @@ export function extendDataset(base, kind, input, metadata, reference) {
   const next=parseDataset(manifest,{...base.texts,...patch},reference);
   if(kind==='genotypes'&&!next.variants.length)throw Error('新增位点表没有记录');
   return next;
+}
+
+const tableExtension=/\.(?:tsv|txt)(?:\.gz)?$/i;
+export async function importDatasetFiles(selected,{mode,metadata,target,registry,reference}) {
+  if(new Set(selected.map(f=>f.name)).size!==selected.length)throw Error('请一次导入一个数据集目录，文件名不可重复');
+  const profile=datasetIntake.profiles[mode];
+  if(!profile)throw Error('未知的数据导入方式');
+  if(profile.manifestNames){
+    const manifests=selected.filter(file=>profile.manifestNames.includes(file.name));
+    if(manifests.length!==1)throw Error('请选择一份 manifest.json 或 manifest.jsonld，以及清单中的表格');
+    const manifest=manifestFields(JSON.parse(await manifests[0].text()));
+    if(registry.some(r=>r.id===manifest.id))throw Error('该数据集 ID 已存在，请使用新 ID');
+    const bundle=await readPackage(manifest,name=>{
+      const file=selected.find(f=>f.name===name);
+      if(!file)throw Error('缺少 '+name);
+      return fileText(file);
+    },reference);
+    return {bundle,override:false};
+  }
+  const vcf=selected.filter(f=>isVcfFile(f.name));
+  const archive=selected.find(f=>f.name==='provenance.json');
+  const tables=selected.filter(f=>!vcf.includes(f)&&f!==archive);
+  const keys=tables.map(f=>f.name.replace(tableExtension,''));
+  const permitted=profile.tableKeys||Object.keys(datasetIntake.tables);
+  if(new Set(keys).size!==keys.length||keys.some((key,i)=>!tableExtension.test(tables[i].name)||!permitted.includes(key)))
+    throw Error('请按所选导入方式提供命名正确的 TXT / TSV 表格');
+  if(vcf.length>1||vcf.length&&(!profile.allowVcf||keys.includes('variants')||keys.includes('genotypes')))
+    throw Error('请选择一份区域 VCF 或一组分型两表');
+  validateTablePairs(keys);
+  if(!vcf.length&&profile.requires?.some(key=>!keys.includes(key)))
+    throw Error('缺少所选导入方式要求的表格：'+profile.requires.join('、'));
+  const override=mode!=='new';
+  if(override&&!target)throw Error('先预览一个目标数据集');
+  if(mode==='genotypes'&&target.variants.length)throw Error('该数据集已有基因型。请将另一批分型作为独立数据集导入');
+  let input=Object.fromEntries(await Promise.all(tables.map(async(f,i)=>[keys[i],await fileText(f)])));
+  const fields={...metadata};
+  if(archive){
+    fields.provenance=JSON.parse(await fileText(archive));
+    provenanceSources({provenance:fields.provenance});
+  }
+  const source=override?(target.sourceBundle?await target.sourceBundle():target):null;
+  if(vcf.length){
+    const {patch,provenance}=await importVcfInput(await vcfFileText(vcf[0]),
+      {...input,...source&&{samples:source.texts.samples}},fields,reference,vcf[0].name);
+    input=patch;
+    fields.provenance={...fields.provenance,...provenance,sources:[...(fields.provenance?.sources||[]),...provenance.sources]};
+  }
+  const bundle=override?extendDataset(source,mode,input,fields,reference):createLocalDataset(input,fields,reference);
+  if(override&&(!registry.find(r=>r.id===target.manifest.id)?.local||target.overlays)){
+    bundle.baseVersion=target.baseVersion||target.manifest.version;
+    bundle.overlays=[...(target.overlays||[]),{kind:mode,input,metadata:fields}];
+  }
+  return {bundle,override};
 }
 
 // Sample IDs remain exact strings so spreadsheet leading zeros are significant.

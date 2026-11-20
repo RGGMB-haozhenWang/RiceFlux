@@ -8,7 +8,7 @@ A static rice genetics workbench for genes, genotype combinations and accessions
 - **D1**: 6044 份名录材料（5222 现代品种、822 地方品种），1067 SNP。
 - **D2**: RiceNavi 404 份材料，23 个严格匹配 SNP，18 个基因；完整来源库另保留 319 条位点记录。
 - **D3** 为 3K 的 3,024 份材料。扩展数据包含基因区域 SNP、InDel 和原始群体注释。
-- **基因目录 / Gene catalog** 按 MSU、RAP 和别名查询，覆盖原先验及新增基因。独立 InDel 徽标表示已观察到非参考 InDel 等位，可筛选和导出 TXT。
+- **基因目录 / Gene catalog** 按 MSU、RAP 和别名查询。点击 InDel 徽标或区域图标记，可查看各数据集版本的坐标、等位序列、有效分母和来源。
 - **证据 / Evidence**: 数据集覆盖、文献功能位点、单倍型组分与调用质量分别标注。6044 的表型列附原文测定规程、地点与指标。
 
 ## 使用 / Use
@@ -29,7 +29,7 @@ npm run build:packed -- /path/to/new-site --datasets=/path/to/staged/datasets --
 python3 -m http.server 4173 --bind 127.0.0.1 --directory /path/to/new-site
 ```
 
-打包结果可直接在静态服务器部署。用暂存目录的 `index.tsv` 注册 D3。面板支持完整数据包，也可分别导入样本名单、基因型与表型。[接口规范](public/datasets/README.txt) · [输入样表](public/formats/prior.tsv) · [完整技术说明](docs-reference.md)
+打包结果可直接在静态服务器部署。用暂存目录的 `index.tsv` 注册 D3。完整数据包接受 `manifest.json` 或 `manifest.jsonld` 与配套 TXT/TSV。区域 VCF 同时接收 SNP 和短 InDel。[接口说明](public/datasets/README.txt) · [本体输入规范](public/formats/dataset-intake.json) · [输入样表](public/formats/prior.tsv) · [完整技术说明](docs-reference.md)
 The packed site uses versioned dataset releases from the staging registry.
 
 来源：[6044](https://doi.org/10.1016/j.molp.2025.03.007) · [RiceNavi](https://doi.org/10.1038/s41588-020-00769-9)。保留来源名录和调用，不自动合并同名材料，不将缺失改为参考等位。

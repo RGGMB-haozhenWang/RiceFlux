@@ -1,15 +1,15 @@
 import React,{useMemo,useState,useEffect} from 'react';
 import {Button,Dialog} from '@radix-ui/themes';
-import {datasetFiles,datasetTableKeys,optionalDatasetTables,readPackage,combineDatasets,groupOptions,sampleTable} from './datasets.js';
+import {datasetFiles,datasetTableKeys,combineDatasets,groupOptions,sampleTable} from './datasets.js';
 import {loadRegistered} from './observed.js';
 import {saveFile} from './formats.js';
 import {DatasetProvenance} from './DatasetProvenance.jsx';
-import {createLocalDataset,extendDataset,fileText,importVcfInput,isVcfFile,vcfFileText} from './dataImport.js';
+import {importDatasetFiles} from './dataImport.js';
+import {datasetIntake,semanticManifest} from './inputSchema.js';
 import {datasetBadge,datasetTint} from './datasetColors.js';
 const RiceNaviPanel=React.lazy(()=>import('./RiceNaviPanel.jsx').then(m=>({default:m.RiceNaviPanel})));
 import {validateDataset} from './model.js';
 
-const ext=/(?:\.tsv|\.txt)(?:\.gz)?$/i;
 export function DataPanel({data,onApply,gene}){
   const [open,setOpen]=useState(false),[entries,setEntries]=useState(data.datasetRegistry),[loaded,setLoaded]=useState(new Map(data.datasetBundles.map(b=>[b.manifest.id,b])));
   const [ids,setIds]=useState(data.meta.datasets.map(d=>d.id)),[group,setGroup]=useState(data.meta.groupBy),[busy,setBusy]=useState(false),[error,setError]=useState('');
@@ -56,43 +56,10 @@ export function DataPanel({data,onApply,gene}){
     const selected=[...event.target.files];event.target.value='';if(!selected.length)return;
     setError('');setBusy(true);
     try{
-      if(new Set(selected.map(f=>f.name)).size!==selected.length)throw Error('请一次导入一个数据集目录，文件名不可重复');
-      let parsed,override=false;
-      if(importMode==='package'){
-        const file=selected.find(f=>f.name==='manifest.json');if(!file)throw Error('请同时选择 manifest.json 和五个 TSV/TSV.GZ 文件');
-        const manifest=JSON.parse(await file.text());
-        if(entries.some(r=>r.id===manifest.id))throw Error('该数据集 ID 已存在，请使用新 ID');
-        parsed=await readPackage(manifest,async name=>{const f=selected.find(x=>x.name===name);if(!f)throw Error('缺少 '+name);return fileText(f);},data.reference);
-      }else{
-        const vcf=selected.filter(f=>isVcfFile(f.name));
-        const archive=selected.find(f=>f.name==='provenance.json');
-        const files=selected.filter(f=>!vcf.includes(f)&&f!==archive);
-        const permitted=importMode==='phenotypes'?['environments','phenotypes']:importMode==='genotypes'?['variants','genotypes']:[...datasetFiles,...optionalDatasetTables];
-        const keys=files.map(f=>f.name.replace(ext,''));
-        if(new Set(keys).size!==keys.length||keys.some(k=>!permitted.includes(k)))throw Error('请按所选导入方式提供命名正确的表格');
-        if(vcf.length>1||vcf.length&&(keys.includes('variants')||keys.includes('genotypes')||importMode==='phenotypes'))
-          throw Error('请选择一个 VCF；同次导入可附材料和表型表。');
-        let input=Object.fromEntries(await Promise.all(files.map(async(f,i)=>[keys[i],await fileText(f)])));
-        const stamp=Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);
-        const metadata={id:'local-'+stamp,version:'local-'+stamp,name:importName,source:importSource,genotype_evidence:importEvidence};
-        if(archive)metadata.provenance=JSON.parse(await fileText(archive));
-        const source=importMode!=='new'?(bundle?.sourceBundle?await bundle.sourceBundle():bundle):null;
-        if(vcf.length){
-          const {patch,provenance}=await importVcfInput(await vcfFileText(vcf[0]),{...input,...source&&{samples:source.texts.samples}},metadata,data.reference,vcf[0].name);
-          input=patch;
-          metadata.provenance={...provenance,sources:[...(metadata.provenance?.sources||[]),...provenance.sources]};
-        }
-        if(importMode==='new')parsed=createLocalDataset(input,metadata,data.reference);
-        else{
-          if(!source)throw Error('先预览一个目标数据集');
-          parsed=extendDataset(source,importMode,input,metadata,data.reference);
-          if(!entries.find(e=>e.id===bundle.manifest.id)?.local||bundle.overlays){
-            parsed.baseVersion=bundle.baseVersion||bundle.manifest.version;
-            parsed.overlays=[...(bundle.overlays||[]),{kind:importMode,input,metadata}];
-          }
-          override=true;
-        }
-      }
+      const stamp='local-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);
+      const metadata={id:stamp,version:stamp,name:importName,source:importSource,genotype_evidence:importEvidence};
+      const {bundle:parsed,override}=await importDatasetFiles(selected,
+        {mode:importMode,metadata,target:bundle,registry:entries,reference:data.reference});
       validateDataset(combineDatasets(data.reference,[parsed]));
       const {id,name,version}=parsed.manifest,newEntry={id,name,version,local:true};
       setLoaded(prev=>new Map(prev).set(id,parsed));setEntries(prev=>override?prev.map(r=>r.id===id?newEntry:r):[...prev,newEntry]);
@@ -113,30 +80,31 @@ export function DataPanel({data,onApply,gene}){
       changeOpen(false);
     }catch(e){setError(e.message);}finally{setBusy(false);}
   }
-  function downloadManifest(){
+  function downloadManifest(semantic){
     const m={...bundle.manifest,files:Object.fromEntries(tables.map(key=>[key,key+'.txt']))};
     delete m.packed;
-    saveFile('manifest.json',JSON.stringify(m,null,2)+'\n','application/json');
+    saveFile(semantic?'manifest.jsonld':'manifest.json',JSON.stringify(semantic?semanticManifest(m):m,null,2)+'\n',
+      semantic?'application/ld+json':'application/json');
   }
   return <><Button variant="soft" color="gray" onClick={()=>changeOpen(true)}>数据接口 / Data · {data.meta.datasets.length}</Button>
   <Dialog.Root open={open} onOpenChange={changeOpen}><Dialog.Content maxWidth="960px" className="dataset-dialog">
     <Dialog.Title>数据集与溯源 / Data sources</Dialog.Title><Dialog.Description>选择数据集，预览或导入材料。</Dialog.Description>
     <div className="dataset-list">{entries.map(r=><label key={r.id}><input type="checkbox" checked={ids.includes(r.id)} disabled={busy} onChange={e=>setIds(prev=>e.target.checked?[...prev,r.id]:prev.filter(id=>id!==r.id))}/><strong><span className="source-badge dataset-tint" style={datasetTint(r.id,entries)}>{datasetBadge(r.id,entries)}</span> {r.name}</strong><small>{r.id} · {r.version}{r.local?' · 本地导入':''}</small><button onClick={e=>{e.preventDefault();previewDataset(r.id)}} disabled={busy}>来源 / 预览</button></label>)}</div>
     <div className="compare-tools"><label>比较维度 <select aria-label="比较维度" value={group} onChange={e=>setGroup(e.target.value)}>{groupOptions.map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label>
-      <a href="./datasets/README.txt" target="_blank" rel="noreferrer">输入格式 / Load data</a><a href="./datasets/examples/riceflux_import_examples.zip" download>导入样例 / Templates</a><a href="./datasets/rice6044-v1.zip" download>6044 TSV</a><a href="./datasets/ricenavi-v1.zip" download>RiceNavi TSV</a>
+      <a href="./datasets/README.txt" target="_blank" rel="noreferrer">输入格式 / Load data</a><a href="./formats/dataset-intake.json" target="_blank" rel="noreferrer">本体规范 / Ontology</a><a href="./datasets/examples/riceflux_import_examples.zip" download>导入样例 / Templates</a><a href="./datasets/rice6044-v1.zip" download>6044 TSV</a><a href="./datasets/ricenavi-v1.zip" download>RiceNavi TSV</a>
       <button onClick={()=>saveFile('riceflux_selected_samples.tsv',sampleTable(data),'text/tab-separated-values')}>当前材料与分组 TXT</button>
     </div><p className="footnote">同名材料按数据集分别统计；设置可保存到工作区。</p>
     <details className="dataset-import"><summary>导入基因型 / 表型 · Import data</summary>
-      <div className="compare-tools"><select aria-label="数据导入方式" value={importMode} onChange={e=>setImportMode(e.target.value)}><option value="package">数据包（清单 + 五表）</option><option value="new">新建本地数据集</option><option value="phenotypes">给预览数据集追加表型</option><option value="genotypes">给仅表型数据集追加基因型</option></select>
+      <div className="compare-tools"><select aria-label="数据导入方式" value={importMode} onChange={e=>setImportMode(e.target.value)}>{Object.entries(datasetIntake.profiles).map(([key,profile])=><option key={key} value={key}>{profile.label}</option>)}</select>
         {importMode==='new'&&<input aria-label="本地数据集名称" placeholder="数据集名称" value={importName} onChange={e=>setImportName(e.target.value)}/>}
         {importMode!=='package'&&<input aria-label="导入数据来源" placeholder="来源说明或 DOI" value={importSource} onChange={e=>setImportSource(e.target.value)}/>}
-        {(importMode==='new'||importMode==='genotypes')&&<select aria-label="导入分型证据" value={importEvidence} onChange={e=>setImportEvidence(e.target.value)}>{['G_chip','G_projected','G_direct','G_mixed'].map(value=><option key={value}>{value}</option>)}</select>}
-        <label className="file-button">选择文件<input aria-label="导入数据集" type="file" multiple accept=".json,.tsv,.txt,.vcf,.gz,.bgz" onChange={upload} disabled={busy}/></label>
+        {datasetIntake.profiles[importMode].allowVcf&&<select aria-label="导入分型证据" value={importEvidence} onChange={e=>setImportEvidence(e.target.value)}>{datasetIntake.genotypeEvidence.filter(value=>value!=='G_none').map(value=><option key={value}>{value}</option>)}</select>}
+        <label className="file-button">选择文件<input aria-label="导入数据集" type="file" multiple accept=".json,.jsonld,.tsv,.txt,.vcf,.gz,.bgz" onChange={upload} disabled={busy}/></label>
       </div>
-      <p className="footnote">{importMode==='package'?'清单登记五张基础表及可选的 PAV 表。':importMode==='new'?'SNP 与 InDel 共用 VCF。可附材料表、表型两表，或 PAV 表及溯源档案。':importMode==='phenotypes'?`${bundle?.manifest.name||'先预览目标'} · environments.tsv + phenotypes.tsv`:`${bundle?.manifest.name||'先预览目标'} · VCF 或原有分型两表`}</p>
+      <p className="footnote">{datasetIntake.profiles[importMode].requires&&(bundle?.manifest.name||'先预览目标')+' · '}{datasetIntake.profiles[importMode].hint}</p>
     </details>
     {error&&<p role="alert">{error}</p>}{busy&&<p role="status">正在校验并读取数据…</p>}
-    {bundle&&<><DatasetProvenance data={data} bundle={bundle}/><details onToggle={e=>{setShowTables(e.currentTarget.open);if(!e.currentTarget.open)setReadTable(null);}}><summary>原始表格预览 / Source tables · {bundle.manifest.name}</summary><div className="compare-tools"><select aria-label="预览表格" value={table} onChange={e=>setTable(e.target.value)}>{tables.map(key=><option key={key}>{key}</option>)}</select><button disabled={!tableText} onClick={()=>saveFile(table+'.txt',tableText,'text/tab-separated-values;charset=utf-8')}>下载当前 TXT</button><button onClick={downloadManifest}>下载输入清单</button></div>
+    {bundle&&<><DatasetProvenance data={data} bundle={bundle}/><details onToggle={e=>{setShowTables(e.currentTarget.open);if(!e.currentTarget.open)setReadTable(null);}}><summary>原始表格预览 / Source tables · {bundle.manifest.name}</summary><div className="compare-tools"><select aria-label="预览表格" value={table} onChange={e=>setTable(e.target.value)}>{tables.map(key=><option key={key}>{key}</option>)}</select><button disabled={!tableText} onClick={()=>saveFile(table+'.txt',tableText,'text/tab-separated-values;charset=utf-8')}>下载当前 TXT</button><button onClick={()=>downloadManifest(false)}>下载输入清单</button><button onClick={()=>downloadManifest(true)}>下载 JSON-LD 清单</button></div>
     {preview?<p className="footnote">{preview.count.toLocaleString()} 行 × {preview.fields.length.toLocaleString()} 列 · 预览前 12 行、8 列</p>:tableState?.error?<p role="alert">{tableState.error} <button onClick={()=>{setReadTable(null);setRetryTable(n=>n+1);}}>重试</button></p>:showTables&&<p role="status">正在读取原始表…</p>}
     {preview&&<div className="matrix-scroll"><table className="individual-table"><thead><tr>{preview.fields.slice(0,8).map(k=><th key={k}>{k}</th>)}</tr></thead><tbody>{preview.rows.slice(0,12).map((row,i)=><tr key={i}>{row.slice(0,8).map((value,j)=><td key={j}>{value}</td>)}</tr>)}</tbody></table></div>}</details></>}
     <details><summary>RiceNavi 完整来源库 / All source records</summary>{open&&<React.Suspense fallback={<p>Loading…</p>}><RiceNaviPanel gene={gene}/></React.Suspense>}</details><div className="dialog-actions"><span>{ids.length} 个数据集已选择</span><Dialog.Close><Button variant="soft" color="gray">关闭</Button></Dialog.Close><Button disabled={busy||!ids.length} onClick={apply}>应用数据集 / Apply</Button></div>

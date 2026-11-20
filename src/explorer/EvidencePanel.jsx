@@ -6,7 +6,7 @@ import {phenotypeAxes,stateSummary} from './analysis.js';
 import {loadAbstracts} from './observed.js';
 import {datasetBadge,datasetTint} from './datasetColors.js';
 import {saveFile,writeTSV} from './formats.js';
-export function EvidencePanel({data,gene,trait,cohort,selected}){
+export function EvidencePanel({data,gene,trait,cohort,selected,onInspect}){
   const [expanded,setExpanded]=useState(false),[env,setEnv]=useState(''),[modern,setModern]=useState(true);
   const [abstracts,setAbstracts]=useState(),[abstractError,setAbstractError]=useState('');
   useEffect(()=>{if(!expanded)return;let active=true;loadAbstracts(import.meta.env.BASE_URL).then(a=>{if(active)setAbstracts(a);}).catch(e=>{if(active)setAbstractError(e.message);});return()=>{active=false;};},[expanded]);
@@ -20,7 +20,7 @@ export function EvidencePanel({data,gene,trait,cohort,selected}){
   const sources=useMemo(()=>datasetCalls(data,gene,cohort),[data,gene,cohort]),identity=identityFor(data,gene);
   const context=gene.description||gene.catalog?.function?.[0],catalogEntry=gene.catalog?.collection==='cloned_catalog';
   return <section className="panel evidence-panel" id="gene-evidence"><div className="panel-title"><h2>基因与证据 / Provenance</h2><span className="panel-tag">{papers.length} 篇去重文献</span></div>
-    <SourceBadges data={data} gene={gene} detail/>
+    <SourceBadges data={data} gene={gene} detail onInspect={onInspect}/>
     <p><b>{gene.catalog?.msu||gene.id}</b> · {gene.name} · {gene.catalog?.rap}</p>
     <details><summary>名称与身份复核 / Gene identity</summary><dl className="provenance-grid"><dt>MSU / RAP</dt><dd>{identity?.msu_id||'MSU 待核'} / {identity?.rap_id||'RAP 待核'}</dd><dt>别名 / Aliases</dt><dd>{gene.catalog?.aliases?.join(' · ')}</dd><dt>复核范围 / Scope</dt><dd>{identity?.identity_status} · {catalogEntry?identity?.review_scope:'已验收先验索引对照。 / Consistency with the accepted prior.'}</dd>{!catalogEntry&&<><dt>共享别名 / Shared aliases</dt><dd>{identity?.shared_aliases||'无 / None'}。有共享别名时使用 MSU/RAP ID。</dd></>}</dl>{gene.catalog?.identity&&<><a href={gene.catalog.identity} target="_blank" rel="noreferrer">身份来源 / Identity source ↗</a> · </>}{catalogEntry?<a href="./datasets/cloned_catalog/manifest.json" target="_blank" rel="noreferrer">扩展目录版本 / Catalog version ↗</a>:<a href="./annotations/gene_identity.tsv" download="gene_identity.txt">原先验身份复核 TXT</a>}</details>
     <div className="evidence-axes"><span><b>当前位点 / Selected site</b>{selected?.id||'未选择'} · {site?.level||'无位点级文献注释'}</span><span><b>调用质量 / Call quality</b>尚未认证高置信 / HC not certified</span></div>

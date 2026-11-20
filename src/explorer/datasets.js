@@ -3,11 +3,12 @@ import {writeTSV} from './formats.js';
 import {sha256Text} from './sha256.js';
 import {alleleNames,callPair,markerKind,missingPair,packedCall,packCall,variantKey} from './alleles.js';
 import {sourceColor} from './datasetColors.js';
-import {pavFields} from './pav.js';
 import {provenanceSources} from './provenance.js';
+import {datasetIntake,manifestFields} from './inputSchema.js';
 
-export const datasetFiles=['samples','variants','genotypes','environments','phenotypes'];
-export const optionalDatasetTables=['pav','pav_summary','descriptors'];
+const inputTables=datasetIntake.tables;
+export const datasetFiles=Object.keys(inputTables).filter(key=>inputTables[key].requiredInPackage);
+export const optionalDatasetTables=Object.keys(inputTables).filter(key=>!inputTables[key].requiredInPackage);
 export const datasetTableKeys=manifest=>[...datasetFiles,...optionalDatasetTables.filter(key=>manifest.files?.[key])];
 export const groupOptions=[['source_group','来源组'],['dataset','数据集'],['subspecies','遗传亚群'],['region','来源地区'],['subspecies_region','亚群 × 地区'],['dataset_group','数据集 × 来源组']];
 const legacyColors={'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
@@ -29,6 +30,7 @@ export function readTable(text,required=[],name='TSV'){
   });
   return {fields,rows,objects:()=>rows.map(cells=>Object.fromEntries(fields.map((k,i)=>[k,cells[i]])))};
 }
+const intakeTable=(texts,key)=>readTable(texts[key],inputTables[key].columns,key);
 function unique(rows,key,label){
   const ids=rows.map(r=>r[key]);
   requireValue(ids.every(x=>x&&!missing(x))&&new Set(ids).size===ids.length,label+' ID 为空或重复');
@@ -37,14 +39,14 @@ function keyOf(v){return variantKey(chromNum(v.chromosome),v.pos,v.ref,v.markerT
 function sameMarker(a,b){return a.gene===b.gene&&keyOf(a)===keyOf(b);}
 
 export function parseDatasetAxes(manifest,texts,reference){
-  requireValue(['RiceFlux tables 1.0','RiceFlux tables 1.1','RiceFlux tables 1.2'].includes(manifest.schema)&&typeof manifest.id==='string'&&/^[A-Za-z0-9_-]+$/.test(manifest.id)&&typeof manifest.name==='string'&&manifest.name.trim()&&typeof manifest.version==='string'&&manifest.version.trim(),'数据集清单缺少有效的 schema、id、name 或 version');
-  requireValue(['G_chip','G_projected','G_direct','G_mixed','G_none'].includes(manifest.genotype_evidence),'请登记分型来源 genotype_evidence');
-  requireValue(manifest.assembly==='IRGSP-1.0/MSU7','参考组装不兼容；需要 IRGSP-1.0/MSU7 正链坐标');
+  requireValue(datasetIntake.tableSchemas.includes(manifest.schema)&&typeof manifest.id==='string'&&/^[A-Za-z0-9_-]+$/.test(manifest.id)&&typeof manifest.name==='string'&&manifest.name.trim()&&typeof manifest.version==='string'&&manifest.version.trim(),'数据集清单缺少有效的 schema、id、name 或 version');
+  requireValue(datasetIntake.genotypeEvidence.includes(manifest.genotype_evidence),'请登记分型来源 genotype_evidence');
+  requireValue(manifest.assembly===datasetIntake.assembly,'参考组装不兼容；需要 '+datasetIntake.assembly+' 正链坐标');
   requireValue(typeof manifest.source==='string'&&manifest.source.trim(),'请登记数据来源 source');
   const sources=provenanceSources(manifest);
   const checkSource=(row,role)=>requireValue(!row.source_id||sources.get(row.source_id)?.role===role,'溯源档案缺少 '+role+' 来源 '+row.source_id);
-  const samples=readTable(texts.samples,['sample_id','name','source_group','subspecies','region','material_type'],'samples').objects();
-  unique(samples,'sample_id','材料');requireValue(samples.length,'数据集没有材料');
+  const samples=intakeTable(texts,'samples').objects();
+  unique(samples,inputTables.samples.key[0],'材料');requireValue(samples.length,'数据集没有材料');
   for(const s of samples){
     requireValue(s.name&&s.material_type,'材料缺少 name 或 material_type');
     for(const role of ['female','male']){
@@ -62,7 +64,7 @@ export function parseDatasetAxes(manifest,texts,reference){
       genesByKey.get(id).push(gene);
     }
   }
-  const variants=readTable(texts.variants,['marker_id','gene_id','chr','position','ref','alt'],'variants').objects().map(row=>{
+  const variants=intakeTable(texts,'variants').objects().map(row=>{
     checkSource(row,'genotype');
     const genes=genesByKey.get(row.gene_id)||[];
     requireValue(genes.length===1,'gene_id 不能唯一匹配：'+row.gene_id+'；请使用 MSU/RAP ID');
@@ -91,14 +93,13 @@ export function parseDatasetAxes(manifest,texts,reference){
     return {id:row.pav_id,geneId:mapped[0]?.id??null,sourceGene:row.source_gene_id,source:sources.get(row.source_id),
       datasetId:manifest.id,datasetName:manifest.name,version:manifest.version};
   };
-  const pav=manifest.files?.pav?readTable(texts.pav,pavFields,'pav').objects().map(row=>{
+  const pav=manifest.files?.pav?intakeTable(texts,'pav').objects().map(row=>{
     requireValue(row.states.length===samples.length&&/^[10.-]+$/.test(row.states),'PAV 状态或材料轴不匹配：'+row.pav_id);
     return {...findPavGene(row),states:row.states,sampleIndex};
   }):[];
   const summaries=new Map();
   if(manifest.files?.pav_summary){
-    const fields=['pav_id','gene_id','source_gene_id','source_id','population','present','denominator'];
-    for(const row of readTable(texts.pav_summary,fields,'pav_summary').objects()){
+    for(const row of intakeTable(texts,'pav_summary').objects()){
       let assay=summaries.get(row.pav_id);
       if(!assay){
         assay={...findPavGene(row),groups:[]};
@@ -116,10 +117,9 @@ export function parseDatasetAxes(manifest,texts,reference){
   requireValue(new Set(pav.map(r=>r.source.id+'|'+r.sourceGene)).size===pav.length,'同一 PAV 来源内原始基因编号重复。');
   const descriptors=new Map(),descriptorsSeen=new Set();
   if(manifest.files?.descriptors){
-    const fields=['sample_id','descriptor_id','descriptor','value_code','value_label','site','crop_year','dictionary_id','source_id','source_record_id'];
-    for(const row of readTable(texts.descriptors,fields,'descriptors').objects()){
+    for(const row of intakeTable(texts,'descriptors').objects()){
       checkSource(row,'phenotype');
-      const key=JSON.stringify([row.sample_id,row.source_id,row.descriptor_id,row.site,row.crop_year,row.source_record_id]);
+      const key=JSON.stringify(inputTables.descriptors.key.map(field=>row[field]));
       requireValue(sampleIndex.has(row.sample_id)&&row.descriptor_id&&row.descriptor&&row.value_code&&row.source_id&&row.source_record_id&&!descriptorsSeen.has(key),
         '分类表型记录缺少材料、原始身份或重复：'+row.sample_id);
       descriptorsSeen.add(key);
@@ -127,8 +127,8 @@ export function parseDatasetAxes(manifest,texts,reference){
       descriptors.get(row.sample_id).push({...row,source:sources.get(row.source_id)});
     }
   }
-  const environments=readTable(texts.environments,['environment_id','trait_id','trait_name','unit','category','family','assay','site','year'],'environments').objects();
-  unique(environments,'environment_id','环境');
+  const environments=intakeTable(texts,'environments').objects();
+  unique(environments,inputTables.environments.key[0],'环境');
   environments.forEach(e=>requireValue(['trait_id','trait_name','unit','category','family','assay','site','year'].every(k=>e[k]&&!missing(e[k])),'环境元数据不完整：'+e.environment_id));
   for(const e of environments){
     checkSource(e,'phenotype');
@@ -147,7 +147,7 @@ export function parseDatasetAxes(manifest,texts,reference){
   }
   const envKeys=environments.map(e=>[e.trait_id,e.assay,e.site,e.year].join('|'));
   requireValue(new Set(envKeys).size===envKeys.length,'同一性状、鉴定指标、地点和年份对应多个环境；请先明确重复测量处理');
-  const ph=readTable(texts.phenotypes,['sample_id'],'phenotypes');
+  const ph=intakeTable(texts,'phenotypes');
   requireValue(ph.fields[0]==='sample_id'&&ph.fields.length===environments.length+1&&environments.every(e=>ph.fields.includes(e.environment_id)),'表型列与 environments 不一致');
   const phenotypes=new Map();
   for(const row of ph.rows){
@@ -165,7 +165,7 @@ export function parseDataset(manifest,texts,reference){
   const axes=parseDatasetAxes(manifest,texts,reference),{samples,variants}=axes;
   const sampleIndex=new Map(samples.map((s,i)=>[s.sample_id,i]));
   const [header,...lines]=texts.genotypes.replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n').split('\n');
-  const {fields}=readTable(header,['sample_id'],'genotypes');
+  const {fields}=readTable(header,inputTables.genotypes.columns,'genotypes');
   const fieldSet=new Set(fields),rows=lines.filter(Boolean);
   requireValue(fields.length===variants.length+1&&fields[0]==='sample_id'&&variants.every(v=>fieldSet.has(v.id)),'分型表的位点列与 variants 不一致');
   requireValue(rows.length===samples.length,'分型表材料数与 samples 不一致');
@@ -316,7 +316,8 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
       groupBy,genotype_evidence:evidence.length>1?'G_mixed':evidence[0]||'G_none',synthetic:false,schema:'RiceFlux registry 2.0'}};
 }
 
-export async function readPackage(manifest,reader,reference){
+export async function readPackage(document,reader,reference){
+  const manifest=manifestFields(document);
   const texts={};
   await Promise.all(datasetTableKeys(manifest).map(async key=>{
     const filename=manifest.files?.[key];requireValue(typeof filename==='string'&&/^[\w.-]+\.(?:tsv|txt)(?:\.gz)?$/.test(filename),'清单文件名无效：'+key);

@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createLocalDataset,extendDataset,resolveSampleList} from './dataImport.js';
+import {createLocalDataset,extendDataset,importDatasetFiles,resolveSampleList} from './dataImport.js';
 import {combineDatasets} from './datasets.js';
+import {semanticManifest} from './inputSchema.js';
+import {sha256Text} from './sha256.js';
 import {alleleStats,gtToken,validateDataset} from './model.js';
 import {callOf} from './catalog.js';
 import {dosage} from './analysis.js';
@@ -52,4 +54,44 @@ test('files with leading-zero IDs are exact; ambiguous and unmatched rows are ne
   assert.deepEqual(result.map(r=>r.status),['matched','ambiguous','unknown']);
   assert.equal(result[0].sample.id,'D2-007');
   assert.equal(resolveSampleList('007\n',accessions,'D1')[0].sample.id,'D1-007');
+});
+
+const upload=(name,text)=>new File([text],name);
+test('legacy and ontology manifests validate identical TXT axes and hashes',async()=>{
+  const source=createLocalDataset({samples,variants:variants('AG,ACT'),genotypes:gt('1/2','./.','0/0'),...pheno},meta('release'),reference);
+  const entries=Object.entries(source.texts);
+  const manifest={...source.manifest,files:Object.fromEntries(entries.map(([key])=>[key,key+'.txt'])),
+    sha256:Object.fromEntries(await Promise.all(entries.map(async([key,txt])=>[key,await sha256Text(txt)])))};
+  const tables=entries.map(([key,txt])=>upload(key+'.txt',txt));
+  const opts={mode:'package',registry:[],reference};
+  const semantic=semanticManifest(manifest);
+  for(const [name,value] of [['manifest.json',manifest],['manifest.jsonld',semantic]]){
+    const {bundle}=await importDatasetFiles([upload(name,JSON.stringify(value)),...tables],opts);
+    assert.deepEqual(bundle.manifest,manifest);
+    assert.deepEqual(bundle.samples.map(s=>s.sample_id),['007','008','009']);
+    assert.equal(bundle.variants[0].markerType,'InDel');
+    assert.deepEqual(bundle.variants[0].alleles,['A','AG','ACT']);
+    assert.equal(bundle.phenotypes.get('007').e,1.5);
+  }
+  await assert.rejects(importDatasetFiles([upload('manifest.jsonld',JSON.stringify({...semantic,'@type':'v1:GeneRecord'})),...tables],opts),/DatasetVersion/);
+  await assert.rejects(importDatasetFiles([upload('manifest.jsonld',JSON.stringify(semantic)),...tables.filter(f=>f.name!=='samples.txt'),
+    upload('samples.txt',samples.replace('007','7'))],opts),/数据哈希不匹配.*samples/);
+});
+
+test('the shared VCF profile preserves allele order, source IDs and unobserved sites',async()=>{
+  const vcf=['##fileformat=VCFv4.3','##reference=IRGSP-1.0','#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t007\t008\t009',
+    'Chr1\t10\tinsertion\tA\tAG,ACT\t.\tPASS\t.\tGT\t1/2\t./.\t0/0',
+    'Chr1\t13\tsnp\tC\tT\t.\tPASS\t.\tGT\t0/1\t0/0\t0/0'].join('\n');
+  const opts={mode:'new',registry:[],metadata:meta('upload'),reference};
+  const file=upload('region.vcf',vcf);
+  const {bundle}=await importDatasetFiles([file],opts);
+  const view=combineDatasets(reference,[bundle]);
+  assert.deepEqual(bundle.samples.map(s=>s.sample_id),['007','008','009']);
+  assert.deepEqual(bundle.variants.map(v=>[v.pos,v.markerType,v.source_record_id]),[[10,'InDel','insertion'],[13,'SNP','snp']]);
+  const [indel]=view.genes[0].variants;
+  assert.deepEqual(view.individuals.map(s=>callOf(s,indel)),[[1,2],[null,null],[0,0]]);
+  assert.equal(bundle.manifest.provenance.sources[0].files[0].sha256,await sha256Text(vcf));
+  await assert.rejects(importDatasetFiles([file,upload('variants.txt',variants('AG'))],opts),/一份区域 VCF/);
+  const target={variants:[],sourceBundle(){assert.fail('invalid upload must not materialize packed inputs');}};
+  await assert.rejects(importDatasetFiles([upload('environments.txt',pheno.environments)],{...opts,mode:'phenotypes',target}),/成对/);
 });

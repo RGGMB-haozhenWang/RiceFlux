@@ -5,6 +5,7 @@ import {fetchBytes,readText,unpackGzip} from './assets.js';
 import {openPackedDataset} from './packedDataset.js';
 import {extendGeneCatalog,geneCatalogPath} from './geneCatalog.js';
 import {coverageFields,coveragePath} from './geneCoverage.js';
+import {manifestFields} from './inputSchema.js';
 export {readText} from './assets.js';
 // Adapt the released cohort and its ontology to the existing explorer data model.
 const groupColors = {'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
@@ -94,7 +95,7 @@ export async function loadExplorer(base,demo,signal,initialGene){
   const annotationsRequest=Promise.all(Object.entries(names).map(async([key,file])=>[key,readTable(await readText(base+'annotations/'+file+'.tsv',signal)).objects()]));
   const indexRequest=readText(base+'datasets/index.tsv',signal).then(index=>{
     const rows=readTable(index,['id','name','version','manifest'],'index').objects();
-    if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||rows.some(r=>!/^[-\w]+\/manifest\.json$/.test(r.manifest)))throw Error('数据集索引无效');
+    if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||rows.some(r=>!/^[-\w]+\/manifest\.json(?:ld)?$/.test(r.manifest)))throw Error('数据集索引无效');
     return Promise.all([rows,registeredManifest(base,rows[0],signal)]);
   });
   const configRequest=readJSON(base+'formats/deployment.json',signal);
@@ -144,7 +145,7 @@ export async function loadExplorer(base,demo,signal,initialGene){
 }
 
 async function registeredManifest(base,row,signal){
-  const manifest=await readJSON(base+'datasets/'+row.manifest,signal);
+  const manifest=manifestFields(await readJSON(base+'datasets/'+row.manifest,signal));
   if(manifest.id!==row.id||manifest.version!==row.version)throw Error('数据集索引与版本清单不一致');
   return manifest;
 }
@@ -163,8 +164,14 @@ async function readRegistered(base,row,manifest,reference,signal){
   },reference,signal);
 }
 
+const registeredBundles=new WeakMap();
 export async function loadRegistered(base,row,reference,signal){
-  return readRegistered(base,row,await registeredManifest(base,row,signal),reference,signal);
+  const read=async()=>readRegistered(base,row,await registeredManifest(base,row,signal),reference,signal);
+  if(signal)return read();
+  if(!registeredBundles.has(reference))registeredBundles.set(reference,new Map());
+  const requests=registeredBundles.get(reference),key=JSON.stringify([base,row.id,row.version,row.manifest]);
+  if(!requests.has(key))requests.set(key,read().catch(error=>{requests.delete(key);throw error;}));
+  return requests.get(key);
 }
 
 let abstractRequest;

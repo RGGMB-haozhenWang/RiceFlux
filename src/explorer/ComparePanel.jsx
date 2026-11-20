@@ -15,11 +15,11 @@ import {IndelBadge,PhenotypeBadge} from './SourceBadges.jsx';
 import {markerAnnotation} from './alleles.js';
 import {markerNames} from './VariantMark.jsx';
 
-function CompareGene({data,gene,variants,cohort,populations,onRemove,markerId,setMarker}){
+function CompareGene({data,gene,variants,cohort,populations,onRemove,markerId,setMarker,onInspect}){
   const v=variants.find(v=>v.id===markerId)||variants[0];
-  return <article className="comp-gene"><header><strong>{gene.name}{' '}<IndelBadge data={data} gene={gene}/>{' '}<PhenotypeBadge data={data} gene={gene}/></strong><button onClick={onRemove} aria-label={'移除 '+gene.name}>移除</button></header>
+  return <article className="comp-gene"><header><strong>{gene.name}{' '}<IndelBadge data={data} gene={gene} onInspect={onInspect}/>{' '}<PhenotypeBadge data={data} gene={gene}/></strong><button onClick={onRemove} aria-label={'移除 '+gene.name}>移除</button></header>
     <p>{[gene.catalog?.msu||gene.id,gene.model?gene.chromosome+' '+gene.gene_start.toLocaleString()+'–'+gene.gene_end.toLocaleString()+' bp':'基因模型待定位'].join(' · ')}</p>
-    {gene.model&&<GenomeTrack gene={gene} variants={variants} selected={v} onSelect={setMarker}/>}
+    {gene.model&&<GenomeTrack gene={gene} variants={variants} selected={v} onSelect={setMarker} onInspect={(id,trigger)=>onInspect(gene,id,undefined,trigger)}/>}
     <PavPanel gene={gene} cohort={cohort} populations={populations}/>
     {v?<><label>查看位点 <select value={v.id} onChange={e=>setMarker(e.target.value)}>{variants.map(m=><option key={m.id} value={m.id}>
       {markerNames[markerAnnotation(m).kind]} · {m.pos.toLocaleString()} · {m.id}
@@ -29,7 +29,7 @@ function CompareGene({data,gene,variants,cohort,populations,onRemove,markerId,se
   </article>;
 }
 
-export function ComparePanel({data,activeGene,cohort,config={},onConfig}){
+export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspect}){
   const open=config.open||false,ids=config.ids||[],markerIds=config.markers||{};
   const setOpen=value=>onConfig(prev=>({...prev,open:typeof value==='function'?value(prev.open||false):value}));
   const setIds=value=>onConfig(prev=>({...prev,ids:typeof value==='function'?value(prev.ids||[]):value}));
@@ -99,7 +99,7 @@ export function ComparePanel({data,activeGene,cohort,config={},onConfig}){
   {genes.length>0&&<div className="compare-tools joint-chips">{genes.map(g=><button key={g.id} aria-label={'从组合移除 '+g.name} onClick={()=>setIds(previous=>previous.filter(id=>id!==g.id))}>{g.name} ×</button>)}</div>}
   {!calls.ready?<Readiness calls={calls}/>:genes.length>=2?<JointPanel key={JSON.stringify(ids)} data={data} genes={genes} cohort={cohort} records={records} config={config.joint||{}} onConfig={joint=>onConfig(prev=>({...prev,joint}))}/>:<p>请选择至少两个基因查看跨基因组合。</p>}
   {calls.ready&&genes.length>0&&<section className="joint-secondary"><h3>基因区域与分群等位频率</h3><button onClick={exportComparison}>导出位点比较 TXT</button>
-  <div className="comparison-grid">{genes.map((g,i)=><CompareGene key={g.id} data={data} gene={g} variants={regionSites[i]} cohort={cohort} populations={data.populations} markerId={markerIds[g.id]} setMarker={id=>setMarkerIds(prev=>({...prev,[g.id]:id}))} onRemove={()=>setIds(ids.filter(id=>id!==g.id))}/>)}</div>
+  <div className="comparison-grid">{genes.map((g,i)=><CompareGene key={g.id} data={data} gene={g} variants={regionSites[i]} cohort={cohort} populations={data.populations} markerId={markerIds[g.id]} setMarker={id=>setMarkerIds(prev=>({...prev,[g.id]:id}))} onRemove={()=>setIds(ids.filter(id=>id!==g.id))} onInspect={onInspect}/>)}</div>
   {genes.length>=2&&<LinkagePanel cohort={cohort} genes={genes} markers={selectedSites}/>}
   {genes.length>0&&<details className="prior-import"><summary>逐材料对照所选位点</summary><div className="compare-tools">
   <input aria-label="检索多基因材料" type="search" placeholder="名录品种名或编号" value={material} onChange={e=>{setMaterial(e.target.value);setLimit(20);}}/>

@@ -9,19 +9,20 @@ const shade = (color,index) => index===0?'#dce5e5':
 export function alleleFrequencyText(stats) {
   return stats.alleleCounts.slice(1).map(a=>`${a.allele} ${percent(a.frequency)}`).join(' · ');
 }
+export const missingPercent=n=>n>0&&n<.001?(n*100).toPrecision(2)+'%':percent(n);
 export function markerQuality(stats) {
-  return `Missing ${percent(stats.missing)} · MAF ${percent(stats.maf)}`;
+  return `Missing ${missingPercent(stats.missing)} · MAF ${percent(stats.maf)}`;
 }
-export function AlleleFrequency({variant,cohort,populations}) {
+export function AlleleFrequency({variant,cohort,populations,showSummary=true}) {
   if(!variant)return <p>当前无可计算位点。</p>;
   const stats=alleleStats(cohort,variant);
   const {kind,ref,alts}=markerAnnotation(variant);
   const labels=['REF '+ref,...alts.map((allele,i)=>`ALT${alts.length>1?i+1:''} ${allele}`)];
   const showAll=stats.alleleCounts.length>2;
   return <>
-    <div className="marker-quality" title="Missing：缺失等位数 / 预期等位数。MAF：第二常见等位在所有有效等位中的频率。">
+    {showSummary&&<div className="marker-quality" title="Missing：缺失等位数 / 预期等位数。MAF：第二常见等位在所有有效等位中的频率。">
       <span><MarkerIcon kind={kind}/>{markerNames[kind]}</span>{markerQuality(stats)}{showAll&&<span>{alleleFrequencyText(stats)}</span>}
-    </div>
+    </div>}
     <div className={kind==='SNP'?'af-legend':'af-legend indel-alleles'}>{labels.map((label,i)=><span key={label}><i style={{background:shade('#377b9a',i)}}/>{label}</span>)}</div>
     <div className="pop-frequency">{populations.map(p=>{
       const s=alleleStats(cohort.filter(x=>x.population_id===p.id),variant);

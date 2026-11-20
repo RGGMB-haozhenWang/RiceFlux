@@ -35,7 +35,7 @@ function PrimaryTraits({traits,supported}){
   </div>;
 }
 
-export function PriorFinder({data,onChoose}){
+export function PriorFinder({data,onChoose,onInspect}){
   const [open,setOpen]=useState(false),[query,setQuery]=useState(''),[dataset,setDataset]=useState('all');
   const [evidence,setEvidence]=useState('all'),[traitId,setTrait]=useState(''),[page,setPage]=useState(0);
   const traitIndex=useMemo(()=>{
@@ -108,14 +108,14 @@ export function PriorFinder({data,onChoose}){
       <p className="footnote">{hits.length.toLocaleString()} 个匹配基因{hits.length>pageSize&&
         ` · 当前 ${(offset+1).toLocaleString()}–${Math.min(offset+pageSize,hits.length).toLocaleString()}`}</p>
       <div className="catalog-list">
-        {hits.slice(offset,offset+pageSize).map(({gene,traits,supported})=><button key={gene.id} onClick={()=>{onChoose(gene,activeTrait||supported[0]?.id);setOpen(false);}}>
-          <div className="catalog-gene">
+        {hits.slice(offset,offset+pageSize).map(({gene,traits,supported})=><div className="catalog-row" key={gene.id} onClick={()=>{onChoose(gene,activeTrait||supported[0]?.id);setOpen(false);}}>
+          <button type="button" className="catalog-gene">
             <b>{gene.catalog.msu||gene.catalog.rap||gene.catalog.sourceId}</b>
             <small>{[gene.name,...gene.catalog.aliases.filter(a=>a!==gene.name).slice(0,4)].join(' / ')}</small>
-          </div>
-          <SourceBadges data={data} gene={gene} phenotypeDataset={dataset}/>
+          </button>
+          <SourceBadges data={data} gene={gene} phenotypeDataset={dataset} onInspect={(...args)=>{setOpen(false);onInspect(...args);}}/>
           <PrimaryTraits traits={traits} supported={supported}/>
-        </button>)}
+        </div>)}
         {!hits.length&&<p>没有匹配项。可改用编号或切换数据集与证据。</p>}
       </div>
       <div className="dialog-actions">

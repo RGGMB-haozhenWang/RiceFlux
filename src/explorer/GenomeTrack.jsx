@@ -3,7 +3,7 @@ import {chromNum,lengths} from './exchange.js';
 import {markerAnnotation} from './alleles.js';
 import {MarkerGlyph,MarkerIcon,markerNames} from './VariantMark.jsx';
 
-export function GenomeTrack({gene,variants,selected,onSelect}) {
+export function GenomeTrack({gene,variants,selected,onSelect,onInspect}) {
   const svgRef=useRef(null),[pixels,setPixels]=useState(800);
   useEffect(()=>{const observer=new ResizeObserver(([entry])=>{if(entry.contentRect.width)setPixels(entry.contentRect.width)});observer.observe(svgRef.current);return()=>observer.disconnect();},[]);
   const extent=lengths[chromNum(gene.chromosome)]||gene.end;
@@ -55,11 +55,18 @@ export function GenomeTrack({gene,variants,selected,onSelect}) {
       </g>}
       {visible.map(({v,kind,ref,alts})=>{
         const enabled=variants.includes(v),x=scale(v.pos),y=kind==='SNP'?93:112;
-        const description=markerNames[kind]+' · '+v.pos.toLocaleString()+' bp · '+ref+' → '+(alts.join(' / ')||'—');
-        return <g key={v.id} role="button" tabIndex={enabled?0:-1} aria-disabled={!enabled} aria-label={'选择位点 '+v.id}
-          aria-description={description} opacity={enabled?1:.27}
-          onClick={()=>{if(!suppressClick.current&&enabled)onSelect(v.id);}}
-          onKeyDown={e=>{if(['Enter',' '].includes(e.key)&&enabled){e.preventDefault();onSelect(v.id);}}}>
+        const inspectable=kind!=='SNP'&&Boolean(onInspect),actionable=enabled||inspectable;
+        const description=markerNames[kind]+' · '+v.pos.toLocaleString()+' bp · '+ref+' → '+(alts.join(' / ')||'—')+
+          (!enabled&&inspectable?' · 未纳入当前组合':'');
+        function activate(e){
+          if(enabled)onSelect(v.id);
+          if(inspectable)onInspect(v.id,e.currentTarget);
+        }
+        return <g key={v.id} role="button" tabIndex={actionable?0:-1} aria-disabled={!actionable}
+          aria-haspopup={inspectable?'dialog':undefined} aria-label={(inspectable?'查看':'选择')+'位点 '+v.id}
+          aria-description={description} opacity={enabled ? 1 : inspectable ? .55 : .27}
+          onClick={e=>{if(!suppressClick.current&&actionable)activate(e);}}
+          onKeyDown={e=>{if(['Enter',' '].includes(e.key)&&actionable){e.preventDefault();activate(e);}}}>
           <line x1={x} x2={x} y1={y-11} y2={y-7} stroke="#839ead"/>
           <g transform={`translate(${x} ${y})`}>
             <circle r="8" fill="transparent"/>
