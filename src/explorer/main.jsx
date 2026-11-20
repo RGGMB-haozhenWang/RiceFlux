@@ -16,6 +16,7 @@ import {DataPanel} from './DataPanel.jsx';
 import {PopulationComposition} from './PopulationComposition.jsx';
 const ComparePanel=React.lazy(()=>import('./ComparePanel.jsx').then(m=>({default:m.ComparePanel})));
 const IndelDetails=React.lazy(()=>import('./IndelDetails.jsx').then(m=>({default:m.IndelDetails})));
+const PhenotypeProfile=React.lazy(()=>import('./PhenotypeProfile.jsx').then(m=>({default:m.PhenotypeProfile})));
 import {SourceBadges} from './SourceBadges.jsx';
 import {Tutorial} from './Tutorial.jsx';
 import {GenomeTrack} from './GenomeTrack.jsx';
@@ -40,6 +41,7 @@ import {RegionalPhenotypes} from './RegionalPhenotypes.jsx';
 import './desktop.css';
 import {loadAbstracts,loadExplorer,loadRegistered} from './observed.js';
 import {geneSupport,geneTraits,hasPhenotypes} from './provenance.js';
+import {loadTraitEvidence,traitEvidenceFor} from './traitEvidence.js';
 const initialView=new URLSearchParams(location.search).get('view');
 const demo=initialView==='demo'&&__RICEFLUX_AUDIENCE__!=='breeder';
 const embedded=new URLSearchParams(location.search).get('embed')==='1';
@@ -57,7 +59,7 @@ function initialSelection(data,requested=''){
 const allMaterials={materialScope:'all',individualIds:[],individualOnly:false};
 const defaultWorkspace={
   ...allMaterials,geneId:'SIM_HD01',traitId:'heading',popIds:[],variantId:'',
-  minMaf:.05,maxMissing:.2,plotSelection:{},siteSelections:{},
+  minMaf:.05,maxMissing:.2,plotSelection:{},siteSelections:{},traitTargets:{},
   layout:defaultLayout,display:{mode:'desk',tab:'overview',text:'standard'},material:{},compare:{},breeder:{},
 };
 const defaultCohort=data=>({...allMaterials,popIds:data.populations.map(p=>p.id)});
@@ -115,7 +117,7 @@ function Phenotypes({groups,trait,selectedIds}) {
 function App() {
   const [data,setData]=useState(null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
   const [workspace,setWorkspace]=useState(defaultWorkspace);
-  const {traitId,geneId,popIds,individualIds,individualOnly,materialScope,minMaf,maxMissing,variantId,plotSelection,siteSelections,
+  const {traitId,geneId,popIds,individualIds,individualOnly,materialScope,minMaf,maxMissing,variantId,plotSelection,siteSelections,traitTargets,
     layout,display,material:materialSettings,compare:compareSettings,breeder:breederSettings}=workspace;
   const [groupKey,setGroup]=useState(null),[showAll,setShowAll]=useState(false);
   const [pick,setPick]=useState(false),[query,setQuery]=useState(''),[help,setHelp]=useState(false),[notice,setNotice]=useState('');
@@ -123,6 +125,7 @@ function App() {
   const [memberLimit,setMemberLimit]=useState(96),[pickerLimit,setPickerLimit]=useState(96);
   const [geneLoad,setGeneLoad]=useState(null),geneRequest=useRef(0);
   const [inspection,setInspection]=useState(null);
+  const [traitSources,setTraitSources]=useState(null),[traitSourceError,setTraitSourceError]=useState('');
   function update(patch){
     setWorkspace(current=>({...current,...(typeof patch==='function'?patch(current):patch)}));
   }
@@ -147,12 +150,37 @@ function App() {
   },[retry]);
   useEffect(()=>{if(notice){const t=setTimeout(()=>setNotice(''),4000);return()=>clearTimeout(t);}},[notice]);
   const gene=data?.genes.find(g=>g.id===geneId);
+  const assessmentPilot=!demo&&!breederOpen&&Boolean(gene?.catalog?.core&&!gene.catalog.historical);
+  useEffect(()=>{
+    if(!assessmentPilot)return;
+    let current=true;
+    loadTraitEvidence(import.meta.env.BASE_URL).then(source=>{
+      if(current){setTraitSources(source);setTraitSourceError('');}
+    },error=>{if(current)setTraitSourceError(error.message);});
+    return()=>{current=false;};
+  },[assessmentPilot]);
+  const traitReview=useMemo(()=>assessmentPilot?
+    {...traitEvidenceFor(traitSources,gene),error:traitSourceError,loading:!traitSources&&!traitSourceError}:null,
+    [assessmentPilot,traitSources,gene,traitSourceError]);
   const relatedTraits=useMemo(()=>gene?geneTraits(data,gene):[],[data,gene]);
   const trait=data?.traits.find(t=>t.id===traitId)||relatedTraits.find(t=>t.id===traitId);
   const view=useMemo(()=>regionalView(trait,plotSelection),[trait,plotSelection]);
   const tablePhenotype=view?.active.id || traitId;
   const tableHeading=view ? trait.name+' · '+siteName(view.active.source.site)+' '+view.year+(view.assays.length>1?' · '+view.assay:'')+' ('+view.unit+')' : trait?.name+' ('+trait?.unit+')';
   function changePlot(patch){update({plotSelection:{assay:view.assay,year:view.year,site:view.active.source.site,...patch}});}
+  function setTraitTarget(key,range){
+    update(current=>{
+      const traitTargets={...current.traitTargets};
+      if(range)traitTargets[key]=range;
+      else delete traitTargets[key];
+      return {traitTargets};
+    });
+  }
+  function inspectTrial(trait,trial){
+    update({traitId:trait.id,plotSelection:{assay:trial.assay,year:trial.year,site:trial.active.source.site},display:{...display,tab:'individuals'}});
+    setGroup(null);
+    requestAnimationFrame(()=>document.querySelector('[data-panel="individuals"]')?.scrollIntoView({block:'start'}));
+  }
   const cohort=useMemo(()=>data?selectCohort(data,popIds,individualIds,individualOnly,materialScope):[],[data,popIds,individualIds,individualOnly,materialScope]);
   const scopeMembers=useMemo(()=>data?.individuals.filter(s=>inMaterialScope(s,materialScope))||[],[data,materialScope]);
   const eligible=useMemo(()=>scopeMembers.filter(s=>popIds.includes(s.population_id)),[scopeMembers,popIds]);
@@ -371,7 +399,7 @@ function App() {
         <div className="context-strip"><GeneTraitChoice trait={trait} options={relatedTraits} onChange={switchGeneTrait}/><span>{popIds.length} 个群体</span><strong>{individualOnly?'仅统计已选个体':'统计已选群体全部个体'}</strong></div>
         {geneLoad&&<p className="notice" role={geneLoad.error?'alert':'status'}>{geneLoad.error?<>{geneLoad.name} · {geneLoad.error} <button onClick={()=>chooseGene(geneLoad.id,geneLoad.trait,geneLoad.clearPlot)}>重试</button></>:`正在读取 ${geneLoad.name} 的分型…`}</p>}
         <div className="kpis"><div><span>统计个体</span><strong>{cohort.length}<small>份</small></strong><p>已关注 {individualIds.length} 份</p></div><div><span>当前位点 ALT 合计频率</span><strong>{percent(stats?.af??null)}</strong><p>{selected?`${selected.ref} → ${selected.alt??'—'} · ${stats.alt} / ${stats.called} 个有效等位`:'没有当前选中的位点'}</p></div><div><span>当前位点 Missing</span><strong>{percent(stats?.missing)}</strong><p>{stats?`MAF ${percent(stats.maf)} · 有效等位 ${stats.called}/${stats.total}`:'选择群体或放宽质控条件'}</p></div><div><span>完整基因型组合</span><strong>{groups.length}<small>类</small></strong><p>{complete} 完整个体 · {cohort.length-complete} 未纳入分类</p></div></div>
-        <React.Suspense fallback={<p role="status">正在载入分析组件…</p>}><WorkspaceLayout layout={layout} onLayout={setLayout} display={display} onDisplay={setting('display')} content={{
+        <React.Suspense fallback={<p role="status">正在载入分析组件…</p>}><WorkspaceLayout layout={layout} onLayout={setLayout} display={display} onDisplay={setting('display')} phenotypeTab={assessmentPilot} content={{
           compare: !demo&&<ComparePanel data={data} activeGene={gene} cohort={cohort} config={compareSettings} onConfig={setting('compare')} onInspect={inspectIndel}/>,
           locus: <Panel title="基因区域 / Locus" tag={`${variants.length} / ${gene.variants.length} 位点`}>
             <div className="site-selection-tools">
@@ -419,8 +447,11 @@ function App() {
           <AlleleFrequency variant={selected} cohort={cohort} populations={data.populations.filter(p=>popIds.includes(p.id))}/>
           {individualIds.length>0&&<div className="focus-individual"><PersonIcon/><span>关注材料</span><b>{selectedStats?alleleFrequencyText(selectedStats)||percent(selectedStats.af):'—'}</b></div>}
         </Panel>,
-          composition: <Panel title="基因型组合 / Genotypes" sub="完整未分相基因型组合；频率按个体计数。"  className="matrix-panel"><div className="matrix-scroll"><table className="matrix"><thead><tr><th>组合</th>{variants.map(v=><th key={v.id}><button className={v.id===selected?.id?'active-variant':''} aria-haspopup={!demo&&v.markerType==='InDel'?'dialog':undefined} onClick={e=>selectMarker(v,e.currentTarget)}>{v.pos.toLocaleString()}<small>{v.ref}→{v.alt??'—'}</small></button></th>)}<th>个体数</th><th>占完整个体</th><th>群体组成</th></tr></thead><tbody>{visibleGroups.map((g,i)=><tr key={g.key} className={g.key===group?.key?'active-group':''}><th><button title={g.id} onClick={()=>setGroup(g.key===groupKey?null:g.key)}><i style={{background:COLORS[i%8]}}/>G{String(i+1).padStart(2,'0')}</button></th>{g.tokens.map((t,j)=><td key={variants[j].id}><span className={`gt ${t===`${variants[j].ref}/${variants[j].ref}`?'ref':t.split('/')[0]===t.split('/')[1]?'alt':'het'}`}>{t}</span></td>)}<td><b>{g.members.length}</b></td><td>{percent(g.members.length/complete)}</td><td><PopulationComposition populations={data.populations} members={g.members} selectedIds={individualIds}/></td></tr>)}</tbody></table></div>{!groups.length&&<Empty>没有可分类的完整个体。零位点或含缺失调用时，不生成虚假的单一组合。</Empty>}<div className="panel-bottom"><span>展示 {visibleGroups.length} / {groups.length} 类 · 分母为 {complete} 个完整个体 · G 编号随当前排序变化</span>{groups.length>8&&<Button variant="ghost" size="1" onClick={()=>setShowAll(v=>!v)}>{showAll?'收起稀有组合':'显示全部组合'}</Button>}</div><div className="population-key">{scopeGroups.map(p=><span key={p.id}><i style={{background:p.color}}/>{p.name}</span>)}</div>{!demo&&<HaplotypeMatches key={gene.id} gene={gene} cohort={cohort} evidence={data.evidence}/>}</Panel>,
-          phenotype: <div className="phenotype-section">{view ?
+          composition: <Panel title="基因型组合 / Genotypes" sub="完整未分相基因型组合；频率按个体计数。"  className="matrix-panel"><div className="matrix-scroll"><table className="matrix"><thead><tr><th>组合</th>{variants.map(v=><th key={v.id}><button className={v.id===selected?.id?'active-variant':''} aria-haspopup={!demo&&v.markerType==='InDel'?'dialog':undefined} onClick={e=>selectMarker(v,e.currentTarget)}>{v.pos.toLocaleString()}<small>{v.ref}→{v.alt??'—'}</small></button></th>)}<th>个体数</th><th>占完整个体</th><th>群体组成</th></tr></thead><tbody>{visibleGroups.map((g,i)=><tr key={g.key} className={g.key===group?.key?'active-group':''}><th><button title={g.id} onClick={()=>setGroup(g.key===groupKey?null:g.key)}><i style={{background:COLORS[i%8]}}/>G{String(i+1).padStart(2,'0')}</button></th>{g.tokens.map((t,j)=><td key={variants[j].id}><span className={`gt ${t===`${variants[j].ref}/${variants[j].ref}`?'ref':t.split('/')[0]===t.split('/')[1]?'alt':'het'}`}>{t}</span></td>)}<td><b>{g.members.length}</b></td><td>{percent(g.members.length/complete)}</td><td><PopulationComposition populations={data.populations} members={g.members} selectedIds={individualIds}/></td></tr>)}</tbody></table></div>{!groups.length&&<Empty>没有可分类的完整个体。零位点或含缺失调用时，不生成虚假的单一组合。</Empty>}<div className="panel-bottom"><span>展示 {visibleGroups.length} / {groups.length} 类 · 分母为 {complete} 个完整个体 · G 编号随当前排序变化</span>{groups.length>8&&<Button variant="ghost" size="1" onClick={()=>setShowAll(v=>!v)}>{showAll?'收起稀有组合':'显示全部组合'}</Button>}</div><div className="population-key">{scopeGroups.map(p=><span key={p.id}><i style={{background:p.color}}/>{p.name}</span>)}</div>{!demo&&<HaplotypeMatches key={gene.id} gene={gene} cohort={cohort} evidence={data.evidence} review={traitReview}/>}</Panel>,
+          phenotype: <div className="phenotype-section">{assessmentPilot?
+          <PhenotypeProfile key={gene.id} data={data} gene={gene} related={relatedTraits} cohort={cohort} variants={variants} schemes={schemes}
+            selectedIds={individualIds} targets={traitTargets} onTarget={setTraitTarget}
+            onInspect={layout.some(p=>p.id==='individuals')?inspectTrial:undefined}/>:view ?
           <Panel title={trait.name+' · 分地区表型 ('+view.unit+')'} tag={view.sites.length+' 个试验地点'}>
             <RegionalPhenotypes trait={trait} groups={visibleGroups} allGroups={groups} gene={gene} schemes={schemes} cohort={cohort} markerIds={variants.map(v=>v.id)} view={view} onChange={changePlot} selectedIds={individualIds} compact={display.mode==='desk'&&display.tab==='overview'}/>
           </Panel> : demo ? <Panel title={`${trait.name} · 表型对照`} sub={`单位：${trait.unit}。仅展示上表当前组合；线框为四分位范围，中线为中位数，端点为最小/最大值。`} tag="DESCRIPTIVE"><Phenotypes groups={visibleGroups} trait={trait} selectedIds={individualIds}/><p className="footnote">各组 n 为有该性状记录的个体数。{demo?'合成表型独立生成，无显著性检验，不据此推断优良等位基因。':trait.source?'各组按所选地点、年份的实测值统计。':'当前为先验浏览，未选择实测表型。'}</p></Panel> : <Panel title={trait.name+' · 表型对照'}><Empty>当前数据集暂无该性状的实测表型。</Empty></Panel>}</div>,

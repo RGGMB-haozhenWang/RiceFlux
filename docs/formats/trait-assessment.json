@@ -1,0 +1,26 @@
+{
+  "@context": {
+    "@vocab": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/trait-assessment.json#",
+    "v1": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/v1/ontology.jsonld#"
+  },
+  "@type": "TraitAssessmentContract",
+  "version": "1.0.0",
+  "pilot": {"catalog": "V4", "membership": "prior/core50_genes.tsv", "identity": ["MSU", "RAP"]},
+  "assessmentUnit": ["dataset_version", "trait_id", "method_id", "scale_id", "site", "year", "selected_materials", "haplotype_definition"],
+  "targetKey": ["trait_id", "method_id", "scale_id"],
+  "relative": {
+    "@type": "v1:ObservationVariable",
+    "endpoint": "closed interval in the registered unit",
+    "ranking": ["distance of the median to the nearest interval boundary, zero inside", "share of observations inside the interval, higher first"],
+    "ties": "keep all equally ranked types",
+    "examples": ["heading", "length", "width", "plant_height", "grain_yield"]
+  },
+  "absolute": {
+    "leaf_blast": {"unit": "级", "assays": ["叶瘟评分"], "better": "lower", "criterion": "病级越低越抗病"},
+    "neck_blast": {"unit": "级", "assays": ["穗颈瘟评分"], "better": "lower", "criterion": "病级越低越抗病"},
+    "blight": {"unit": "cm", "assays": ["C5", "K85", "P6", "T1"], "better": "lower", "criterion": "病斑越短越抗病"},
+    "sheath": {"unit": "%", "assays": ["纹枯病相对病斑高度"], "better": "lower", "criterion": "相对病斑高度越低越抗病"}
+  },
+  "protocol": "https://doi.org/10.1016/j.molp.2025.03.007",
+  "literature": {"@type": "v1:EvidenceAssertion", "file": "formats/haplotype-effects.tsv", "scope": "effects and preferences apply to the reported comparison and trait"}
+}

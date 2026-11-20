@@ -10,6 +10,7 @@ A static rice genetics workbench for genes, genotype combinations and accessions
 - **D3** 为 3K 的 3,024 份材料。扩展数据包含基因区域 SNP、InDel 和原始群体注释。
 - **基因目录 / Gene catalog** 按 MSU、RAP 和别名查询。点击 InDel 徽标或区域图标记，可查看各数据集版本的坐标、等位序列、有效分母和来源。
 - **证据 / Evidence**: 数据集覆盖、文献功能位点、单倍型组分与调用质量分别标注。6044 的表型列附原文测定规程、地点与指标。
+- **表型评价 / Phenotype assessment** 按 V4 首批 50 个基因开放。相对性状可设置区间，绝对性状按已登记测定方向判断。原文单倍型效应附性状、比较范围与 DOI。 [性状规范](public/formats/trait-assessment.json) · [首批基因](public/prior/core50_genes.tsv)
 
 ## 使用 / Use
 

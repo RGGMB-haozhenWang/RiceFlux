@@ -45,7 +45,7 @@ export function regionalView(trait, selection = {}) {
   return {assays, assay, years, year, unit:active.unit, active, sites:sites.map(site => ({site, endpoint:bySite.get(site) || null}))};
 }
 
-export function regionalDistributions(groups, view, selectedIds = []) {
+export function regionalDistributions(groups, view, selectedIds = [], retainValues = false) {
   const selected = new Set(selectedIds);
   let minimum = Infinity, maximum = -Infinity;
   const sites = view.sites.map(({site, endpoint}) => {
@@ -66,7 +66,8 @@ export function regionalDistributions(groups, view, selectedIds = []) {
       };
       minimum = Math.min(minimum, values[0]);
       maximum = Math.max(maximum, values[n-1]);
-      return {key, index, n, min:values[0], q1:q(.25), median:q(.5), q3:q(.75), max:values[n-1], highlighted};
+      return {key, index, n, min:values[0], q1:q(.25), median:q(.5), q3:q(.75), max:values[n-1], highlighted,
+        ...(retainValues&&{values})};
     });
     return {site, endpoint, rows, total:rows.reduce((sum,row) => sum+row.n,0)};
   });

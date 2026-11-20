@@ -1,0 +1,27 @@
+gene_id	definition_id	marker_state	label	trait_id	trait	direction	judgment	basis	effect	context	locator	doi
+Os07g0695100	ea3657836f30abf9c		DTH7 Hap4	grains_per_panicle	每穗粒数	increase	favourable	association	Hap4 的每穗粒数较高。	原文籼稻及粳稻分层群体，比较七位点定义的自然单倍型。	结果 · 补图 5B、C	10.3389/fpls.2022.1097622
+Os07g0695100	efee8ab8b12205205		DTH7 Hap2	grains_per_panicle	每穗粒数	decrease	unfavourable	association	Hap2 的每穗粒数较少。	原文籼稻及粳稻分层比较。	结果 · 补图 5B、C	10.3389/fpls.2022.1097622
+Os07g0695100	e52414c21239b83f6		DTH7 Hap5	grains_per_panicle	每穗粒数	decrease	unfavourable	association	Hap5 的每穗粒数较少。	原文籼稻及粳稻分层比较。	结果 · 补图 5B、C	10.3389/fpls.2022.1097622
+Os07g0695100			长日条件下的 DTH7 功能等位	heading	抽穗期	increase	effect	functional	原文近等基因系的功能等位延迟抽穗，并通过光周期途径调控成花素表达。	原试验长日条件及近等基因系背景。	结果 · DTH7 Influences Photoperiod Sensitivity	10.1073/pnas.1418204111
+Os01g0690600	eacc3c2b28defbfe2		RGN1a Hap1	grains_per_panicle	每穗粒数	increase	favourable	association	粳稻中 Hap1 与较多每穗粒数相关，Hap3 为较少的一组。	粳稻分层，Hap1 与 Hap2 合计 17 份；籼稻未见同样分型效应。	图 4B、C；结果 · Breeding application	10.3389/fpls.2022.1097622
+Os01g0690600	e9ed6b21abfdde350		RGN1a Hap2	grains_per_panicle	每穗粒数	increase	favourable	association	粳稻中 Hap2 与较多每穗粒数相关，Hap3 为较少的一组。	粳稻分层，Hap1 与 Hap2 合计 17 份。	图 4B、C；结果 · Breeding application	10.3389/fpls.2022.1097622
+Os01g0690600	ef77c29956834fd1b		RGN1a Hap3	grains_per_panicle	每穗粒数	decrease	unfavourable	association	粳稻中 Hap3 的每穗粒数低于原文列为优势的类型。	原文 78 份粳稻 Hap3 材料。	图 4B、C；结果 · Breeding application	10.3389/fpls.2022.1097622
+Os07g0261200	ee1a437d204c71cb3		Ghd7 Hap1	grains_per_panicle	每穗粒数	increase	favourable	association	Hap1 在籼稻分层的每穗粒数优于 Hap2。	原研究以五个标记定义 Ghd7 单倍型，比较须匹配相同定义。	图 3D–F	10.3389/fpls.2022.1097622
+Os07g0261200	ea8600eff5a907fd3		Ghd7 Hap2	grains_per_panicle	每穗粒数	decrease	unfavourable	association	Hap2 的每穗粒数低于 Hap1。	原研究 Hap2 出现在籼稻组。	图 3D–F	10.3389/fpls.2022.1097622
+Os06g0229800	rf:alk_three_site_1		ALKᵃ	gelatinization_temperature	糊化峰温	decrease	effect	functional	A–GC 型的糊化峰温为 73.28 °C，低于 ALKᶜ 的 76.94 °C。	图 1 为多样性材料比较；原论文另以近等基因系复核方向。	图 1a、b；图 2–3	10.1186/s12284-020-00393-5
+Os06g0229800	rf:alk_three_site_2		ALKᵇ	gelatinization_temperature	糊化峰温	decrease	effect	functional	G–TT 型的糊化峰温为 72.57 °C；近等基因系中的峰温比 Nip（ALKᵃ）低 3.4 °C。	72.57 °C 来自图 1b 的多样性材料，−3.4 °C 来自独立近等基因系比较。	图 1b；讨论 · functional differentiation	10.1186/s12284-020-00393-5
+Os06g0229800	rf:alk_three_site_3		ALKᶜ	gelatinization_temperature	糊化峰温	increase	effect	functional	G–GC 型糊化峰温 76.94 °C，高于 ALKᵃ、ALKᵇ。	基于原文 DSC；目标温度按加工用途设置。	图 1a、b；图 2–3	10.1186/s12284-020-00393-5
+Os01g0681900	e4d75343a25c0ca4c		GLT1 Hap-2	thousand_grain_weight	千粒重	increase	effect	association	Hap-2 在比较中千粒重和收获指数最高；产量的型间差异未达显著（P=0.051）。	原文 181 份 aus 材料定义四型；Hap-4 仅记录一份材料。	图 6C、D；Haplotype Analysis of Potential QTLs	10.1186/s12284-024-00700-4
+Os01g0681900	e6e57561b5b7f5bc5		GLT1 Hap-3	heading	抽穗期	increase	effect	association	Hap-3 较 Hap-1、Hap-2 晚抽穗；株高也显著较高。	原文 aus 群体，部分材料来自深水稻生态型。	图 6C、D	10.1186/s12284-024-00700-4
+Os03g0407400	curated_Os03g0407400	Chr03:16733441=T	GS3 C165A	length	粒长	increase	effect	functional	编码链 C165A 提前终止，与籽粒增长有关；原文用转化验证短粒等位可互补长粒表型。	粒长目标由育种者按产品用途指定。	摘要；Effects of allelic variation at GS3	10.1534/genetics.109.103002
+Os06g0157500	curated_Os06g0157500	Chr06:2928178=A	RFT1 E105K	heading	抽穗期	increase	effect	functional	Nona Bokra 的 E105K 削弱 RFT1 功能，功能型 Hd1 背景下关联极晚抽穗。	光周期与遗传背景依原试验。	摘要；结果 · functional analysis of RFT1	10.1371/journal.pone.0075959
+Os03g0437200		Chr03:18437564=C	Digu 的 bsr-d1 启动子等位	leaf_blast	稻瘟病抗性	increase	favourable	functional	原文功能等位降低 Bsr-d1 表达并增强抗稻瘟病能力。	原研究 Digu 等位及作者验证的抗谱。	摘要；结果 · natural allele of Bsr-d1	10.1016/j.cell.2017.06.008
+Os06g0330100			Pid3 Hap_6	leaf_blast	稻瘟病抗性	increase	favourable	functional	Hap_6 保有活性，原文比较其与已报道 Pid3 的抗谱相近。	按原文全编码型和测试菌株判定；仅有一个终止位点不足以识别 Hap_6。	摘要；表 2；Haplotype analysis of Pid3 alleles	10.1038/s41598-017-10617-2
+Os05g0107700			xa5 V39E	blight	白叶枯病抗性	increase	favourable	functional	隐性 V39E 等位在原文部分白叶枯病菌株比较中提高抗性，抗性依测试条件。	完整 V39E 复合状态和隐性背景；现行的单标记只有局部覆盖。	摘要；图 1–2	10.1111/tpj.13164
+Os07g0232900			OsHMA3 功能型	grain_cadmium	籽粒镉	decrease	effect	functional	功能型 OsHMA3 在根液泡封存镉，限制向地上部转移，并降低籽粒镉积累。	原文低积累亲本及遗传实验。	摘要；图 4–5	10.1073/pnas.1005396107
+Os07g0257200			Pokkali OsNRAMP5 串联重复	grain_cadmium	籽粒镉	decrease	effect	functional	导入 Pokkali 的重复等位后，原试验污染土条件下籽粒镉显著降低。	Pokkali 来源等位回交导入 Koshihikari，按实际重复事件判型。	摘要；回交导入试验	10.1038/s43016-022-00569-w
+Os02g0244100	ec442bd198b4697cd		GW2 编码区缺失	width	粒宽	increase	effect	functional	导致截短的单碱基缺失对籽粒增宽、增重有原文功能证据。	原文比较的功能缺失等位与对照；须匹配缺失本身。	摘要；定位与功能验证	10.1038/ng2014
+Os07g0603300			GL7 17.1 kb 串联重复	length	粒长	increase	effect	functional	重复提高 GL7 表达、增加粒长并改善原研究测试的外观性状。	原文结构事件；须以该重复的直接证据判型。	摘要；图 1–2	10.1038/ng.3346
+Os03g0793500		Chr03:33002789=A	Koshihikari Hd16 A331T	heading	抽穗期	decrease	effect	functional	Koshihikari 等位降低激酶活性和光周期敏感性，在原文长日比较中使抽穗提前。	原研究 Nipponbare 与 Koshihikari 等位及长日条件。	摘要；结果 · Hd16 and day-length response	10.1111/tpj.12268
+Os06g0133000		Chr06:1765761=T	Wxᵇ 第一内含子剪接等位	amylose_content	直链淀粉含量	decrease	effect	functional	原文第一内含子剪接供体 G→T 降低正确剪接及籽粒直链淀粉含量。	只对这一剪接位点给出原文方向；米质偏好由育种用途决定。	摘要；结果 · 5′ splice site	10.1046/j.1365-313x.1998.00189.x
+Os02g0770800		Chr02:32514337=T	9311 OsNR2 Arg783	nitrate_reductase_activity	硝酸还原酶活性	increase	effect	functional	原文定点比较支持 9311 的 Arg783 相对 Nipponbare 的 Trp779 提高硝酸还原酶活性。	位点评价对应酶活；整段等位导入与产量表型见同文图 4。	图 2；结果 · OsNR2 allelic variation	10.1038/s41467-019-13110-8

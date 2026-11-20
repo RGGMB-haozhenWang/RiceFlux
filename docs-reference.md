@@ -47,6 +47,10 @@ Serve the files from any static HTTP origin. When headers are configurable, use 
 
 ## Evidence and coverage
 
+### Trait assessment
+
+The pilot uses the 50 stable V4 identities in `prior/core50_genes.tsv`. All loaded quantitative traits appear as stacked cards with assay, year and trial selections. Category records retain their reported value codes. A relative target belongs to a trait, method and scale and is saved with the workspace. Comparisons use the median distance to the closed interval, then the proportion of observations in the interval. Fixed-direction assessments use the verified assay scale. Results are tied where the comparisons are equal. The ranking is descriptive within each dataset and trial. Reported effects use the original definition ID, comparison and DOI. [Assessment contract](public/formats/trait-assessment.json) · [Original studies by haplotype](public/formats/haplotype-effects.tsv)
+
 - Per-call DP/GQ and source VCF binding have not been audited; no calls are certified HC.
 - The 6044 subset contains 66 columns for 7 traits. Endpoint labels, units, sites, years and methods trace to the phenotype workbook, the main Phenotyping section and the Supplementary Note. The grain instrument and grain count remain unspecified on the cited paper page. `Jinhai` and `Jinzhai` are retained separately. The paper’s invalid minute values are kept verbatim and have no decimal conversion.
 - RiceNavi admits 23 of 319 source records (18 genes, 404 accessions). The other 296 have explicit non-admission reasons. Unbound RiceNavi phenotypes remain source metadata.
