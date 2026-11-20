@@ -76,7 +76,7 @@ export function PriorFinder({data,onChoose,onInspect}){
   }
   return <>
     <Dialog.Root open={open} onOpenChange={setOpen}>
-    <Dialog.Trigger><Button className="prior-search" size="2" variant="soft"><MagnifyingGlassIcon/>查询 {data.genes.length.toLocaleString()} 个基因</Button></Dialog.Trigger>
+    <Dialog.Trigger><Button className="prior-search" size="2" variant="soft"><MagnifyingGlassIcon/>查基因</Button></Dialog.Trigger>
     <Dialog.Content maxWidth="720px">
       <Dialog.Title>水稻先验基因库</Dialog.Title>
       <Dialog.Description>按基因名或 ID 检索。InDel 表示至少一个已登记数据集观察到非参考等位。P 表示有实测表型。</Dialog.Description>

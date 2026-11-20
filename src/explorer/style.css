@@ -6,7 +6,6 @@
 
 .control-hint,.panel-title p,.footnote{font-size:14px;color:#6d7c88}.kpis p,.pop-frequency small{font-size:14px;color:#6d7c88}.track-label,.axis{font-size:14px;fill:#6d7c88}.panel-tag{color:#6d7c88}.people-list .empty{grid-column:1/-1}
 
-.prior-search {width:100%;margin-top:.55rem}
 .catalog-filters {display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
 .catalog-filters input,.catalog-filters select {border:1px solid #ccd7d7;background:white;color:#263b40;border-radius:6px;padding:.5rem;font:inherit}
 .catalog-filters input {flex:1;min-width:12rem}
