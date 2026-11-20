@@ -1,5 +1,6 @@
 import {columns,formats,namespace} from './formats.js';
 import {alleleStats} from './model.js';
+import {componentMarker} from './alleles.js';
 // IRGSP-1.0/MSU7 reference FASTA index, chromosomes 1 through 12.
 export const lengths = [0,43270923,35937250,36413819,35502694,29958434,31248787,29697621,28443022,23012720,23207287,29021106,27531856];
 export function chromNum(label) {
@@ -50,7 +51,8 @@ export function resolvePrior(record,genes) {
 }
 export function matchMarker(gene,record,site) {
   if(!gene || !site.pos || !site.ref || chromNum(gene.chromosome)!==record.chromosome)return null;
-  return gene.variants.find(v=>v.pos===site.pos && v.ref===site.ref)??null;
+  const state=record.row?.Hap?.split(',')[record.sites?.indexOf(site)]?.trim().toUpperCase();
+  return componentMarker(gene.variants,{...site,state})??null;
 }
 
 export function bindPrior(records, genes) {

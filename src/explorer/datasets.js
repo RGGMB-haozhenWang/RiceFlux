@@ -1,14 +1,22 @@
 import {chromNum,lengths} from './exchange.js';
 import {writeTSV} from './formats.js';
 import {sha256Text} from './sha256.js';
-import {alleleNames,callPair,markerKind,missingPair,packedCall,packCall} from './alleles.js';
+import {alleleNames,callPair,markerKind,missingPair,packedCall,packCall,variantKey} from './alleles.js';
 import {sourceColor} from './datasetColors.js';
+import {pavFields} from './pav.js';
+import {provenanceSources} from './provenance.js';
 
 export const datasetFiles=['samples','variants','genotypes','environments','phenotypes'];
+export const optionalDatasetTables=['pav','pav_summary','descriptors'];
+export const datasetTableKeys=manifest=>[...datasetFiles,...optionalDatasetTables.filter(key=>manifest.files?.[key])];
 export const groupOptions=[['source_group','来源组'],['dataset','数据集'],['subspecies','遗传亚群'],['region','来源地区'],['subspecies_region','亚群 × 地区'],['dataset_group','数据集 × 来源组']];
 const legacyColors={'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
 const missing=x=>x===''||x==='NA'||x==='.';
 const requireValue=(value,message)=>{if(!value)throw Error(message);};
+const parent=(s,role)=>{
+  const dataset=s[role+'_dataset_id'],id=s[role+'_sample_id'];
+  return !missing(dataset??'')&&!missing(id??'')?[dataset,id]:null;
+};
 
 export function readTable(text,required=[],name='TSV'){
   const lines=text.replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n').split('\n');
@@ -25,41 +33,105 @@ function unique(rows,key,label){
   const ids=rows.map(r=>r[key]);
   requireValue(ids.every(x=>x&&!missing(x))&&new Set(ids).size===ids.length,label+' ID 为空或重复');
 }
-function sameMarker(a,b){return a.gene===b.gene&&chromNum(a.chromosome)===chromNum(b.chromosome)&&a.pos===b.pos&&a.ref===b.ref;}
+function keyOf(v){return variantKey(chromNum(v.chromosome),v.pos,v.ref,v.markerType||markerKind(alleleNames(v),true));}
+function sameMarker(a,b){return a.gene===b.gene&&keyOf(a)===keyOf(b);}
 
 export function parseDatasetAxes(manifest,texts,reference){
   requireValue(['RiceFlux tables 1.0','RiceFlux tables 1.1','RiceFlux tables 1.2'].includes(manifest.schema)&&typeof manifest.id==='string'&&/^[A-Za-z0-9_-]+$/.test(manifest.id)&&typeof manifest.name==='string'&&manifest.name.trim()&&typeof manifest.version==='string'&&manifest.version.trim(),'数据集清单缺少有效的 schema、id、name 或 version');
   requireValue(['G_chip','G_projected','G_direct','G_mixed','G_none'].includes(manifest.genotype_evidence),'请登记分型来源 genotype_evidence');
   requireValue(manifest.assembly==='IRGSP-1.0/MSU7','参考组装不兼容；需要 IRGSP-1.0/MSU7 正链坐标');
   requireValue(typeof manifest.source==='string'&&manifest.source.trim(),'请登记数据来源 source');
+  const sources=provenanceSources(manifest);
+  const checkSource=(row,role)=>requireValue(!row.source_id||sources.get(row.source_id)?.role===role,'溯源档案缺少 '+role+' 来源 '+row.source_id);
   const samples=readTable(texts.samples,['sample_id','name','source_group','subspecies','region','material_type'],'samples').objects();
   unique(samples,'sample_id','材料');requireValue(samples.length,'数据集没有材料');
-  samples.forEach(s=>requireValue(s.name&&s.material_type,'材料缺少 name 或 material_type'));
+  for(const s of samples){
+    requireValue(s.name&&s.material_type,'材料缺少 name 或 material_type');
+    for(const role of ['female','male']){
+      if([s[role+'_dataset_id'],s[role+'_sample_id']].some(v=>!missing(v??''))){
+        requireValue(s.material_type==='hybrid cross'&&parent(s,role),'亲本须为杂交组合登记成对的数据集 ID 和材料编号：'+s.sample_id);
+      }
+    }
+  }
   const known=new Map(reference.genes.flatMap(g=>g.variants.map(v=>[v.id,{...v,gene:g.id}])));
-  const knownCoordinates=new Map([...known.values()].map(v=>[chromNum(v.chromosome)+':'+v.pos,v.id]));
+  const knownCoordinates=new Map([...known.values()].map(v=>[keyOf(v),v.id]));
+  const genesByKey=new Map();
+  for(const gene of reference.genes){
+    for(const id of new Set([gene.id,gene.catalog?.msu,gene.catalog?.rap].filter(Boolean))){
+      if(!genesByKey.has(id))genesByKey.set(id,[]);
+      genesByKey.get(id).push(gene);
+    }
+  }
   const variants=readTable(texts.variants,['marker_id','gene_id','chr','position','ref','alt'],'variants').objects().map(row=>{
-    const genes=reference.genes.filter(g=>[g.id,g.catalog?.msu,g.catalog?.rap].filter(Boolean).includes(row.gene_id));
+    checkSource(row,'genotype');
+    const genes=genesByKey.get(row.gene_id)||[];
     requireValue(genes.length===1,'gene_id 不能唯一匹配：'+row.gene_id+'；请使用 MSU/RAP ID');
     const g=genes[0],chr=chromNum(row.chr),pos=Number(row.position),ref=row.ref,alt=missing(row.alt)?null:row.alt;
     requireValue(g.model&&chr===chromNum(g.chromosome)&&Number.isSafeInteger(pos)&&pos>=g.start&&pos<=g.end&&pos+ref.length-1<=lengths[chr],'位点坐标与参考模型不符：'+row.marker_id);
     const alleles=alleleNames({ref,alt});
     const markerType=markerKind(alleles,manifest.schema==='RiceFlux tables 1.2');
     requireValue(markerType,'SNP 或 1.2 锚定短 InDel 的 REF/ALT 须为互不重复的序列（最多 4 种等位）：'+row.marker_id);
-    const feature=g.features.some(f=>f.start<=pos&&pos<=f.end)?'CDS':g.promoter.start<=pos&&pos<=g.promoter.end?'上游 2 kb':'其他区域';
+    const feature=g.features.some(f=>f.start<=pos&&pos<=f.end)?'CDS':g.promoter?.start<=pos&&pos<=g.promoter.end?'上游 2 kb':'其他区域';
     const v={id:row.marker_id,gene:g.id,chromosome:'Chr'+chr,pos,ref,alt,alleles,feature,classified:'导入区域标记'};
     const old=known.get(v.id);requireValue(!old||sameMarker(old,v),'已登记位点的身份或 REF/ALT 不一致：'+v.id);
-    const knownId=knownCoordinates.get(chr+':'+pos);
+    const knownId=knownCoordinates.get(keyOf(v));
     requireValue(!knownId||knownId===v.id,'同一坐标使用不同 marker_id：'+chr+':'+pos+'（已登记 '+knownId+'）');
-    return {...(old||v),alt,alleles,markerType};
+    return {...(old||v),alt,alleles,markerType,source_id:row.source_id,source_record_id:row.source_record_id,
+      source_filter:row.source_filter,reference_check:row.reference_check};
   });
   unique(variants,'id','位点');
   requireValue(manifest.genotype_evidence!=='G_none'||!variants.length,'G_none 仅用于无位点的表型数据集');
-  const coords=variants.map(v=>v.chromosome+':'+v.pos);requireValue(new Set(coords).size===coords.length,'同一坐标重复；请合并位点列');
+  const coords=variants.map(keyOf);requireValue(new Set(coords).size===coords.length,'同一坐标及变异身份重复；请合并位点列');
   const sampleIndex=new Map(samples.map((s,i)=>[s.sample_id,i]));
+  const findPavGene=row=>{
+    checkSource(row,'pav');
+    const mapped=genesByKey.get(row.gene_id)||[];
+    requireValue(!row.gene_id||mapped.length===1,'PAV gene_id 不能唯一匹配：'+row.gene_id);
+    requireValue(row.source_gene_id&&sources.has(row.source_id),'PAV 必须登记原始基因 ID 和溯源档案来源。');
+    return {id:row.pav_id,geneId:mapped[0]?.id??null,sourceGene:row.source_gene_id,source:sources.get(row.source_id),
+      datasetId:manifest.id,datasetName:manifest.name,version:manifest.version};
+  };
+  const pav=manifest.files?.pav?readTable(texts.pav,pavFields,'pav').objects().map(row=>{
+    requireValue(row.states.length===samples.length&&/^[10.-]+$/.test(row.states),'PAV 状态或材料轴不匹配：'+row.pav_id);
+    return {...findPavGene(row),states:row.states,sampleIndex};
+  }):[];
+  const summaries=new Map();
+  if(manifest.files?.pav_summary){
+    const fields=['pav_id','gene_id','source_gene_id','source_id','population','present','denominator'];
+    for(const row of readTable(texts.pav_summary,fields,'pav_summary').objects()){
+      let assay=summaries.get(row.pav_id);
+      if(!assay){
+        assay={...findPavGene(row),groups:[]};
+        summaries.set(row.pav_id,assay);
+      }
+      const present=Number(row.present),total=Number(row.denominator);
+      requireValue(row.source_gene_id===assay.sourceGene&&row.source_id===assay.source.id&&row.population&&
+        !assay.groups.some(r=>r.population===row.population)&&/^\d+$/.test(row.present)&&/^\d+$/.test(row.denominator)&&
+        Number.isSafeInteger(total)&&total>0&&present<=total,'PAV 发布汇总分母或标识无效：'+row.pav_id);
+      assay.groups.push({population:row.population,present,absent:total-present,total});
+    }
+    pav.push(...summaries.values());
+  }
+  unique(pav,'id','PAV');
+  requireValue(new Set(pav.map(r=>r.source.id+'|'+r.sourceGene)).size===pav.length,'同一 PAV 来源内原始基因编号重复。');
+  const descriptors=new Map(),descriptorsSeen=new Set();
+  if(manifest.files?.descriptors){
+    const fields=['sample_id','descriptor_id','descriptor','value_code','value_label','site','crop_year','dictionary_id','source_id','source_record_id'];
+    for(const row of readTable(texts.descriptors,fields,'descriptors').objects()){
+      checkSource(row,'phenotype');
+      const key=JSON.stringify([row.sample_id,row.source_id,row.descriptor_id,row.site,row.crop_year,row.source_record_id]);
+      requireValue(sampleIndex.has(row.sample_id)&&row.descriptor_id&&row.descriptor&&row.value_code&&row.source_id&&row.source_record_id&&!descriptorsSeen.has(key),
+        '分类表型记录缺少材料、原始身份或重复：'+row.sample_id);
+      descriptorsSeen.add(key);
+      if(!descriptors.has(row.sample_id))descriptors.set(row.sample_id,[]);
+      descriptors.get(row.sample_id).push({...row,source:sources.get(row.source_id)});
+    }
+  }
   const environments=readTable(texts.environments,['environment_id','trait_id','trait_name','unit','category','family','assay','site','year'],'environments').objects();
   unique(environments,'environment_id','环境');
   environments.forEach(e=>requireValue(['trait_id','trait_name','unit','category','family','assay','site','year'].every(k=>e[k]&&!missing(e[k])),'环境元数据不完整：'+e.environment_id));
   for(const e of environments){
+    checkSource(e,'phenotype');
     const registered=reference.traitRegistry?.find(r=>r.trait_id===e.trait_id&&r.method_label===e.assay&&r.unit===e.unit);
     e.ontology_id=e.ontology_id||registered?.ontology_id||'';
     e.method_id=e.method_id||registered?.method_id||'RF:method:'+e.trait_id+':'+e.assay;
@@ -85,20 +157,25 @@ export function parseDatasetAxes(manifest,texts,reference){
     }));phenotypes.set(row[0],values);
   }
   if(manifest.counts)for(const [key,n] of Object.entries({samples:samples.length,variants:variants.length,environments:environments.length}))requireValue(manifest.counts[key]===n,'清单 counts 与实际不一致：'+key);
-  return {manifest,samples,variants,environments,phenotypes};
+  if(manifest.counts?.pav!==undefined)requireValue(manifest.counts.pav===pav.length,'清单 counts 与实际不一致：pav');
+  return {manifest,samples,variants,environments,phenotypes,pav,descriptors};
 }
 
 export function parseDataset(manifest,texts,reference){
   const axes=parseDatasetAxes(manifest,texts,reference),{samples,variants}=axes;
   const sampleIndex=new Map(samples.map((s,i)=>[s.sample_id,i]));
-  const gt=readTable(texts.genotypes,['sample_id'],'genotypes');
-  requireValue(gt.fields.length===variants.length+1&&gt.fields[0]==='sample_id'&&variants.every(v=>gt.fields.includes(v.id)),'分型表的位点列与 variants 不一致');
-  requireValue(gt.rows.length===samples.length,'分型表材料数与 samples 不一致');
+  const [header,...lines]=texts.genotypes.replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n').split('\n');
+  const {fields}=readTable(header,['sample_id'],'genotypes');
+  const fieldSet=new Set(fields),rows=lines.filter(Boolean);
+  requireValue(fields.length===variants.length+1&&fields[0]==='sample_id'&&variants.every(v=>fieldSet.has(v.id)),'分型表的位点列与 variants 不一致');
+  requireValue(rows.length===samples.length,'分型表材料数与 samples 不一致');
   const seen=new Set(),columns=new Map(variants.map(v=>[v.id,new Uint8Array(samples.length).fill(missingPair)]));
   const byMarker=new Map(variants.map(v=>[v.id,v]));
-  const ordered=gt.fields.slice(1).map(id=>byMarker.get(id));
+  const ordered=fields.slice(1).map(id=>byMarker.get(id));
   const encodings=ordered.map(()=>new Map());
-  for(const row of gt.rows){
+  for(const line of rows){
+    const row=line.split('\t');
+    requireValue(row.length===fields.length,'分型表与位点列数不一致：'+row[0]);
     const index=sampleIndex.get(row[0]);requireValue(index!==undefined&&!seen.has(row[0]),'分型表材料缺失或重复：'+row[0]);seen.add(row[0]);
     for(let j=0;j<ordered.length;j++){
       const v=ordered[j],raw=row[j+1],cache=encodings[j];
@@ -127,7 +204,7 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
     start+=bundle.samples.length;
   }
   for(const bundle of bundles)for(const v of bundle.variants){
-    const old=variants.get(v.id),coord=chromNum(v.chromosome)+':'+v.pos;
+    const old=variants.get(v.id),coord=keyOf(v);
     requireValue(!old||sameMarker(old,v),'数据集间位点身份冲突：'+v.id);
     requireValue(!coords.has(coord)||coords.get(coord)===v.id,'同一坐标使用不同 marker_id：'+coord+'；请统一位点字典');coords.set(coord,v.id);
     if(!old)variants.set(v.id,{...v,encoding:5});
@@ -160,7 +237,8 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
         return [environment.id,value];
       }));
       const id=multiple?JSON.stringify([meta.id,s.sample_id]):s.sample_id;
-      individuals.push({id,source_sample_id:s.sample_id,dataset_id:meta.id,dataset_name:meta.name,genotype_evidence:meta.genotype_evidence,ordinal:offset+i,name:s.name,kind:s.material_type,subspecies:s.subspecies,region:s.region,source_group:s.source_group,ped:s.ped_id||s.sample_id,legacy:s.legacy==='true',ploidy:2,phenotypes:ph});
+      const parents=s.material_type==='hybrid cross'?{female:parent(s,'female'),male:parent(s,'male')}:null;
+      individuals.push({id,source_sample_id:s.sample_id,dataset_id:meta.id,dataset_name:meta.name,genotype_evidence:meta.genotype_evidence,ordinal:offset+i,name:s.name,kind:s.material_type,subspecies:s.subspecies,region:s.region,source_group:s.source_group,ped:s.ped_id||s.sample_id,legacy:s.legacy==='true',ploidy:2,phenotypes:ph,descriptors:b.descriptors?.get(s.sample_id)||[],...parents&&{parents}});
     }offset+=b.samples.length;
   }
   const unknown=x=>missing(x)?'未登记':x;
@@ -186,12 +264,21 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
     if(!t){t={id:e.trait_id,name:e.trait_name,category:e.category,family:e.family};traits.push(t);}
     const provenance=reference.annotations?.environments.find(r=>r.dataset_id===e.dataset_id&&r.environment_id===e.environment_id)
       ||(e.source_note||e.method_description?{...e}:null);
-    t.environments??=[];t.environments.push({id:e.id,assay:e.assay,unit:e.unit,ontology_id:e.ontology_id,mapping_status:e.mapping_status,method_id:e.method_id,scale_id:e.scale_id,growth_stage:e.growth_stage,source:{column:e.environment_id.replace(/^env_/,''),site:e.display_site,original_site:e.site,year:e.year,n:e.n,dataset_id:e.dataset_id,provenance}});
+    t.environments??=[];t.environments.push({id:e.id,assay:e.assay,unit:e.unit,ontology_id:e.ontology_id,mapping_status:e.mapping_status,method_id:e.method_id,scale_id:e.scale_id,growth_stage:e.growth_stage,source:{column:e.environment_id.replace(/^env_/,''),environment_id:e.environment_id,site:e.display_site,original_site:e.site,year:e.year,n:e.n,dataset_id:e.dataset_id,provenance}});
   }
   const extra=traits.filter(t=>!reference.traits.some(r=>r.id===t.id)).map(t=>t.id);
+  const pav=bundles.flatMap(b=>b.pav||[]),pavByGene=new Map(),variantsByGene=new Map();
+  for(const record of pav){
+    if(!pavByGene.has(record.geneId))pavByGene.set(record.geneId,[]);
+    pavByGene.get(record.geneId).push(record);
+  }
+  for(const variant of variants.values()){
+    if(!variantsByGene.has(variant.gene))variantsByGene.set(variant.gene,[]);
+    variantsByGene.get(variant.gene).push(variant);
+  }
   const genes=reference.genes.map(g=>{
-    const vs=[...variants.values()].filter(v=>v.gene===g.id).sort((a,b)=>a.pos-b.pos);
-    return {...g,variants:vs,trait_ids:[...g.trait_ids,...extra],start:g.model?Math.min(g.start,...vs.map(v=>v.pos)):null,end:g.model?Math.max(g.end,...vs.map(v=>v.pos)):null};
+    const vs=(variantsByGene.get(g.id)||[]).sort((a,b)=>a.pos-b.pos);
+    return {...g,variants:vs,pav:pavByGene.get(g.id)||[],trait_ids:[...g.trait_ids,...extra],start:g.model?Math.min(g.start,...vs.map(v=>v.pos)):null,end:g.model?Math.max(g.end,...vs.map(v=>v.pos)):null};
   });
   for(const v of variants.values()){
     const parts=byMarker.get(v.id),alleles=alleleNames(v);
@@ -223,12 +310,15 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
     loadGenes:(ids,signal)=>Promise.all(packed.map(b=>b.loadGenes(ids,signal))),
   }:{};
   const evidence=[...new Set(bundles.filter(b=>b.variants.length).map(b=>b.manifest.genotype_evidence))];
-  return {...reference,...readiness,genes,traits,individuals,populations:[...populations.values()].sort((a,b)=>groupBy==='source_group'?(Object.keys(legacyColors).includes(a.id)?Object.keys(legacyColors).indexOf(a.id):99)-(Object.keys(legacyColors).includes(b.id)?Object.keys(legacyColors).indexOf(b.id):99):0),meta:{...reference.meta,datasets:bundles.map(b=>({id:b.manifest.id,name:b.manifest.name,version:b.manifest.version,source:b.manifest.source,genotype_evidence:b.manifest.genotype_evidence,phenotype_supplements:b.manifest.supplements?.filter(s=>s.kind==='phenotypes')})),groupBy,genotype_evidence:evidence.length>1?'G_mixed':evidence[0]||'G_none',synthetic:false,schema:'RiceFlux registry 2.0'}};
+  return {...reference,...readiness,reference,datasetRegistry:registry,datasetBundles:bundles,genes,traits,individuals,pav,
+    populations:[...populations.values()].sort((a,b)=>groupBy==='source_group'?(Object.keys(legacyColors).includes(a.id)?Object.keys(legacyColors).indexOf(a.id):99)-(Object.keys(legacyColors).includes(b.id)?Object.keys(legacyColors).indexOf(b.id):99):0),
+    meta:{...reference.meta,datasets:bundles.map(b=>({id:b.manifest.id,name:b.manifest.name,version:b.manifest.version,source:b.manifest.source,genotype_evidence:b.manifest.genotype_evidence,phenotype_supplements:b.manifest.supplements?.filter(s=>s.kind==='phenotypes')})),
+      groupBy,genotype_evidence:evidence.length>1?'G_mixed':evidence[0]||'G_none',synthetic:false,schema:'RiceFlux registry 2.0'}};
 }
 
 export async function readPackage(manifest,reader,reference){
   const texts={};
-  await Promise.all(datasetFiles.map(async key=>{
+  await Promise.all(datasetTableKeys(manifest).map(async key=>{
     const filename=manifest.files?.[key];requireValue(typeof filename==='string'&&/^[\w.-]+\.(?:tsv|txt)(?:\.gz)?$/.test(filename),'清单文件名无效：'+key);
     texts[key]=await reader(filename);
     const expected=manifest.sha256?.[key];

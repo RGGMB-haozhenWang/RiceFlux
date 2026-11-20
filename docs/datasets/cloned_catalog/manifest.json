@@ -1,0 +1,26 @@
+{
+  "schema": "RiceFlux gene catalog 1.0",
+  "version": "2026-11-20.1",
+  "file": "genes.tsv.gz",
+  "assembly": "IRGSP-1.0/MSU7",
+  "sha256": "76ddaafb3631f242f9deed20a4bec7dde241cb2f9a05f9ca09e3d832b7e523ad",
+  "counts": {
+    "source_rows": 5680,
+    "rap_pair_not_unique": 102,
+    "no_stable_id": 162,
+    "unique_workbook_loci": 5502,
+    "duplicate_source_rows": 16,
+    "legacy_overlap": 451,
+    "mapped_new_genes": 4982,
+    "legacy_entries": 485,
+    "extension_entries": 5051,
+    "catalog_total": 5536,
+    "unlocated_new_genes": 69
+  },
+  "inputs": {
+    "workbook_sha256": "e968cf739718239f278559fb9fad5dd6fc396d7ec16d306316c113c7f898e492",
+    "reference_sha256": "dcb6f75f83e6aef96c647246732bd0ab2a548aeefb9d580cdba06a87cda2a548",
+    "crosswalk_sha256": "75f3c7c2b81837ee0ec94c17b73ba36ae6e7c3f93192840399e8887553c77e00",
+    "gff_sha256": "e8421ecfa75bb68f7c38ab270c1188bf5966b2bfa10a0e94da6db5d92b3462b3"
+  }
+}

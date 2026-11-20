@@ -1,10 +1,83 @@
-import {parseDataset,readTable} from './datasets.js';
+import {optionalDatasetTables,parseDataset,readTable} from './datasets.js';
 import {writeTSV} from './formats.js';
+import {readVcf} from './vcf.js';
+import {sha256Text} from './sha256.js';
 
 export async function fileText(file) {
   const bytes=new Uint8Array(await file.arrayBuffer());
   if(bytes[0]===31&&bytes[1]===139)return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
   return new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+}
+
+export const isVcfFile=name=>/\.vcf(?:\.gz|\.bgz)?$/i.test(name);
+
+export async function vcfFileText(file) {
+  const limit=32*1024*1024;
+  if(file.size>limit)throw Error('浏览器可读取至 32 MiB 的区域 VCF。较大的文件请先提取目标区间。');
+  if(!/\.(gz|bgz)$/i.test(file.name))return fileText(file);
+  const bytes=new Uint8Array(await file.arrayBuffer());
+  if(bytes[0]!==31||bytes[1]!==139)throw Error('VCF 压缩文件缺少 gzip 文件头。');
+  const view=new DataView(bytes.buffer),decoder=new TextDecoder('utf-8',{fatal:true});
+  let offset=0,size=0,text='';
+  while(offset<bytes.length){
+    if(offset+12>bytes.length)throw Error('VCF 压缩文件截断。');
+    let end=bytes.length;
+    if(bytes[offset+3]&4){
+      const extraEnd=offset+12+view.getUint16(offset+10,true);
+      if(extraEnd>bytes.length)throw Error('VCF gzip 扩展头无效。');
+      for(let i=offset+12;i+4<=extraEnd;){
+        const length=view.getUint16(i+2,true);
+        if(bytes[i]===66&&bytes[i+1]===67&&length===2&&i+6<=extraEnd){
+          end=offset+view.getUint16(i+4,true)+1;
+          if(end<extraEnd+8||end>bytes.length)throw Error('VCF BGZF 分块长度无效。');
+          break;
+        }
+        i+=4+length;
+      }
+    }
+    const reader=new Blob([bytes.subarray(offset,end)]).stream().pipeThrough(new DecompressionStream('gzip')).getReader();
+    for(;;){
+      const {done,value}=await reader.read();
+      if(done)break;
+      size+=value.byteLength;
+      if(size>limit){await reader.cancel();throw Error('VCF 解压后超过 32 MiB，请先提取目标区间。');}
+      text+=decoder.decode(value,{stream:true});
+    }
+    offset=end;
+  }
+  return text+decoder.decode();
+}
+
+export function vcfToTables(vcf, samples, sourceId) {
+  const {records}=vcf;
+  const axis=new Map(vcf.samples.map((id,i)=>[id,i]));
+  if(samples.length!==axis.size||new Set(samples).size!==axis.size||samples.some(id=>!axis.has(id)))
+    throw Error('VCF 与材料表须登记同一组 sample_id。');
+  if(!records.length)throw Error('VCF 没有可接入的基因区 SNP 或 InDel。'+(vcf.issues[0]?' 首条未接入原因 '+vcf.issues[0].reason:''));
+  const fields=['marker_id','gene_id','chr','position','ref','alt','source_id','source_record_id','source_filter','reference_check'];
+  const variants=writeTSV(fields,records.map(r=>({marker_id:r.id,gene_id:r.gene,chr:'Chr'+r.chr,position:r.position,ref:r.ref,alt:r.alts.join(','),
+    source_id:sourceId||r.sourceId,source_record_id:r.originalId,source_filter:r.filter,reference_check:r.referenceCheck})));
+  const genotypes=['sample_id\t'+records.map(r=>r.id).join('\t'),...samples.map(id=>{
+    const index=axis.get(id);
+    return id+'\t'+records.map(r=>r.calls[index]).join('\t');
+  })].join('\n')+'\n';
+  return {variants,genotypes};
+}
+
+export async function importVcfInput(text, patch, metadata, reference, name) {
+  const vcf=readVcf(text,reference.genes);
+  const samples=patch.samples||writeTSV(['sample_id','name','source_group','subspecies','region','material_type'],
+    vcf.samples.map(id=>({sample_id:id,name:id,source_group:'NA',subspecies:'NA',region:'NA',material_type:'unclassified'})));
+  const ids=readTable(samples,['sample_id'],'samples').objects().map(row=>row.sample_id);
+  const inputs=vcfToTables(vcf,ids,'input_vcf');
+  const digest=await sha256Text(text);
+  const counts=Object.fromEntries([...new Set(vcf.issues.map(r=>r.reason))].map(reason=>[reason,vcf.issues.filter(r=>r.reason===reason).length]));
+  const provenance={schema:'RiceFlux provenance 1.0',sources:[{
+    id:'input_vcf',role:'genotype',release:metadata.version,citation:metadata.source,method:'VCF GT',assembly:vcf.assembly||'IRGSP-1.0/MSU7 (user input contract)',
+    files:[{name,sha256:digest,hash_scope:'decoded UTF-8 VCF'}],
+  }],transformation:'Registry REF where available; other REF declared by the submitter. Diploid GT allele states displayed unphased.',
+  coverage:{vcf_records:vcf.records.length,vcf_skipped:vcf.issues.length,phased_calls:vcf.phased,filter_not_applied:vcf.unfiltered},exclusions:counts};
+  return {patch:{...patch,samples,...inputs},provenance,issues:vcf.issues};
 }
 
 const files={samples:'samples.tsv',variants:'variants.tsv',genotypes:'genotypes.tsv',environments:'environments.tsv',phenotypes:'phenotypes.tsv'};
@@ -14,11 +87,13 @@ const compactField=s=>s.trim().replace(/[\t\r\n]+/g,' ');
 export function createLocalDataset(patch, metadata, reference) {
   if(!patch.samples)throw Error('新建数据集需要 samples.txt 或 samples.tsv');
   if(Boolean(patch.variants)!==Boolean(patch.genotypes)||Boolean(patch.environments)!==Boolean(patch.phenotypes))throw Error('variants 与 genotypes、environments 与 phenotypes 须分别成对提供');
-  if(!patch.genotypes&&!patch.phenotypes)throw Error('请提供分型表、表型表或两者');
+  if(!patch.genotypes&&!patch.phenotypes&&!optionalDatasetTables.some(key=>patch[key]))throw Error('请提供分型、表型或 PAV');
   const template=readTable(patch.samples,['sample_id'],'samples');
   const genotypes=writeTSV(['sample_id'],template.objects());
   const manifest={schema:'RiceFlux tables 1.2',id:metadata.id,name:compactField(metadata.name),version:metadata.version,
-    assembly:'IRGSP-1.0/MSU7',source:compactField(metadata.source),genotype_evidence:patch.genotypes?metadata.genotype_evidence:'G_none',files};
+    assembly:'IRGSP-1.0/MSU7',source:compactField(metadata.source),genotype_evidence:patch.genotypes?metadata.genotype_evidence:'G_none',
+    files:{...files,...Object.fromEntries(optionalDatasetTables.filter(key=>patch[key]).map(key=>[key,key+'.tsv']))},
+    ...metadata.provenance&&{provenance:metadata.provenance}};
   return parseDataset(manifest,{...empty,genotypes,...patch},reference);
 }
 
@@ -55,10 +130,11 @@ export function extendDataset(base, kind, input, metadata, reference) {
     if(!input.variants||!input.genotypes)throw Error('请选择 variants.tsv 和 genotypes.tsv');
     patch={variants:input.variants,genotypes:input.genotypes};
   }
-  const manifest={...base.manifest,version:metadata.version,schema:'RiceFlux tables 1.2',files,
+  const manifest={...base.manifest,version:metadata.version,schema:'RiceFlux tables 1.2',files:{...base.manifest.files,...files},
     genotype_evidence:kind==='genotypes'?metadata.genotype_evidence:base.manifest.genotype_evidence,
     source:kind==='genotypes'?source:base.manifest.source,
-    supplements:[...(base.manifest.supplements||[]),{kind,source}]};
+    supplements:[...(base.manifest.supplements||[]),{kind,source}],
+    ...metadata.provenance&&{provenance:{...metadata.provenance,sources:[...(base.manifest.provenance?.sources||[]),...metadata.provenance.sources]}}};
   delete manifest.sha256;
   delete manifest.counts;
   const next=parseDataset(manifest,{...base.texts,...patch},reference);

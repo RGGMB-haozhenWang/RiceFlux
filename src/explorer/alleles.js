@@ -12,13 +12,37 @@ export function alleleNames(marker) {
 }
 
 export function markerKind(alleles, allowIndel = false) {
-  if (!alleles.length || new Set(alleles).size !== alleles.length || alleles.length > 4) return null;
+  if (new Set(alleles).size !== alleles.length || alleles.length > 4) return null;
   if (alleles.every(a => snpBase.test(a))) return 'SNP';
   if (!allowIndel || !alleles.every(a => literalAllele.test(a))) return null;
   const [ref, ...alts] = alleles;
   const simple = alts.every(alt => alt.length === ref.length ? alt.length === 1
     : alt.startsWith(ref) || ref.startsWith(alt));
   return simple && alts.some(alt => alt.length !== ref.length) ? 'InDel' : null;
+}
+
+export function markerAnnotation(marker) {
+  const [ref,...alts]=alleleNames(marker);
+  const changes=alts.map(allele=>allele.length-ref.length);
+  let kind='SNP';
+  if(changes.some(change=>change!==0)){
+    kind=changes.every(change=>change>0)?'insertion':changes.every(change=>change<0)?'deletion':'mixed';
+  }
+  return {kind,ref,alts:alts.map((allele,i)=>{
+    const change=changes[i];
+    return change?`${allele} (${change>0?'+':'−'}${Math.abs(change)} bp)`:allele;
+  })};
+}
+
+export function variantKey(chromosome, position, ref, kind) {
+  return [chromosome, position, ref, kind].join(':');
+}
+
+export function componentMarker(variants, {pos, ref, state}) {
+  const matches=variants.filter(v=>v.pos===pos&&v.ref===ref);
+  if(matches.length===1)return matches[0];
+  const withState=matches.filter(v=>alleleNames(v).includes(state));
+  return withState.length===1?withState[0]:undefined;
 }
 
 export function baseAt(marker, index) {

@@ -1,17 +1,18 @@
 import {datasetCalls,geneSupport,identityFor} from './provenance.js';
-import {writeTSV,materialRow} from './formats.js';
+import {writeTSV,materialRow,textFilename} from './formats.js';
 import {callOf} from './catalog.js';
 import {alleleStats,gtToken,genotypeGroups,retainedVariants} from './model.js';
 import {analysisSites} from './siteSelection.js';
 import {phenotypeAxes} from './analysis.js';
 import {evidenceRows,evidenceColumns} from './evidence.js';
+import {pavState} from './pav.js';
 
 // Small uncompressed ZIP writer for independently readable UTF-8 tables.
 export function zipTables(files){
   const enc=new TextEncoder(),parts=[],central=[];let offset=0;
   const crc=bytes=>{let c=0xffffffff;for(const b of bytes){c^=b;for(let i=0;i<8;i++)c=(c>>>1)^((c&1)?0xedb88320:0);}return (c^0xffffffff)>>>0;};
   for(const [name,text] of Object.entries(files)){
-    const n=enc.encode(name),b=enc.encode(text),sum=crc(b),h=new Uint8Array(30+n.length),v=new DataView(h.buffer);
+    const n=enc.encode(textFilename(name)),b=enc.encode(text),sum=crc(b),h=new Uint8Array(30+n.length),v=new DataView(h.buffer);
     v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);v.setUint32(14,sum,true);v.setUint32(18,b.length,true);v.setUint32(22,b.length,true);v.setUint16(26,n.length,true);h.set(n,30);
     const c=new Uint8Array(46+n.length),d=new DataView(c.buffer);d.setUint32(0,0x02014b50,true);d.setUint16(4,20,true);d.setUint16(6,20,true);d.setUint16(8,0x800,true);d.setUint32(16,sum,true);d.setUint32(20,b.length,true);d.setUint32(24,b.length,true);d.setUint16(28,n.length,true);d.setUint32(42,offset,true);c.set(n,46);central.push(c);parts.push(h,b);offset+=h.length+b.length;
   }
@@ -36,7 +37,7 @@ export function geneTables(data,gene,cohort,variants,config){
     'dataset_support.tsv':table(['dataset_id','badge','gene_id','marker_count','functional_sites','haplotype_components','marker_ids','high_confidence_sites','confidence_status'],geneSupport(data,gene)),
     'call_provenance.tsv':table(['dataset_id','name','version','source','genotype_evidence','samples','markers','complete','heterozygous','called','total','confidence','assay'],datasetCalls(data,gene,cohort)),
     'population_dictionary.tsv':table(['dataset_id','code','label_zh','label_en','n','source','interpretation'],data.annotations?.populations||[]),
-    'README.txt':'RiceFlux gene export 1.3\nUTF-8 TSV; Excel: import as tab-delimited text, accession IDs as text. Blank = missing, never reference. Frequencies count called alleles, including partially missing calls. Missing uses expected alleles as its denominator. MAF is the frequency of the second most common allele. AF is total non-REF frequency and allele_frequencies records each allele. Genotype combinations require complete calls across analysis_sites.tsv in its listed order. Manual subsets are unphased genotype combinations, not literature-named haplotypes. Empty or unavailable selections yield no complete groups. Gene-wide tables include all loaded markers; qc_retained labels current thresholds, selected_for_analysis labels the actual selection. No favourable direction or overall cultivar score.\n',
+    'README.txt':'RiceFlux gene export 1.3\nUTF-8 tab-delimited TXT. Import accession IDs as text. A blank field records a missing value. Frequencies count called alleles, including partially missing calls. Missing uses expected alleles as its denominator. MAF is the frequency of the second most common allele. AF is total non-REF frequency and allele_frequencies records each allele. Genotype combinations require complete calls across analysis_sites.txt in its listed order. Manual subsets report unphased genotype combinations. Empty or unavailable selections yield zero complete groups. Gene-wide tables include all loaded markers. qc_retained labels current thresholds and selected_for_analysis labels the actual selection.\n',
     'context.tsv':table(['key','value'],Object.entries({schema:'RiceFlux gene export 1.3',assembly:gene.assembly,gene_id:gene.id,gene_name:gene.name,msu_id:gene.catalog?.msu,...Object.fromEntries(Object.entries(config).map(([k,v])=>[k,JSON.stringify(v)])),datasets:JSON.stringify(data.meta.datasets),grouping:data.meta.groupBy}).map(([key,value])=>({key,value}))),
     'datasets.tsv':table(['dataset_id','version','source','genotype_evidence','input_text_sha256'],(data.datasetBundles||[]).map(b=>({dataset_id:b.manifest.id,version:b.manifest.version,source:b.manifest.source,genotype_evidence:b.manifest.genotype_evidence,input_text_sha256:JSON.stringify(b.manifest.sha256||{})}))),
     'combinations.tsv':table(['group_id','genotype_vector','population_id','n','group_total','all_complete','fraction_of_combination'],groups.flatMap((g,i)=>data.populations.map(p=>({group_id:'G'+String(i+1).padStart(2,'0'),genotype_vector:g.key,population_id:p.id,n:g.members.filter(s=>s.population_id===p.id).length,group_total:g.members.length,all_complete:groups.reduce((n,x)=>n+x.members.length,0),fraction_of_combination:g.members.filter(s=>s.population_id===p.id).length/g.members.length})))),
@@ -53,5 +54,16 @@ export function geneTables(data,gene,cohort,variants,config){
     'environments.tsv':table(['environment_id','trait_id','trait_name','ontology_id','mapping_status','method_id','scale_id','growth_stage','assay','unit','site','year','source_table','source_locator','source_doi','source_note','site_status','coordinate_literal','latitude','longitude','method_description','method_en','method_status','protocol_locator','standard','field_design','quality_control','protocol_gap'],axes.map(e=>({...e,...e.source.provenance,environment_id:e.id,trait_id:e.trait_id,trait_name:e.trait_name,assay:e.assay,unit:e.unit,site:e.source.site,year:e.source.year}))),
     'evidence.tsv':table(evidenceColumns,rows),
     'definitions.tsv':table(['event_id','label','mode','component','pos','ref','state'],definitions),
+    ...gene.pav?.some(a=>a.sampleIndex)&&{'pav.tsv':table(
+      ['dataset_id','dataset_version','sample_id','gene_id','source_gene_id','status','method','source_id','doi'],
+      gene.pav.filter(a=>a.sampleIndex).flatMap(a=>cohort.flatMap(s=>{
+        const status=pavState(a,s);
+        return status==='unassayed'?[]:[{dataset_id:a.datasetId,dataset_version:a.version,sample_id:s.source_sample_id??s.id,gene_id:gene.id,
+          source_gene_id:a.sourceGene,status,method:a.source.method,source_id:a.source.id,doi:a.source.doi}];
+      })))},
+    ...gene.pav?.some(a=>a.groups)&&{'pav_published_summary.tsv':table(
+      ['dataset_id','dataset_version','gene_id','source_gene_id','population','present','absent','total','source_id','doi'],
+      gene.pav.filter(a=>a.groups).flatMap(a=>a.groups.map(row=>({...row,dataset_id:a.datasetId,dataset_version:a.version,
+        gene_id:gene.id,source_gene_id:a.sourceGene,source_id:a.source.id,doi:a.source.doi}))))},
   };
 }

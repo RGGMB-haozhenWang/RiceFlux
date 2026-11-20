@@ -3,16 +3,19 @@ import {Button,Dialog} from '@radix-ui/themes';
 import {MagnifyingGlassIcon} from '@radix-ui/react-icons';
 import {SourceBadges} from './SourceBadges.jsx';
 import {findGenes} from './geneSearch.js';
-import {geneEvidence,geneTraits,hasPhenotypes} from './provenance.js';
+import {geneEvidence,geneSupport,geneTraits,hasPhenotypes} from './provenance.js';
 import {datasetBadge,datasetTint} from './datasetColors.js';
+import {downloadTable} from './formats.js';
 
+const pageSize=55;
 function matchesEvidence(evidence,summary,traits,supported){
-  const {support,functional,hap,papers}=summary;
+  const {support,functional,hap,papers,indel}=summary;
   switch(evidence){
     case 'P': return supported.length>0;
     case 'no_phenotype': return traits.length>0&&!supported.length;
     case 'F': return functional>0;
     case 'H': return hap>0;
+    case 'indel': return indel;
     case 'L': return papers>0&&!functional&&!hap;
     case 'regional': return support.length>0&&!functional&&!hap;
     case 'untyped': return !support.length;
@@ -34,27 +37,54 @@ function PrimaryTraits({traits,supported}){
 
 export function PriorFinder({data,onChoose}){
   const [open,setOpen]=useState(false),[query,setQuery]=useState(''),[dataset,setDataset]=useState('all');
-  const [evidence,setEvidence]=useState('all'),[limit,setLimit]=useState(55);
+  const [evidence,setEvidence]=useState('all'),[traitId,setTrait]=useState(''),[page,setPage]=useState(0);
+  const traitIndex=useMemo(()=>{
+    const byGene=new Map(),options=new Map();
+    if(open)for(const gene of data.genes){
+      const traits=geneTraits(data,gene);
+      byGene.set(gene.id,traits);
+      for(const trait of traits)options.set(trait.id,trait);
+    }
+    return {byGene,options};
+  },[open,data]);
+  const activeTrait=traitIndex.options.has(traitId)?traitId:'';
   const hits=useMemo(()=>{
     if(!open)return [];
     return findGenes(data.genes,query).flatMap(gene=>{
+      const linked=traitIndex.byGene.get(gene.id);
+      const traits=activeTrait?linked.filter(t=>t.id===activeTrait):linked;
+      if(activeTrait&&!traits.length)return [];
       const summary=geneEvidence(data,gene,dataset);
-      const traits=geneTraits(data,gene),supported=traits.filter(t=>hasPhenotypes(t,dataset));
+      const supported=traits.filter(t=>hasPhenotypes(t,dataset));
       if(dataset!=='all'&&!summary.support.length&&!supported.length)return [];
       return matchesEvidence(evidence,summary,traits,supported)?[{gene,traits,supported}]:[];
     });
-  },[open,data,query,dataset,evidence]);
-  const change=set=>event=>{set(event.target.value);setLimit(55);};
+  },[open,data,query,dataset,evidence,traitIndex,activeTrait]);
+  const change=set=>event=>{set(event.target.value);setPage(0);};
+  const offset=Math.min(page,Math.max(0,Math.ceil(hits.length/pageSize)-1))*pageSize;
+  function exportCatalog(){
+    const columns=['gene_id','MSU_ID','RAP_ID','gene_name','aliases','chromosome','gene_start','gene_end',
+      'reference_model','catalog_group','indel_datasets','catalog_dois'];
+    downloadTable({filename:'riceflux_gene_catalog.txt',columns},data.genes.map(g=>({
+      gene_id:g.id,MSU_ID:g.catalog?.msu,RAP_ID:g.catalog?.rap,gene_name:g.name,aliases:g.catalog?.aliases?.join(';'),
+      chromosome:g.chromosome,gene_start:g.gene_start,gene_end:g.gene_end,reference_model:g.model,
+      catalog_group:g.catalog?.collection||'prior',
+      indel_datasets:geneSupport(data,g).filter(r=>Number(r.indel_sites)>0).map(r=>r.dataset_id+'='+r.indel_sites).join(';'),
+      catalog_dois:g.catalog?.geneDOI?.join(';'),
+    })));
+  }
   return <>
-    <div className="quick-gene-search">
-      <input aria-label="基因查询" placeholder="MSU ID / 基因名 / 别名" value={query} onChange={change(setQuery)} onKeyDown={e=>{if(e.key==='Enter')setOpen(true)}}/>
-      <Button className="prior-search" size="2" variant="soft" onClick={()=>setOpen(true)}><MagnifyingGlassIcon/>查询 {data.genes.length} 个基因</Button>
-    </div>
-    <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Content maxWidth="720px">
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog.Trigger><Button className="prior-search" size="2" variant="soft"><MagnifyingGlassIcon/>查询 {data.genes.length.toLocaleString()} 个基因</Button></Dialog.Trigger>
+    <Dialog.Content maxWidth="720px">
       <Dialog.Title>水稻先验基因库</Dialog.Title>
-      <Dialog.Description>按基因名或 ID 检索。P 表示当前所选数据集有该性状的实测表型。</Dialog.Description>
+      <Dialog.Description>按基因名或 ID 检索。InDel 表示至少一个已登记数据集观察到非参考等位。P 表示有实测表型。</Dialog.Description>
       <div className="catalog-filters source-filters">
         <input aria-label="检索全库" type="search" placeholder="基因名、别名、MSU / RAP 编号" value={query} onChange={change(setQuery)}/>
+        <select aria-label="按关联性状筛选" value={activeTrait} onChange={change(setTrait)}>
+          <option value="">全部关联性状</option>
+          {[...traitIndex.options.values()].sort((a,b)=>a.name.localeCompare(b.name,'zh')).map(t=><option key={t.id} value={t.id}>{t.name}</option>)}
+        </select>
         <select aria-label="数据集覆盖" className="dataset-tint" style={dataset==='all'?undefined:datasetTint(dataset,data.datasetRegistry)} value={dataset} onChange={change(setDataset)}>
           <option value="all">全部数据集 / All datasets</option>
           {data.datasetRegistry.map(r=><option key={r.id} value={r.id}>{datasetBadge(r.id,data.datasetRegistry)} · {r.name}</option>)}
@@ -68,15 +98,17 @@ export function PriorFinder({data,onChoose}){
           <optgroup label="分型与文献 / Calls and literature">
             <option value="F">F · 文献功能位点</option>
             <option value="H">H · 文献单倍型组分</option>
+            <option value="indel">InDel · 有分型</option>
             <option value="L">L · 基因层文献</option>
-            <option value="regional">区域 SNP</option>
+            <option value="regional">区域标记</option>
             <option value="untyped">未接入分型</option>
           </optgroup>
         </select>
       </div>
-      <p className="footnote">{hits.length} 个匹配基因</p>
+      <p className="footnote">{hits.length.toLocaleString()} 个匹配基因{hits.length>pageSize&&
+        ` · 当前 ${(offset+1).toLocaleString()}–${Math.min(offset+pageSize,hits.length).toLocaleString()}`}</p>
       <div className="catalog-list">
-        {hits.slice(0,limit).map(({gene,traits,supported})=><button key={gene.id} onClick={()=>{onChoose(gene,supported[0]?.id);setOpen(false);}}>
+        {hits.slice(offset,offset+pageSize).map(({gene,traits,supported})=><button key={gene.id} onClick={()=>{onChoose(gene,activeTrait||supported[0]?.id);setOpen(false);}}>
           <div className="catalog-gene">
             <b>{gene.catalog.msu||gene.catalog.rap||gene.catalog.sourceId}</b>
             <small>{[gene.name,...gene.catalog.aliases.filter(a=>a!==gene.name).slice(0,4)].join(' / ')}</small>
@@ -85,10 +117,13 @@ export function PriorFinder({data,onChoose}){
           <PrimaryTraits traits={traits} supported={supported}/>
         </button>)}
         {!hits.length&&<p>没有匹配项。可改用编号或切换数据集与证据。</p>}
-        {hits.length>limit&&<Button onClick={()=>setLimit(n=>n+100)}>显示更多基因</Button>}
       </div>
       <div className="dialog-actions">
-        <a href="./prior/v4_prior_genes.tsv" download>下载基因目录</a> · <a href="./annotations/gene_identity.tsv" download>名称与 ID 复核 / Identity audit</a>
+        <Button type="button" variant="soft" color="gray" onClick={exportCatalog}>下载基因目录 TXT</Button>
+        {hits.length>pageSize&&<span className="catalog-pager">
+          <Button disabled={!offset} variant="soft" onClick={()=>setPage(offset/pageSize-1)}>上一页</Button>
+          <Button disabled={offset+pageSize>=hits.length} variant="soft" onClick={()=>setPage(offset/pageSize+1)}>下一页</Button>
+        </span>}
         <Dialog.Close><Button>关闭</Button></Dialog.Close>
       </div>
     </Dialog.Content></Dialog.Root>

@@ -5,5 +5,13 @@ RiceFlux 使用教程 / Guide
       选择位点 / Select sites“自选位点”可按坐标、CDS、启动子或文献预设选择。自选模式不受左侧 QC 再筛除。“预设出处”列出 DOI 与原文位置。FPLS1097622 对应 Zhang 等 2022 年 DTH7 的七位点关联单倍型，不是七个独立证实的因果变异。Manual sites override automatic MAF/missingness filters. Preset provenance supplies the DOI and paper locator. Missing calls remain missing; heterozygous unphased combinations are not resolved haplotypes.
       读频率与表型 / Read frequencies and phenotypes按每个 ALT 分别显示频率。Missing 使用全部预期等位，MAF 取第二常见等位。二倍体每份预期两个等位，部分缺失中已知等位仍计数。组合频率按所有选点均完整的材料计数。来源稻区不是种植地；表型按地点、年份和指标分别展示。展开“组间检验”查看 Welch ANOVA 与 Kruskal–Wallis，展开“鉴定与地点溯源”查看规程。Allele frequency counts known alleles, including partial calls. Combination frequency uses complete accessions. Compare phenotypes within a matched trial endpoint. Open Tests for Welch and rank tests and Trial source for the protocol.
       比较基因与材料 / Compare genes and accessions多基因页先选基因及各自定义，查看组合、成员、等位频率及连锁 r²。材料页可逐个或批量加入；每页六份便于读图，选择数量不限六份。雷达图为群体百分位，缺失不补零，无优劣方向或总分。Select genes and definitions before comparing combinations and LD. Add any number of available accessions; charts paginate six at a time. Radar percentiles are descriptive, not breeding merit scores.
-      保存与下载 / Save and export“我的工作区”保存筛选、布局、自选位点和材料。“下载基因数据”提供 TSV ZIP，含输入来源、所选位点、全部分型、表型、文献及名称复核。Excel 以制表符导入，材料编号设为文本。材料比较的导出包含全部已选材料。Save the workspace in your browser or export settings. Gene downloads are UTF-8 TSV bundles; import accession IDs as text in Excel. Material exports include every selected accession, not only the current chart page.
+      保存与下载 / Save and export“我的工作区”保存筛选、布局、自选位点和材料。“下载基因数据”提供 TXT ZIP，含输入来源、所选位点、全部分型、表型、文献及名称复核。Excel 以制表符导入，材料编号设为文本。材料比较的导出包含全部已选材料。Save the workspace in your browser or export settings. Gene downloads are UTF-8 tab-delimited TXT bundles; import accession IDs as text in Excel. Material exports include every selected accession, not only the current chart page.
       接入自己的数据 / Add your data准备 manifest.json 和五张表：samples、variants、genotypes、environments、phenotypes。也可按样本表单独导入基因型或表型。分型接受逗号分隔 ALT 和 1/2 等位编号。Import a complete package, or attach phenotype and genotype tables independently. Comma-separated ALTs and 1/2 calls are supported.
+
+育种工作台 / Breeding desk
+进入 ?view=breeder。在同一个框里搜索材料、基因或性状，也可用旁边的「导入文件」上传材料名单、VCF 或体检表。
+也可输入一句话，按回车生成任务计划。可查看「任务例句」，补充所需的材料、基因、母父本方向或测定记录后执行。
+设计后代改良：直接搜索母本和父本，添加目标基因。查看可追踪差异、F1 预期和已登记组合的实测。
+查材料与性状：查材料名录或杂交组合，或按性状独立查型别、配对实测、原文与携带材料。先看原值，再按需设达标区间。
+聚合关注基因：添加至少两个基因，查联合判型分母、组合频数、携带材料和可用的连锁信息。
+新材料体检：下载分型或表型模板，填写同一个样本编号。可提交一张或两张。分型用实际等位序列，如 A/G、A/AA，缺失写 NA。体检表列出覆盖、缺测、无效调用及原始表型。

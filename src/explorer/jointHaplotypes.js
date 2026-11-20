@@ -1,5 +1,5 @@
 import {callOf,isAssayed} from './catalog.js';
-import {baseAt,literalAllele} from './alleles.js';
+import {baseAt,componentMarker,literalAllele} from './alleles.js';
 import {chromNum} from './exchange.js';
 import {resolveSites} from './siteSelection.js';
 
@@ -26,9 +26,13 @@ const displaySequence=bases=>bases.join(bases.some(a=>a.length>1)?'·':'');
 function insertDefinition(sets,gene,entry,kind){
   if(!entry.components.length)return;
   const positions=entry.components.map(c=>c.pos);
-  const key=JSON.stringify([kind,entry.doi,entry.components.map(c=>[c.pos,c.ref])]);
+  const markers=entry.components.map(c=>componentMarker(gene.variants,c));
+  const key=JSON.stringify([kind,entry.doi,entry.components.map((c,i)=>{
+    const coordinate=[c.pos,c.ref];
+    if(gene.variants.filter(v=>v.pos===c.pos&&v.ref===c.ref).length>1)coordinate.push(markers[i]?.id??null);
+    return coordinate;
+  })]);
   if(!sets.has(key)){
-    const markers=entry.components.map(c=>gene.variants.find(v=>v.pos===c.pos&&v.ref===c.ref));
     sets.set(key,{id:key,kind,doi:entry.doi,markers,positions,definitions:[],lookup:new Map(),
       ready:markers.every(Boolean)&&new Set(positions).size===positions.length});
   }

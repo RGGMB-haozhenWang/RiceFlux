@@ -12,11 +12,15 @@ export function writeTSV(keys, rows) {
   return [keys.join('\t'), ...rows.map(row => keys.map(k => cell(row[k])).join('\t'))].join('\n') + '\n';
 }
 
+export const textFilename = name => name.replace(/\.tsv$/i, '.txt');
+
 export function saveFile(name, content, type) {
+  const filename = textFilename(name);
+  if (filename !== name) type = 'text/plain;charset=utf-8';
   const url = URL.createObjectURL(new Blob([content], {type}));
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = name;
+  anchor.download = filename;
   anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

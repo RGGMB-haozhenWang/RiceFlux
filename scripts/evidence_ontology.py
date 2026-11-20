@@ -208,12 +208,13 @@ class Dataset:
                      "PHENOTYPE_VALUE", self.path)
 
 
-def datasets(root):
+def datasets(root, bound_ids=None):
     for name in ("formats/prior.tsv", "formats/prior_477.tsv"):
         fields, _ = rows(read(root / name), PRIOR_FIELDS, name)
         need(fields in (PRIOR_FIELDS, [*PRIOR_FIELDS, "Source_DOI"]), "PRIOR_TSV_AXIS", name)
     content = table(read(root / "datasets/index.tsv"), ("id", "version", "manifest"), "dataset index")
-    return {row["id"]: Dataset(root, row) for row in keyed(content, "id", "dataset index").values()}
+    return {row["id"]: Dataset(root, row) for row in keyed(content, "id", "dataset index").values()
+            if bound_ids is None or row["id"] in bound_ids}
 
 
 CLASSES = {
@@ -741,8 +742,15 @@ def load_bundle(root, bundle):
     need(manifest["version"] == VERSION and manifest["namespace"] == NS, "MANIFEST_VERSION")
     need(set(manifest["sources"]) == set(SOURCE_FILES), "SOURCE_BINDINGS")
     for name, expected in manifest["sources"].items():
-        need(digest(read(root / name)) == expected, "SOURCE_HASH", name)
-    packages = datasets(root)
+        source = read(root / name)
+        if name == "datasets/index.tsv":
+            # Compare the original registry rows byte for byte. Later dataset
+            # versions have separate portable manifests and validation.
+            head, *entries = source.splitlines(keepends=True)
+            bound = {id.encode() for id in manifest["dataset_manifests"]}
+            source = head + b"".join(row for row in entries if row.split(b"\t", 1)[0] in bound)
+        need(digest(source) == expected, "SOURCE_HASH", name)
+    packages = datasets(root, manifest["dataset_manifests"])
     need(set(packages) == set(manifest["dataset_manifests"]), "DATASET_REGISTRY")
     for ds in packages.values():
         bound = manifest["dataset_manifests"][ds.id]

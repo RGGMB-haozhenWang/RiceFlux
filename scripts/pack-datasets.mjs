@@ -7,6 +7,9 @@ import {readTable,readPackage} from '../src/explorer/datasets.js';
 import {chromNum} from '../src/explorer/exchange.js';
 import {assetName,packedSchema,packedAxes,openPackedDataset} from '../src/explorer/packedDataset.js';
 import {archiveEntry} from '../src/explorer/portableArchive.js';
+import {extendGeneCatalog,geneCatalogPath} from '../src/explorer/geneCatalog.js';
+import {bundleGeneCoverage,coverageFields,coveragePath} from '../src/explorer/geneCoverage.js';
+import {writeTSV} from '../src/explorer/formats.js';
 
 const [input,output,flag]=process.argv.slice(2);
 if(!input||!output||flag&&!['--keep-source-tables'].includes(flag)){
@@ -32,10 +35,14 @@ function write(name,bytes){
   fs.renameSync(target+'.partial',target);
 }
 const registry=readTable(decode(file('index.tsv')),['id','version','manifest'],'index').objects();
-const reference=JSON.parse(decode(file('reference.json.gz')));
+let reference=JSON.parse(decode(file('reference.json.gz')));
+if(fs.existsSync(path.join(source,geneCatalogPath))){
+  const catalog=JSON.parse(decode(file(geneCatalogPath)));
+  reference=await extendGeneCatalog(reference,catalog,decode(file('cloned_catalog/genes.tsv.gz')));
+}
 reference.traitRegistry=readTable(fs.readFileSync(path.join(source,'../formats/traits.tsv'),'utf8')).objects();
 const omit=new Set();
-const receipt=[];
+const receipt=[],coverage=[];
 fs.mkdirSync(destination);
 function store(raw){
   const sha256=hash(raw),name=assetName(sha256);
@@ -64,6 +71,7 @@ for(const row of registry){
   assert.equal(manifest.version,row.version);
   const dir=path.dirname(row.manifest),archive=dir+'.zip',archiveBytes=file(archive);
   const bundle=await readPackage(manifest,name=>decode(file(dir+'/'+name)),reference);
+  coverage.push(...bundleGeneCoverage(bundle,reference.evidence));
   const member_prefix=await archiveEntry(archiveBytes,dir+'/manifest.json').then(()=>dir+'/',()=>{
     return archiveEntry(archiveBytes,'manifest.json').then(()=>'');
   });
@@ -71,7 +79,7 @@ for(const row of registry){
   for(const [key,name] of Object.entries(manifest.files)){
     assert.equal(hash(decode(await archiveEntry(archiveBytes,member_prefix+name))),hash(bundle.texts[key]),name+' differs from the portable ZIP');
   }
-  const axes=store(Buffer.from(JSON.stringify(Object.fromEntries(packedAxes.map(key=>[key,bundle.texts[key]])))));
+  const axes=store(Buffer.from(JSON.stringify(Object.fromEntries(packedAxes(manifest).map(key=>[key,bundle.texts[key]])))));
   const blocks=markerBlocks(bundle.variants).map(group=>({
     ...store(Buffer.concat(group.map(v=>bundle.columns.get(v.id)))),
     markers:group.map(v=>v.id),
@@ -86,6 +94,8 @@ for(const row of registry){
   assert.deepEqual(compiled.variants,bundle.variants);
   assert.deepEqual(compiled.environments,bundle.environments);
   assert.deepEqual(compiled.phenotypes,bundle.phenotypes);
+  assert.deepEqual(compiled.pav,bundle.pav);
+  assert.deepEqual(compiled.descriptors,bundle.descriptors);
   const dth7=reference.genes.find(g=>g.name==='DTH7')?.id;
   await compiled.loadGenes([dth7]);
   const startupAssets=[...fetched];
@@ -99,7 +109,7 @@ for(const row of registry){
   const stored=files=>[...new Set(files)].reduce((sum,name)=>sum+fs.statSync(path.join(destination,name)).size,0);
   receipt.push({
     id:row.id,version:row.version,manifest_sha256:hash(bytes),source_sha256:manifest.sha256,
-    sample_count:bundle.samples.length,marker_count:bundle.variants.length,environment_count:bundle.environments.length,
+    sample_count:bundle.samples.length,marker_count:bundle.variants.length,environment_count:bundle.environments.length,pav_count:bundle.pav.length,
     calls_checked:bundle.samples.length*bundle.variants.length,phenotype_cells_checked:bundle.phenotypes.size*bundle.environments.length,
     legacy_table_bytes:bytes.length+legacyFiles.reduce((sum,name)=>sum+fs.statSync(path.join(source,name)).size,0),
     legacy_decoded_gt_bytes:Buffer.byteLength(bundle.texts.genotypes),packed_payload_bytes:Buffer.byteLength(packedManifest)+stored(fetched),
@@ -115,4 +125,6 @@ function retain(dir=''){
   }
 }
 retain();
-console.log(JSON.stringify({schema:packedSchema,keep_source_tables:flag==='--keep-source-tables',datasets:receipt},null,2));
+write(coveragePath,gzipSync(writeTSV(coverageFields,coverage),{level:9}));
+console.log(JSON.stringify({schema:packedSchema,keep_source_tables:flag==='--keep-source-tables',catalog_genes:reference.genes.length,
+  coverage_rows:coverage.length,datasets:receipt},null,2));

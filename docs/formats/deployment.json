@@ -1,5 +1,7 @@
 {
   "version": 1,
   "prior_file": "formats/prior_477.tsv",
-  "compare_on_load": false
+  "compare_on_load": false,
+  "gene_catalog": "cloned_catalog/manifest.json",
+  "catalog_coverage": "catalog_coverage.tsv.gz"
 }

@@ -1,5 +1,5 @@
 import {callOf,isAssayed} from './catalog.js';
-import {alleleNames,baseAt,literalAllele,markerKind} from './alleles.js';
+import {alleleNames,baseAt,componentMarker,literalAllele,markerKind} from './alleles.js';
 import {regionalView} from './regions.js';
 export function validateDataset(data) {
   const observed=data?.meta?.synthetic===false && ['RiceFlux modern indica 1.0','RiceFlux registry 2.0'].includes(data.meta.schema);
@@ -89,10 +89,9 @@ export function exportSnapshot(data,state) {
 }
 
 export function literatureMatches(gene,definitions,cohort) {
-  const byPosition=new Map(gene.variants.map(v=>[v.pos,v]));
   return definitions.map(row=>{
     const states=row.components.map(c=>c.state??'—').join('·');
-    const variants=row.components.map(c=>byPosition.get(c.pos));
+    const variants=row.components.map(c=>componentMarker(gene.variants,c));
     const valid=row.components.length>1&&row.components.every((c,i)=>variants[i]&&literalAllele.test(c.state)&&c.ref===variants[i].ref);
     if(!valid)return {row,states,matched:null,callable:null};
     let matched=0,callable=0,assayed=0;

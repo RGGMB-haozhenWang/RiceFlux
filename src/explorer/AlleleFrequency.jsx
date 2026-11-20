@@ -1,5 +1,7 @@
 import React from 'react';
 import {alleleStats,percent} from './model.js';
+import {markerAnnotation} from './alleles.js';
+import {MarkerIcon,markerNames} from './VariantMark.jsx';
 
 const shade = (color,index) => index===0?'#dce5e5':
   `color-mix(in srgb, ${color} ${[0,100,65,38][index]}%, #fff)`;
@@ -13,11 +15,14 @@ export function markerQuality(stats) {
 export function AlleleFrequency({variant,cohort,populations}) {
   if(!variant)return <p>当前无可计算位点。</p>;
   const stats=alleleStats(cohort,variant);
-  const labels=stats.alleleCounts.map((a,i)=>`${i===0?'REF':'ALT'+(stats.alleleCounts.length>2?i:'')} ${a.allele}`);
+  const {kind,ref,alts}=markerAnnotation(variant);
+  const labels=['REF '+ref,...alts.map((allele,i)=>`ALT${alts.length>1?i+1:''} ${allele}`)];
   const showAll=stats.alleleCounts.length>2;
   return <>
-    <div className="marker-quality" title="Missing：缺失等位数 / 预期等位数。MAF：第二常见等位在所有有效等位中的频率。">{markerQuality(stats)}{showAll&&<span>{alleleFrequencyText(stats)}</span>}</div>
-    <div className="af-legend">{labels.map((label,i)=><span key={label}><i style={{background:shade('#377b9a',i)}}/>{label}</span>)}</div>
+    <div className="marker-quality" title="Missing：缺失等位数 / 预期等位数。MAF：第二常见等位在所有有效等位中的频率。">
+      <span><MarkerIcon kind={kind}/>{markerNames[kind]}</span>{markerQuality(stats)}{showAll&&<span>{alleleFrequencyText(stats)}</span>}
+    </div>
+    <div className={kind==='SNP'?'af-legend':'af-legend indel-alleles'}>{labels.map((label,i)=><span key={label}><i style={{background:shade('#377b9a',i)}}/>{label}</span>)}</div>
     <div className="pop-frequency">{populations.map(p=>{
       const s=alleleStats(cohort.filter(x=>x.population_id===p.id),variant);
       const text=[p.name,p.description,`n=${s.n}`,markerQuality(s),alleleFrequencyText(s)].filter(Boolean).join(' · ');

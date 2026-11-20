@@ -5,7 +5,7 @@ import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {readTable,parseDataset,combineDatasets} from './datasets.js';
 import {callOf} from './catalog.js';
-import {datasetCalls,geneSupport,geneTraits,phenotypeSupport} from './provenance.js';
+import {datasetCalls,geneEvidence,geneSupport,geneTraits,phenotypeSupport} from './provenance.js';
 import {percentile,radarRows} from './analysis.js';
 const base=new URL('../../public/',import.meta.url),bytes=p=>fs.readFileSync(new URL(p,base));
 const text=p=>(p.endsWith('.gz')?gunzipSync(bytes(p)):bytes(p)).toString();
@@ -52,6 +52,19 @@ test('P follows curated gene–trait links and observed values in the active dat
   assert.deepEqual(phenotypeSupport(data,alk),[]);
   assert.deepEqual(phenotypeSupport({...data,traits:[trait('heading',0),sheath,extra]},dth7),[]);
   assert.deepEqual(phenotypeSupport({...data,meta:{synthetic:true}},dth7),[]);
+});
+test('InDel evidence requires an observed ALT in the current dataset version',()=>{
+  const gene={id:'g'}, version='v2', dataset_id='calls';
+  const variant=(id,markerType='InDel')=>({id,markerType,gene:gene.id});
+  const variants=[variant('reference'),variant('missing'),variant('deletion'),variant('snp','SNP')];
+  const columns=new Map([['reference',Uint8Array.of(0,20)],['missing',Uint8Array.of(24)],
+    ['deletion',Uint8Array.of(0,6)],['snp',Uint8Array.of(6)]]);
+  const data={datasetRegistry:[{id:dataset_id,version}],datasetBundles:[{manifest:{id:dataset_id,version},variants,columns}],
+    annotations:{variantCoverage:[{dataset_id,dataset_version:'v1',gene_id:gene.id,indel_sites:5}]}};
+  assert.equal(geneEvidence(data,gene,dataset_id).indel,true);
+  assert.equal(geneSupport(data,gene)[0].indel_sites,1);
+  const referenceOnly={...data,datasetBundles:[{...data.datasetBundles[0],variants:variants.filter(v=>v.id!=='deletion')}]};
+  assert.equal(geneEvidence(referenceOnly,gene,dataset_id).indel,false);
 });
 test('gene trait display links exact curated terms to available endpoints and retains unmeasured terms',()=>{
   const gl7=reference.genes.find(g=>g.name==='GL7'),dth7=reference.genes.find(g=>g.name==='DTH7');

@@ -3,6 +3,8 @@ import {measuredTraits} from './regions.js';
 import {readTable,readPackage,combineDatasets} from './datasets.js';
 import {fetchBytes,readText,unpackGzip} from './assets.js';
 import {openPackedDataset} from './packedDataset.js';
+import {extendGeneCatalog,geneCatalogPath} from './geneCatalog.js';
+import {coverageFields,coveragePath} from './geneCoverage.js';
 export {readText} from './assets.js';
 // Adapt the released cohort and its ontology to the existing explorer data model.
 const groupColors = {'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
@@ -95,14 +97,31 @@ export async function loadExplorer(base,demo,signal,initialGene){
     if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||rows.some(r=>!/^[-\w]+\/manifest\.json$/.test(r.manifest)))throw Error('数据集索引无效');
     return Promise.all([rows,registeredManifest(base,rows[0],signal)]);
   });
-  const [reference,[registry,manifest],literature,config,regions,traitRegistry,annotations]=await Promise.all([
-    readJSON(base+'datasets/reference.json.gz',signal),indexRequest,
-    readText(base+'datasets/literature.tsv',signal),readJSON(base+'formats/deployment.json',signal),readText(base+'formats/genome_regions.tsv',signal),readText(base+'formats/traits.tsv',signal),annotationsRequest]);
+  const configRequest=readJSON(base+'formats/deployment.json',signal);
+  const catalogRequest=configRequest.then(async config=>{
+    if(!config.gene_catalog)return null;
+    if(config.gene_catalog!==geneCatalogPath)throw Error('扩展基因目录地址无效');
+    const [catalog,table]=await Promise.all([
+      readJSON(base+'datasets/'+geneCatalogPath,signal),
+      readText(base+'datasets/cloned_catalog/genes.tsv.gz',signal),
+    ]);
+    return {catalog,table};
+  });
+  const coverageRequest=configRequest.then(async config=>{
+    if(!config.catalog_coverage)return [];
+    if(config.catalog_coverage!==coveragePath)throw Error('位点覆盖目录地址无效');
+    return readTable(await readText(base+'datasets/'+coveragePath,signal),coverageFields,'位点覆盖目录').objects();
+  });
+  const [baseReference,[registry,manifest],literature,config,regions,traitRegistry,annotations,extended,coverage]=await Promise.all([
+    readJSON(base+'datasets/reference.json.gz',signal),indexRequest,readText(base+'datasets/literature.tsv',signal),configRequest,
+    readText(base+'formats/genome_regions.tsv',signal),readText(base+'formats/traits.tsv',signal),annotationsRequest,catalogRequest,coverageRequest]);
   if(config.version!==1)throw Error('服务器配置版本无效');
+  const reference=extended?await extendGeneCatalog(baseReference,extended.catalog,extended.table):baseReference;
   reference.datasetRegistry=registry;
   reference.genomeRegions=readTable(regions).objects();
   reference.traitRegistry=readTable(traitRegistry).objects();
   reference.annotations=Object.fromEntries(annotations);
+  reference.annotations.variantCoverage=coverage;
   for(const g of reference.genes){
     const audit=reference.annotations.identities.find(r=>r.gene_id===g.id);
     if(audit){g.name=audit.display_name;g.catalog.aliases=[...new Set([...g.catalog.aliases,...audit.aliases.split(';')])];}
@@ -121,7 +140,7 @@ export async function loadExplorer(base,demo,signal,initialGene){
   const bundle=await readRegistered(base,registry[0],manifest,reference,signal);
   const data=combineDatasets(reference,[bundle]);
   if(data.loadGenes)await data.loadGenes([initialGene?.(data)??(data.genes.find(g=>g.name==='DTH7')||data.genes[0]).id],signal);
-  return {...data,reference,datasetRegistry:registry,datasetBundles:[bundle]};
+  return data;
 }
 
 async function registeredManifest(base,row,signal){

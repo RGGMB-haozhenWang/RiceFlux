@@ -1,10 +1,10 @@
 import {alleleNames,packedCall} from './alleles.js';
-import {parseDatasetAxes,datasetFiles,parseDataset} from './datasets.js';
+import {parseDatasetAxes,datasetTableKeys,parseDataset} from './datasets.js';
 import {unpackGzip} from './assets.js';
 import {sha256Data,sha256Text} from './sha256.js';
 
 export const packedSchema='RiceFlux packed 1.0';
-export const packedAxes=datasetFiles.filter(key=>key!=='genotypes');
+export const packedAxes=manifest=>datasetTableKeys(manifest).filter(key=>key!=='genotypes');
 export const assetName=hash=>'blobs/'+hash+'.gz';
 const validRef=ref=>ref&&/^[a-f0-9]{64}$/.test(ref.sha256)&&Number.isSafeInteger(ref.bytes)&&ref.bytes>=0;
 
@@ -19,7 +19,7 @@ export async function openPackedDataset(manifest,read,readSource,reference,signa
   const index=manifest.packed;
   if(index?.schema!==packedSchema||!Array.isArray(index.blocks))throw Error('数据分片版本无效');
   const texts=JSON.parse(new TextDecoder().decode(await verifiedAsset(index.axes,read,signal)));
-  if(!packedAxes.every(key=>typeof texts[key]==='string'))throw Error('数据轴分片缺少输入表');
+  if(!packedAxes(manifest).every(key=>typeof texts[key]==='string'))throw Error('数据轴分片缺少输入表');
   const axes=parseDatasetAxes(manifest,texts,reference);
   const {samples,variants}=axes,byId=new Map(variants.map(v=>[v.id,v])),seen=new Set();
   const columns=new Map(),byGene=new Map(),inflight=new Map(),ready=new Set();
@@ -58,14 +58,14 @@ export async function openPackedDataset(manifest,read,readSource,reference,signa
     for(let i=0;i<refs.length;i+=4)await Promise.all(refs.slice(i,i+4).map(ref=>fill(ref,signal)));
   }
   async function sourceText(key){
-    if(!datasetFiles.includes(key))throw Error('未知的输入表');
+    if(!datasetTableKeys(manifest).includes(key))throw Error('未知的输入表');
     const value=texts[key]??await readSource(key);
     if(await sha256Text(value)!==manifest.sha256?.[key])throw Error('原始输入表哈希不匹配：'+key);
     return value;
   }
   async function sourceBundle(){
     const source={...manifest};delete source.packed;
-    const tables=await Promise.all(datasetFiles.map(async key=>[key,await sourceText(key)]));
+    const tables=await Promise.all(datasetTableKeys(manifest).map(async key=>[key,await sourceText(key)]));
     return parseDataset(source,Object.fromEntries(tables),reference);
   }
   return {...axes,columns,loadGenes,genesReady:ids=>blocksFor(ids).every(ref=>ready.has(ref)),sourceText,sourceBundle};

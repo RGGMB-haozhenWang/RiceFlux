@@ -1,10 +1,12 @@
-import {WorkspaceTools,WorkspaceLayout,WorkPanel,defaultLayout} from './Workspace.jsx';
+import {WorkspaceTools,WorkspaceLayout,defaultLayout} from './Workspace.jsx';
 import {SitePicker} from './SitePicker.jsx';
 import {analysisSites} from './siteSelection.js';
 import {geneSchemes} from './jointHaplotypes.js';
 const MaterialPanel=React.lazy(()=>import('./MaterialPanel.jsx').then(m=>({default:m.MaterialPanel})));
 const EvidencePanel=React.lazy(()=>import('./EvidencePanel.jsx').then(m=>({default:m.EvidencePanel})));
 const RiceNaviPanel=React.lazy(()=>import('./RiceNaviPanel.jsx').then(m=>({default:m.RiceNaviPanel})));
+const BreederWorkspace=__RICEFLUX_AUDIENCE__==='researcher'?null:
+  React.lazy(()=>import('./BreederWorkspace.jsx').then(m=>({default:m.BreederWorkspace})));
 import {geneTables,zipTables} from './exports.js';
 import {combineDatasets,readPackage} from './datasets.js';
 import {SampleList} from './SampleList.jsx';
@@ -13,16 +15,19 @@ import {extendDataset} from './dataImport.js';
 import {DataPanel} from './DataPanel.jsx';
 import {PopulationComposition} from './PopulationComposition.jsx';
 const ComparePanel=React.lazy(()=>import('./ComparePanel.jsx').then(m=>({default:m.ComparePanel})));
-import {PhenotypeBadge,SourceBadges} from './SourceBadges.jsx';
+import {SourceBadges} from './SourceBadges.jsx';
 import {Tutorial} from './Tutorial.jsx';
 import {GenomeTrack} from './GenomeTrack.jsx';
+import {markerAnnotation} from './alleles.js';
+import {MarkerIcon,markerNames} from './VariantMark.jsx';
+import {PavPanel} from './PavPanel.jsx';
 import {formats,matchesMaterial,saveFile} from './formats.js';
 import {callOf} from './catalog.js';
 import {PriorFinder} from './PriorCatalog.jsx';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {Theme, Select, Button, Checkbox, Dialog, TextField, Switch} from '@radix-ui/themes';
-import {ArrowTopRightIcon, DownloadIcon, MixerHorizontalIcon, MagnifyingGlassIcon, InfoCircledIcon, PersonIcon, LayersIcon, CheckIcon, ResetIcon} from '@radix-ui/react-icons';
+import {DownloadIcon, MagnifyingGlassIcon, InfoCircledIcon, PersonIcon, LayersIcon, CheckIcon, ResetIcon} from '@radix-ui/react-icons';
 import './theme.css';
 import './style.css';
 import {validateDataset, selectCohort, inMaterialScope, alleleStats, genotypeGroups, gtToken, quantile, percent} from './model.js';
@@ -33,20 +38,28 @@ import {HaplotypeMatches} from './HaplotypeMatches.jsx';
 import {RegionalPhenotypes} from './RegionalPhenotypes.jsx';
 import './desktop.css';
 import {loadAbstracts,loadExplorer,loadRegistered} from './observed.js';
-import {geneTraits,hasPhenotypes} from './provenance.js';
-const demo=new URLSearchParams(location.search).get('view')==='demo';
+import {geneSupport,geneTraits,hasPhenotypes} from './provenance.js';
+const initialView=new URLSearchParams(location.search).get('view');
+const demo=initialView==='demo'&&__RICEFLUX_AUDIENCE__!=='breeder';
 const embedded=new URLSearchParams(location.search).get('embed')==='1';
 const isTraitOption=trait=>trait.category!=='基因先验';
 function preferredTrait(data,gene){
   const options=geneTraits(data,gene);
   return options.find(t=>hasPhenotypes(t))?.id??options[0]?.id
-    ??gene.trait_ids.findLast(id=>data.traits.some(t=>t.id===id&&isTraitOption(t)));
+    ??gene.trait_ids.findLast(id=>data.traits.some(t=>t.id===id&&isTraitOption(t)))??gene.trait_ids[0];
 }
 function initialSelection(data,requested=''){
   if(data.meta.synthetic)return ['heading','SIM_HD01'];
-  const gene=(requested&&data.genes.find(g=>g.id===requested || g.name===requested || g.catalog?.sourceId===requested || g.catalog?.msu===requested)) || data.genes.find(g=>g.name==='DTH7');
+  const gene=(requested&&data.genes.find(g=>g.id===requested || g.name===requested || g.catalog?.sourceId===requested || g.catalog?.msu===requested || g.catalog?.rap===requested)) || data.genes.find(g=>g.name==='DTH7');
   return [preferredTrait(data,gene),gene.id];
 }
+const allMaterials={materialScope:'all',individualIds:[],individualOnly:false};
+const defaultWorkspace={
+  ...allMaterials,geneId:'SIM_HD01',traitId:'heading',popIds:[],variantId:'',
+  minMaf:.05,maxMissing:.2,plotSelection:{},siteSelections:{},
+  layout:defaultLayout,display:{mode:'desk',tab:'overview',text:'standard'},material:{},compare:{},breeder:{},
+};
+const defaultCohort=data=>({...allMaterials,popIds:data.populations.map(p=>p.id)});
 function extendRows(event,more){
   const box=event.currentTarget;
   if(box.scrollTop+box.clientHeight>=box.scrollHeight-80)more();
@@ -54,18 +67,9 @@ function extendRows(event,more){
 const COLORS=['#438e7b','#7b9fc6','#ba9cc6','#d6aa71','#8a9e8e','#c58383','#8d92bc','#86b5ba'];
 const evidenceName={G_chip:'观测分型',G_projected:'投影分型',G_direct:'直接检测',G_mixed:'混合分型证据',G_none:'仅表型'};
 const fmt=n=>n==null?'—':Number(n.toFixed(2)).toString();
-function Choice({label,value,options,onChange,renderOption}) {return <label className="choice"><span>{label}</span><Select.Root value={value} onValueChange={onChange}><Select.Trigger aria-label={label}/><Select.Content position="popper">{options.map(o=><Select.Item key={o.id} value={o.id} textValue={o.name}>{renderOption?renderOption(o):o.name}</Select.Item>)}</Select.Content></Select.Root></label>;}
-function TraitChoice({options, value, onChange}) {
-  const selectable=options.filter(isTraitOption);
-  const categories = [...new Set(selectable.map(t=>t.category))];
-  return <label className="choice"><span>性状</span><Select.Root value={value} onValueChange={onChange}>
-    <Select.Trigger aria-label="性状"/><Select.Content position="popper" className="trait-menu">
-      {categories.map(category=><Select.Group key={category}><Select.Label>{category}</Select.Label>
-        {selectable.filter(t=>t.category===category).map(t=><Select.Item value={t.id} key={t.id}>{t.name}</Select.Item>)}
-      </Select.Group>)}
-    </Select.Content></Select.Root></label>;
-}
+function Choice({label,value,options,onChange}) {return <label className="choice"><span>{label}</span><Select.Root value={value} onValueChange={onChange}><Select.Trigger aria-label={label}/><Select.Content position="popper">{options.map(o=><Select.Item key={o.id} value={o.id}>{o.name}</Select.Item>)}</Select.Content></Select.Root></label>;}
 function GeneTraitChoice({trait,options,onChange}){
+  if(trait.id==='all_prior')return <span><i/>暂无已登记性状</span>;
   if(options.length<2)return <span><i/>{trait.name}</span>;
   const observed=options.filter(t=>hasPhenotypes(t));
   const unavailable=options.filter(t=>!hasPhenotypes(t));
@@ -108,46 +112,80 @@ function Phenotypes({groups,trait,selectedIds}) {
 }
 
 function App() {
-  const [filtersOpen,setFiltersOpen]=useState(false);
   const [data,setData]=useState(null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
-  const [traitId,setTrait]=useState('heading'),[geneId,setGene]=useState('SIM_HD01'),[popIds,setPops]=useState(['P1','P2','P3','P4']);
-  const [individualIds,setIndividuals]=useState([]),[individualOnly,setOnly]=useState(false),[minMaf,setMaf]=useState(.05),[maxMissing,setMissing]=useState(.2),[variantId,setVariant]=useState(''),[groupKey,setGroup]=useState(null),[showAll,setShowAll]=useState(false);
+  const [workspace,setWorkspace]=useState(defaultWorkspace);
+  const {traitId,geneId,popIds,individualIds,individualOnly,materialScope,minMaf,maxMissing,variantId,plotSelection,siteSelections,
+    layout,display,material:materialSettings,compare:compareSettings,breeder:breederSettings}=workspace;
+  const [groupKey,setGroup]=useState(null),[showAll,setShowAll]=useState(false);
   const [pick,setPick]=useState(false),[query,setQuery]=useState(''),[help,setHelp]=useState(false),[notice,setNotice]=useState('');
-  const [plotSelection,setPlotSelection]=useState({});
-  const [materialScope,setMaterialScope]=useState('all');
-  const [layout,setLayout]=useState(defaultLayout),[materialSettings,setMaterialSettings]=useState({}),[compareSettings,setCompareSettings]=useState({});
-  const [siteSelections,setSiteSelections]=useState({}),[display,setDisplay]=useState({mode:'desk',tab:'overview',text:'standard'});
+  const [breederOpen,setBreederOpen]=useState(initialView==='breeder');
   const [memberLimit,setMemberLimit]=useState(96),[pickerLimit,setPickerLimit]=useState(96);
   const [geneLoad,setGeneLoad]=useState(null),geneRequest=useRef(0);
-  useEffect(()=>{const c=new AbortController();setError('');const requested=decodeURIComponent(location.hash.slice(1));
+  function update(patch){
+    setWorkspace(current=>({...current,...(typeof patch==='function'?patch(current):patch)}));
+  }
+  const setting=key=>value=>update(current=>({[key]:typeof value==='function'?value(current[key]):value}));
+  const setVariant=setting('variantId'),setIndividuals=setting('individualIds'),setLayout=setting('layout');
+  useEffect(()=>{const c=new AbortController();setError('');
+    const requested=decodeURIComponent(location.hash.slice(1))||new URLSearchParams(location.search).get('gene');
     loadExplorer(import.meta.env.BASE_URL,demo,c.signal,d=>initialSelection(d,requested)[1]).then(validateDataset).then(d=>{
-    if(c.signal.aborted)return;
-    const [t,g]=initialSelection(d,requested);setTrait(t);setGene(g);setPops(d.populations.map(p=>p.id));setData(d);
-  }).catch(e=>{if(e.name!=='AbortError')setError(e.message);});return()=>c.abort();},[retry]);
+      if(c.signal.aborted)return;
+      const [traitId,geneId]=initialSelection(d,requested);
+      update({traitId,geneId,...defaultCohort(d)});
+      setData(d);
+    }).catch(e=>{if(e.name!=='AbortError')setError(e.message);});
+    return()=>c.abort();
+  },[retry]);
   useEffect(()=>{if(notice){const t=setTimeout(()=>setNotice(''),4000);return()=>clearTimeout(t);}},[notice]);
   const gene=data?.genes.find(g=>g.id===geneId);
   const relatedTraits=useMemo(()=>gene?geneTraits(data,gene):[],[data,gene]);
-  const registeredTrait=data?.traits.find(t=>t.id===traitId);
-  const trait=registeredTrait||relatedTraits.find(t=>t.id===traitId);
+  const trait=data?.traits.find(t=>t.id===traitId)||relatedTraits.find(t=>t.id===traitId);
   const view=useMemo(()=>regionalView(trait,plotSelection),[trait,plotSelection]);
   const tablePhenotype=view?.active.id || traitId;
   const tableHeading=view ? trait.name+' · '+siteName(view.active.source.site)+' '+view.year+(view.assays.length>1?' · '+view.assay:'')+' ('+view.unit+')' : trait?.name+' ('+trait?.unit+')';
-  function changePlot(update){setPlotSelection({assay:view.assay,year:view.year,site:view.active.source.site,...update});}
+  function changePlot(patch){update({plotSelection:{assay:view.assay,year:view.year,site:view.active.source.site,...patch}});}
   const cohort=useMemo(()=>data?selectCohort(data,popIds,individualIds,individualOnly,materialScope):[],[data,popIds,individualIds,individualOnly,materialScope]);
   const scopeMembers=useMemo(()=>data?.individuals.filter(s=>inMaterialScope(s,materialScope))||[],[data,materialScope]);
-  const eligible=scopeMembers.filter(s=>popIds.includes(s.population_id));
-  const scopeGroups=data?.populations.filter(p=>scopeMembers.some(s=>s.population_id===p.id))||[];
+  const eligible=useMemo(()=>scopeMembers.filter(s=>popIds.includes(s.population_id)),[scopeMembers,popIds]);
+  const groupCounts=useMemo(()=>{
+    const counts=new Map();
+    for(const sample of scopeMembers)counts.set(sample.population_id,(counts.get(sample.population_id)||0)+1);
+    return counts;
+  },[scopeMembers]);
+  const scopeGroups=data?.populations.filter(p=>groupCounts.has(p.id))||[];
+  const scopes=useMemo(()=>{
+    if(!data||demo)return [];
+    const counts=new Map();
+    let legacy=0;
+    for(const sample of data.individuals){
+      counts.set(sample.kind,(counts.get(sample.kind)||0)+1);
+      if(sample.legacy)legacy++;
+    }
+    const labels={'modern cultivar':'现代品种',landrace:'地方品种'};
+    return [{id:'all',name:'全部材料 · '+data.individuals.length},
+      ...[...counts].map(([id,count])=>({id,name:(labels[id]||id)+' · '+count})),
+      ...(legacy?[{id:'legacy',name:'原分析现代籼稻 · '+legacy}]:[])];
+  },[data]);
   function changeScope(scope) {
     const members=data.individuals.filter(s=>inMaterialScope(s,scope));
     const ids=new Set(members.map(s=>s.id));
-    setMaterialScope(scope);setPops([...new Set(members.map(s=>s.population_id))]);
-    setIndividuals(previous=>previous.filter(id=>ids.has(id)));setOnly(false);setGroup(null);
+    update(current=>({materialScope:scope,popIds:[...new Set(members.map(s=>s.population_id))],
+      individualIds:current.individualIds.filter(id=>ids.has(id)),individualOnly:false}));
+    setGroup(null);
   }
-  const matchingIndividuals=eligible.filter(s=>matchesMaterial(s,query));
+  const matchingIndividuals=pick?eligible.filter(s=>matchesMaterial(s,query)):[];
   const sites=useMemo(()=>gene?analysisSites(cohort,gene,siteSelections[geneId],minMaf,maxMissing):{variants:[],ready:false,mode:'qc',missing:[]},[cohort,gene,siteSelections,geneId,minMaf,maxMissing]);
   const variants=sites.variants;
   const schemes=useMemo(()=>gene&&!demo?geneSchemes(gene,data.evidence):[],[gene,data?.evidence]);
-  function selectSites(selection){setSiteSelections(previous=>{const next={...previous};if(selection)next[geneId]=selection;else delete next[geneId];return next;});setVariant('');setGroup(null);setShowAll(false);}
+  function selectSites(selection){
+    update(current=>{
+      const siteSelections={...current.siteSelections};
+      if(selection)siteSelections[geneId]=selection;
+      else delete siteSelections[geneId];
+      return {siteSelections,variantId:''};
+    });
+    setGroup(null);setShowAll(false);
+  }
   const selected=variants.find(v=>v.id===variantId)||variants[0];
   const stats=selected?alleleStats(cohort,selected):null;
   const groups=useMemo(()=>sites.ready?genotypeGroups(cohort,variants):[],[cohort,sites]);
@@ -159,19 +197,16 @@ function App() {
   function switchGeneTrait(id){
     if(id===traitId)return;
     geneRequest.current++;
-    setGeneLoad(null);setTrait(id);setPlotSelection({});
+    setGeneLoad(null);
+    update({traitId:id,plotSelection:{}});
   }
   function chooseTrait(id){
     const candidates=data.genes.filter(g=>g.trait_ids.includes(id));
-    if(relatedTraits.some(t=>t.id===id)||candidates.some(g=>g.id===geneId)){switchGeneTrait(id);return;}
-    const preferred={length:'GS3',width:'GW5/GSE5',heading:'DTH7'}[data.traits.find(t=>t.id===id)?.family];
-    const target=candidates.find(g=>g.name===preferred)||candidates[0];
-    if(target)chooseGene(target.id,id);
+    if(candidates.some(g=>g.id===geneId))switchGeneTrait(id);
+    else if(candidates.length)chooseGene(candidates[0].id,id);
   }
-  function commitGene(id,trait,clearPlot){
+  function linkGene(id){
     if(!demo)history.replaceState(null,'','#'+encodeURIComponent(id));
-    setGene(id);setTrait(trait);setVariant('');setGroup(null);
-    if(clearPlot)setPlotSelection({});
   }
   async function chooseGene(id,trait=traitId,clearPlot=trait!==traitId){
     const request=++geneRequest.current;
@@ -182,30 +217,64 @@ function App() {
         await data.loadGenes([id]);
       }
       if(request!==geneRequest.current)return;
-      setGeneLoad(null);commitGene(id,trait,clearPlot);
+      setGeneLoad(null);
+      linkGene(id);
+      update({geneId:id,traitId:trait,variantId:'',...(clearPlot?{plotSelection:{}}:{})});
+      setGroup(null);
     }catch(error){
       if(request===geneRequest.current)setGeneLoad({name,error:error.message,id,trait,clearPlot});
     }
   }
-  function togglePop(id){const next=popIds.includes(id)?popIds.filter(p=>p!==id):[...popIds,id];setPops(next);setIndividuals(ids=>ids.filter(id=>data.individuals.some(s=>s.id===id&&next.includes(s.population_id))));setGroup(null);}
+  function togglePop(id){
+    update(current=>{
+      const popIds=current.popIds.includes(id)?current.popIds.filter(p=>p!==id):[...current.popIds,id];
+      const eligible=new Set(scopeMembers.filter(s=>popIds.includes(s.population_id)).map(s=>s.id));
+      return {popIds,individualIds:current.individualIds.filter(id=>eligible.has(id))};
+    });
+    setGroup(null);
+  }
   function applySampleList(samples){
-    setMaterialScope('all');setPops([...new Set(samples.map(s=>s.population_id))]);
-    setIndividuals(samples.map(s=>s.id));setOnly(true);setGroup(null);
+    update({materialScope:'all',popIds:[...new Set(samples.map(s=>s.population_id))],
+      individualIds:samples.map(s=>s.id),individualOnly:true});
+    setGroup(null);
     setNotice(`已按名单圈定 ${samples.length} 份材料`);
   }
   function toggleIndividual(id){setIndividuals(ids=>ids.includes(id)?ids.filter(x=>x!==id):[...ids,id]);}
-  function reset(){setSiteSelections({});setMaterialScope('all');setPlotSelection({});const [t,g]=initialSelection(data);chooseGene(g,t);setPops(data.populations.map(p=>p.id));setIndividuals([]);setOnly(false);setMaf(.05);setMissing(.2);setVariant('');setGroup(null);setShowAll(false);}
-  function applyData(next){
-    const nextGene=next.genes.find(g=>g.id===geneId);
-    if(nextGene){
-      const options=geneTraits(next,nextGene);
-      const nextTrait=options.find(t=>t.id===traitId)||options.find(t=>t.name===trait?.name);
-      if(nextTrait)setTrait(nextTrait.id);
-      else if(!next.traits.some(t=>t.id===traitId))setTrait(preferredTrait(next,nextGene));
-    }
-    geneRequest.current++;setGeneLoad(null);setData(next);setPops(next.populations.map(p=>p.id));setMaterialScope('all');setIndividuals([]);setOnly(false);setGroup(null);setPlotSelection({});setNotice('数据集与分组已更新');
+  function reset(){
+    const [t,g]=initialSelection(data);
+    update({...defaultCohort(data),minMaf:defaultWorkspace.minMaf,maxMissing:defaultWorkspace.maxMissing,
+      siteSelections:{},plotSelection:{},variantId:''});
+    setGroup(null);setShowAll(false);
+    chooseGene(g,t);
   }
-  const workspaceConfig={layout,display,siteSelections,material:materialSettings,compare:compareSettings,traitId,geneId,popIds,individualIds,individualOnly,minMaf,maxMissing,variantId,materialScope,plotSelection};
+  const workspaceConfig={...workspace,groupBy:data?.meta.groupBy};
+  function changeView(open){
+    const url=new URL(location.href);
+    if(open)url.searchParams.set('view','breeder');
+    else{
+      url.searchParams.delete('view');
+      url.searchParams.delete('task');
+    }
+    history.replaceState(null,'',url);
+    setBreederOpen(open);
+  }
+  async function applyData(next,config){
+    const request=++geneRequest.current;
+    setGeneLoad(null);
+    await next.loadGenes?.([config.geneId||geneId]);
+    if(request!==geneRequest.current)throw Error('分析设置已更新，请重试这次数据切换。');
+    setData(next);
+    update(config);
+    setGroup(null);setShowAll(false);
+  }
+  async function chooseDatasets(next){
+    const g=next.genes.find(g=>g.id===geneId);
+    const options=geneTraits(next,g);
+    const nextTrait=options.find(t=>t.id===traitId)||options.find(t=>t.name===trait?.name);
+    await applyData(next,{...defaultCohort(next),plotSelection:{},
+      traitId:nextTrait?.id??(next.traits.some(t=>t.id===traitId)?traitId:preferredTrait(next,g))});
+    setNotice('数据集与分组已更新');
+  }
   async function restoreWorkspace(saved){
     const bundles=[],entries=[...(data.reference.datasetRegistry||data.datasetRegistry).filter(r=>!r.local)];
     for(const d of saved.datasets){
@@ -229,57 +298,133 @@ function App() {
         bundles.push(data.datasetBundles.find(b=>b.manifest.id===d.id&&b.manifest.version===d.version)||await loadRegistered(import.meta.env.BASE_URL,row,data.reference));
       }
     }
-    const c=saved.config,combined=validateDataset(combineDatasets(data.reference,bundles,c.groupBy||data.meta.groupBy,entries));
-    const next={...combined,reference:data.reference,datasetRegistry:entries,datasetBundles:bundles};
+    const c=saved.config,next=validateDataset(combineDatasets(data.reference,bundles,c.groupBy||data.meta.groupBy,entries));
     const restoredGene=next.genes.find(g=>g.id===c.geneId);
     if(!restoredGene)throw Error('工作区基因已不兼容');
     const storedTrait=next.traits.find(t=>t.id===c.traitId)||geneTraits(next,restoredGene).find(t=>t.id===c.traitId);
     if(!storedTrait)throw Error('工作区性状已不兼容');
     const restoredTrait=isTraitOption(storedTrait)?c.traitId:preferredTrait(next,restoredGene);
-    await next.loadGenes?.([c.geneId]);
-    applyData(next);
-    setSiteSelections(c.siteSelections||{});setDisplay(c.display||{mode:'free',tab:'overview',text:'standard'});
-    setLayout(c.layout);setMaterialSettings(c.material||{});setCompareSettings(c.compare||{});commitGene(c.geneId,restoredTrait,false);setPops(c.popIds.filter(id=>next.populations.some(p=>p.id===id)));setIndividuals(c.individualIds.filter(id=>next.individuals.some(s=>s.id===id)));setOnly(c.individualOnly);setMaf(c.minMaf);setMissing(c.maxMissing);setVariant(c.variantId);setMaterialScope(c.materialScope);setPlotSelection(restoredTrait===c.traitId?(c.plotSelection||{}):{});
+    const populationIds=new Set(next.populations.map(p=>p.id)),sampleIds=new Set(next.individuals.map(s=>s.id));
+    const config=Object.fromEntries(Object.entries(defaultWorkspace).map(([key,fallback])=>[key,c[key]??fallback]));
+    await applyData(next,{...config,traitId:restoredTrait,display:c.display||{...defaultWorkspace.display,mode:'free'},
+      popIds:c.popIds.filter(id=>populationIds.has(id)),individualIds:c.individualIds.filter(id=>sampleIds.has(id)),
+      plotSelection:restoredTrait===c.traitId?(c.plotSelection||{}):{}});
+    linkGene(c.geneId);
   }
-  async function download(){const abstracts=demo?undefined:await loadAbstracts(import.meta.env.BASE_URL).catch(()=>undefined);const files=geneTables({...data,abstracts},gene,cohort,variants,workspaceConfig);saveFile('riceflux_'+geneId+'_tables.zip',zipTables(files),'application/zip');setNotice('已导出基因、分型、表型、频率及证据 TSV 包');}
+  async function download(){const abstracts=demo?undefined:await loadAbstracts(import.meta.env.BASE_URL).catch(()=>undefined);const files=geneTables({...data,abstracts},gene,cohort,variants,workspaceConfig);saveFile('riceflux_'+geneId+'_tables.zip',zipTables(files),'application/zip');setNotice('已导出基因、分型、表型、频率及证据 TXT 包');}
 
   if(!data)return <Theme accentColor="blue"><main className="loading"><h1>Flux Explorer</h1><p role={error?'alert':'status'}>{error||'正在载入群体与变异数据…'}</p>{error&&<Button onClick={()=>setRetry(x=>x+1)}>重新载入</Button>}<a href="https://github.com/RGGMB-haozhenWang/RiceFlux">查看项目仓库</a></main></Theme>;
-  const selectableTraits=registeredTrait?data.traits:[...data.traits,trait];
-  const selectableGenes=data.genes.filter(g=>g.id===geneId||g.trait_ids.includes(traitId));
-  return <Theme accentColor="blue" grayColor="slate" radius="large" appearance="light" className={'reading-'+display.text}><div className={'explorer '+(embedded?'embedded ':'')+(display.mode==='desk'?'desktop-workspace':'free-workspace')}>
+  const availableSources=gene.variants.length?[]:geneSupport(data,gene)
+    .filter(r=>Number(r.marker_count)>0&&!data.meta.datasets?.some(d=>d.id===r.dataset_id));
+  const researcher=__RICEFLUX_AUDIENCE__==='researcher'||(__RICEFLUX_AUDIENCE__!=='breeder'&&(!breederOpen||demo));
+  return <Theme accentColor="blue" grayColor="slate" radius="large" appearance="light" className={'reading-'+display.text}>
+  <div className={'app-shell'+(researcher&&display.mode==='desk'?' app-desktop':'')+(embedded?' app-embedded':'')}>
+    <header className="app-toolbar">
+      <a className="logo" href="./" aria-label="RiceFlux 首页"><span className="flux-mark" aria-hidden="true"><i/><i/><i/></span>Flux</a>
+      {!demo&&__RICEFLUX_AUDIENCE__==='combined'&&<nav className="app-modes" aria-label="工作台">
+        <Button variant={researcher?'soft':'ghost'} color="gray" aria-pressed={researcher} onClick={()=>changeView(false)}>基因分析</Button>
+        <Button variant={researcher?'ghost':'soft'} color="gray" aria-pressed={!researcher} onClick={()=>changeView(true)}>育种工作台</Button>
+      </nav>}
+      <div className="app-tools">
+        {!demo&&<DataPanel data={data} onApply={chooseDatasets} gene={gene}/>}
+        <WorkspaceTools data={data} config={workspaceConfig} onLayout={setLayout} onRestore={restoreWorkspace}/>
+        <Button variant="ghost" color="gray" onClick={()=>setHelp(true)}><InfoCircledIcon/>教程</Button>
+      </div>
+    </header>
+    {researcher?<div className={'explorer '+(embedded?'embedded ':'')+(display.mode==='desk'?'desktop-workspace':'free-workspace')}>
     <a className="skip" href="#explorer-main">跳到分析结果</a>
-    <aside className="controls"><a className="logo" href="./"><span className="flux-mark" aria-hidden="true"><i/><i/><i/></span><span>Flux<small>RICE GENETICS</small></span></a>
-      <button className="mobile-controls-toggle" aria-expanded={filtersOpen} aria-controls="flux-controls" onClick={()=>setFiltersOpen(v=>!v)}>{filtersOpen?'收起筛选 ↑':'筛选基因与群体 ↓'}<small>{gene.name} · {trait.name}</small></button><div id="flux-controls" className={'control-body'+(filtersOpen?' is-open':'')}><div className="control-step"><span>性状与基因</span></div>{demo?<Choice label="性状" value={traitId} options={data.traits} onChange={chooseTrait}/>:<TraitChoice value={traitId} options={selectableTraits} onChange={chooseTrait}/>}<Choice label="基因" value={geneId} options={selectableGenes} onChange={chooseGene} renderOption={demo?undefined:g=><>{g.name}{' '}<PhenotypeBadge data={data} gene={g}/></>}/>{!demo&&<PriorFinder data={data} onChoose={(g,preferred)=>chooseGene(g.id,preferred??preferredTrait(data,g),true)}/>}
-      <div className="control-step cohort-heading"><span>比较群体</span>{!demo&&<SampleList data={data} onApply={applySampleList}/>}</div>{!demo&&<Choice label="材料范围" value={materialScope} onChange={changeScope} options={[{id:'all',name:'全部材料 · '+data.individuals.length},...[...new Set(data.individuals.map(s=>s.kind))].map(id=>({id,name:({'modern cultivar':'现代品种',landrace:'地方品种'}[id]||id)+' · '+data.individuals.filter(s=>s.kind===id).length})),...(data.individuals.some(s=>s.legacy)?[{id:'legacy',name:'原分析现代籼稻 · '+data.individuals.filter(s=>s.legacy).length}]:[])]}/>}<div className="pop-controls">{scopeGroups.map(p=><Toggle key={p.id} checked={popIds.includes(p.id)} onChange={()=>togglePop(p.id)}><i style={{background:p.color}}/><span title={p.description}>{p.name}{p.description&&p.description!==p.name&&<small className="population-description">{p.description.split(' / ')[0]}</small>}</span><em>{scopeMembers.filter(s=>s.population_id===p.id).length}</em></Toggle>)}</div>
-      <details className="sidebar-section"><summary>关注个体</summary><Button variant="surface" color="gray" className="choose-people" onClick={()=>setPick(true)}><PersonIcon/>选择个体<span>{individualIds.length}</span></Button><label className="only-switch"><Switch size="1" checked={individualOnly} onCheckedChange={v=>{setOnly(v);setGroup(null);}}/>仅统计已选个体</label><p className="control-hint">关注仅作高亮，开启开关后才改变分母。</p>
-      </details><details className="sidebar-section"><summary>变异位点质控{sites.mode==='manual'?' · 自选模式':''}</summary><label className="range-label">最小 MAF <b>{percent(minMaf)}</b><input aria-label="最小 MAF" type="range" min="0" max="0.5" step="0.01" value={minMaf} onChange={e=>{setMaf(Number(e.target.value));setGroup(null);}}/></label><label className="range-label">最大等位缺失率 <b>{percent(maxMissing)}</b><input aria-label="最大缺失比例" type="range" min="0" max="1" step="0.05" value={maxMissing} onChange={e=>{setMissing(Number(e.target.value));setGroup(null);}}/></label><p className="control-hint">QC 按当前材料计算；保留固定型可将 MAF 设为 0。</p>
-      </details><div className="sidebar-links"><button onClick={reset}><ResetIcon/>重置全部选择</button><button onClick={()=>setHelp(true)}><InfoCircledIcon/>教程 / Guide</button><a href="https://github.com/RGGMB-haozhenWang/RiceFlux" target="_blank" rel="noreferrer"><ArrowTopRightIcon/>查看项目仓库</a></div>
-    </div></aside>
-    <div className="canvas"><header className="top"><span>Flux <i>/</i> 群体与等位变异</span><div><span className="synthetic"><span/>{demo?'合成数据 Demo':evidenceName[data.meta.genotype_evidence]}</span><a href="https://github.com/RGGMB-haozhenWang/RiceFlux" target="_blank" rel="noreferrer">项目源码 <ArrowTopRightIcon/></a></div></header>
-      <main id="explorer-main"><div className="hero"><div><h1>{gene.name} <small>{gene.catalog?.msu||gene.id}</small></h1>{!demo&&<SourceBadges data={data} gene={gene}/>}</div><div className="hero-actions">{!demo&&<DataPanel data={data} onApply={async next=>{geneRequest.current++;setGeneLoad(null);await next.loadGenes?.([geneId]);applyData(next);}} gene={gene}/>}<WorkspaceTools data={data} config={{...workspaceConfig,groupBy:data.meta.groupBy}} onLayout={setLayout} onRestore={restoreWorkspace}/><Button onClick={download}><DownloadIcon/>下载基因数据</Button></div></div>
-        <div className="context-strip"><GeneTraitChoice trait={trait} options={relatedTraits} onChange={switchGeneTrait}/><span>{gene.name}</span><span>{popIds.length} 个群体</span><strong>{individualOnly?'仅统计已选个体':'统计已选群体全部个体'}</strong><button onClick={()=>setHelp(true)}>口径说明 <InfoCircledIcon/></button></div>
+    <aside className="controls" aria-label="分析筛选">
+      {demo?<><Choice label="性状" value={traitId} options={data.traits} onChange={chooseTrait}/>
+        <Choice label="基因" value={geneId} options={data.genes.filter(g=>g.trait_ids.includes(traitId))} onChange={chooseGene}/></>
+      :<PriorFinder data={data} onChoose={(g,preferred)=>chooseGene(g.id,preferred??preferredTrait(data,g),true)}/>}
+      {!demo&&<SampleList data={data} onApply={applySampleList}/>}
+      <details className="sidebar-section">
+        <summary>群体与材料 <small>{cohort.length.toLocaleString()} 份</small></summary>
+        {!demo&&<Choice label="材料范围" value={materialScope} onChange={changeScope} options={scopes}/>}
+        <div className="pop-controls">{scopeGroups.map(p=><Toggle key={p.id} checked={popIds.includes(p.id)} onChange={()=>togglePop(p.id)}>
+          <i style={{background:p.color}}/><span title={p.description}>{p.name}{p.description&&p.description!==p.name&&<small className="population-description">{p.description.split(' / ')[0]}</small>}</span>
+          <em>{groupCounts.get(p.id)}</em>
+        </Toggle>)}</div>
+        <Button variant="surface" color="gray" className="choose-people" onClick={()=>setPick(true)}><PersonIcon/>选择个体<span>{individualIds.length}</span></Button>
+        <label className="only-switch"><Switch size="1" checked={individualOnly} onCheckedChange={v=>{update({individualOnly:v});setGroup(null);}}/>仅统计已选个体</label>
+      </details>
+      <details className="sidebar-section"><summary>变异位点质控{sites.mode==='manual'?' · 自选模式':''}</summary>
+        <label className="range-label">最小 MAF <b>{percent(minMaf)}</b><input aria-label="最小 MAF" type="range" min="0" max="0.5" step="0.01" value={minMaf} onChange={e=>{update({minMaf:Number(e.target.value)});setGroup(null);}}/></label>
+        <label className="range-label">最大等位缺失率 <b>{percent(maxMissing)}</b><input aria-label="最大缺失比例" type="range" min="0" max="1" step="0.05" value={maxMissing} onChange={e=>{update({maxMissing:Number(e.target.value)});setGroup(null);}}/></label>
+      </details>
+      <div className="sidebar-links"><button onClick={reset}><ResetIcon/>重置分析筛选</button></div>
+    </aside>
+    <div className="canvas">
+      <main id="explorer-main"><div className="hero">
+        <div><h1>{gene.name} <small>{gene.catalog?.msu||gene.id}</small></h1>{!demo&&<SourceBadges data={data} gene={gene}/>}</div>
+        <div className="hero-actions"><span className="synthetic"><span/>{demo?'合成数据 Demo':evidenceName[data.meta.genotype_evidence]}</span><Button onClick={download}><DownloadIcon/>下载基因数据</Button></div>
+      </div>
+        <div className="context-strip"><GeneTraitChoice trait={trait} options={relatedTraits} onChange={switchGeneTrait}/><span>{popIds.length} 个群体</span><strong>{individualOnly?'仅统计已选个体':'统计已选群体全部个体'}</strong></div>
         {geneLoad&&<p className="notice" role={geneLoad.error?'alert':'status'}>{geneLoad.error?<>{geneLoad.name} · {geneLoad.error} <button onClick={()=>chooseGene(geneLoad.id,geneLoad.trait,geneLoad.clearPlot)}>重试</button></>:`正在读取 ${geneLoad.name} 的分型…`}</p>}
         <div className="kpis"><div><span>统计个体</span><strong>{cohort.length}<small>份</small></strong><p>已关注 {individualIds.length} 份</p></div><div><span>当前位点 ALT 合计频率</span><strong>{percent(stats?.af??null)}</strong><p>{selected?`${selected.ref} → ${selected.alt??'—'} · ${stats.alt} / ${stats.called} 个有效等位`:'没有当前选中的位点'}</p></div><div><span>当前位点 Missing</span><strong>{percent(stats?.missing)}</strong><p>{stats?`MAF ${percent(stats.maf)} · 有效等位 ${stats.called}/${stats.total}`:'选择群体或放宽质控条件'}</p></div><div><span>完整基因型组合</span><strong>{groups.length}<small>类</small></strong><p>{complete} 完整个体 · {cohort.length-complete} 未纳入分类</p></div></div>
-        <React.Suspense fallback={<p role="status">正在载入分析组件…</p>}><WorkspaceLayout layout={layout} onLayout={setLayout} display={display} onDisplay={setDisplay}><WorkPanel id="compare">{!demo&&<ComparePanel data={data} activeGene={gene} cohort={cohort} config={compareSettings} onConfig={setCompareSettings}/>}</WorkPanel>
-        <WorkPanel id="locus"><Panel title="基因区域 / Locus"  tag={`${variants.length} / ${gene.variants.length} 位点`}><div className="site-selection-tools"><SitePicker gene={gene} cohort={cohort} selection={siteSelections[geneId]} initialIds={variants.map(v=>v.id)} schemes={schemes} onApply={selectSites} onAutomatic={()=>selectSites(null)}/><span>{sites.mode==='manual'?'自选组合':'QC 自动选择'}</span></div>{(sites.missing.length>0||sites.assemblyMismatch)&&<p role="alert">所选位点未完整覆盖或参考版本改变，暂停组合判型。请打开自选位点核对。</p>}<>{gene.model||demo?<>{demo?<GeneTrack gene={gene} variants={variants} selected={selected} onSelect={setVariant}/>:<GenomeTrack key={gene.id} gene={gene} variants={variants} selected={selected} onSelect={setVariant}/>}<div className="track-legend"><span><i className="cds"/>CDS{demo?' 示意':''}</span><span><i className="promoter"/>{demo?'上游示意':'上游 2 kb'}</span><span><i className="snp"/>SNP</span><span>基因跨度 {(gene.gene_end-gene.gene_start+1).toLocaleString()} bp</span><span>1-based · 区间 {gene.start.toLocaleString()}–{gene.end.toLocaleString()}</span></div></>:<Empty>尚未核定参考基因模型，无法绘制坐标与结构。</Empty>}</><div className="variants">{variants.map(v=><button key={v.id} className={v.id===selected?.id?'selected':''} onClick={()=>setVariant(v.id)} title={markerQuality(alleleStats(cohort,v))}>{v.pos.toLocaleString()}<small>{v.ref} / {v.alt??'—'}</small></button>)}{!variants.length&&<Empty>{gene.variants.length?(sites.mode==='manual'?'尚未选择位点，请点击“自选位点”。':'没有通过 QC 的位点；请选择材料或调整阈值。'):'该基因在当前全群体面板中没有直接分型的目标位点。'}</Empty>}</div><details className="locus-details"><summary>参考模型与原始分型</summary><p className="footnote">{demo?'坐标与结构均来自 SIM-RICE-v1 虚拟组装，非真实水稻注释或 AtFLM 坐标。':gene.model?gene.model+' · 日本晴参考坐标，正链等位。':'身份或参考模型待核。'}</p>{!demo&&gene.variants.length>0&&<AccessionCalls key={gene.id} gene={gene} selected={selected} evidence={data.evidence} cohort={cohort} literature={data.literature}/>}</details>
-          </Panel></WorkPanel>
-        <WorkPanel id="frequency"><Panel title="等位频率 / Frequency" sub={selected?`${selected.id} · ${selected.ref}→${selected.alt||'—'} · ${selected.feature}`:'等待可用位点'}>
+        <React.Suspense fallback={<p role="status">正在载入分析组件…</p>}><WorkspaceLayout layout={layout} onLayout={setLayout} display={display} onDisplay={setting('display')} content={{
+          compare: !demo&&<ComparePanel data={data} activeGene={gene} cohort={cohort} config={compareSettings} onConfig={setting('compare')}/>,
+          locus: <Panel title="基因区域 / Locus" tag={`${variants.length} / ${gene.variants.length} 位点`}>
+            <div className="site-selection-tools">
+              <SitePicker gene={gene} cohort={cohort} selection={siteSelections[geneId]} initialIds={variants.map(v=>v.id)} schemes={schemes}
+                onApply={selectSites} onAutomatic={()=>selectSites(null)}/>
+              <span>{sites.mode==='manual'?'自选组合':'QC 自动选择'}</span>
+            </div>
+            {(sites.missing.length>0||sites.assemblyMismatch)&&<p role="alert">所选位点未完整覆盖或参考版本改变，暂停组合判型。请打开自选位点核对。</p>}
+            {gene.model||demo?<>{demo?
+              <GeneTrack gene={gene} variants={variants} selected={selected} onSelect={setVariant}/>:
+              <GenomeTrack key={gene.id} gene={gene} variants={variants} selected={selected} onSelect={setVariant}/>}
+              <div className="track-legend">
+                <span><i className="cds"/>CDS{demo?' 示意':''}</span>
+                <span><i className="promoter"/>{demo?'上游示意':'上游 2 kb'}</span>
+                {demo&&<span><i className="snp"/>SNP</span>}
+                <span>基因跨度 {(gene.gene_end-gene.gene_start+1).toLocaleString()} bp</span>
+                <span>1-based · 区间 {gene.start.toLocaleString()}–{gene.end.toLocaleString()}</span>
+              </div>
+            </>:<Empty>尚未核定参考基因模型，无法绘制坐标与结构。</Empty>}
+            <div className="variants">
+              {variants.map(v=>{
+                const {kind,ref,alts}=markerAnnotation(v);
+                const active=v.id===selected?.id;
+                return <button key={v.id} className={active?'selected':''} aria-pressed={active} onClick={()=>setVariant(v.id)}
+                  title={markerNames[kind]+' · '+markerQuality(alleleStats(cohort,v))}>
+                  <MarkerIcon kind={kind}/>{v.pos.toLocaleString()}<small>{ref} → {alts.join(' / ')||'—'}</small>
+                </button>;
+              })}
+              {!variants.length&&<Empty>{gene.variants.length?(sites.mode==='manual'?'尚未选择位点，请点击“自选位点”。':
+                '没有通过 QC 的位点；请选择材料或调整阈值。'):availableSources.length?
+                '在数据接口载入 '+availableSources.map(r=>r.badge).join(' / ')+' 查看该基因的位点。':
+                '当前数据集没有该基因的目标位点。'}</Empty>}
+            </div>
+            {!demo&&<PavPanel gene={gene} cohort={cohort} populations={data.populations}/>}
+            <details className="locus-details">
+              <summary>参考模型与原始分型</summary>
+              <p className="footnote">{demo?'坐标与结构均来自 SIM-RICE-v1 虚拟组装，非真实水稻注释或 AtFLM 坐标。':
+                gene.model?gene.model+' · 日本晴参考坐标，正链等位。':'身份或参考模型待核。'}</p>
+              {!demo&&gene.variants.length>0&&<AccessionCalls key={gene.id} gene={gene} selected={selected} evidence={data.evidence} cohort={cohort} literature={data.literature}/>}
+            </details>
+          </Panel>,
+          frequency: <Panel title="等位频率 / Frequency" sub={selected?`${selected.id} · ${selected.ref}→${selected.alt||'—'} · ${selected.feature}`:'等待可用位点'}>
           <AlleleFrequency variant={selected} cohort={cohort} populations={data.populations.filter(p=>popIds.includes(p.id))}/>
           {individualIds.length>0&&<div className="focus-individual"><PersonIcon/><span>关注材料</span><b>{selectedStats?alleleFrequencyText(selectedStats)||percent(selectedStats.af):'—'}</b></div>}
-        </Panel></WorkPanel>
-        <WorkPanel id="composition"><Panel title="基因型组合 / Genotypes" sub="完整未分相基因型组合；频率按个体计数。"  className="matrix-panel"><div className="matrix-scroll"><table className="matrix"><thead><tr><th>组合</th>{variants.map(v=><th key={v.id}><button className={v.id===selected?.id?'active-variant':''} onClick={()=>setVariant(v.id)}>{v.pos.toLocaleString()}<small>{v.ref}→{v.alt??'—'}</small></button></th>)}<th>个体数</th><th>占完整个体</th><th>群体组成</th></tr></thead><tbody>{visibleGroups.map((g,i)=><tr key={g.key} className={g.key===group?.key?'active-group':''}><th><button title={g.id} onClick={()=>setGroup(g.key===groupKey?null:g.key)}><i style={{background:COLORS[i%8]}}/>G{String(i+1).padStart(2,'0')}</button></th>{g.tokens.map((t,j)=><td key={variants[j].id}><span className={`gt ${t===`${variants[j].ref}/${variants[j].ref}`?'ref':t.split('/')[0]===t.split('/')[1]?'alt':'het'}`}>{t}</span></td>)}<td><b>{g.members.length}</b></td><td>{percent(g.members.length/complete)}</td><td><PopulationComposition populations={data.populations} members={g.members} selectedIds={individualIds}/></td></tr>)}</tbody></table></div>{!groups.length&&<Empty>没有可分类的完整个体。零位点或含缺失调用时，不生成虚假的单一组合。</Empty>}<div className="panel-bottom"><span>展示 {visibleGroups.length} / {groups.length} 类 · 分母为 {complete} 个完整个体 · G 编号随当前排序变化</span>{groups.length>8&&<Button variant="ghost" size="1" onClick={()=>setShowAll(v=>!v)}>{showAll?'收起稀有组合':'显示全部组合'}</Button>}</div><div className="population-key">{scopeGroups.map(p=><span key={p.id}><i style={{background:p.color}}/>{p.name}</span>)}</div>{!demo&&<HaplotypeMatches key={gene.id} gene={gene} cohort={cohort} evidence={data.evidence}/>}</Panel></WorkPanel>
-        <WorkPanel id="phenotype"><div className="phenotype-section">{view ?
+        </Panel>,
+          composition: <Panel title="基因型组合 / Genotypes" sub="完整未分相基因型组合；频率按个体计数。"  className="matrix-panel"><div className="matrix-scroll"><table className="matrix"><thead><tr><th>组合</th>{variants.map(v=><th key={v.id}><button className={v.id===selected?.id?'active-variant':''} onClick={()=>setVariant(v.id)}>{v.pos.toLocaleString()}<small>{v.ref}→{v.alt??'—'}</small></button></th>)}<th>个体数</th><th>占完整个体</th><th>群体组成</th></tr></thead><tbody>{visibleGroups.map((g,i)=><tr key={g.key} className={g.key===group?.key?'active-group':''}><th><button title={g.id} onClick={()=>setGroup(g.key===groupKey?null:g.key)}><i style={{background:COLORS[i%8]}}/>G{String(i+1).padStart(2,'0')}</button></th>{g.tokens.map((t,j)=><td key={variants[j].id}><span className={`gt ${t===`${variants[j].ref}/${variants[j].ref}`?'ref':t.split('/')[0]===t.split('/')[1]?'alt':'het'}`}>{t}</span></td>)}<td><b>{g.members.length}</b></td><td>{percent(g.members.length/complete)}</td><td><PopulationComposition populations={data.populations} members={g.members} selectedIds={individualIds}/></td></tr>)}</tbody></table></div>{!groups.length&&<Empty>没有可分类的完整个体。零位点或含缺失调用时，不生成虚假的单一组合。</Empty>}<div className="panel-bottom"><span>展示 {visibleGroups.length} / {groups.length} 类 · 分母为 {complete} 个完整个体 · G 编号随当前排序变化</span>{groups.length>8&&<Button variant="ghost" size="1" onClick={()=>setShowAll(v=>!v)}>{showAll?'收起稀有组合':'显示全部组合'}</Button>}</div><div className="population-key">{scopeGroups.map(p=><span key={p.id}><i style={{background:p.color}}/>{p.name}</span>)}</div>{!demo&&<HaplotypeMatches key={gene.id} gene={gene} cohort={cohort} evidence={data.evidence}/>}</Panel>,
+          phenotype: <div className="phenotype-section">{view ?
           <Panel title={trait.name+' · 分地区表型 ('+view.unit+')'} tag={view.sites.length+' 个试验地点'}>
             <RegionalPhenotypes trait={trait} groups={visibleGroups} allGroups={groups} gene={gene} schemes={schemes} cohort={cohort} markerIds={variants.map(v=>v.id)} view={view} onChange={changePlot} selectedIds={individualIds} compact={display.mode==='desk'&&display.tab==='overview'}/>
-          </Panel> : demo ? <Panel title={`${trait.name} · 表型对照`} sub={`单位：${trait.unit}。仅展示上表当前组合；线框为四分位范围，中线为中位数，端点为最小/最大值。`} tag="DESCRIPTIVE"><Phenotypes groups={visibleGroups} trait={trait} selectedIds={individualIds}/><p className="footnote">各组 n 为有该性状记录的个体数。{demo?'合成表型独立生成，无显著性检验，不据此推断优良等位基因。':trait.source?'各组按所选地点、年份的实测值统计。':'当前为先验浏览，未选择实测表型。'}</p></Panel> : <Panel title={trait.name+' · 表型对照'}><Empty>当前数据集暂无该性状的实测表型。</Empty></Panel>}</div></WorkPanel>
-        <WorkPanel id="evidence">{!demo&&<EvidencePanel data={data} gene={gene} trait={trait} cohort={cohort} selected={selected}/>}</WorkPanel>
-        <WorkPanel id="materials">{!demo&&<MaterialPanel data={data} reference={eligible} genes={[gene,...(compareSettings.ids||[]).filter(id=>id!==gene.id).map(id=>data.genes.find(g=>g.id===id)).filter(Boolean)]} settings={materialSettings} onSettings={setMaterialSettings}/>}</WorkPanel>
-        <WorkPanel id="ricenavi">{!demo&&<RiceNaviPanel gene={gene}/>}</WorkPanel>
-        <WorkPanel id="individuals"><Panel title={group?`组合成员 · ${group.members.length} 份`:'个体基因型明细'} sub={group?'点击同一组合可取消成员筛选；这不会改变上方频率分母。':'勾选关注个体后，可开启左侧“仅统计已选个体”重算频率。'} tag={`${tableRows.length} INDIVIDUALS`}><div className="matrix-scroll individual-scroll" onScroll={e=>extendRows(e,()=>setMemberLimit(n=>n+96))}><table className="individual-table"><thead><tr><th>关注</th><th>材料</th><th>群体</th><th>{tableHeading}</th>{variants.map(v=><th key={v.id}>{v.pos.toLocaleString()}</th>)}</tr></thead><tbody>{tableRows.slice(0,memberLimit).map(s=><tr key={s.id} className={individualIds.includes(s.id)?'selected-person':''}><td><Checkbox checked={individualIds.includes(s.id)} onCheckedChange={()=>toggleIndividual(s.id)} aria-label={`关注 ${s.id}`}/></td><th scope="row">{s.id}<small>{s.name}</small></th><td>{data.populations.find(p=>p.id===s.population_id)?.name}</td><td>{fmt(s.phenotypes[tablePhenotype])}</td>{variants.map(v=><td key={v.id}>{gtToken(callOf(s,v),v)}</td>)}</tr>)}</tbody></table></div>{!tableRows.length&&<Empty>没有个体符合当前选择。</Empty>}</Panel></WorkPanel></WorkspaceLayout></React.Suspense>
-        <footer><span>{demo?'Flux Explorer · 合成演示，未接入真实 1001 Genomes 或育种数据。':'Flux Explorer · '+data.meta.datasets.map(d=>d.name).join(' / ')}</span><button onClick={()=>setHelp(true)}>数据与方法 <ArrowTopRightIcon/></button></footer>
+          </Panel> : demo ? <Panel title={`${trait.name} · 表型对照`} sub={`单位：${trait.unit}。仅展示上表当前组合；线框为四分位范围，中线为中位数，端点为最小/最大值。`} tag="DESCRIPTIVE"><Phenotypes groups={visibleGroups} trait={trait} selectedIds={individualIds}/><p className="footnote">各组 n 为有该性状记录的个体数。{demo?'合成表型独立生成，无显著性检验，不据此推断优良等位基因。':trait.source?'各组按所选地点、年份的实测值统计。':'当前为先验浏览，未选择实测表型。'}</p></Panel> : <Panel title={trait.name+' · 表型对照'}><Empty>当前数据集暂无该性状的实测表型。</Empty></Panel>}</div>,
+          evidence: !demo&&<EvidencePanel data={data} gene={gene} trait={trait} cohort={cohort} selected={selected}/>,
+          materials: !demo&&<MaterialPanel data={data} reference={eligible} genes={[gene,...(compareSettings.ids||[]).filter(id=>id!==gene.id).map(id=>data.genes.find(g=>g.id===id)).filter(Boolean)]} settings={materialSettings} onSettings={setting('material')}/>,
+          ricenavi: !demo&&<RiceNaviPanel gene={gene}/>,
+          individuals: <Panel title={group?`组合成员 · ${group.members.length} 份`:'个体基因型明细'} sub={group?'点击同一组合可取消成员筛选；这不会改变上方频率分母。':'勾选关注个体后，可开启左侧“仅统计已选个体”重算频率。'} tag={`${tableRows.length} INDIVIDUALS`}><div className="matrix-scroll individual-scroll" onScroll={e=>extendRows(e,()=>setMemberLimit(n=>n+96))}><table className="individual-table"><thead><tr><th>关注</th><th>材料</th><th>群体</th><th>{tableHeading}</th>{variants.map(v=><th key={v.id}>{v.pos.toLocaleString()}</th>)}</tr></thead><tbody>{tableRows.slice(0,memberLimit).map(s=><tr key={s.id} className={individualIds.includes(s.id)?'selected-person':''}><td><Checkbox checked={individualIds.includes(s.id)} onCheckedChange={()=>toggleIndividual(s.id)} aria-label={`关注 ${s.id}`}/></td><th scope="row">{s.id}<small>{s.name}</small></th><td>{data.populations.find(p=>p.id===s.population_id)?.name}</td><td>{fmt(s.phenotypes[tablePhenotype])}</td>{variants.map(v=><td key={v.id}>{gtToken(callOf(s,v),v)}</td>)}</tr>)}</tbody></table></div>{!tableRows.length&&<Empty>没有个体符合当前选择。</Empty>}</Panel>,
+        }}/></React.Suspense>
       </main>
     </div>
     <Dialog.Root open={pick} onOpenChange={setPick}><Dialog.Content maxWidth="650px" className="people-dialog"><Dialog.Title>选择感兴趣的个体</Dialog.Title><Dialog.Description>关注仅作高亮；开启“仅统计已选个体”后重算频率。</Dialog.Description><div className="people-search"><TextField.Root aria-label="查找个体" placeholder={demo?'输入 SIM 编号或材料名称':'输入材料编号或品种名'} value={query} onChange={e=>setQuery(e.target.value)}><TextField.Slot><MagnifyingGlassIcon/></TextField.Slot></TextField.Root><Button variant="soft" onClick={()=>setIndividuals(eligible.map(s=>s.id))}>全选群体个体</Button><Button variant="ghost" color="gray" onClick={()=>setIndividuals([])}>清空</Button></div><div className="people-list" onScroll={e=>extendRows(e,()=>setPickerLimit(n=>n+96))}>{matchingIndividuals.slice(0,pickerLimit).map(s=><Toggle key={s.id} checked={individualIds.includes(s.id)} onChange={()=>toggleIndividual(s.id)}><b>{s.id}</b><small>{!demo?s.name+' · ':''}{data.populations.find(p=>p.id===s.population_id).name}</small></Toggle>)}{!matchingIndividuals.length&&<Empty>{eligible.length?'没有匹配的个体，请调整关键词。':'请先选择群体。'}</Empty>}</div><div className="dialog-actions"><span>已选择 {individualIds.length} 份</span><Dialog.Close><Button>完成选择<CheckIcon/></Button></Dialog.Close></div></Dialog.Content></Dialog.Root>
+    </div>:<div className="breeder-shell"><React.Suspense fallback={<p role="status">正在载入育种工作台…</p>}>
+      <BreederWorkspace data={data} cohort={cohort} settings={breederSettings} onChange={setting('breeder')}
+        initialGene={geneId} initialTrait={traitId} siteSelections={siteSelections}/>
+    </React.Suspense></div>}
     <Dialog.Root open={help} onOpenChange={setHelp}><Dialog.Content maxWidth="860px"><Dialog.Title>使用教程 / RiceFlux guide</Dialog.Title><Dialog.Description>选择基因与位点，比较材料。 / Select genes and sites to compare accessions.</Dialog.Description><Tutorial demo={demo}/><Dialog.Close><Button>关闭 / Close</Button></Dialog.Close></Dialog.Content></Dialog.Root>
     {notice&&<div className="notice" role="status"><CheckIcon/>{notice}</div>}
   </div></Theme>;
