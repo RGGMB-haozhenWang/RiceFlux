@@ -5,7 +5,7 @@ import {fetchBytes,readText,unpackGzip} from './assets.js';
 import {openPackedDataset} from './packedDataset.js';
 import {extendGeneCatalog,geneCatalogPath} from './geneCatalog.js';
 import {coverageFields,coveragePath} from './geneCoverage.js';
-import {manifestFields} from './inputSchema.js';
+import {manifestFields,registeredManifestPath} from './inputSchema.js';
 export {readText} from './assets.js';
 // Adapt the released cohort and its ontology to the existing explorer data model.
 const groupColors = {'SC':'#438e7b','CC-I':'#7b9fc6','SW-I':'#ba9cc6','NE':'#b78351','CC-J':'#50869b','NC':'#858649','SW-J':'#957a91'};
@@ -95,7 +95,7 @@ export async function loadExplorer(base,demo,signal,initialGene){
   const annotationsRequest=Promise.all(Object.entries(names).map(async([key,file])=>[key,readTable(await readText(base+'annotations/'+file+'.tsv',signal)).objects()]));
   const indexRequest=readText(base+'datasets/index.tsv',signal).then(index=>{
     const rows=readTable(index,['id','name','version','manifest'],'index').objects();
-    if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||rows.some(r=>!/^[-\w]+\/manifest\.json(?:ld)?$/.test(r.manifest)))throw Error('数据集索引无效');
+    if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||rows.some(r=>!registeredManifestPath(r.manifest)))throw Error('数据集索引无效');
     return Promise.all([rows,registeredManifest(base,rows[0],signal)]);
   });
   const configRequest=readJSON(base+'formats/deployment.json',signal);

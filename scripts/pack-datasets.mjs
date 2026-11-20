@@ -10,6 +10,7 @@ import {archiveEntry} from '../src/explorer/portableArchive.js';
 import {extendGeneCatalog,geneCatalogPath} from '../src/explorer/geneCatalog.js';
 import {bundleGeneCoverage,coverageFields,coveragePath} from '../src/explorer/geneCoverage.js';
 import {writeTSV} from '../src/explorer/formats.js';
+import {manifestFields,manifestNames,registeredManifestPath,semanticManifest} from '../src/explorer/inputSchema.js';
 
 const [input,output,flag]=process.argv.slice(2);
 if(!input||!output||flag&&!['--keep-source-tables'].includes(flag)){
@@ -64,17 +65,28 @@ function markerBlocks(markers){
   }
   return groups;
 }
+async function archivePrefix(bytes,directory){
+  for(const prefix of [directory+'/', ''])for(const name of manifestNames){
+    const member=prefix+name;
+    try{
+      await archiveEntry(bytes,member);
+      return prefix;
+    }catch(error){
+      if(error.message!=='TSV 归档缺少 '+member)throw error;
+    }
+  }
+  throw Error('Dataset ZIP is missing a manifest: '+directory);
+}
+
 for(const row of registry){
-  assert.match(row.manifest,/^[-\w]+\/manifest\.json$/);
-  const bytes=file(row.manifest),manifest=JSON.parse(decode(bytes));
+  assert.ok(registeredManifestPath(row.manifest),'Invalid dataset manifest path: '+row.manifest);
+  const bytes=file(row.manifest),manifest=manifestFields(JSON.parse(decode(bytes)));
   assert.equal(manifest.id,row.id);
   assert.equal(manifest.version,row.version);
   const dir=path.dirname(row.manifest),archive=dir+'.zip',archiveBytes=file(archive);
   const bundle=await readPackage(manifest,name=>decode(file(dir+'/'+name)),reference);
   coverage.push(...bundleGeneCoverage(bundle,reference.evidence));
-  const member_prefix=await archiveEntry(archiveBytes,dir+'/manifest.json').then(()=>dir+'/',()=>{
-    return archiveEntry(archiveBytes,'manifest.json').then(()=>'');
-  });
+  const member_prefix=await archivePrefix(archiveBytes,dir);
   const legacyFiles=Object.values(manifest.files).map(name=>dir+'/'+name);
   for(const [key,name] of Object.entries(manifest.files)){
     assert.equal(hash(decode(await archiveEntry(archiveBytes,member_prefix+name))),hash(bundle.texts[key]),name+' differs from the portable ZIP');
@@ -102,7 +114,7 @@ for(const row of registry){
   await compiled.loadGenes([...new Set(bundle.variants.map(v=>v.gene))]);
   for(const [id,column] of bundle.columns)assert.deepEqual(compiled.columns.get(id),column,id);
   assert.equal(await compiled.sourceText('genotypes'),bundle.texts.genotypes);
-  const packedManifest=JSON.stringify(indexed,null,2)+'\n';
+  const packedManifest=JSON.stringify(row.manifest.endsWith('.jsonld')?semanticManifest(indexed):indexed,null,2)+'\n';
   write(row.manifest,packedManifest);
   omit.add(row.manifest);
   if(flag!=='--keep-source-tables')for(const name of legacyFiles)omit.add(name);

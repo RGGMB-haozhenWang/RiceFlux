@@ -1,6 +1,12 @@
 import contract from '../../public/formats/dataset-intake.json' with { type: 'json' };
 
 export const datasetIntake=contract;
+export const manifestNames=contract.profiles.package.manifestNames;
+export function registeredManifestPath(value) {
+  const [directory,name,...extra]=value.split('/');
+  return extra.length===0&&/^[-\w]+$/.test(directory)&&manifestNames.includes(name);
+}
+
 const portableContext=contract.manifestContext;
 const pathSegment=value=>encodeURIComponent(value).replace(/[!'()*]/g,c=>'%'+c.charCodeAt(0).toString(16).toUpperCase());
 const datasetIri=(id,version)=>contract.datasetIriPrefix+pathSegment(id)+'/'+pathSegment(version);

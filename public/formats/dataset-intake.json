@@ -57,7 +57,7 @@
       "entities": ["v1:GenotypeCall"],
       "requiredInPackage": true, "key": ["sample_id"],
       "columns": ["sample_id"],
-      "joins": {"sample_id": "samples.sample_id", "dynamicColumns": "variants.marker_id in dictionary order"}
+      "joins": {"sample_id": "samples.sample_id", "dynamicColumns": "exact variants.marker_id set; each GT index follows that marker's REF/ALT order"}
     },
     "environments": {
       "entities": ["v1:ObservationVariable", "v1:TrialEnvironment", "v1:Source"],
