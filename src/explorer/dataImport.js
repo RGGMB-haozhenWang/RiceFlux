@@ -201,8 +201,10 @@ export async function importDatasetFiles(selected,{mode,metadata,target,registry
 export function resolveSampleList(text, individuals, dataset='all') {
   const lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(line=>line.trim());
   if(!lines.length)throw Error('名单为空');
-  const fields=lines[0].split('\t').map(x=>x.trim()),index=fields.includes('source_sample_id')?fields.indexOf('source_sample_id'):fields.indexOf('sample_id');
-  if(index<0&&fields.length>1)throw Error('多列表须包含 sample_id 或 source_sample_id 表头');
+  const fields=lines[0].split('\t').map(x=>x.trim());
+  const idColumn=['source_sample_id','sample_id','编号'].find(key=>fields.includes(key));
+  const index=fields.indexOf(idColumn);
+  if(index<0&&fields.length>1)throw Error('多列表须包含「编号」、sample_id 或 source_sample_id 表头');
   const provider=fields.indexOf('dataset_id');
   const requested=new Map();
   (index<0?lines:lines.slice(1)).forEach(line=>{

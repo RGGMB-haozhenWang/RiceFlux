@@ -103,6 +103,75 @@
 .review-matrix .review-row-action .review-link { white-space: nowrap; }
 .review-footer { margin-top: 9px; align-items: flex-start; }
 .review-footer small { padding-block: 6px; }
+.catalog-heading, .catalog-heading > div, .catalog-actions, .catalog-page,
+.catalog-trial-filters, .catalog-gene-columns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.catalog-heading { justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--breeder-line); }
+.catalog-heading > div { align-items: baseline; }
+.catalog-heading h2 { margin: 0; font-size: 22px; }
+.catalog-heading span, .catalog-trial-count, .catalog-page { color: var(--breeder-muted); font-size: 14px; }
+.catalog-trial-filters { padding-top: 10px; align-items: end; }
+.catalog-trial-filters select { min-width: 6.5rem; }
+.catalog-trial-count { padding-block: 7px; }
+.catalog-source, .catalog-trial-filters > details, .catalog-gene { position: relative; }
+.catalog-source-detail, .catalog-trial-filters .review-details, .catalog-gene-detail {
+  position: absolute;
+  z-index: 4;
+  top: 100%;
+  width: min(32rem,calc(100vw - 2rem));
+  padding: 10px 12px;
+  border: 1px solid var(--breeder-line);
+  border-radius: 8px;
+  background: var(--breeder-paper);
+  box-shadow: 0 6px 20px #223a2c1c;
+  font-size: 14px;
+}
+.catalog-source-detail { right: 0; width: min(24rem,calc(100vw - 2rem)); }
+.catalog-source-detail p, .catalog-gene-detail p { margin: 4px 0; color: var(--breeder-muted); }
+.catalog-gene-columns { margin-top: 9px; }
+.catalog-gene summary {
+  padding: 4px 8px;
+  border: 1px solid var(--breeder-line);
+  border-radius: 6px;
+  color: var(--breeder-link);
+  font-weight: 630;
+}
+.catalog-gene small { margin-inline-start: 6px; color: var(--breeder-muted); font-weight: 500; }
+.catalog-gene-detail label { margin-bottom: 6px; }
+.catalog-gene-detail a { margin-inline-end: 9px; color: var(--breeder-link); }
+.catalog-actions { margin: 12px 0 9px; }
+.catalog-scope { display: flex; flex-wrap: wrap; gap: 4px; }
+.catalog-scope button[aria-pressed="true"] { background: var(--breeder-active); color: var(--breeder-link); border-color: #a9c0b3; font-weight: 650; }
+.catalog-page { margin-inline-start: auto; }
+.breeder-workspace .catalog-download { border-color: var(--breeder-link); background: var(--breeder-link); color: white; font-weight: 650; }
+.catalog-card .catalog-matrix { max-height: min(63vh,560px); }
+.catalog-matrix .individual-table :is(th,td) { font-size: 15px; }
+.catalog-matrix .individual-table th { white-space: nowrap; }
+.catalog-matrix .individual-table th:first-child,
+.catalog-matrix .individual-table td:first-child:not([colspan]) { width: 2.6rem; text-align: center; }
+.catalog-matrix .individual-table :is(th,td):nth-child(2) { min-width: 5rem; }
+.catalog-matrix .individual-table :is(th,td):nth-child(3) { min-width: 9rem; }
+.catalog-matrix input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--breeder-link); }
+.catalog-records-row { background: #f5f8f6; }
+.catalog-records {
+  display: grid;
+  grid-template-columns: minmax(160px,.45fr) minmax(0,1fr);
+  gap: 8px 16px;
+  padding: 7px 10px;
+}
+.catalog-observations { max-height: 275px; overflow: auto; }
+.catalog-records :is(h3,h4,p,dl) { margin: 0 0 6px; }
+.catalog-matrix .catalog-records :is(h4,summary) small { display: inline; margin-inline-start: 3px; font-weight: 500; }
+.catalog-records dd { margin: 0 0 4px; }
+.catalog-records-group { padding: 4px 0; border-top: 1px solid var(--breeder-line); }
+.catalog-records-group summary { font-weight: 630; color: var(--breeder-link); }
+.catalog-records-group ul { list-style: none; margin: 4px 0; padding: 0; }
+.catalog-records-group li { display: flex; flex-wrap: wrap; gap: 7px 12px; align-items: center; }
+.catalog-current { color: var(--breeder-muted); font-size: 13px; }
 .review-disclosure { margin: 0; }
 .review-disclosure summary { width: fit-content; padding: 6px 0; color: var(--breeder-link); font-weight: 600; }
 .review-details { margin: 3px 0 8px; max-width: 44rem; }
@@ -145,6 +214,8 @@
 @media(max-width: 640px) {
   .breeder-card { padding: 12px; }
   .breeder-workspace { padding-top: 16px; }
+  .catalog-source-detail, .catalog-trial-filters .review-details, .catalog-gene-detail { position: static; width: auto; box-shadow: none; }
+  .catalog-records { grid-template-columns: minmax(0,1fr); width: min(100%,calc(100vw - 4rem)); }
   .review-range .review-details { position: static; width: 100%; box-shadow: none; }
   .review-options:has(.review-range[open]) .review-range { flex-basis: 100%; }
   .review-inspector { grid-template-columns: 1fr; max-width: 270px; }
@@ -196,6 +267,7 @@
 
 .breeder-entry { margin-bottom: 17px; }
 .entry-form { display: flex; align-items: stretch; gap: 8px; max-width: 820px; }
+.entry-form>.rt-Button { min-height: 38px; }
 .entry-search { flex: 1; }
 .breeder-workspace .entry-search > input { min-height: 46px; padding-inline: 11px; font-size: 16px; }
 .breeder-workspace label.entry-upload {
@@ -228,7 +300,7 @@
 .breeder-workspace .entry-clear { color: var(--breeder-muted); }
 .entry-result-title { font-size: 19px; margin: 0 0 9px; }
 .entry-evidence-label { width: fit-content; margin: 8px 0; }
-.entry-examples { margin: 3px 0 7px; padding-inline-start: 18px; }
+.entry-examples { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
 .entry-plan { max-width: 940px; margin-bottom: 16px; }
 .entry-plan-request { color: var(--breeder-muted); margin: 3px 0 9px; }
 .entry-plan-inputs { font-size: 14px; }
@@ -236,3 +308,60 @@
 .entry-plan li { margin-block: 4px; }
 .entry-plan-source { width: fit-content; }
 .breeder-workspace .entry-run { background: var(--breeder-active); color: var(--breeder-link); border-color: #a9c0b3; }
+
+.breeder-workbench-header {
+  display: grid;
+  grid-template-columns: minmax(13rem, .58fr) minmax(24rem, 1.42fr);
+  gap: 12px 32px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+.breeder-workbench-header .breeder-intro { display: grid; gap: 2px; margin: 0; }
+.breeder-workbench-header .breeder-entry { margin: 0; }
+.breeder-workbench-header .entry-form { max-width: none; align-items: center; }
+.breeder-workbench-header .entry-form > :is(.rt-Button, .entry-upload) { min-height: 42px; }
+.breeder-workbench-header .entry-form > .rt-Button { background: var(--breeder-link); color: white; }
+.breeder-workbench-header .entry-form > .rt-Button:disabled { color: var(--breeder-muted); background: #e9eeeb; }
+.catalog-card { padding: 16px clamp(12px, 2vw, 24px); }
+.catalog-heading > div > span { font-variant-numeric: tabular-nums; }
+.catalog-target-controls, .catalog-gene-entry { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 16px; }
+.catalog-target-controls { margin: 12px 0 8px; }
+.catalog-target-controls .catalog-trial-filters { padding: 0; }
+.catalog-gene-entry { align-items: center; }
+.catalog-gene-search { flex: 0 1 19rem; }
+.catalog-gene-suggestions { display: flex; flex-wrap: wrap; gap: 3px 7px; align-items: center; }
+.catalog-gene-suggestions > span { font-size: 13px; color: var(--breeder-muted); }
+.catalog-gene-suggestions .review-link { font-weight: 600; }
+.catalog-ontology { position: relative; }
+.catalog-ontology-detail {
+  position: absolute;
+  z-index: 5;
+  top: 100%;
+  width: min(35rem, calc(100vw - 3rem));
+  max-height: 44vh;
+  overflow: auto;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--breeder-line);
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 6px 20px #223a2c1c;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.catalog-ontology-detail dt { color: var(--breeder-muted); }
+.catalog-ontology-detail dd { margin: 0 0 6px; }
+.catalog-card .catalog-actions { padding-top: 10px; border-top: 1px solid var(--breeder-line); }
+.catalog-scope { padding: 3px; gap: 0; border-radius: 8px; background: #f0f4f1; }
+.catalog-scope button { border: 0; background: transparent; }
+.catalog-scope button[aria-pressed="true"] { background: white; box-shadow: 0 1px 3px #193b2826; }
+@media (max-width: 820px) {
+  .breeder-workbench-header { grid-template-columns: minmax(0, 1fr); }
+  .catalog-ontology-detail { position: static; width: auto; }
+}
+@media (max-width: 560px) {
+  .breeder-workbench-header .entry-form { flex-wrap: wrap; }
+  .breeder-workbench-header .entry-search { flex: 1 1 100%; }
+  .catalog-gene-search { flex: 1 1 100%; }
+  .catalog-card .catalog-page { margin-inline-start: 0; }
+}

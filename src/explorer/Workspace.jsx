@@ -24,12 +24,14 @@ export function validateWorkspace(value){
   if(b!==undefined){
     const record=value=>value&&typeof value==='object'&&!Array.isArray(value);
     const strings=map=>map===undefined||record(map)&&Object.values(map).every(v=>typeof v==='string');
-    const goals=b?.goals;
+    const {goals,review}=b??{};
     if(!record(b)||b.scope!==undefined&&!['material','cross'].includes(b.scope)||
       b.geneIds!==undefined&&(!Array.isArray(b.geneIds)||b.geneIds.some(id=>typeof id!=='string')||new Set(b.geneIds).size!==b.geneIds.length)||
       b.samples!==undefined&&(!Array.isArray(b.samples)||b.samples.some(id=>typeof id!=='string')||new Set(b.samples).size!==b.samples.length)||
       ['axis','trait','queryTrait','lookupTrait','lookupAxis','lookupGene','lookupScheme','focus','female','male'].some(key=>b[key]!==undefined&&typeof b[key]!=='string')||
-      !strings(b.schemes)||!strings(b.tracking)||goals!==undefined&&(!record(goals)||Object.values(goals).some(g=>!record(g)||!strings(g))))throw Error('育种工作台设置无效');
+      !strings(b.schemes)||!strings(b.tracking)||goals!==undefined&&(!record(goals)||Object.values(goals).some(g=>!record(g)||!strings(g)))||
+      review!==undefined&&(!record(review)||typeof review.context!=='string'||!record(review.decisions)||
+        Object.values(review.decisions).some(v=>!['candidate','verify','hold'].includes(v))))throw Error('育种工作台设置无效');
   }
   validateSiteSelections(c.siteSelections);validateSiteSelections(c.compare?.joint?.customSites);
   validateTraitTargets(c.traitTargets);

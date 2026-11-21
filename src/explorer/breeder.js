@@ -36,15 +36,16 @@ export function targetStatus(value,target) {
   return (target.min===null||value>=target.min)&&(target.max===null||value<=target.max)?'met':'outside';
 }
 
+export const mostMeasured=axes=>axes.reduce((best,axis)=>!best||axis.observed>best.observed?axis:best,null);
+
 export function reviewAxes(axes,samples,settings,initialTrait) {
   const sources=axes.map(axis=>({...axis,observed:samples.filter(s=>
     s.dataset_id===axis.dataset&&Number.isFinite(s.phenotypes[axis.id])
   ).length}));
-  const best=items=>items.reduce((a,b)=>!a||b.observed>a.observed?b:a,null);
   const locked=sources.find(axis=>axis.key===settings.axis);
-  const chosen=best(sources.filter(axis=>axis.trait_id===settings.trait));
-  const preferred=best(sources.filter(axis=>axis.trait_id===initialTrait));
-  return {sources,axis:locked??chosen??(preferred?.observed?preferred:null)??best(sources)};
+  const chosen=mostMeasured(sources.filter(axis=>axis.trait_id===settings.trait));
+  const preferred=mostMeasured(sources.filter(axis=>axis.trait_id===initialTrait));
+  return {sources,axis:locked??chosen??(preferred?.observed?preferred:null)??mostMeasured(sources)};
 }
 
 export function traitRows(samples,axis,target,reference=samples) {

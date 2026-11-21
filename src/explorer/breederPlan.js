@@ -2,10 +2,10 @@ import {isCross,materialKey} from './breeder.js';
 import {siteName} from './regions.js';
 
 export const planExamples=[
-  '以 D106 为母本、D112 为父本，比较 GL7 的后代型别。',
-  '查公主岭 2022 年粒长在 8.20–8.25 mm 的单倍型和材料。',
-  '聚合 DTH7 和 GL7，找同时携带的材料。',
-  '给一份新材料做体检，检查位点覆盖和缺测。',
+  {title:'亲本改良',prompt:'以 D106 为母本、D112 为父本，比较 LOC_Os07g41200 的后代型别。'},
+  {title:'性状与单倍型',prompt:'查看公主岭 2022 年的粒长单倍型和材料。'},
+  {title:'查共同携带',prompt:'聚合 LOC_Os07g49460 和 LOC_Os07g41200，找同时携带的材料。'},
+  {title:'材料体检',prompt:'给一份新材料做体检，检查位点覆盖和缺测。'},
 ];
 
 export const queryTraits=data=>data.traits.filter(t=>t.environments?.length||t.category==='V4 文献性状'&&t.id!=='v4_unspecified');

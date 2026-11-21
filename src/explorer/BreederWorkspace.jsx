@@ -1,4 +1,5 @@
 import React,{useMemo,useState} from 'react';
+import {BreederCatalog} from './BreederCatalog.jsx';
 import {BreederReview,ReviewRange,ReviewSource,callLabel,shortType,shown} from './BreederReview.jsx';
 import {AccessionPicker,CarrierList,breedingTasks} from './BreederTasks.jsx';
 import {BreederInput} from './BreederInput.jsx';
@@ -11,7 +12,7 @@ import {eventRows} from './evidence.js';
 import {downloadTable} from './formats.js';
 import {findGenes} from './geneSearch.js';
 import {geneSchemes,jointCalls,typeMaterial} from './jointHaplotypes.js';
-import {breederAxes,evidenceLevel,genotypePhenotypes,isCross,markerCoverage,materialKey,parentComparison,registeredCrosses,reviewAxes,targetRange,targetStatus,trackingKey,traitRows} from './breeder.js';
+import {breederAxes,evidenceLevel,genotypePhenotypes,isCross,markerCoverage,materialKey,mostMeasured,parentComparison,registeredCrosses,reviewAxes,targetRange,targetStatus,trackingKey,traitRows} from './breeder.js';
 import {LinkagePanel} from './LinkagePanel.jsx';
 import {parseMaterialCheck} from './materialCheck.js';
 import {readableDefinition} from './provenance.js';
@@ -332,7 +333,10 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   const [checkedKnown,setCheckedKnown]=useState('');
   const [draft,setDraft]=useState(null);
   const [upload,setUpload]=useState({});
+  const [catalogSelected,setCatalogSelected]=useState(false);
+  const [inspected,setInspected]=useState(null);
   const plan=draft?.data===data?draft:null;
+  const planning=Boolean(plan&&!plan.ran);
   const catalog=useMemo(()=>new Map(data.individuals.map(s=>[materialKey(s),s])),[data]);
   const keys=useMemo(()=>settings.samples??[...new Set([settings.female,settings.male].filter(Boolean))],
     [settings.samples,settings.female,settings.male]);
@@ -343,22 +347,33 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   const parents=useMemo(()=>data.individuals.filter(s=>!isCross(s)),[data]);
   const pair=useMemo(()=>[catalog.get(settings.female),catalog.get(settings.male)].filter(s=>s&&!isCross(s)),
     [catalog,settings.female,settings.male]);
-  const reference=useMemo(()=>cohort.filter(s=>isCross(s)===(scope==='cross')),[cohort,scope]);
+  const reviewing=task==='traits'&&lookup==='materials';
+  const dashboard=scope==='material'&&(!task&&!planning||reviewing)&&selectedAll.every(s=>s.dataset_id==='rice6044')
+    ?data.meta.datasets.find(d=>d.id==='rice6044'):null;
+  const showReview=reviewing||Boolean(dashboard);
+  const reviewCandidates=useMemo(()=>dashboard?candidates.filter(s=>s.dataset_id===dashboard.id):candidates,[candidates,dashboard]);
+  const reference=useMemo(()=>dashboard?reviewCandidates:cohort.filter(s=>isCross(s)===(scope==='cross')),
+    [cohort,scope,dashboard,reviewCandidates]);
   const axes=useMemo(()=>breederAxes(data),[data]);
+  const catalogRecords=useMemo(()=>dashboard?axes.filter(a=>a.dataset===dashboard.id).map(a=>({...a,observed:a.source.n})):[],[axes,dashboard]);
   const sourceSamples=task==='parents'?pair:selected;
-  const {sources,axis}=useMemo(()=>reviewAxes(axes,sourceSamples,settings,initialTrait),[axes,sourceSamples,settings.axis,settings.trait,initialTrait]);
+  const {sources,axis}=useMemo(()=>{
+    if(!dashboard)return reviewAxes(axes,sourceSamples,{axis:settings.axis,trait:settings.trait},initialTrait);
+    const focused=catalogRecords.find(a=>a.key===settings.axis)??mostMeasured(catalogRecords.filter(a=>a.trait_id===settings.trait));
+    return {sources:catalogRecords,axis:focused};
+  },[axes,sourceSamples,dashboard,catalogRecords,settings.axis,settings.trait,initialTrait]);
   const axisKey=axis?.key,bounds=settings.goals?.[axisKey]??{};
   const target=useMemo(()=>targetRange(bounds),[bounds.min,bounds.max]);
   const observations=useMemo(()=>traitRows(selected,axis,target,reference),[selected,axis,target,reference]);
   const models=useMemo(()=>(settings.geneIds??[]).flatMap(id=>{
     const gene=data.genes.find(g=>g.id===id);
     if(!gene)return [];
-    const menu=geneSchemes(gene,data.evidence,[],siteSelections[id]),chosen=settings.schemes?.[id];
+    const schemeGene=dashboard?{...gene,variants:gene.variants.filter(v=>v.assayedDatasets?.has(dashboard.id))}:gene;
+    const menu=geneSchemes(schemeGene,data.evidence,[],siteSelections[id]),chosen=settings.schemes?.[id];
     const scheme=menu.find(s=>s.id===chosen)??(siteSelections[id]&&menu.find(s=>s.id==='custom'))??menu[0];
     return [{gene,menu,scheme,trackKey:trackingKey(axis,gene,scheme)}];
-  }).map((m,index)=>({...m,index})),[data,settings.geneIds,settings.schemes,siteSelections,axis]);
-  const reviewing=task==='traits'&&lookup==='materials';
-  const needsCalls=task==='parents'?pair.length===2&&models.length>0:task==='stack'?models.length>0:reviewing&&selected.length>0&&models.length>0;
+  }).map((m,index)=>({...m,index})),[data,settings.geneIds,settings.schemes,siteSelections,axis,dashboard]);
+  const needsCalls=models.length>0&&(task==='parents'?pair.length===2:task==='stack'||!!dashboard||reviewing&&selected.length>0);
   const status=useGeneCalls(data,models.map(m=>m.gene.id),needsCalls);
   const result=useMemo(()=>status.ready&&models.length&&selected.length?jointCalls(selected,models.map(m=>m.scheme)):null,
     [status.ready,selected,models]);
@@ -380,6 +395,8 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   }
   function showMaterial(samples,view){
     append(samples,view);
+    setCatalogSelected(true);
+    setInspected(samples.length===1&&samples[0].dataset_id==='rice6044'?{key:materialKey(samples[0])}:null);
     setLookup('materials');
     open('traits');
   }
@@ -391,10 +408,18 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   }
   function remove(samples){
     const obsolete=new Set(samples.map(materialKey));
-    change({samples:keys.filter(key=>!obsolete.has(key))});
+    onChange(previous=>{
+      const review=previous.review;
+      return {...previous,samples:(previous.samples??keys).filter(key=>!obsolete.has(key)),
+        ...(review?{review:{...review,decisions:Object.fromEntries(Object.entries(review.decisions).filter(([key])=>!obsolete.has(key)))}}:{})};
+    });
   }
   function chooseAxis(key){
     change({axis:key,trait:axes.find(e=>e.key===key)?.trait_id??''});
+  }
+  function chooseCatalogTrait(id){
+    const record=mostMeasured(catalogRecords.filter(a=>a.trait_id===id));
+    change({axis:record?.key??'',trait:id,queryTrait:id});
   }
   function openParents(geneId,schemeId,shownAxis,traitId){
     const pinned=[...new Set([...models.map(m=>m.gene.id),geneId])];
@@ -403,6 +428,16 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   }
   function selectTrait(trait){
     const next={queryTrait:trait.id,lookupTrait:trait.id,lookupAxis:'',lookupGene:focus?.gene.id??'',lookupScheme:''};
+    if(dashboard){
+      if(catalogRecords.some(a=>a.trait_id===trait.id)){
+        chooseCatalogTrait(trait.id);
+        return;
+      }
+      change(next);
+      setLookup('haplotypes');
+      open('traits');
+      return;
+    }
     if(trait.environments?.length&&task==='parents'&&pair.length===2){
       change({...next,trait:trait.id,axis:''});
       return;
@@ -435,7 +470,7 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
       const latest=items.at(-1);
       change({geneIds:[...new Set([...models.map(m=>m.gene.id),...items.map(g=>g.id)])],focus:latest.id,
         lookupGene:latest.id,lookupScheme:''});
-      if(task==='parents'||task==='check'||reviewing&&selected.length)return;
+      if(dashboard||task==='parents'||task==='check'||reviewing&&selected.length)return;
       if(task==='traits'&&lookup==='haplotypes'&&items.length===1)return;
       open('stack');
     }
@@ -475,7 +510,7 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
       const fields=texts[0].trimStart().split(/\r?\n/,1)[0].split('\t');
       setLegacy(false);
       if(texts.length===1&&!isVcf(texts[0])&&!fields.some(k=>['marker_id','genotype','trait','source_gene_id'].includes(k.trim()))){
-        const rows=resolveSampleList(texts[0],data.individuals);
+        const rows=resolveSampleList(texts[0],dashboard?reviewCandidates:data.individuals);
         const samples=rows.flatMap(r=>r.sample?[r.sample]:[]);
         const missed=rows.filter(r=>r.status!=='matched');
         const info='匹配 '+samples.length+' 份'+(missed.length?' · '+missed.length+' 条未匹配或需指定数据集':'');
@@ -497,12 +532,14 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
     }catch(e){setUpload({error:e.message});}
   }
   function newQuery(){
-    change({samples:[],geneIds:[],female:'',male:'',axis:'',trait:'',queryTrait:'',lookupTrait:'',lookupAxis:'',lookupGene:'',lookupScheme:''});
+    change({samples:[],geneIds:[],female:'',male:'',axis:'',trait:'',queryTrait:'',lookupTrait:'',lookupAxis:'',lookupGene:'',lookupScheme:'',review:undefined});
     setCheckedImport(null);
     setCheckedKnown('');
     setDraft(null);
     setUpload({});
     setLegacy(false);
+    setCatalogSelected(false);
+    setInspected(null);
     open('');
   }
   function removeMaterial(s){
@@ -518,6 +555,9 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
     const geneIds=models.filter(m=>m.gene.id!==id).map(m=>m.gene.id);
     change({geneIds,lookupGene:settings.lookupGene===id?'':settings.lookupGene,lookupScheme:''});
     if(!geneIds.length&&task==='stack')open('');
+  }
+  function updateBounds(value){
+    onChange(previous=>({...previous,axis:axisKey,goals:{...previous.goals,[axisKey]:value}}));
   }
   const chosenTrait=queryTraits(data).find(t=>t.id===settings.queryTrait);
   const chosenParents=selectedAll.filter(s=>!isCross(s));
@@ -536,23 +576,24 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   const availableTraits=new Map(sources.map(a=>[a.trait_id,a.trait_name]));
   const canCompare=task!=='parents'&&chosenParents.length===2;
   const canStack=task!=='stack'&&models.length>=2;
-  const canLookup=reviewing&&selected.length>0&&Boolean(axis);
-  const canReview=!reviewing&&selected.length>0;
-  const planning=Boolean(plan&&!plan.ran);
+  const canLookup=showReview&&Boolean(axis);
+  const canReview=!showReview&&selected.length>0;
   return <main className="breeder-workspace">
-    <header className="breeder-intro"><h1>育种工作台</h1><p>{datasets.length===1?datasets[0].name:datasets.length+' 个数据集'}</p></header>
-    <BreederInput data={data} onSelect={selectEntities} onSentence={propose} onUpload={loadFiles} upload={upload} planning={planning}
+    <header className="breeder-workbench-header">
+    <div className="breeder-intro"><h1>育种工作台</h1><p>{dashboard?dashboard.name:datasets.length===1?datasets[0].name:datasets.length+' 个数据集'}</p></div>
+    <BreederInput data={data} onSelect={selectEntities} onSentence={propose} onUpload={loadFiles} upload={upload} planning={planning} compact={Boolean(dashboard)} datasetId={dashboard?.id}
       materials={planning?[]:selectedAll} genes={planning?[]:models.map(m=>m.gene)}
       trait={planning?null:chosenTrait} onRemoveMaterial={removeMaterial} onRemoveGene={removeGene}
       importName={task==='check'?checkedImport?.sample.name:null} onRemoveImport={()=>{setCheckedImport(null);open('');}}
       onRemoveTrait={()=>change({queryTrait:'',trait:'',axis:'',lookupTrait:'',lookupAxis:''})} onReset={newQuery}>
       {!planning&&(canCompare||canStack||canLookup||canReview)&&<>
-        {canCompare&&<button className="review-link" type="button" onClick={compareSelected}>比较双亲</button>}
+        {canCompare&&!dashboard&&<button className="review-link" type="button" onClick={compareSelected}>比较双亲</button>}
         {canStack&&<button className="review-link" type="button" onClick={()=>open('stack')}>查看基因组合</button>}
         {canLookup&&<button className="review-link" type="button" onClick={viewTraitTypes}>查{axis.trait_name}的型别</button>}
         {canReview&&<button className="review-link" type="button" onClick={()=>{setLookup('materials');open('traits');}}>查看所选材料</button>}
       </>}
     </BreederInput>
+    </header>
     {plan&&<BreederPlan plan={plan} axes={axes} onChange={changePlan} onRun={runPlan} onClose={()=>setDraft(null)}/>}
     {heading&&!reviewing&&<h2 className="entry-result-title">{task==='traits'?'性状型别':heading}</h2>}
     {task==='parents'&&<ParentPanel data={data} candidates={parents} axis={axis} models={models} ready={status.ready}
@@ -574,23 +615,30 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
         onClick={()=>change({female:settings.male,male:settings.female})}>调换母父本</button>}
       {axis&&<ReviewSource axis={axis} sources={sources} datasets={datasets} onAxis={chooseAxis}/>}
     </ParentPanel>}
-    {task==='traits'&&<>
-      {legacy&&<TaskChoice view={lookup} onChange={setLookup}/>}
-      {reviewing?<BreederReview data={data} candidates={candidates} selected={selected} totalSelected={selectedAll.length} unavailable={keys.length-selectedAll.length}
+    {task==='traits'&&legacy&&!dashboard&&<TaskChoice view={lookup} onChange={setLookup}/>}
+    {dashboard&&<BreederCatalog data={data} onAddGene={gene=>selectEntities([{type:'gene',item:gene}])} onCompare={canCompare?compareSelected:null} dataset={dashboard} candidates={reviewCandidates} selected={selected}
+      sources={sources} axis={axis} bounds={bounds} target={target} observations={observations}
+      models={models} status={status} callById={callById}
+      selectedOnly={catalogSelected} onSelectedOnly={setCatalogSelected} inspect={inspected} onInspect={key=>setInspected(key?{key}:null)}
+      chooseTrait={chooseCatalogTrait} chooseAxis={chooseAxis}
+      chooseScheme={(geneId,schemeId)=>change({schemes:{...settings.schemes,[geneId]:schemeId}})} removeGene={removeGene}
+      add={append} remove={s=>remove([s])} clear={()=>{remove(selected);setCatalogSelected(false);setInspected(null);}}
+      onBounds={updateBounds} review={settings.review} onReview={review=>change({review})}/>}
+    {reviewing&&!dashboard&&<BreederReview data={data} candidates={candidates} selected={selected} totalSelected={selectedAll.length} unavailable={keys.length-selectedAll.length}
         scope={scope} changeScope={value=>change({scope:value,axis:'',trait:''})}
         add={append} remove={s=>remove([s])} clear={()=>remove(selected)} axis={axis} sources={sources} bounds={bounds} target={target}
         onAxis={chooseAxis} onTrait={trait=>change({trait,axis:''})}
-        onBounds={value=>onChange(previous=>({...previous,axis:axisKey,goals:{...previous.goals,[axisKey]:value}}))}
+        onBounds={updateBounds}
         models={models} observations={observations} referenceN={observations[0]?.reference_n} callById={callById} showInput={legacy}>
-        {geneControls}
-      </BreederReview>:<TraitLookup data={data} axes={axes} reference={reference} scope={scope} settings={settings}
+      {geneControls}
+    </BreederReview>}
+    {task==='traits'&&!reviewing&&<TraitLookup data={data} axes={axes} reference={reference} scope={scope} settings={settings}
         change={change} initialTrait={initialTrait} siteSelections={siteSelections}
         onReview={(s,shownAxis,mark)=>{
           showMaterial([s],isCross(s)?'cross':'material');
           change({trait:shownAxis.trait_id,axis:shownAxis.key,
             geneIds:[...new Set([...models.map(m=>m.gene.id),mark.gene.id])],schemes:{...settings.schemes,[mark.gene.id]:mark.scheme.id}});
         }} onParents={openParents}/>}
-    </>}
     {task==='stack'&&<section className="breeder-card task-panel" aria-label="多基因聚合">
       <div className="task-form">
         {geneControls}

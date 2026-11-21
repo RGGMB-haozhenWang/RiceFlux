@@ -1,6 +1,6 @@
 # RiceFlux
 
-[打开面板 / Open dashboard](https://rggmb-haozhenwang.github.io/RiceFlux/) · [教程 / Guide](https://rggmb-haozhenwang.github.io/RiceFlux/tutorial.html)
+[基因分析](https://rggmb-haozhenwang.github.io/RiceFlux/) · [育种工作台](https://rggmb-haozhenwang.github.io/RiceFlux/?view=breeder) · [教程 / Guide](https://rggmb-haozhenwang.github.io/RiceFlux/tutorial.html)
 
 面向水稻育种的基因、位点组合与材料比较。展示原始表型、参考群体百分位和探索性组间检验。
 A static rice genetics workbench for genes, genotype combinations and accessions. Display raw phenotypes, reference percentiles and exploratory group comparisons.
@@ -17,7 +17,7 @@ A static rice genetics workbench for genes, genotype combinations and accessions
 1. 用页眉「查基因」查找 MSU／RAP ID、基因名或别名。左侧查看基因和群体，右侧查看表型与证据。
 2. 页眉可打开多基因比较、材料比较和个体明细。「筛选」设置材料和位点质控，「更多」提供数据接口、下载和工作区。
 3. 下载 UTF-8 制表符 TXT。Excel 导入时将材料 ID 设为文本。工作区设置可保存与迁移。
-4. 从「育种工作台」选择双亲、查询试验表型并聚合关注基因。目标范围按性状和试验保存。
+4. 在「育种工作台」中勾选材料或导入编号名单，选择性状、试验场次与基因。切换到已选材料后可划定区间、记录取舍、下载对照表。导出的前六列依次为编号、性状、基因、染色体、基因型、表现型，后续列保留单位、分型依据和试验来源。
 
 Choose datasets → search a gene → select sites → compare → export TSV.
 
@@ -26,7 +26,7 @@ Choose datasets → search a gene → select sites → compare → export TSV.
 ```sh
 npm ci
 npm test
-npm run build:packed -- /path/to/new-site --datasets=/path/to/staged/datasets --audience=researcher
+npm run build:packed -- /path/to/new-site --datasets=/path/to/staged/datasets
 python3 -m http.server 4173 --bind 127.0.0.1 --directory /path/to/new-site
 ```
 

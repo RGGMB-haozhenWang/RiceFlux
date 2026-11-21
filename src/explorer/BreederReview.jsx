@@ -17,12 +17,12 @@ const targetLabels={met:'达标',outside:'范围外',missing:'缺测',uncovered:
 const sourceLabel=axis=>[siteName(axis.source.original_site??axis.source.site),axis.source.year,
   axis.assay!==axis.trait_name&&axis.assay].filter(Boolean).join(' · ');
 
-export function ReviewSource({axis,sources,onAxis,datasets}){
+export function ReviewSource({axis,sources,onAxis,datasets,allowSwitch=true}){
   const choices=sources.filter(e=>e.trait_id===axis.trait_id).sort((a,b)=>b.observed-a.observed);
   return <details className="review-disclosure">
     <summary>表型来源</summary>
     <div className="review-details">
-      {choices.length>1&&<label>测定记录<select aria-label="切换表型来源" value={axis.key} onChange={e=>onAxis(e.target.value)}>
+      {allowSwitch&&choices.length>1&&<label>测定记录<select aria-label="切换表型来源" value={axis.key} onChange={e=>onAxis(e.target.value)}>
         {choices.map(e=><option key={e.key} value={e.key}>
           {[sourceLabel(e),e.unit,datasets.length>1&&e.dataset,e.observed+' 份实测'].filter(Boolean).join(' · ')}
         </option>)}
@@ -102,7 +102,8 @@ export function BreederReview({data,candidates,selected,totalSelected,unavailabl
   const visible=list.slice(activePage*size,(activePage+1)*size);
   const traits=new Map(sources.map(e=>[e.trait_id,e.trait_name]));
   const definitions=JSON.stringify(Object.fromEntries(models.map(m=>[m.gene.id,{
-    scheme:m.scheme.id,markers:m.scheme.markers.map(v=>v?.id??null),doi:m.scheme.doi
+    gene_name:m.gene.name,msu_id:m.gene.catalog?.msu??'',scheme:m.scheme.id,
+    markers:m.scheme.markers.map(v=>v?.id??null),doi:m.scheme.doi
   }])));
   function addMatches(samples){
     add(samples);
