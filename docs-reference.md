@@ -101,3 +101,25 @@ D1 有 1,067 条 SNP，D2 有 23 条 SNP，两套观测字典中的 InDel 均为
 GWAS 接口以试验指标、样本范围、组装、坐标、REF 和效应等位为主轴，保留效应、标准误、校正结果、模型和变异匹配级别。GP 接口按材料或组合、目标试验与模型版本登记预测均值和区间，随结果保存训练范围、家系或亲本层面的外部验证及误差。两种接口将结果挂在推断证据层，分别声明关联和预测的适用范围。
 
 RiceAtlas 已展示群体单倍型与 GWAS 资源，并在论文中展示了用育种设计功能改良绥粳 4 号粒形。RiceFlux 用一份可保存的材料清单连接表型、分型和来源。育种家可在看过实测值后筛出达标记录，再核对双亲中目标型的来源和多基因组合。 [RiceAtlas 原文](https://doi.org/10.1016/j.molp.2025.03.007)
+
+## 亲本导入决策 v1
+
+从育种工作台打开「亲本导入决策」。先导入已验收的家系效应 TXT，再选轮回亲本、试验、目标性状和可选的代价性状，填写同单位的阈值。输入在浏览器中读取，下载的报告包含当前筛选和判断。公开站点提供空白模板。
+
+一行代表一个分析中、同一家系、同一试验和性状的 **供体型后代减共同亲本型后代**。请使用字段顺序一致的 UTF-8 制表符文本，可加 BOM。
+
+```text
+schema_version	analysis_id	source_ref	contrast	assembly	gene_id	haplotype_id	recurrent_parent	donor_parent	family_id	trial_id	trial_label	trait_id	trait_label	unit	genotype_evidence	status	estimate	ci_lower	ci_upper	n_donor	n_recurrent	next_check
+```
+
+- `schema_version` 为 `1`，`contrast` 为 `donor_vs_recurrent_within_family`。`analysis_id` 区分不可混用的冻结分析，`source_ref` 指向可复核的报告、文件哈希或其他版本证据。材料 ID 在输入分析范围内应唯一，同名跨数据集时用数据集与材料编号限定。
+- `haplotype_id` 可使用「导出分型对应 TXT」中的 `observed_haplotype_id`。无法与该定义完全对齐时，填来源限定的紧凑 JSON `["source_scoped","分析ID","来源引用","稳定定义ID"]`，最后一项绑定来源内的组分与等位状态。文献型名可供解释，裸 `Hap1` 不能作为键。
+- `genotype_evidence` 接受 `G_direct`、`G_chip`、`G_projected`、`G_mixed`。按上游实际调用填写。代理或区域关联需同时给出下一步直接分型任务。
+- `status` 接受 `estimated`、`not_estimable`、`not_measured`。可估计行提供有限估计值、两侧区间及两个正整数样本量。缺测或不可估计的数值字段留空，已知的样本数可保留；`next_check` 可记录区间口径、校正结果或验证事项。
+- 目标的区间下限达到最低收益、代价的区间上限未超过允许增量，才标为达到设定条件。区间跨越阈值保留为不确定，整段不符合标为未达到。缺少指定代价、背景、试验或源分型不一致时保留证据不足。判断是同一家系试验证据对用户阈值的复核，跨家系和跨试验保持独立。公开群体原始差值、原文效应和 F1 预期型仍在原界面的各自证据栏中使用。
+
+## GitHub 发布留痕
+
+每次发布在 [CHANGELOG.md](CHANGELOG.md) 顶部追加记录，包含用户可见变化、数据/接口版本、验证范围和状态。将日志、源码、数据和 GitHub Pages 构建后需要更新的 `docs/` 入口或资源一并审核。提交后先运行 `node scripts/check-changelog.mjs <本次发布前的提交> HEAD`，再推送。发布后核对 Pages 运行结果和线上行为；Git 提交或本地构建与线上验证分别记录。
+
+本地开发从 `npm test` 及构建开始。发布时以当前 Pages 静态目录为基础核对数据索引和已有资产，将新构建的入口和资产合入 `docs/`。完整 3K 注册和已打包数据以 `docs/datasets/` 当前版本为准。

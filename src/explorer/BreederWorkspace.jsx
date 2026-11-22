@@ -1,5 +1,6 @@
 import React,{useMemo,useState} from 'react';
 import {BreederCatalog} from './BreederCatalog.jsx';
+import {IntrogressionReview} from './IntrogressionReview.jsx';
 import {BreederReview,ReviewRange,ReviewSource,callLabel,shortType,shown} from './BreederReview.jsx';
 import {AccessionPicker,CarrierList,breedingTasks} from './BreederTasks.jsx';
 import {BreederInput} from './BreederInput.jsx';
@@ -388,7 +389,8 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   function change(update){onChange(previous=>({...previous,...update}));}
   function open(id){
     const url=new URL(location.href);
-    url.searchParams.delete('task');
+    if(id==='introgression')url.searchParams.set('task',id);
+    else url.searchParams.delete('task');
     history.replaceState(null,'',url);
     setTask(id);
     window.scrollTo(0,0);
@@ -580,7 +582,8 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   const canReview=!showReview&&selected.length>0;
   return <main className="breeder-workspace">
     <header className="breeder-workbench-header">
-    <div className="breeder-intro"><h1>育种工作台</h1><p>{dashboard?dashboard.name:datasets.length===1?datasets[0].name:datasets.length+' 个数据集'}</p></div>
+    <div className="breeder-intro"><h1>育种工作台</h1><p>{task==='introgression'?'家系内效应复核':dashboard?dashboard.name:datasets.length===1?datasets[0].name:datasets.length+' 个数据集'}</p></div>
+    {task==='introgression'?<button className="review-link" type="button" onClick={()=>open('')}>返回材料比较</button>:
     <BreederInput data={data} onSelect={selectEntities} onSentence={propose} onUpload={loadFiles} upload={upload} planning={planning} compact={Boolean(dashboard)} datasetId={dashboard?.id}
       materials={planning?[]:selectedAll} genes={planning?[]:models.map(m=>m.gene)}
       trait={planning?null:chosenTrait} onRemoveMaterial={removeMaterial} onRemoveGene={removeGene}
@@ -592,10 +595,12 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
         {canLookup&&<button className="review-link" type="button" onClick={viewTraitTypes}>查{axis.trait_name}的型别</button>}
         {canReview&&<button className="review-link" type="button" onClick={()=>{setLookup('materials');open('traits');}}>查看所选材料</button>}
       </>}
-    </BreederInput>
+      {!planning&&<button className="review-link" type="button" onClick={()=>{setDraft(null);open('introgression');}}>亲本导入决策</button>}
+    </BreederInput>}
     </header>
     {plan&&<BreederPlan plan={plan} axes={axes} onChange={changePlan} onRun={runPlan} onClose={()=>setDraft(null)}/>}
-    {heading&&!reviewing&&<h2 className="entry-result-title">{task==='traits'?'性状型别':heading}</h2>}
+    {heading&&!reviewing&&task!=='introgression'&&<h2 className="entry-result-title">{task==='traits'?'性状型别':heading}</h2>}
+    {task==='introgression'&&<IntrogressionReview/>}
     {task==='parents'&&<ParentPanel data={data} candidates={parents} axis={axis} models={models} ready={status.ready}
       settings={settings} change={update=>change({samples:keys,...update})}
       target={target} onCrosses={samples=>showMaterial(samples,'cross')}

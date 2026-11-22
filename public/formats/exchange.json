@@ -29,7 +29,8 @@
       "accepts": [
         "rf:priorTable",
         "rf:cohortInput",
-        "rf:evidenceInput"
+        "rf:evidenceInput",
+        "rf:introgressionReviewInput"
       ],
       "produces": [
         "rf:priorResults",
@@ -41,6 +42,38 @@
         "rf:analysisSnapshot",
         "rf:priorGraph"
       ]
+    },
+    {
+      "@id": "rf:introgressionReviewInput",
+      "@type": "InputDataset",
+      "filename": "riceflux_introgression_template.txt",
+      "rowType": "rf:WithinFamilyEffect",
+      "columns": [
+        "schema_version",
+        "analysis_id",
+        "source_ref",
+        "contrast",
+        "assembly",
+        "gene_id",
+        "haplotype_id",
+        "recurrent_parent",
+        "donor_parent",
+        "family_id",
+        "trial_id",
+        "trial_label",
+        "trait_id",
+        "trait_label",
+        "unit",
+        "genotype_evidence",
+        "status",
+        "estimate",
+        "ci_lower",
+        "ci_upper",
+        "n_donor",
+        "n_recurrent",
+        "next_check"
+      ],
+      "keyNote": "同一家系内供体型减共同亲本型。按来源、位点定义、轮回亲本、供体、家系、试验和性状区分。"
     },
     {
       "@id": "rf:haplotypeMapping",

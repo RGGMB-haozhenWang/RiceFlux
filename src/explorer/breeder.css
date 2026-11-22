@@ -365,3 +365,34 @@
   .catalog-gene-search { flex: 1 1 100%; }
   .catalog-card .catalog-page { margin-inline-start: 0; }
 }
+
+/* Recurrent-parent introgression review stays scoped to its dedicated panel. */
+.introgression-review .intro-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 18px; }
+.introgression-review .intro-heading h2 { margin: 0; font-size: 23px; }
+.introgression-review .intro-heading p { margin: 5px 0; color: var(--breeder-muted); }
+.introgression-review .intro-stage { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--breeder-line); }
+.introgression-review h3 { margin: 0 0 12px; font-size: 17px; }
+.introgression-review .intro-heading h3 { margin: 0; }
+.introgression-review .intro-file { max-width: 32rem; }
+.introgression-review .intro-controls { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px 16px; }
+.introgression-review :is(p,details) { font-size: 14px; }
+.introgression-review details { margin-top: 8px; }
+.introgression-review summary { color: var(--breeder-link); }
+.introgression-review .intro-error { color: #992f25; }
+.introgression-review .intro-table-scroll { overflow: auto; margin-top: 12px; }
+.introgression-review .intro-table { min-width: 780px; border-collapse: collapse; }
+.introgression-review .intro-table :is(th,td) { vertical-align: top; border-bottom: 1px solid var(--breeder-line); text-align: left; }
+.introgression-review .intro-table th[scope="row"] { width: 32%; font-weight: 500; }
+.introgression-review .intro-table :is(strong,small,th[scope="row"] > span) { display: block; }
+.introgression-review .intro-table small { margin-top: 4px; }
+.introgression-review .intro-table p { margin: 8px 0 0; }
+.introgression-review .intro-table :is(dd,dt) { overflow-wrap: anywhere; font-size: 12px; }
+.introgression-review .intro-table dd { margin: 2px 0 6px; }
+.introgression-review .intro-effect { display: block; margin-top: 5px; font-variant-numeric: tabular-nums; }
+.introgression-review .intro-missing { color: #776143; }
+.introgression-review .intro-verdict { display: inline-block; padding: 3px 7px; border-radius: 5px; background: #edf0ed; font-weight: 650; }
+.introgression-review .intro-verdict[data-verdict="supported"] { color: #23563b; background: #e6f1e9; }
+.introgression-review .intro-verdict[data-verdict="outside"] { color: #8a382a; background: #f8eae5; }
+.introgression-review .intro-verdict[data-verdict="uncertain"], .introgression-review .intro-verdict[data-verdict="insufficient"] { color: #745322; background: #f6efdf; }
+@media (max-width: 720px) { .introgression-review .intro-controls { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 440px) { .introgression-review .intro-controls { grid-template-columns: minmax(0,1fr); } }

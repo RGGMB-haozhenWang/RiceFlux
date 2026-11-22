@@ -1,6 +1,6 @@
 # RiceFlux
 
-[基因分析](https://rggmb-haozhenwang.github.io/RiceFlux/) · [育种工作台](https://rggmb-haozhenwang.github.io/RiceFlux/?view=breeder) · [教程 / Guide](https://rggmb-haozhenwang.github.io/RiceFlux/tutorial.html)
+[基因分析](https://rggmb-haozhenwang.github.io/RiceFlux/) · [育种工作台](https://rggmb-haozhenwang.github.io/RiceFlux/?view=breeder) · [教程 / Guide](https://rggmb-haozhenwang.github.io/RiceFlux/tutorial.html) · [开发者文档](docs-reference.md) · [变更日志](CHANGELOG.md)
 
 面向水稻育种的基因、位点组合与材料比较。展示原始表型、参考群体百分位和探索性组间检验。
 A static rice genetics workbench for genes, genotype combinations and accessions. Display raw phenotypes, reference percentiles and exploratory group comparisons.

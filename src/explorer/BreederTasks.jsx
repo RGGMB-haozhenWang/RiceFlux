@@ -7,6 +7,7 @@ export const breedingTasks=[
   {id:'traits',title:'材料与性状'},
   {id:'stack',title:'基因型组合'},
   {id:'check',title:'材料体检'},
+  {id:'introgression',title:'亲本导入决策'},
 ];
 
 export function AccessionPicker({label,samples,selected,onPick}){
