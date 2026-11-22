@@ -40,3 +40,31 @@ test('combined datasets retain assay coverage separately from missing calls',()=
   assert.deepEqual(counts([missing]),[[0,0]]);
   assert.deepEqual(counts([covered,missing,uncovered]),[[1,1]]);
 });
+
+
+test('joint groups use ordered literal states even when source labels are shared',()=>{
+  const shared={...gene,records:[row('a','Hap1','A','T'),row('b','Hap1','G','C')]};
+  const source={events:{a:{doi:['shared']},b:{doi:['shared']}}};
+  const scheme=geneSchemes(shared,source)[0];
+  const cohort=[sample('a',[0,0],[0,0]),sample('b',[1,1],[1,1]),sample('c',[0,0],[0,0],'NE')];
+  const result=jointCalls(cohort,[scheme]);
+  assert.deepEqual(result.members.map(m=>m.calls[0].label),['Hap1','Hap1','Hap1']);
+  assert.deepEqual(result.members.map(m=>m.calls[0].status),['called','called','called']);
+  assert.equal(result.assigned,3);
+  assert.equal(result.groups.length,2);
+  assert.equal(result.members[0].key,result.members[2].key);
+  assert.notEqual(result.members[0].key,result.members[1].key);
+  assert.deepEqual(result.groups.map(g=>[g.labels,g.n]),[[['Hap1'],2],[['Hap1'],1]]);
+  assert.deepEqual(JSON.parse(result.members[0].key),['A T']);
+  const joint=jointCalls(cohort,[scheme,scheme]);
+  assert.deepEqual(JSON.parse(joint.members[1].key),['G C','G C']);
+});
+
+test('definitions retain original components even when markers are unavailable',()=>{
+  const scheme=geneSchemes(gene,evidence).find(s=>!s.ready);
+  const definition=gene.records.find(r=>r.id===scheme.definitions[0].id);
+  assert.deepEqual(scheme.definitions[0].components,definition.components);
+  assert.equal(scheme.definitions[0].sequence,'A·T');
+  assert.equal(scheme.definitions[0].valid,true);
+  assert.equal(scheme.definitions[0].label,'Other series');
+});

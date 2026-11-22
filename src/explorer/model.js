@@ -92,7 +92,7 @@ export function literatureMatches(gene,definitions,cohort) {
   return definitions.map(row=>{
     const states=row.components.map(c=>c.state??'—').join('·');
     const variants=row.components.map(c=>componentMarker(gene.variants,c));
-    const valid=row.components.length>1&&row.components.every((c,i)=>variants[i]&&literalAllele.test(c.state)&&c.ref===variants[i].ref);
+    const valid=row.components.length>0&&row.components.every((c,i)=>variants[i]&&literalAllele.test(c.state)&&c.ref===variants[i].ref);
     if(!valid)return {row,states,matched:null,callable:null};
     let matched=0,callable=0,assayed=0;
     for(const s of cohort) {

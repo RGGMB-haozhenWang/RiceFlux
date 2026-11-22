@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import {assessmentPolicy,assessPhenotype,targetKey,validateTraitTargets} from './traitAssessment.js';
-import {countReportedAllele,parseTraitEvidence,traitEvidenceFor} from './traitEvidence.js';
+import {countReportedAllele,parseTraitEvidence,supportsTraitAssessment,traitEvidenceFor} from './traitEvidence.js';
 import {literatureDefinitions} from './jointHaplotypes.js';
+import {literatureMatches} from './model.js';
 
 const read=name=>readFileSync(new URL('../../public/'+name,import.meta.url));
 const sample=(key,values,median)=>({key,values,median,n:values.length});
@@ -67,7 +68,38 @@ test('all 50 pilot genes are V4 members with unique sourced records and claims b
     }
   }
   assert.equal(records.size,review.pilot.length);
-  assert.ok(review.claims.every(claim=>genes.some(gene=>gene.id===claim.gene_id)));
+  const current=data.genes.filter(supportsTraitAssessment);
+  assert.equal(current.length,484);
+  assert.ok(!supportsTraitAssessment({catalog:{collection:'cloned_catalog'}}));
+  const extended=new Set(gunzipSync(read('datasets/cloned_catalog/genes.tsv.gz')).toString().split('\n')
+    .slice(1).filter(Boolean).map(line=>line.split('\t')[0]));
+  for(const claim of review.claims){
+    const gene=current.find(g=>g.id===claim.gene_id);
+    if(extended.has(claim.gene_id)&&!gene){
+      assert.ok(!claim.definition_id&&!claim.marker_state,claim.label);
+      assert.ok(traitEvidenceFor(review,{id:claim.gene_id,catalog:{collection:'cloned_catalog'}}).claims.includes(claim));
+      continue;
+    }
+    assert.ok(gene,claim.label);
+    assert.ok(traitEvidenceFor(review,gene).claims.includes(claim));
+    if(claim.definition_id){
+      const definitions=literatureDefinitions(gene,data.evidence);
+      const definition=definitions.find(d=>d.id===claim.definition_id)||gene.records.find(d=>d.id===claim.definition_id);
+      assert.ok(definition,claim.label);
+      assert.ok([...(definition.doi||[]),...(definition.sources||[])].some(source=>source.endsWith(claim.doi)),claim.label);
+    }
+  }
+  const gnp3=current.find(gene=>gene.id==='LOC_Os03g49640');
+  const [first]=traitEvidenceFor(review,gnp3).claims;
+  const definitions=literatureDefinitions(gnp3,data.evidence);
+  assert.deepEqual(definitions.map(d=>[d.label,d.components]),[
+    ['GNP3 Hap‑T',[{pos:28274865,ref:'G',state:'T'}]],
+    ['GNP3 Hap‑G',[{pos:28274865,ref:'G',state:'G'}]],
+  ]);
+  assert.equal(first.definition_id,definitions[0].id);
+  assert.equal(first.judgment,'favourable');
+  assert.equal(literatureMatches(gnp3,definitions,[])[0].callable,0);
+  assert.deepEqual(literatureDefinitions({...gnp3,assembly:'different'},data.evidence),[]);
   const high=review.claims.find(c=>c.definition_id==='ea3657836f30abf9c');
   assert.deepEqual([high.label,high.trait_id,high.judgment],['DTH7 Hap4','grains_per_panicle','favourable']);
 });

@@ -37,3 +37,10 @@ formats/exchange.json 是 JSON-LD 交换合同，列出 RiceFlux 接受的输入
 “自选位点”支持逐个勾选、全选、清空、CDS、启动子及完整覆盖的文献位点集合预设。手动模式绕过 MAF/缺失阈值，但不改变原始调用；选择恢复 QC 后重按当前材料过滤。单基因与多基因的位点选择分别保存。多基因自选方案同时限制该基因的区域高亮、频率位点菜单及连锁分析可选标记。
 单基因按未分相基因型向量分组，允许完整杂合；多基因自选方案只命名完整纯合序列为“自选型”，杂合仍标记未解析。自选集合不继承文献 Hap 名称和功能结论。零位点没有完整组；切换数据后请求位点未覆盖或参考版本不一致时，不把剩余子集作为完整定义。
 Gene export 1.1 在原 12 个 TSV 表外加入 analysis_sites.tsv，含 order、marker_id、assembly、chr、position、ref、alt、mode、status；顺序为坐标升序，未覆盖请求保留。variants.tsv 的 qc_retained 记录阈值结果，selected_for_analysis 记录实际选择。联合成员 TSV 追加每个基因的 definition 及 dataset_versions，独立下载也可追溯方案。settings JSON 保留单基因 siteSelections、compare.joint.customSites 及 display；旧设置可导入并使用自由布局。
+
+单倍型对应接口
+表型面板的“导出分型对应 TXT”输出 UTF-8 制表符文本，列顺序见 exchange.json 的 rf:haplotypeMapping。
+observed_haplotype_id 是 [gene_id,assembly,chr,[[position:REF:kind,allele],…]]。位点使用正链 1-based 坐标，组分以固定键排序，等位使用实际序列。SNP 与 InDel 分别编码；ALT 列的顺序与别名不参与身份。observed_sites 提供方便阅读的组分写法。
+文献关系同时保留 DOI、定义 ID、原文型名和组分。一个观测型可关联多个来源，一条文献定义也可对应多个扩展型。typed_n 为当前筛选材料在当前观测型中的人数，按 observed_haplotype_id 去重后汇总。
+exact 表示位点集合及等位完全一致；extension 表示当前组合包含文献所有位点及其等位，并包含额外位点。扩展行保留文献来源；原文目标型和对照型同时 exact 时才计算对应的当前试验效应。
+ambiguous 表示同一 DOI 的多个原文型名在已登记位点上相同；current_missing_sites 表示当前选点不足。not_observed 表示定义可对齐但当前完整分型组中未观察到。source_unresolved 表示原文的位点或等位无法完整解析到参考，source_conflict 表示同一来源定义冲突。no_source_match 为观测型暂无对应来源。

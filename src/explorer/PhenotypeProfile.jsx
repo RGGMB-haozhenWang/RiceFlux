@@ -3,8 +3,10 @@ import {RegionalPhenotypes} from './RegionalPhenotypes.jsx';
 import {assessmentPolicy,isTargetRange,targetKey} from './traitAssessment.js';
 import {regionalView} from './regions.js';
 import {typeMaterial} from './jointHaplotypes.js';
-import {presetTitle,readableDefinition} from './provenance.js';
+import {presetTitle} from './provenance.js';
 import {reportedAllele} from './traitEvidence.js';
+import {buildHaplotypeMapping,haplotypeMappingRows,sourceHaplotypeKey} from './haplotypeIdentity.js';
+import {downloadTable,formats} from './formats.js';
 
 function TargetEditor({trait,unit,range,onChange}) {
   const [lower,setLower]=useState(range?.[0]?.toString()??'');
@@ -28,7 +30,7 @@ function TargetEditor({trait,unit,range,onChange}) {
   </div>;
 }
 
-function TraitCard({trait,associated,gene,cohort,groups,scheme,selectedIds,targets,onTarget,onInspect}) {
+function TraitCard({trait,associated,gene,cohort,groups,scheme,selectedIds,targets,onTarget,onInspect,claims,mapping}) {
   const [selection,setSelection]=useState({});
   const view=useMemo(()=>regionalView(trait,selection),[trait,selection]);
   const policy=assessmentPolicy(trait,view.active);
@@ -44,7 +46,7 @@ function TraitCard({trait,associated,gene,cohort,groups,scheme,selectedIds,targe
         {policy.direction&&<a href={policy.protocol} target="_blank" rel="noreferrer"> 测定来源 ↗</a>}
       </p>}
     <RegionalPhenotypes trait={trait} gene={gene} groups={groups} cohort={cohort} selectedIds={selectedIds} compact
-      markerIds={scheme.markers.map(v=>v.id)} view={view} assessment={{policy,range,scheme:scheme.id}}
+      markerIds={scheme.markers.map(v=>v.id)} view={view} claims={claims} mapping={mapping} assessment={{policy,range,scheme:scheme.id}}
       onInspect={onInspect} onChange={patch=>setSelection(current=>({assay:view.assay,year:view.year,site:view.active.source.site,...current,...patch}))}/>
   </section>;
 }
@@ -137,22 +139,32 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,clai
     const assigned=new Map();
     for(const sample of cohort){
       const call=typeMaterial(sample,scheme);
-      if(call.status!=='called'&&call.status!=='unmatched')continue;
+      if(!['called','unmatched','ambiguous'].includes(call.status))continue;
       const key=call.bases;
-      if(!assigned.has(key)){
-        const effects=call.status==='called'?scheme.effects?.get(key):undefined;
-        const label=call.status==='called'?(effects?.[0]?.label||readableDefinition(call.label)):'观测型 '+call.bases;
-        assigned.set(key,{key,label,effects,members:[]});
-      }
+      if(!assigned.has(key))assigned.set(key,{key,label:key.replaceAll(' ','·'),members:[]});
       assigned.get(key).members.push(sample);
     }
     return [...assigned.values()].sort((a,b)=>b.members.length-a.members.length||a.label.localeCompare(b.label));
   },[cohort,scheme]);
-  const plots=useMemo(()=>groups.length?groups:[{key:'reference',label:'当前全部材料',members:cohort}],[groups,cohort]);
+  const mapping=useMemo(()=>buildHaplotypeMapping(gene,scheme,schemes,groups,claims,data.evidence),
+    [gene,scheme,schemes,groups,claims,data.evidence]);
+  const plots=useMemo(()=>{
+    if(!groups.length)return [{key:'reference',label:'当前全部材料',members:cohort}];
+    const byGroup=new Map();
+    for(const claim of claims){
+      const id=claim.definition_id||claim.marker_state;
+      if(!id)continue;
+      const source=mapping.bySource.get(sourceHaplotypeKey(claim.doi,id));
+      if(!source||!['exact','extension'].includes(source.status))continue;
+      for(const key of source.groupKeys)byGroup.set(key,[...(byGroup.get(key)||[]),{claim,relation:source.status}]);
+    }
+    return groups.map(group=>({...group,effects:byGroup.get(group.key)}));
+  },[groups,cohort,claims,mapping]);
   const associated=new Set(related.map(t=>t.id));
-  const favourableTraits=new Set(groups.flatMap(g=>(g.effects||[]).filter(c=>c.judgment==='favourable'&&
-    g.members.some(s=>axes.get(c.trait_id)?.some(id=>Number.isFinite(s.phenotypes[id])))).map(c=>c.trait_id)));
+  const favourableTraits=new Set(plots.flatMap(g=>(g.effects||[]).filter(({claim,relation})=>relation==='exact'&&claim.judgment==='favourable'&&
+    g.members.some(s=>axes.get(claim.trait_id)?.some(id=>Number.isFinite(s.phenotypes[id])))).map(({claim})=>claim.trait_id)));
   const paperTraits=new Set([...(scheme.effects?.values()||[])].flatMap(effects=>effects.map(c=>c.trait_id)));
+  for(const claim of claims)if(claim.quantitativeEffects?.length)paperTraits.add(claim.trait_id);
   const measured=data.traits.filter(t=>t.environments?.length).sort((a,b)=>
     Number(favourableTraits.has(b.id))-Number(favourableTraits.has(a.id))||
     Number(paperTraits.has(b.id))-Number(paperTraits.has(a.id))||Number(associated.has(b.id))-Number(associated.has(a.id)));
@@ -167,15 +179,17 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,clai
         <option value="selection">当前位点纯合型</option>
         {available.map(s=><option key={s.id} value={s.id}>{s.title||presetTitle(s)}</option>)}
       </select></label>
-      <span>{groups.length?`${groups.length} 型 · ${groups.reduce((n,g)=>n+g.members.length,0).toLocaleString()} 份完成判型`:'当前无完整判型，展示群体原始表型'}</span>
+      <span>{groups.length?`${scheme.markers.length} 位点 · ${groups.length} 型 · ${groups.reduce((n,g)=>n+g.members.length,0).toLocaleString()} 份完成判型`:'当前无完整判型，展示群体原始表型'}</span>
+      {(mapping.byGroup.size>0||mapping.bySource.size>0)&&<button type="button" className="site-detail"
+        onClick={()=>downloadTable(formats.haplotypeMapping,haplotypeMappingRows(gene,mapping,cohort,scheme))}>导出分型对应 TXT</button>}
     </div>
     {unmeasured.length>0&&<p className="profile-unmeasured">暂无配对实测 · {unmeasured.join('、')}</p>}
     {stacks.map(([mode,traits])=><section className="trait-stack" key={mode}>
       <h3 className="trait-stack-heading">{mode==='relative'?'相对性状':'绝对性状'}</h3>
       {traits.map(trait=><TraitCard key={trait.id} trait={trait} associated={associated.has(trait.id)} gene={gene}
-        cohort={cohort} groups={plots} scheme={scheme} selectedIds={selectedIds} targets={targets} onTarget={onTarget} onInspect={onInspect}/>)}
+        cohort={cohort} groups={plots} scheme={scheme} claims={claims} mapping={mapping} selectedIds={selectedIds} targets={targets} onTarget={onTarget} onInspect={onInspect}/>)}
     </section>)}
     <DescriptorProfile cohort={cohort} groups={groups}/>
-    {measured.length>0&&<p className="footnote">优势标识对应本试验和所选材料的描述性表现。n 为该型有实测值的材料数。</p>}
+    {measured.length>0&&<p className="footnote">文献优势对应原文试验。区间优势和抗性优势按当前实测计算。n 为该型有实测值的材料数。</p>}
   </section>;
 }

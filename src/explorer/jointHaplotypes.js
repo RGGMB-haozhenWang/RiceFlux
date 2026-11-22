@@ -4,11 +4,14 @@ import {chromNum} from './exchange.js';
 import {resolveSites} from './siteSelection.js';
 
 import supplement from '../../public/formats/literature.json' with { type: 'json' };
+import offlineDefinitions from '../../public/formats/local-literature-definitions.json' with { type: 'json' };
+
+const sourceDefinitions = [...supplement['@graph'],...offlineDefinitions['@graph']];
 
 export function literatureDefinitions(gene,evidence) {
   const records = gene.records.filter(r => r.mode==='完整多位点型')
     .map(r => ({...r, doi:evidence.events[r.id]?.doi || []}));
-  const extra = supplement['@graph'].filter(d => d.gene==='rf:gene_'+gene.id).map(d => ({
+  const extra = sourceDefinitions.filter(d => d.gene==='rf:gene_'+gene.id&&(!d.assembly||d.assembly===gene.assembly)).map(d => ({
     id:d['@id'], label:d.label, doi:d.supportedBy.map(url => url.slice('https://doi.org/'.length)),
     components:d.orderedComponents.map(c => ({pos:c.position, ref:c.reference, state:c.reportedState}))
   }));
@@ -34,12 +37,12 @@ function insertDefinition(sets,gene,entry,kind){
   })]);
   if(!sets.has(key)){
     sets.set(key,{id:key,kind,doi:entry.doi,markers,positions,definitions:[],lookup:new Map(),
-      ready:markers.every(Boolean)&&new Set(positions).size===positions.length});
+      ready:markers.every(Boolean)&&new Set(markers.map(marker=>marker.id)).size===markers.length});
   }
   const scheme=sets.get(key);
   const vector=entry.components.map(c=>c.state);
   const valid=vector.every(a=>typeof a==='string'&&literalAllele.test(a));const sequence=vector.join('|');
-  scheme.definitions.push({id:entry.id,label:entry.label,sequence:vector.map(a=>a??'NA').join('·'),valid});
+  scheme.definitions.push({id:entry.id,label:entry.label,sequence:vector.map(a=>a??'NA').join('·'),valid,components:entry.components});
   if(valid){
     if(!scheme.lookup.has(sequence))scheme.lookup.set(sequence,new Set());
     scheme.lookup.get(sequence).add(entry.label);
@@ -97,7 +100,7 @@ export function jointCalls(cohort,schemes){
     const calls=schemes.map(s=>typeMaterial(sample,s));
     let key=null;
     if(calls.length&&calls.every(c=>c.status==='called')){
-      const labels=calls.map(c=>c.label);key=JSON.stringify(labels);
+      const labels=calls.map(c=>c.label);key=JSON.stringify(calls.map(c=>c.bases));
       if(!groups.has(key))groups.set(key,{key,labels,n:0,pops:new Map()});
       const g=groups.get(key);g.n++;g.pops.set(pop,(g.pops.get(pop)||0)+1);
       assigned++;population.get(pop).assigned++;

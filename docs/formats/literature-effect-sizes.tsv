@@ -1,0 +1,78 @@
+gene_id	claim_key	trait_id	doi	label	trait	comparison	source_target_value	source_control_value	source_unit	absolute_difference	absolute_difference_unit	absolute_difference_basis	relative_change_pct	relative_change_basis	locator	note	coverage_status
+Os07g0695100	ea3657836f30abf9c	grains_per_panicle	10.3389/fpls.2022.1097622	DTH7 Hap4	每穗粒数												pending_quantification
+Os07g0695100	efee8ab8b12205205	grains_per_panicle	10.3389/fpls.2022.1097622	DTH7 Hap2	每穗粒数												pending_quantification
+Os07g0695100	e52414c21239b83f6	grains_per_panicle	10.3389/fpls.2022.1097622	DTH7 Hap5	每穗粒数												pending_quantification
+Os07g0695100	长日条件下的 DTH7 功能等位	heading	10.1073/pnas.1418204111	长日条件下的 DTH7 功能等位	抽穗期												pending_quantification
+Os01g0690600	eacc3c2b28defbfe2	grains_per_panicle	10.3389/fpls.2022.1097622	RGN1a Hap1	每穗粒数												pending_quantification
+Os01g0690600	e9ed6b21abfdde350	grains_per_panicle	10.3389/fpls.2022.1097622	RGN1a Hap2	每穗粒数												pending_quantification
+Os01g0690600	ef77c29956834fd1b	grains_per_panicle	10.3389/fpls.2022.1097622	RGN1a Hap3	每穗粒数												pending_quantification
+Os07g0261200	ee1a437d204c71cb3	grains_per_panicle	10.3389/fpls.2022.1097622	Ghd7 Hap1	每穗粒数												pending_quantification
+Os07g0261200	ea8600eff5a907fd3	grains_per_panicle	10.3389/fpls.2022.1097622	Ghd7 Hap2	每穗粒数												pending_quantification
+Os06g0229800	rf:alk_three_site_1	gelatinization_temperature	10.1186/s12284-020-00393-5	ALKᵃ	糊化峰温												pending_quantification
+Os06g0229800	rf:alk_three_site_2	gelatinization_temperature	10.1186/s12284-020-00393-5	ALKᵇ	糊化峰温												pending_quantification
+Os06g0229800	rf:alk_three_site_3	gelatinization_temperature	10.1186/s12284-020-00393-5	ALKᶜ	糊化峰温												pending_quantification
+Os01g0681900	e4d75343a25c0ca4c	thousand_grain_weight	10.1186/s12284-024-00700-4	GLT1 Hap-2	千粒重												pending_quantification
+Os01g0681900	e6e57561b5b7f5bc5	heading	10.1186/s12284-024-00700-4	GLT1 Hap-3	抽穗期												pending_quantification
+Os03g0407400	curated_Os03g0407400	length	10.1534/genetics.109.103002	GS3 C165A	粒长												pending_quantification
+Os06g0157500	curated_Os06g0157500	heading	10.1371/journal.pone.0075959	RFT1 E105K	抽穗期												pending_quantification
+Os03g0437200	Digu 的 bsr-d1 启动子等位	leaf_blast	10.1016/j.cell.2017.06.008	Digu 的 bsr-d1 启动子等位	稻瘟病抗性												pending_quantification
+Os06g0330100	Pid3 Hap_6	leaf_blast	10.1038/s41598-017-10617-2	Pid3 Hap_6	稻瘟病抗性												pending_quantification
+Os05g0107700	xa5 V39E	blight	10.1111/tpj.13164	xa5 V39E	白叶枯病抗性												pending_quantification
+Os07g0232900	OsHMA3 功能型	grain_cadmium	10.1073/pnas.1005396107	OsHMA3 功能型	籽粒镉												pending_quantification
+Os07g0257200	Pokkali OsNRAMP5 串联重复	grain_cadmium	10.1038/s43016-022-00569-w	Pokkali OsNRAMP5 串联重复	籽粒镉												pending_quantification
+Os02g0244100	ec442bd198b4697cd	width	10.1038/ng2014	GW2 编码区缺失	粒宽	FAZ1 背景 · WY3 GW2 导入型对 FAZ1			mm				+26.2	reported	PDF 第 3 页 · Fig. 4a、b 与结果段	终点为粒宽。	quantified
+Os07g0603300	GL7 17.1 kb 串联重复	length	10.1038/ng.3346	GL7 17.1 kb 串联重复	粒长												pending_quantification
+Os03g0793500	Koshihikari Hd16 A331T	heading	10.1111/tpj.12268	Koshihikari Hd16 A331T	抽穗期												pending_quantification
+Os06g0133000	Wxᵇ 第一内含子剪接等位	amylose_content	10.1046/j.1365-313x.1998.00189.x	Wxᵇ 第一内含子剪接等位	直链淀粉含量												pending_quantification
+Os02g0770800	9311 OsNR2 Arg783	nitrate_reductase_activity	10.1038/s41467-019-13110-8	9311 OsNR2 Arg783	硝酸还原酶活性												pending_quantification
+Os01g0205700	e7f64a905dbccf21d	grains_per_panicle	10.1038/s41467-025-64564-y	GNP2 Hap1	每穗粒数	籼稻 · 南宁 · GNP2 Hap1 对 Hap4	174.59	142.15	粒/穗	+32.44	粒/穗	calculated	+22.82	calculated	PDF 第 4 页 · Table 1	原文表列材料 303 对 27 份。	quantified
+Os01g0205700	e7f64a905dbccf21d	grains_per_panicle	10.1038/s41467-025-64564-y	GNP2 Hap1	每穗粒数	籼稻 · 玉溪 · GNP2 Hap1 对 Hap4	159.56	110.40	粒/穗	+49.16	粒/穗	calculated	+44.53	calculated	PDF 第 4 页 · Table 1	原文表列材料 303 对 27 份。	quantified
+Os01g0205700	e7f64a905dbccf21d	grains_per_panicle	10.1038/s41467-025-64564-y	GNP2 Hap1	每穗粒数	粳稻 · 南宁 · GNP2 Hap1 对 Hap4	147.21	127.88	粒/穗	+19.33	粒/穗	calculated	+15.12	calculated	PDF 第 4 页 · Table 1	原文表列材料 90 对 15 份。	quantified
+Os01g0205700	e7f64a905dbccf21d	grains_per_panicle	10.1038/s41467-025-64564-y	GNP2 Hap1	每穗粒数	粳稻 · 玉溪 · GNP2 Hap1 对 Hap4	146.71	106.81	粒/穗	+39.9	粒/穗	calculated	+37.36	calculated	PDF 第 4 页 · Table 1	原文表列材料 90 对 15 份。	quantified
+Os01g0205700	ecc8278849fd1d742	grains_per_panicle	10.1038/s41467-025-64564-y	GNP2 Hap2	每穗粒数	籼稻 · 南宁 · GNP2 Hap2 对 Hap4	170.39	142.15	粒/穗	+28.24	粒/穗	calculated	+19.87	calculated	PDF 第 4 页 · Table 1	原文表列材料 30 对 27 份。	quantified
+Os01g0205700	ecc8278849fd1d742	grains_per_panicle	10.1038/s41467-025-64564-y	GNP2 Hap2	每穗粒数	籼稻 · 玉溪 · GNP2 Hap2 对 Hap4	153.48	110.40	粒/穗	+43.08	粒/穗	calculated	+39.02	calculated	PDF 第 4 页 · Table 1	原文表列材料 30 对 27 份。	quantified
+LOC_Os03g49640	rf:gnp3_s28274865_t	grains_per_panicle	10.1038/s41467-025-61326-8	GNP3 Hap‑T	每穗粒数												pending_quantification
+LOC_Os06g44860	OsSPL10 T‑Hap1	tiller_number	10.1016/j.xplc.2026.101914	OsSPL10 T‑Hap1	分蘖数												pending_quantification
+LOC_Os04g50770	RRS1 Hap5	culm_diameter	10.1111/pce.70661	RRS1 Hap5	茎秆直径												pending_quantification
+LOC_Os08g39210	GWN1 hap1	length	10.1007/s00122-024-04658-1	GWN1 hap1	粒长												pending_quantification
+Os08g0509600	IPA1 ipa1-1D（SNJ）	plot_grain_yield	10.1038/ng.591	IPA1 ipa1-1D（SNJ）	小区籽粒产量	秀水11配对小区 · NIL-OsSPL14ipa1 对秀水11	4.92	4.44	kg/小区	+0.48	kg/小区	calculated	+10.7	reported	PDF 第 4 页 · Table 1，小区实收	两组为均值 ± 标准误。原文报告增幅 10.7%，差值按表中四舍五入后的均值计算。	quantified
+Os09g0441900	dep1 截短型	grain_yield_per_plant	10.1038/ng.352	dep1 截短型	单株籽粒产量	标准水田 · NIL-dep1 对 NIL-DEP1							+40.9	reported	PDF 第 3 页 · Fig. 3i 与结果段	原文报告单株产量增幅。	quantified
+Os02g0701300	GS2AA（Kuangsijiadi）	plot_grain_yield	10.1038/nplants.2015.203	GS2AA（Kuangsijiadi）	小区籽粒产量	华占遗传背景 · NIL-GS2AA 对 NIL-GS2							+13.9	reported	PDF 第 4 页 · Fig. 4g 与结果段	原文报告约 13.9%。	quantified
+Os05g0158500	GS5 珍汕97来源型	grain_yield_per_plant	10.1038/ng.977	GS5 珍汕97来源型	单株籽粒产量	NIL 珍汕97型对 NIL H94 型	19.85	18.49	g/株	+1.36	g/株	calculated	+7.4	reported	PDF 第 3 页 · Table 1	原文表列 n 为 55 对 77，保留作者报告的增幅。	quantified
+Os07g0603300	GL7 P13 串联重复型	chalkiness	10.1038/ng.3346	GL7 P13 串联重复型	垩白												pending_quantification
+Os03g0646900	GL3.1-WY3	plot_grain_yield	10.1038/cr.2012.151	GL3.1-WY3	小区籽粒产量	FAZ1 背景 · WY3 导入系对 FAZ1							+11.1	reported	PDF 第 2 页 · Fig. 1J 与结果段	终点为小区籽粒产量。	quantified
+Os06g0665400	SCM2 Habataki 来源型	spikelets_per_panicle	10.1038/ncomms1132	SCM2 Habataki 来源型	每穗颖花数	越光遗传背景 · NIL-SCM2 对越光	188	156	颖花/穗	+32	颖花/穗	calculated	+20	reported	PDF 第 5 页 · Fig. 8f、g 与结果段	原文约增 20%，这里比较的是主穗颖花数。	quantified
+LOC_Os09g26840	DRO1 Kinandang Patong 来源型	grain_yield_under_drought	10.1038/ng.2725	DRO1 Kinandang Patong 来源型	旱田条件下籽粒产量												pending_quantification
+LOC_Os10g35460	DROT1 Hap3	drought_survival	10.1038/s41467-022-31844-w	DROT1 Hap3	干旱存活率												pending_quantification
+LOC_Os04g10260	GNP5 Hap1	grains_per_panicle	10.1038/s41467-025-64564-y	GNP5 Hap1	每穗粒数	籼稻 · 南宁 · GNP5 Hap1 对 Hap2，同为 GNP2-G（I 型对 III 型）	191.74	164.89	粒/穗	+26.85	粒/穗	calculated	+16.28	calculated	PDF 第 10 页 · Table 2	原文表列材料 314 对 19 份。同一 GNP2 位点状态下的分层比较。	quantified
+LOC_Os04g10260	GNP5 Hap1	grains_per_panicle	10.1038/s41467-025-64564-y	GNP5 Hap1	每穗粒数	籼稻 · 玉溪 · GNP5 Hap1 对 Hap2，同为 GNP2-G（I 型对 III 型）	169.04	151.01	粒/穗	+18.03	粒/穗	calculated	+11.94	calculated	PDF 第 10 页 · Table 2	原文表列材料 314 对 19 份。同一 GNP2 位点状态下的分层比较。	quantified
+LOC_Os04g10260	GNP5 Hap1	grains_per_panicle	10.1038/s41467-025-64564-y	GNP5 Hap1	每穗粒数	粳稻 · 南宁 · GNP5 Hap1 对 Hap2，同为 GNP2-G（I 型对 III 型）	172.37	140.52	粒/穗	+31.85	粒/穗	calculated	+22.67	calculated	PDF 第 10 页 · Table 2	原文表列材料 43 对 47 份。同一 GNP2 位点状态下的分层比较。	quantified
+LOC_Os04g10260	GNP5 Hap1	grains_per_panicle	10.1038/s41467-025-64564-y	GNP5 Hap1	每穗粒数	粳稻 · 玉溪 · GNP5 Hap1 对 Hap2，同为 GNP2-G（I 型对 III 型）	168.94	145.96	粒/穗	+22.98	粒/穗	calculated	+15.74	calculated	PDF 第 10 页 · Table 2	原文表列材料 43 对 47 份。同一 GNP2 位点状态下的分层比较。	quantified
+Os01g0610300	rf:tn1_site2163_g	tiller_number	10.1111/pbi.14017	TN1-hapH（CH1230，+2163G）	分蘖数												pending_quantification
+Os01g0610300	rf:tn1_site2163_g	heading	10.1111/pbi.14017	TN1-hapH（+2163G）	抽穗期												pending_quantification
+LOC_Os02g07780	OsSPL4 Hap5	length	10.1186/s12284-021-00531-7	OsSPL4 Hap5	粒长												pending_quantification
+LOC_Os02g45170	SEP1 Hap2（CH1267）	grain_yield_per_plant	10.1016/j.molp.2025.12.007	SEP1 Hap2（CH1267）	单株籽粒产量												pending_quantification
+LOC_Os09g29890	OsPI4Kγ7 HapA	grains_per_panicle	10.1038/s41467-026-68814-5	OsPI4Kγ7 HapA	每穗粒数												pending_quantification
+LOC_Os03g03130	OsSCE1a Hap9YJ30（MITE-D）	chlorophyll_content	10.1111/pbi.14524	OsSCE1a Hap9YJ30（MITE-D）	叶片叶绿素含量												pending_quantification
+LOC_Os05g32270	NGR5 Hap2	grain_yield	10.1126/science.aaz2046	NGR5 Hap2	籽粒产量												pending_quantification
+LOC_Os01g57250	qTGW1.2a Hap2	thousand_grain_weight	10.1038/s41422-022-00685-z	qTGW1.2a Hap2	千粒重												pending_quantification
+LOC_Os08g07010	LEAF1G	flag_leaf_length	10.1111/tpj.70145	LEAF1G	旗叶长												pending_quantification
+Os08g0531600	GW8 HJX74 来源型	plot_grain_yield	10.1038/ng.2327	GW8 HJX74 来源型	小区籽粒产量	HJX74 遗传背景 · NIL-GW8 对 NIL-gw8（Basmati385）							+14.3	reported	PDF 第 4 页 · Fig. 3k 与补充表 3	原文跨两地点、三年汇总，终点为小区产量。	quantified
+Os07g0505200	GLW7 LGH	length	10.1038/ng.3518	GLW7 LGH	粒长												pending_quantification
+LOC_Os03g11614	OsMADS1 lgy3	grain_yield_per_plant	10.1038/s41467-018-03047-9	OsMADS1 lgy3	单株籽粒产量	WYJ7 遗传背景 · lgy3 对 LGY3，两组均为 dep1-1							+10.4	reported	PDF 第 4 页 · Fig. 1n 与结果段	三个年度的单株籽粒产量平均增幅。	quantified
+Os02g0770800	OsNR2 9311 来源型	grain_yield	10.1038/s41467-019-13110-8	OsNR2 9311 来源型	籽粒产量												pending_quantification
+LOC_Os04g56780	MOC3-Hap5	grains_per_panicle	10.1016/j.cj.2020.04.011	MOC3-Hap5	每穗粒数												pending_quantification
+LOC_Os06g40780	MOC1-Hap4	tiller_number	10.1016/j.cj.2020.04.011	MOC1-Hap4	分蘖数												pending_quantification
+LOC_Os09g28210	MOG1 Hap-HNW	grains_per_panicle	10.1111/jipb.13674	MOG1 Hap-HNW	每穗粒数												pending_quantification
+Os02g0244100	GW2 WY3 失活等位	grain_yield_per_plant	10.1038/ng2014	GW2 WY3 失活等位	单株籽粒产量	FAZ1 背景 · WY3 GW2 导入型对 FAZ1							+19.7	reported	PDF 第 4 页 · Fig. 4c 与结果段	原文普通水田下的单株籽粒产量。	quantified
+LOC_Os06g41850	TGW6 Kasalath 供体段	grain_yield_per_area	10.1038/ng.2612	TGW6 Kasalath 供体段	单位面积籽粒产量												pending_quantification
+Os08g0224300	ARE1 9311 弱功能等位	grain_yield	10.1016/j.molp.2021.04.012	ARE1 9311 弱功能等位	籽粒产量	低氮 · 日本晴背景 NIL-ARE1（9311）对日本晴							+10.2～+28.4	reported	PDF 第 6 页 · Fig. 4D 与结果段	原文报告低氮增幅范围。	quantified
+Os08g0224300	ARE1 明恢63 弱功能等位	grain_yield	10.1016/j.molp.2021.04.012	ARE1 明恢63 弱功能等位	籽粒产量	低氮 · 日本晴背景 NIL-ARE1（明恢63）对日本晴							+10.4～+26.2	reported	PDF 第 6 页 · Fig. 4D 与结果段	原文报告低氮增幅范围。	quantified
+Os01g0197700	Gn1a Habataki 来源型	grains_per_panicle	10.1126/science.1113373	Gn1a Habataki 来源型	每穗粒数												pending_quantification
+LOC_Os01g57570	RoLe1 启动子 −526T	seed_setting_under_drought	10.1016/j.molp.2024.09.002	RoLe1 启动子 −526T	干旱条件下结实率												pending_quantification
+LOC_Os09g25430	DRG9-DR（Nip 型）	drought_green_area_ratio	10.1038/s41467-024-46754-2	DRG9-DR（Nip 型）	干旱后绿色投影面积比												pending_quantification
+LOC_Os06g14080	Hap-STRONG1C	culm_diameter	10.1038/s41467-025-60604-9	Hap-STRONG1C	茎秆直径												pending_quantification
+LOC_Os03g26044	STRONG2 Hap4 启动子	culm_diameter	10.1111/jipb.13830	STRONG2 Hap4 启动子	茎秆直径												pending_quantification
+LOC_Os01g14050	Tn1a +272 bp 启动子型	tiller_number	10.1111/pbi.14453	Tn1a +272 bp 启动子型	分蘖数												pending_quantification
+LOC_Os04g50770	RRS1 Hap5（IRAT109）	root_length	10.1111/nph.18775	RRS1 Hap5（IRAT109）	根长												pending_quantification
+LOC_Os06g44860	OsSPL10 Hap1（原文抗旱比较）	drought_survival	10.1111/jipb.13414	OsSPL10 Hap1（原文抗旱比较）	干旱存活率												pending_quantification

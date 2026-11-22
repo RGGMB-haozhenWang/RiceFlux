@@ -41,7 +41,7 @@ import {RegionalPhenotypes} from './RegionalPhenotypes.jsx';
 import './desktop.css';
 import {loadAbstracts,loadExplorer,loadRegistered} from './observed.js';
 import {geneSupport,geneTraits,hasPhenotypes} from './provenance.js';
-import {loadTraitEvidence,traitEvidenceFor} from './traitEvidence.js';
+import {loadTraitEvidence,supportsTraitAssessment,traitEvidenceFor} from './traitEvidence.js';
 const initialView=new URLSearchParams(location.search).get('view');
 const demo=initialView==='demo'&&__RICEFLUX_AUDIENCE__!=='breeder';
 const embedded=new URLSearchParams(location.search).get('embed')==='1';
@@ -174,18 +174,19 @@ function App() {
   },[retry]);
   useEffect(()=>{if(notice){const t=setTimeout(()=>setNotice(''),4000);return()=>clearTimeout(t);}},[notice]);
   const gene=data?.genes.find(g=>g.id===geneId);
-  const assessmentPilot=!demo&&!breederOpen&&Boolean(gene?.catalog?.core&&!gene.catalog.historical);
+  const evidenceEnabled=!demo&&!breederOpen&&Boolean(gene?.catalog&&!gene.catalog.historical);
+  const assessmentEnabled=evidenceEnabled&&supportsTraitAssessment(gene);
   useEffect(()=>{
-    if(!assessmentPilot)return;
+    if(!evidenceEnabled)return;
     let current=true;
     loadTraitEvidence(import.meta.env.BASE_URL).then(source=>{
       if(current){setTraitSources(source);setTraitSourceError('');}
     },error=>{if(current)setTraitSourceError(error.message);});
     return()=>{current=false;};
-  },[assessmentPilot]);
-  const traitReview=useMemo(()=>assessmentPilot?
+  },[evidenceEnabled]);
+  const traitReview=useMemo(()=>evidenceEnabled?
     {...traitEvidenceFor(traitSources,gene),error:traitSourceError,loading:!traitSources&&!traitSourceError}:null,
-    [assessmentPilot,traitSources,gene,traitSourceError]);
+    [evidenceEnabled,traitSources,gene,traitSourceError]);
   const relatedTraits=useMemo(()=>gene?geneTraits(data,gene):[],[data,gene]);
   const trait=data?.traits.find(t=>t.id===traitId)||relatedTraits.find(t=>t.id===traitId);
   const view=useMemo(()=>regionalView(trait,plotSelection),[trait,plotSelection]);
@@ -513,12 +514,12 @@ function App() {
           {individualIds.length>0&&<div className="focus-individual"><PersonIcon/><span>关注材料</span><b>{selectedStats?alleleFrequencyText(selectedStats)||percent(selectedStats.af):'—'}</b></div>}
         </Panel>,
           composition: <Panel title="基因型组合 / Genotypes" sub="完整未分相基因型组合；频率按个体计数。"  className="matrix-panel"><div className="matrix-scroll"><table className="matrix"><thead><tr><th>组合</th>{variants.map(v=><th key={v.id}><button className={v.id===selected?.id?'active-variant':''} aria-haspopup={!demo&&v.markerType==='InDel'?'dialog':undefined} onClick={e=>selectMarker(v,e.currentTarget)}>{v.pos.toLocaleString()}<small>{v.ref}→{v.alt??'—'}</small></button></th>)}<th>个体数</th><th>占完整个体</th><th>群体组成</th></tr></thead><tbody>{visibleGroups.map((g,i)=><tr key={g.key} className={g.key===group?.key?'active-group':''}><th><button title={g.id} onClick={()=>setGroup(g.key===groupKey?null:g.key)}><i style={{background:COLORS[i%8]}}/>G{String(i+1).padStart(2,'0')}</button></th>{g.tokens.map((t,j)=><td key={variants[j].id}><span className={`gt ${t===`${variants[j].ref}/${variants[j].ref}`?'ref':t.split('/')[0]===t.split('/')[1]?'alt':'het'}`}>{t}</span></td>)}<td><b>{g.members.length}</b></td><td>{percent(g.members.length/complete)}</td><td><PopulationComposition populations={data.populations} members={g.members} selectedIds={individualIds}/></td></tr>)}</tbody></table></div>{!groups.length&&<Empty>没有可分类的完整个体。零位点或含缺失调用时，不生成虚假的单一组合。</Empty>}<div className="panel-bottom"><span>展示 {visibleGroups.length} / {groups.length} 类 · {complete.toLocaleString()} / {cohort.length.toLocaleString()} 份完整分型</span>{group&&readerLayout.some(p=>p.id==='individuals')&&<Button variant="ghost" size="1" onClick={()=>goToSection('individuals')}>查看该组合材料</Button>}{groups.length>8&&<Button variant="ghost" size="1" onClick={()=>setShowAll(v=>!v)}>{showAll?'收起稀有组合':'显示全部组合'}</Button>}</div><div className="population-key">{scopeGroups.map(p=><span key={p.id}><i style={{background:p.color}}/>{p.name}</span>)}</div></Panel>,
-          phenotype: <div className="phenotype-section">{assessmentPilot?
+          phenotype: <div className="phenotype-section">{assessmentEnabled?
           <PhenotypeProfile key={gene.id} data={data} gene={gene} related={relatedTraits} cohort={cohort} variants={variants} schemes={schemes} claims={traitReview.claims}
             selectedIds={individualIds} targets={traitTargets} onTarget={setTraitTarget}
             onInspect={layout.some(p=>p.id==='individuals')?inspectTrial:undefined}/>:view ?
           <Panel title={trait.name+' · 分地区表型 ('+view.unit+')'} tag={view.sites.length+' 个试验地点'}>
-            <RegionalPhenotypes trait={trait} groups={visibleGroups} allGroups={groups} gene={gene} schemes={schemes} cohort={cohort} markerIds={variants.map(v=>v.id)} view={view} onChange={changePlot} selectedIds={individualIds} compact={false}/>
+            <RegionalPhenotypes trait={trait} groups={visibleGroups} allGroups={groups} gene={gene} claims={traitReview?.claims||[]} schemes={schemes} cohort={cohort} markerIds={variants.map(v=>v.id)} view={view} onChange={changePlot} selectedIds={individualIds} compact={false}/>
           </Panel> : demo ? <Panel title={`${trait.name} · 表型对照`} sub={`单位：${trait.unit}。仅展示上表当前组合；线框为四分位范围，中线为中位数，端点为最小/最大值。`} tag="DESCRIPTIVE"><Phenotypes groups={visibleGroups} trait={trait} selectedIds={individualIds}/><p className="footnote">各组 n 为有该性状记录的个体数。{demo?'合成表型独立生成，无显著性检验，不据此推断优良等位基因。':trait.source?'各组按所选地点、年份的实测值统计。':'当前为先验浏览，未选择实测表型。'}</p></Panel> : <Panel title={trait.name+' · 表型对照'}><Empty>当前数据集暂无该性状的实测表型。</Empty></Panel>}</div>,
           evidence: !demo&&<>
             <HaplotypeMatches key={gene.id} gene={gene} cohort={cohort} evidence={data.evidence} review={traitReview}/>

@@ -1,0 +1,92 @@
+{
+  "@context": {
+    "@vocab": "https://rggmb-haozhenwang.github.io/RiceFlux/prior/#",
+    "rf": "https://rggmb-haozhenwang.github.io/RiceFlux/prior/#",
+    "gene": {
+      "@type": "@id"
+    },
+    "supportedBy": {
+      "@type": "@id"
+    },
+    "orderedComponents": {
+      "@container": "@list"
+    },
+    "locatedAt": {
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "rf:gnp3_s28274865_t",
+      "@type": "HaplotypeDefinition",
+      "gene": "rf:gene_LOC_Os03g49640",
+      "label": "GNP3 Hap‑T",
+      "assembly": "MSU7",
+      "supportedBy": [
+        "https://doi.org/10.1038/s41467-025-61326-8"
+      ],
+      "orderedComponents": [
+        {
+          "@type": "OrderedComponent",
+          "position": 28274865,
+          "reference": "G",
+          "reportedState": "T"
+        }
+      ]
+    },
+    {
+      "@id": "rf:gnp3_s28274865_g",
+      "@type": "HaplotypeDefinition",
+      "gene": "rf:gene_LOC_Os03g49640",
+      "label": "GNP3 Hap‑G",
+      "assembly": "MSU7",
+      "supportedBy": [
+        "https://doi.org/10.1038/s41467-025-61326-8"
+      ],
+      "orderedComponents": [
+        {
+          "@type": "OrderedComponent",
+          "position": 28274865,
+          "reference": "G",
+          "reportedState": "G"
+        }
+      ]
+    },
+    {
+      "@id": "rf:tn1_site2163_g",
+      "@type": "HaplotypeDefinition",
+      "gene": "rf:gene_Os01g0610300",
+      "label": "TN1-hapH",
+      "assembly": "IRGSP-1.0",
+      "supportedBy": [
+        "https://doi.org/10.1111/pbi.14017"
+      ],
+      "orderedComponents": [
+        {
+          "@type": "OrderedComponent",
+          "position": 24139034,
+          "reference": "G",
+          "reportedState": "G"
+        }
+      ]
+    },
+    {
+      "@id": "rf:tn1_site2163_a",
+      "@type": "HaplotypeDefinition",
+      "gene": "rf:gene_Os01g0610300",
+      "label": "TN1-hapL",
+      "assembly": "IRGSP-1.0",
+      "supportedBy": [
+        "https://doi.org/10.1111/pbi.14017"
+      ],
+      "orderedComponents": [
+        {
+          "@type": "OrderedComponent",
+          "position": 24139034,
+          "reference": "G",
+          "reportedState": "A"
+        }
+      ]
+    }
+  ]
+}

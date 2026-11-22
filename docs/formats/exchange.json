@@ -37,9 +37,35 @@
         "rf:materialMarkers",
         "rf:jointCombinations",
         "rf:jointMaterials",
+        "rf:haplotypeMapping",
         "rf:analysisSnapshot",
         "rf:priorGraph"
       ]
+    },
+    {
+      "@id": "rf:haplotypeMapping",
+      "@type": "OutputDataset",
+      "rowType": "rf:HaplotypeCorrespondence",
+      "filename": "haplotype_mapping.txt",
+      "columns": [
+        "gene_id",
+        "msu_id",
+        "assembly",
+        "chr",
+        "scheme_kind",
+        "dataset_ids",
+        "cohort_n",
+        "observed_haplotype_id",
+        "observed_sites",
+        "typed_n",
+        "source_doi",
+        "source_definition_id",
+        "source_label",
+        "source_sites",
+        "source_definition_kind",
+        "mapping_status"
+      ],
+      "keyNote": "实测型由基因、组装、染色体及正链位点等位组合标识；用 source_doi 和 source_definition_id 标识原文型。文献型名仅供显示。"
     },
     {
       "@id": "rf:ComponentMatch",
@@ -214,7 +240,8 @@
         "frequency_within_typed",
         "definition|{gene_id}",
         "grouping_dimension",
-        "dataset_versions"
+        "dataset_versions",
+        "observed_vectors"
       ],
       "keyNote": "各群体的分母是全部所选基因均可判型的材料数。"
     },

@@ -6,6 +6,7 @@ import {findGenes} from './geneSearch.js';
 import {geneEvidence,geneSupport,geneTraits,hasPhenotypes} from './provenance.js';
 import {datasetBadge,datasetTint} from './datasetColors.js';
 import {downloadTable} from './formats.js';
+import {supportsTraitAssessment} from './traitEvidence.js';
 
 const pageSize=55;
 function matchesEvidence(evidence,summary,traits,supported){
@@ -51,7 +52,7 @@ export function PriorFinder({data,onChoose,onInspect}){
   const hits=useMemo(()=>{
     if(!open)return [];
     return findGenes(data.genes,query).flatMap(gene=>{
-      if(evidence==='goal_profile'&&(!gene.catalog?.core||gene.catalog?.historical))return [];
+      if(evidence==='goal_profile'&&!supportsTraitAssessment(gene))return [];
       const linked=traitIndex.byGene.get(gene.id);
       const traits=activeTrait?linked.filter(t=>t.id===activeTrait):linked;
       if(activeTrait&&!traits.length)return [];
@@ -93,7 +94,7 @@ export function PriorFinder({data,onChoose,onInspect}){
         <select aria-label="证据与实测表型" value={evidence} onChange={change(setEvidence)}>
           <option value="all">全部证据 / All evidence</option>
           <optgroup label="实测表型 / Phenotypes">
-            <option value="goal_profile">性状目标判型 · V4 首批</option>
+            <option value="goal_profile">性状目标判型 · V4</option>
             <option value="P">P · 有实测性状</option>
             <option value="no_phenotype">关联性状均暂无实测</option>
           </optgroup>

@@ -44,7 +44,8 @@ export function JointPanel({data,genes,cohort,records,config={},onConfig}){
   const term=query.trim().toLowerCase();
   const rows=result.members.filter(({sample,key})=>(mode==='all'||(mode==='unresolved'?key===null:key===selection))&&
     matchesMaterial(sample,term));
-  const statsLabel=mode==='group'?JSON.parse(selection).join(' × '):mode==='unresolved'?'未完整判型':'全部材料';
+  const selectedGroup=result.groups.find(g=>g.key===selection);
+  const statsLabel=mode==='group'?(selectedGroup?.labels.map(readableDefinition).join(' × ')||'当前组合'):mode==='unresolved'?'未完整判型':'全部材料';
   function filterMembers(key){setSelection(key);setLimit(24);setQuery('');}
   const definitionFields=genes.map(g=>'definition|'+g.id);
   const schemeValues=Object.fromEntries(methods.map((s,i)=>[definitionFields[i],JSON.stringify({mode:s.kind,assembly:s.assembly||genes[i].assembly,chr:genes[i].chromosome,marker_ids:s.markerIds||s.markers.map(v=>v?.id??null),positions:s.positions,refs:(s.markerIds?s.markerIds.map(id=>genes[i].variants.find(v=>v.id===id)):s.markers).map(v=>v?.ref??null),ready:s.ready,doi:s.doi,definitions:s.definitions})]));
@@ -58,7 +59,7 @@ export function JointPanel({data,genes,cohort,records,config={},onConfig}){
     for(const [pop,n,typed] of [['ALL',eligible.length,result.assigned],...popIds.map(p=>[p,result.population.get(p).all,result.population.get(p).assigned])]){
       for(const group of result.groups){
         const count=pop==='ALL'?group.n:group.pops.get(pop)||0;
-        out.push({...Object.fromEntries(group.labels.map((l,i)=>[geneFields[i],l])),source_group:pop,population_n:n,joint_typed_n:typed,joint_unresolved_n:n-typed,member_n:count,frequency_within_typed:typed?count/typed:null,...schemeValues});
+        out.push({...Object.fromEntries(group.labels.map((l,i)=>[geneFields[i],l])),observed_vectors:group.key,source_group:pop,population_n:n,joint_typed_n:typed,joint_unresolved_n:n-typed,member_n:count,frequency_within_typed:typed?count/typed:null,...schemeValues});
       }
       if(!result.groups.length)out.push({source_group:pop,population_n:n,joint_typed_n:typed,joint_unresolved_n:n-typed,...schemeValues});
     }
@@ -85,7 +86,7 @@ export function JointPanel({data,genes,cohort,records,config={},onConfig}){
       {genes.map(g=><th key={g.id}>{g.name}</th>)}<th>合计 / 频率</th><th>群体组成</th>
       {popIds.map(id=><th key={id}>{data.populations.find(p=>p.id===id)?.name}<small>已判 {result.population.get(id).assigned} / {result.population.get(id).all}</small></th>)}<th>成员</th></tr></thead>
       <tbody>{result.groups.slice(0,comboLimit).map(g=><tr key={g.key} className={g.key===selection?'joint-selected':''}>
-        {g.labels.map((l,i)=><td key={genes[i].id}>{readableDefinition(l)}</td>)}<td><strong>{g.n.toLocaleString()}</strong><small>{pct(g.n,result.assigned)}</small></td><td><PopulationComposition populations={data.populations} counts={g.pops} total={g.n}/></td>
+        {g.labels.map((l,i)=><td key={genes[i].id}>{readableDefinition(l)}<small>{JSON.parse(g.key)[i]}</small></td>)}<td><strong>{g.n.toLocaleString()}</strong><small>{pct(g.n,result.assigned)}</small></td><td><PopulationComposition populations={data.populations} counts={g.pops} total={g.n}/></td>
         {popIds.map(id=><td key={id}>{g.pops.get(id)||0}<small>{pct(g.pops.get(id)||0,result.population.get(id).assigned)}</small></td>)}
         <td><button onClick={()=>{filterMembers(g.key);memberHeading.current?.focus();}}>查看成员</button></td></tr>)}</tbody></table></div>
     {!result.groups.length&&<p>当前材料及判型方案下没有完整组合。可在材料明细查看各基因的判型状态。</p>}

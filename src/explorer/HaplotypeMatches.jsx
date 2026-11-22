@@ -3,7 +3,7 @@ import React, {useMemo, useState} from 'react';
 import {DoiLinks} from './AccessionCalls.jsx';
 import {literatureDefinitions} from './jointHaplotypes.js';
 import {literatureMatches} from './model.js';
-import {countReportedAllele,effectDirections,evidenceBasis} from './traitEvidence.js';
+import {countReportedAllele,effectDirections,evidenceBasis,claimEvidenceKey,quantitativeEffectText} from './traitEvidence.js';
 
 export function HaplotypeMatches({gene,cohort,evidence,review}) {
   const [open,setOpen]=useState(false);
@@ -12,19 +12,21 @@ export function HaplotypeMatches({gene,cohort,evidence,review}) {
   const results=useMemo(()=>open?literatureMatches(gene,definitions,cohort):[],[open,gene,definitions,cohort]);
   const single=useMemo(()=>new Map((review?.claims||[]).filter(c=>c.marker_state).map(c=>[c.marker_state,countReportedAllele(gene,c,evidence,cohort)])),
     [review?.claims,gene,evidence,cohort]);
-  if(!definitions.length&&!review)return null;
+  const hasReview=Boolean(review?.claims.length||review?.record||review?.loading||review?.error);
+  if(!definitions.length&&!hasReview)return null;
   const recordedIds=new Set(definitions.map(d=>d.id));
   const alleleIds=new Set(gene.records.filter(r=>r.mode==='单个位点').map(r=>r.id));
   const matches=new Map(results.map(r=>[r.row.id,r]));
   return <>
-  {review&&<section className="reported-effects" aria-label="原文单倍型效应">
-    <div className="reported-effects-head"><h3>原文单倍型与等位效应</h3><a href="./formats/haplotype-effects.tsv" download="riceflux_haplotype_effects.txt">下载证据 TXT</a></div>
+  {hasReview&&<section className="reported-effects" aria-label="原文单倍型效应">
+    <div className="reported-effects-head"><h3>原文单倍型与等位效应</h3><a href="./formats/haplotype-effects.tsv" download="riceflux_haplotype_effects.txt">下载证据 TXT</a><a href="./formats/literature-effect-sizes.tsv" download="riceflux_literature_effect_sizes.txt">下载文献效应量 TXT</a></div>
     {review.error&&<p role="status">原文证据读取失败 · {review.error}</p>}
     {review.loading&&<p role="status">正在读取 V4 原文证据…</p>}
     {review.claims.length>0&&<ul>{review.claims.map(claim=>{
       const result=matches.get(claim.definition_id);
       const allele=single.get(claim.marker_state);
-      return <li key={claim.definition_id+claim.label+claim.trait_id}>
+      const quantities=claim.quantitativeEffects||[];
+      return <li key={claimEvidenceKey(claim)}>
         <div><strong>{claim.label}</strong>
           {claim.judgment==='favourable'&&<span className="trait-badge literature-positive">文献优势 · Favourable</span>}
           {claim.judgment==='unfavourable'&&<span className="trait-badge literature-negative">文献较弱 · Unfavourable</span>}
@@ -36,7 +38,18 @@ export function HaplotypeMatches({gene,cohort,evidence,review}) {
             (result&&` · 当前群体匹配 ${result.matched??'定义未完整覆盖'}`):
             alleleIds.has(claim.definition_id)?' · 原文单位置等位':' · 原文等位或组分待完整对应'}
         </small>
-        <p className="claim-source"><a href={'https://doi.org/'+claim.doi} target="_blank" rel="noreferrer">{claim.locator} ↗</a><small>{claim.doi}</small></p>
+        {quantities.length?quantities.map(q=><section className="quantitative-effects" key={JSON.stringify(q)} aria-label="文献效应量">
+          <p className="effect-size-comparison">{q.comparison}</p>
+          {(q.target||q.control)&&<p>目标组 {q.target?`${q.target} ${q.unit}`:'未核得'} · 对照组 {q.control?`${q.control} ${q.unit}`:'未核得'}</p>}
+          <dl className="effect-size-grid">
+            <div><dt>绝对差值</dt><dd>{quantitativeEffectText(q,'difference')}</dd></div>
+            <div><dt>相对变化</dt><dd>{quantitativeEffectText(q,'relative')}</dd></div>
+          </dl>
+          {q.note&&<p>{q.note}</p>}
+          {q.locator&&<p className="claim-source"><a href={'https://doi.org/'+claim.doi} target="_blank" rel="noreferrer">{q.locator} ↗</a></p>}
+        </section>):<p className="footnote">效应量待核</p>}
+        {claim.rice6044_context&&<p className="claim-cohort">6044 实测 · {claim.rice6044_context}</p>}
+        <p className="claim-source"><a href={'https://doi.org/'+claim.doi} target="_blank" rel="noreferrer">{quantities.some(q=>q.locator===claim.locator)?'原文 DOI':claim.locator} ↗</a><small>{claim.doi}</small></p>
       </li>;
     })}</ul>}
     {review.record&&<details open={!review.claims.length}>
