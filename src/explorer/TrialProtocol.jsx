@@ -10,6 +10,6 @@ export function TrialProtocol({record}) {
     {record.quality_control&&<><dt>原研究质控 / Source QC</dt><dd>{record.quality_control}</dd></>}
     {record.standard&&<><dt>测定依据 / Standard</dt><dd>{record.standard}</dd></>}
     {record.protocol_gap&&<><dt>待核 / Pending</dt><dd>{record.protocol_gap}</dd></>}
-    {(record.source_doi||record.source_note)&&<><dt>溯源 / Source</dt><dd>{record.source_table&&`${record.source_table} · 列 ${record.column} · `}{record.protocol_locator&&`${record.protocol_locator} · `}{record.source_doi?<a href={'https://doi.org/'+record.source_doi} target="_blank" rel="noreferrer">原文 DOI</a>:record.source_note}</dd></>}
+    {(record.source_doi||record.source_url||record.source_note)&&<><dt>溯源 / Source</dt><dd>{record.source_table&&<>{record.source_table}{record.column&&` · 列 ${record.column}`} · </>}{record.protocol_locator&&`${record.protocol_locator} · `}{record.source_doi?<a href={'https://doi.org/'+record.source_doi} target="_blank" rel="noreferrer">原文 DOI</a>:record.source_url?.startsWith('https://')?<a href={record.source_url} target="_blank" rel="noreferrer">{record.source_note||'来源数据'}</a>:record.source_note}</dd></>}
   </dl>;
 }

@@ -1,6 +1,7 @@
 export const pavStates={'1':'present','0':'absent','.':'unknown','-':'unassayed'};
 export const pavNames={present:'存在',absent:'缺失',unknown:'未判定',unassayed:'未覆盖'};
 export const pavFields=['pav_id','gene_id','source_gene_id','source_id','states'];
+export const pavVariantFields=['event_type','length_change_bp','chr','position','ref','alt','source_record_id'];
 export const checkPavFields=['sample_id','gene_id','source_gene_id','status','method','source'];
 
 export function pavState(assay,sample) {

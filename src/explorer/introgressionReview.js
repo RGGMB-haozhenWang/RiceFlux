@@ -26,8 +26,8 @@ function validHaplotype(row) {
   for(const entry of vector){
     if(!Array.isArray(entry)||entry.length!==2)return false;
     const [key,state]=entry;
-    if(typeof key!=='string'||typeof state!=='string'||!/^([1-9]\d*):[ACGT]{1,51}:(SNP|InDel)$/.test(key)||
-      !Number.isSafeInteger(Number(key.split(':')[0]))||!/^[ACGT]{1,51}$/.test(state))return false;
+    if(typeof key!=='string'||typeof state!=='string'||!/^([1-9]\d*):[ACGT]+:(SNP|InDel)$/.test(key)||
+      !Number.isSafeInteger(Number(key.split(':')[0]))||!/^[ACGT]+$/.test(state))return false;
     const [,ref,kind]=key.split(':');
     if(kind==='SNP'&&(ref.length!==1||state.length!==1))return false;
     keys.push(key);

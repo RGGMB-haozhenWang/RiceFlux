@@ -69,3 +69,71 @@ test('PAV contracts distinguish absent, undetermined, unassayed and published ag
   assert.equal(pavState(data.pav[1],data.individuals[0]),'unassayed');
   assert.throws(()=>createLocalDataset({samples,pav:pav.replace('10.-','10.?')},{...metadata,provenance:{schema:'RiceFlux provenance 1.0',sources}},reference),/状态/);
 });
+
+test('literal PAV threshold uses absolute allele delta for 49, 50 and 51 bp in both directions',()=>{
+  for(const size of [49,50,51])for(const kind of ['INS','DEL']){
+    const long='A'+'C'.repeat(size),ref=kind==='INS'?'A':long,alt=kind==='INS'?long:'A';
+    const text=header+'ALT\tREF\tHET\tPARTIAL\n'+
+      `1\t101\tevent\t${ref}\t${alt}\t.\tPASS\t.\tGT\t1/1\t0/0\t0/1\t1/.\n`;
+    const parsed=readVcf(text,[gene]);
+    assert.equal(parsed.pavRecords.length,size>=50?1:0);
+    assert.equal(parsed.records.length,size<50?1:0);
+    if(size>=50){
+      const [event]=parsed.pavRecords;
+      assert.equal(event.kind,kind);
+      assert.equal(event.lengthChange,kind==='INS'?size:-size);
+      assert.equal(event.states,kind==='INS'?'10..':'01..');
+      assert.equal(event.originalId,'event');
+    }
+  }
+});
+
+test('mixed short and long ALT preserve original indices and mask only each long allele',()=>{
+  const long='A'+'C'.repeat(50);
+  const text=header+'LONG\tSHORT\tMIXED\tOTHER\tPARTIAL\n'+
+    `1\t101\tmixed\tA\t${long},T\t.\tPASS\t.\tGT\t1/1\t2/2\t1|2\t0/0\t./2\n`;
+  const parsed=readVcf(text,[gene]);
+  assert.deepEqual(parsed.records[0].alts,['T']);
+  assert.deepEqual(parsed.records[0].calls,['./.','1/1','./1','0/0','./1']);
+  assert.equal(parsed.records[0].id,marker.id);
+  assert.equal(parsed.pavRecords[0].states,'1..0.');
+  const checked=readVcf(text.replace('LONG\tSHORT\tMIXED\tOTHER\tPARTIAL','MIXED').replace('1/1\t2/2\t1|2\t0/0\t./2','1|2'),[gene],{registeredOnly:true,checkOnly:true});
+  assert.deepEqual(checked.records[0].calls,[[null,1]]);
+  assert.equal(checked.pavRecords[0].states,'.');
+});
+
+test('PAV rows retain unknown states for sample and record filters and do not infer absence',()=>{
+  const long='A'+'C'.repeat(50);
+  const text=header+'PASS\tFILTERED\n'+
+    `1\t101\tpass\tA\t${long}\t.\tPASS\t.\tGT:FT\t1/1:PASS\t0/0:LowDP\n`+
+    `1\t102\tfiltered\tA\t${long}\t.\tLowQual\t.\tGT\t1/1\t0/0\n`;
+  const parsed=readVcf(text,[gene],{registeredOnly:true});
+  assert.deepEqual(parsed.pavRecords.map(e=>e.states),['1.','..']);
+  assert.equal(parsed.records.length,0);
+  assert.deepEqual(parsed.issues.map(i=>i.reason),['filtered']);
+  assert.deepEqual(readVcf(header+'S\n',[gene]).pavRecords,[]);
+});
+
+test('PAV helpers reject unsupported replacements and do not call other ALT homozygotes',async()=>{
+  const {splitIndelAlleles,pavIndelState,pavIndelId}=await import('./indelPav.js');
+  const long='A'+'C'.repeat(50);
+  const split=splitIndelAlleles('A',['T',long,'AA']);
+  assert.deepEqual(split.shortAlts,['T','AA']);
+  assert.deepEqual(split.shortIndexes,[1,3]);
+  assert.equal(split.events[0].altIndex,2);
+  assert.equal(pavIndelState([1,1],split.events[0]),'.');
+  assert.equal(pavIndelState([null,2],split.events[0]),'.');
+  assert.equal(pavIndelState([2,2],split.events[0]),'1');
+  assert.equal(pavIndelId(1,101,'A',long),pavIndelId(1,101,'A',long));
+  assert.deepEqual(splitIndelAlleles('A',['<DEL>'],'SVLEN=-50').unsupportedIndexes,[1]);
+  assert.deepEqual(splitIndelAlleles('A',['C'.repeat(51)]).events,[]);
+});
+
+test('PAV rejects unmatched coordinates, ambiguous gene mapping and invalid GT',()=>{
+  const long='A'+'C'.repeat(50),row=`1\t101\tp\tA\t${long}\t.\tPASS\t.\tGT\t1/1\n`;
+  assert.equal(readVcf(header+'S\n'+row.replace('\t101\t','\t121\t'),[gene],{registeredOnly:true}).pavRecords.length,0);
+  assert.equal(readVcf(header+'S\n'+row,[gene,{...gene,id:'g2'}]).issues[0].reason,'ambiguous_gene');
+  assert.throws(()=>readVcf(header+'S\n'+row.replace('1/1','2/2'),[gene]),/GT/);
+  const checked=readVcf(header+'S\n'+row.replace('1/1','1'),[gene],{checkOnly:true,registeredOnly:true});
+  assert.equal(checked.pavRecords[0].states,'.');
+});

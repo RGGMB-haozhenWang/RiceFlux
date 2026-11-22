@@ -7,17 +7,23 @@ import {phenotypeAxes} from './analysis.js';
 import {evidenceRows,evidenceColumns} from './evidence.js';
 import {pavState} from './pav.js';
 
-// Small uncompressed ZIP writer for independently readable UTF-8 tables.
-export function zipTables(files){
+// Exact-name stored ZIP writer; payloads may already be gzip-compressed.
+export function zipBytes(files){
   const enc=new TextEncoder(),parts=[],central=[];let offset=0;
   const crc=bytes=>{let c=0xffffffff;for(const b of bytes){c^=b;for(let i=0;i<8;i++)c=(c>>>1)^((c&1)?0xedb88320:0);}return (c^0xffffffff)>>>0;};
-  for(const [name,text] of Object.entries(files)){
-    const n=enc.encode(textFilename(name)),b=enc.encode(text),sum=crc(b),h=new Uint8Array(30+n.length),v=new DataView(h.buffer);
+  for(const [name,b] of Array.isArray(files)?files:Object.entries(files)){
+    if(typeof name!=='string'||!name||name.startsWith('/')||name.split('/').some(part=>!part||part==='.'||part==='..')||name.includes('\\')||!(b instanceof Uint8Array))throw Error('ZIP 成员名称或内容无效');
+    const n=enc.encode(name),sum=crc(b),h=new Uint8Array(30+n.length),v=new DataView(h.buffer);
     v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);v.setUint32(14,sum,true);v.setUint32(18,b.length,true);v.setUint32(22,b.length,true);v.setUint16(26,n.length,true);h.set(n,30);
     const c=new Uint8Array(46+n.length),d=new DataView(c.buffer);d.setUint32(0,0x02014b50,true);d.setUint16(4,20,true);d.setUint16(6,20,true);d.setUint16(8,0x800,true);d.setUint32(16,sum,true);d.setUint32(20,b.length,true);d.setUint32(24,b.length,true);d.setUint16(28,n.length,true);d.setUint32(42,offset,true);c.set(n,46);central.push(c);parts.push(h,b);offset+=h.length+b.length;
   }
   const end=new Uint8Array(22),v=new DataView(end.buffer);v.setUint32(0,0x06054b50,true);v.setUint16(8,central.length,true);v.setUint16(10,central.length,true);v.setUint32(12,central.reduce((n,b)=>n+b.length,0),true);v.setUint32(16,offset,true);
   return new Blob([...parts,...central,end],{type:'application/zip'});
+}
+// Keep the table-export API and its TSV-to-TXT filenames unchanged.
+export function zipTables(files){
+  const enc=new TextEncoder();
+  return zipBytes(Object.entries(files).map(([name,text])=>[textFilename(name),enc.encode(text)]));
 }
 export function materialTables(rows,reference,axes){
   return {

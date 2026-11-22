@@ -2,7 +2,7 @@ import {alleleNames,callPair} from './alleles.js';
 import {callOf,isAssayed} from './catalog.js';
 import {readTable} from './datasets.js';
 import {typeMaterial} from './jointHaplotypes.js';
-import {checkPavFields,pavNames} from './pav.js';
+import {checkPavFields,pavNames,pavStates} from './pav.js';
 import {isVcf,readVcf} from './vcf.js';
 
 export const checkGenotypeFields=['sample_id','marker_id','genotype'];
@@ -38,6 +38,12 @@ export function parseMaterialCheck(texts,markers,evidence='G_mixed',genes=[]){
         if(status!=='invalid')calls.set(record.id,pair);
         submitted.push({marker_id:record.id,genotype,status,note,marker_type:record.kind,source_record_id:record.originalId,
           chr:'Chr'+record.chr,position:record.position,ref:record.ref,alt:record.alts.join(',')});
+      }
+      for(const record of vcf.pavRecords||[]){
+        const gene=genes.find(item=>item.id===record.gene);
+        pav.push({pav_id:record.id,gene_id:record.gene,gene:gene?.name||record.gene,
+          source_gene_id:record.gene,status:pavStates[record.states[0]],method:'VCF GT · 片段 PAV',
+          source:`Chr${record.chr}:${record.position} · ${record.kind} ${Math.abs(record.lengthChange)} bp · ${record.originalId}`});
       }
       for(const issue of vcf.issues)submitted.push({...issue,marker_id:`${issue.chr}:${issue.position} · 行 ${issue.row}`,
         status:issue.reason==='unregistered'||issue.reason==='outside_catalog'?'unknown':'excluded',note:issue.reason});

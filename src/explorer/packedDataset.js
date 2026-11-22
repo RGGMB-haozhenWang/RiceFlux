@@ -18,7 +18,17 @@ export async function verifiedAsset(ref,read,signal){
 export async function openPackedDataset(manifest,read,readSource,reference,signal){
   const index=manifest.packed;
   if(index?.schema!==packedSchema||!Array.isArray(index.blocks))throw Error('数据分片版本无效');
-  const texts=JSON.parse(new TextDecoder().decode(await verifiedAsset(index.axes,read,signal)));
+  const decode=async ref=>JSON.parse(new TextDecoder().decode(await verifiedAsset(ref,read,signal)));
+  const [texts,phenotype]=await Promise.all([decode(index.axes),index.phenotype_axes?decode(index.phenotype_axes):null]);
+  if(index.phenotype_axes){
+    const keys=['environments','phenotypes'];
+    if(!phenotype||Object.keys(phenotype).length!==keys.length)throw Error('表型分片仅接受试验与测值两表');
+    for(const key of keys){
+      if(typeof phenotype[key]!=='string'||await sha256Text(phenotype[key])!==manifest.sha256?.[key])
+        throw Error('表型分片输入表哈希不匹配：'+key);
+      texts[key]=phenotype[key];
+    }
+  }
   if(!packedAxes(manifest).every(key=>typeof texts[key]==='string'))throw Error('数据轴分片缺少输入表');
   const axes=parseDatasetAxes(manifest,texts,reference);
   const {samples,variants}=axes,byId=new Map(variants.map(v=>[v.id,v])),seen=new Set();

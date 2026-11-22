@@ -500,7 +500,7 @@ function App() {
                 '在数据接口载入 '+availableSources.map(r=>r.badge).join(' / ')+' 查看该基因的位点。':
                 '当前数据集没有该基因的目标位点。'}</Empty>}
             </div>
-            {!demo&&<PavPanel gene={gene} cohort={cohort} populations={data.populations}/>}
+            {!demo&&<PavPanel key={gene.id} gene={gene} cohort={cohort} populations={data.populations} variants={variants} view={view}/>}
             <details className="locus-details">
               <summary>参考模型与原始分型</summary>
               <p className="footnote">{demo?'坐标与结构均来自 SIM-RICE-v1 虚拟组装，非真实水稻注释或 AtFLM 坐标。':

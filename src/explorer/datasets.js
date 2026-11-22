@@ -1,10 +1,11 @@
 import {chromNum,lengths} from './exchange.js';
 import {writeTSV} from './formats.js';
 import {sha256Text} from './sha256.js';
-import {alleleNames,callPair,markerKind,missingPair,packedCall,packCall,variantKey} from './alleles.js';
+import {alleleNames,callPair,literalAllele,markerKind,missingPair,packedCall,packCall,pavThreshold,variantKey} from './alleles.js';
 import {sourceColor} from './datasetColors.js';
 import {provenanceSources} from './provenance.js';
 import {datasetIntake,manifestFields} from './inputSchema.js';
+import {pavVariantFields} from './pav.js';
 
 const inputTables=datasetIntake.tables;
 export const datasetFiles=Object.keys(inputTables).filter(key=>inputTables[key].requiredInPackage);
@@ -95,7 +96,17 @@ export function parseDatasetAxes(manifest,texts,reference){
   };
   const pav=manifest.files?.pav?intakeTable(texts,'pav').objects().map(row=>{
     requireValue(row.states.length===samples.length&&/^[10.-]+$/.test(row.states),'PAV 状态或材料轴不匹配：'+row.pav_id);
-    return {...findPavGene(row),states:row.states,sampleIndex};
+    const assay=findPavGene(row);
+    if(!pavVariantFields.some(field=>row[field]))return {...assay,states:row.states,sampleIndex};
+    const kind=row.event_type,lengthChange=Number(row.length_change_bp),chr=chromNum(row.chr),position=Number(row.position);
+    const gene=genesByKey.get(row.gene_id)?.[0];
+    const alleleMatch=literalAllele.test(row.alt)&&row.alt.length-row.ref.length===lengthChange&&
+      (kind==='INS'?row.alt.startsWith(row.ref):row.ref.startsWith(row.alt));
+    requireValue(Number.isSafeInteger(lengthChange)&&((kind==='INS'&&lengthChange>=pavThreshold)||(kind==='DEL'&&lengthChange<=-pavThreshold))&&
+      literalAllele.test(row.ref)&&alleleMatch&&gene?.model&&chr===chromNum(gene.chromosome)&&Number.isSafeInteger(position)&&
+      position>=gene.start&&position<=gene.end&&position+Math.max(row.ref.length-1,kind==='DEL'?-lengthChange:0)<=lengths[chr],
+      'InDel 片段 PAV 的组装、坐标、长度或等位定义无效：'+row.pav_id);
+    return {...assay,states:row.states,sampleIndex,event:{kind,lengthChange,chr,position,ref:row.ref,alt:row.alt,originalId:row.source_record_id}};
   }):[];
   const summaries=new Map();
   if(manifest.files?.pav_summary){
@@ -114,7 +125,9 @@ export function parseDatasetAxes(manifest,texts,reference){
     pav.push(...summaries.values());
   }
   unique(pav,'id','PAV');
-  requireValue(new Set(pav.map(r=>r.source.id+'|'+r.sourceGene)).size===pav.length,'同一 PAV 来源内原始基因编号重复。');
+  requireValue(new Set(pav.map(r=>JSON.stringify([r.source.id,r.event?'fragment':'gene',
+    r.event?[r.event.chr,r.event.position,r.event.ref,r.event.alt,r.event.lengthChange]:r.sourceGene]))).size===pav.length,
+    '同一 PAV 来源内的原始基因或片段定义重复。');
   const descriptors=new Map(),descriptorsSeen=new Set();
   if(manifest.files?.descriptors){
     for(const row of intakeTable(texts,'descriptors').objects()){

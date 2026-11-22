@@ -5,7 +5,7 @@ RiceFlux 数据接口 / Load data · Tables 1.2
 
 四种导入方式 / Import modes
 1. 完整数据包。选择 manifest.json 和其中声明的基础表及可选表。兼容 RiceFlux tables 1.0 和 1.1。
-2. 新建本地数据集。填写名称与来源。SNP 和短 InDel 使用同一份 VCF，可同时提交材料表与表型表。已整理的 TXT 两表也可直接导入。
+2. 新建本地数据集。填写名称与来源。SNP、短 InDel 和 ≥50 bp 片段 PAV 使用同一份 VCF，可同时提交材料表与表型表。已整理的 TXT 两表也可直接导入。
 3. 追加表型。先预览目标数据集，再选 environments.tsv、phenotypes.tsv。按该数据集的 sample_id 连接。环境 ID 与试验键须新增，既有分型、表型值和底表版本均保留。
 4. 追加基因型。先预览仅表型的数据集，再选 VCF 或两张基因型表。已有分型的数据集可将另一批基因型作为独立版本导入。
 本地数据在浏览器中处理。点击“应用数据集”生效。我的工作区可保存；基于内置数据集追加时仅保存新增表和底表版本。
@@ -29,7 +29,7 @@ variants.tsv
   marker_id gene_id chr position ref alt
   每个染色体、坐标、REF 和变异类型组合一行。gene_id 是唯一的 MSU/RAP ID。正链，1-based。坐标须落入模型允许区间。
   SNP 的 ref 为 A/C/G/T。alt 可有一个或多个正链替代碱基，如 G,C。保留表中的 ALT 顺序，无已登记 ALT 可填 NA。不同数据集的相同位点使用同 marker_id、基因、染色体、坐标和 REF，ALT 集合可不同。
-  1.2 可导入已按参考基因组核验和规范化的简单锚定短 InDel。使用正链全序列，例如 A→AT 或 CT→C。每等位含锚定碱基至多 51 nt。单数据集和合并后均最多四种等位，包括 REF。大型 SV、符号 ALT、复杂事件和分相另用专用格式。
+  1.2 可导入已按参考基因组核验和规范化的简单锚定短 InDel。使用正链全序列，例如 A→AT 或 CT→C。长度变化 1–49 bp 记为短 InDel。每条 ALT 分别用 abs(len(ALT) - len(REF)) 计算变化。单数据集和合并后均最多四种等位，包括 REF。变化 ≥50 bp 的锚定 InDel 在导入时归入片段 PAV。符号 ALT、复杂事件和未定长变异需要另行整理。
 genotypes.tsv
   sample_id <marker_id...>
   位点列与 variants 相符。samples 的每个编号有一行。分型为未分相二倍体，如 A/G、G/C、A/.、./.；也接受等位编号 0/0、1/2、2/.。0 指 REF，1/2/3 按本表 ALT 顺序。跨数据集合并时以实际碱基重编码。两个 ALT 的杂合状态保留。
@@ -41,7 +41,7 @@ phenotypes.tsv
   sample_id <environment_id...>
   一份材料最多一行，数值或 NA。缺行表示无记录。分型无表型时，环境与表型表可仅含表头。表型无分型时，位点表仅含表头，分型表仅有 sample_id 列。
 
-VCF / SNP and short InDel
+VCF / SNP, short InDel and fragment PAV
   接收区域 .vcf、.vcf.gz 和 .vcf.bgz。浏览器上限 32 MiB 解压后字节。使用 VCF 4.x、IRGSP-1.0/MSU7 正链与规范化等位序列。
   一份文件包含唯一的材料编号和 FORMAT/GT。提交材料表时，其 ID 集合须与 VCF 完全一致。分析按等位序列读未分相二倍体；材料体检保留原 GT 字符。
   PASS 与未执行 FILTER 的 . 接入。失败的 FILTER 与不支持的位点用于导入审计。样本 FT 过滤、./. 和部分缺测保留。只有显式 GT 0/0 记为纯合 REF。
@@ -50,6 +50,7 @@ VCF / SNP and short InDel
 PAV 与分类表型 / Optional data
   pav.tsv: pav_id gene_id source_gene_id source_id states
   每行一个 PAV 对象。states 与 samples.tsv 顺序一一对应：1 存在、0 缺失、. 未判定、- 未覆盖。gene_id 可留空，保留原始 pan gene ID。追加或重排样本时须一起更新 states。
+  片段 PAV 可追加 event_type, length_change_bp, chr, position, ref, alt, source_record_id。INS 的纯合 ALT 表示片段存在，DEL 的纯合 ALT 表示片段缺失；纯合 REF 含义相反。杂合、部分缺失、过滤和其他 ALT 为未判定；缺少 VCF 记录无法判断。片段记录与基因 PAV 的对象各自独立。
   pav_summary.tsv: pav_id gene_id source_gene_id source_id population present denominator
   原出版物的群体汇总有自己的固定分母，界面按来源显示。汇总表无法反推逐材料调用。
   descriptors.tsv: sample_id descriptor_id descriptor value_code value_label site crop_year dictionary_id source_id source_record_id

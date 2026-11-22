@@ -7,7 +7,7 @@ A static rice genetics workbench for genes, genotype combinations and accessions
 
 - **D1**: 6044 份名录材料（5222 现代品种、822 地方品种），1067 SNP。
 - **D2**: RiceNavi 404 份材料，23 个严格匹配 SNP，18 个基因；完整来源库另保留 319 条位点记录。
-- **D3** 为 3K 的 3,024 份材料。扩展数据包含基因区域 SNP、InDel 和原始群体注释。
+- **D3** 为 3K 的 3,024 份材料，包含基因区域 SNP、InDel、历史分类描述和逐材料表型。定量性状保留试验、单位与原始数值，抗病性状按菌株比较。来源见数据集溯源档案和表型图内的「鉴定与地点溯源」。 [RFGB](https://rfgbv2.rmbreeding.cn/phenotype) · [白叶枯病](https://doi.org/10.1186/s12284-021-00462-3) · [叶瘟](https://doi.org/10.1038/s42003-024-06244-z)
 - **基因目录 / Gene catalog** 按 MSU、RAP 和别名查询。点击 InDel 徽标或区域图标记，可查看各数据集版本的坐标、等位序列、有效分母和来源。
 - **证据 / Evidence**: 数据集覆盖、文献功能位点、单倍型组分与调用质量分别标注。6044 的表型列附原文测定规程、地点与指标。
 - **表型评价 / Phenotype assessment** 按 V4 首批 50 个基因开放。相对性状可设置区间，绝对性状按已登记测定方向判断。原文单倍型效应附性状、比较范围与 DOI。 [性状规范](public/formats/trait-assessment.json) · [首批基因](public/prior/core50_genes.tsv)

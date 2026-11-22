@@ -4,6 +4,10 @@ import {readVcf} from './vcf.js';
 import {sha256Text} from './sha256.js';
 import {datasetIntake,manifestFields,validateTablePairs} from './inputSchema.js';
 import {provenanceSources} from './provenance.js';
+import {pavFields,pavVariantFields} from './pav.js';
+import {splitIndelAlleles,pavIndelState,pavIndelId} from './indelPav.js';
+import {callPair} from './alleles.js';
+import {chromNum} from './exchange.js';
 
 export async function fileText(file) {
   const bytes=new Uint8Array(await file.arrayBuffer());
@@ -50,20 +54,34 @@ export async function vcfFileText(file) {
   return text+decoder.decode();
 }
 
-export function vcfToTables(vcf, samples, sourceId) {
+export function mergePavTables(...values){
+  const tables=values.filter(Boolean).map(value=>readTable(value,pavFields,'PAV'));
+  if(!tables.length)return undefined;
+  if(tables.length===1)return values.find(Boolean);
+  return writeTSV([...new Set(tables.flatMap(table=>table.fields))],tables.flatMap(table=>table.objects()));
+}
+
+export function vcfPavRows(records,sampleIndices,sourceId){
+  return records.map(r=>({pav_id:r.id,gene_id:r.gene,source_gene_id:r.gene,source_id:sourceId,
+    states:sampleIndices.map(i=>r.states[i]).join(''),event_type:r.kind,length_change_bp:r.lengthChange,
+    chr:'Chr'+r.chr,position:r.position,ref:r.ref,alt:r.alt,source_record_id:r.originalId}));
+}
+
+export function vcfToTables(vcf, samples, sourceId, pavSourceId='input_vcf_pav') {
   const {records}=vcf;
   const axis=new Map(vcf.samples.map((id,i)=>[id,i]));
   if(samples.length!==axis.size||new Set(samples).size!==axis.size||samples.some(id=>!axis.has(id)))
     throw Error('VCF 与材料表须登记同一组 sample_id。');
-  if(!records.length)throw Error('VCF 没有可接入的基因区 SNP 或 InDel。'+(vcf.issues[0]?' 首条未接入原因 '+vcf.issues[0].reason:''));
+  if(!records.length&&!vcf.pavRecords?.length)throw Error('VCF 没有可接入的基因区 SNP、短 InDel 或 PAV。'+(vcf.issues[0]?' 首条未接入原因 '+vcf.issues[0].reason:''));
   const fields=['marker_id','gene_id','chr','position','ref','alt','source_id','source_record_id','source_filter','reference_check'];
   const variants=writeTSV(fields,records.map(r=>({marker_id:r.id,gene_id:r.gene,chr:'Chr'+r.chr,position:r.position,ref:r.ref,alt:r.alts.join(','),
     source_id:sourceId||r.sourceId,source_record_id:r.originalId,source_filter:r.filter,reference_check:r.referenceCheck})));
-  const genotypes=['sample_id\t'+records.map(r=>r.id).join('\t'),...samples.map(id=>{
+  const genotypes=[['sample_id',...records.map(r=>r.id)].join('\t'),...samples.map(id=>{
     const index=axis.get(id);
-    return id+'\t'+records.map(r=>r.calls[index]).join('\t');
+    return [id,...records.map(r=>r.calls[index])].join('\t');
   })].join('\n')+'\n';
-  return {variants,genotypes};
+  const pav=vcf.pavRecords?.length?writeTSV([...pavFields,...pavVariantFields],vcfPavRows(vcf.pavRecords,samples.map(id=>axis.get(id)),pavSourceId)):undefined;
+  return {variants,genotypes,...pav&&{pav}};
 }
 
 export async function importVcfInput(text, patch, metadata, reference, name) {
@@ -71,24 +89,74 @@ export async function importVcfInput(text, patch, metadata, reference, name) {
   const samples=patch.samples||writeTSV(['sample_id','name','source_group','subspecies','region','material_type'],
     vcf.samples.map(id=>({sample_id:id,name:id,source_group:'NA',subspecies:'NA',region:'NA',material_type:'unclassified'})));
   const ids=readTable(samples,['sample_id'],'samples').objects().map(row=>row.sample_id);
-  const inputs=vcfToTables(vcf,ids,'input_vcf');
   const digest=await sha256Text(text);
+  const pavSourceId='input_vcf_pav_'+digest.slice(0,12);
+  const inputs=vcfToTables(vcf,ids,'input_vcf',pavSourceId);
   const counts=Object.fromEntries([...new Set(vcf.issues.map(r=>r.reason))].map(reason=>[reason,vcf.issues.filter(r=>r.reason===reason).length]));
-  const provenance={schema:'RiceFlux provenance 1.0',sources:[{
+  const genotypeSource={
     id:'input_vcf',role:'genotype',release:metadata.version,citation:metadata.source,method:'VCF GT',assembly:vcf.assembly||'IRGSP-1.0/MSU7 (user input contract)',
     files:[{name,sha256:digest,hash_scope:'decoded UTF-8 VCF'}],
-  }],transformation:'Registry REF where available; other REF declared by the submitter. Diploid GT allele states displayed unphased.',
-  coverage:{vcf_records:vcf.records.length,vcf_skipped:vcf.issues.length,phased_calls:vcf.phased,filter_not_applied:vcf.unfiltered},exclusions:counts};
-  return {patch:{...patch,samples,...inputs},provenance,issues:vcf.issues};
+  };
+  const pavSource={...genotypeSource,id:pavSourceId,role:'pav',method:'VCF GT · ≥50 bp 片段存在/缺失'};
+  const provenance={schema:'RiceFlux provenance 1.0',sources:[genotypeSource,...inputs.pav?[pavSource]:[]],
+    transformation:'Registry REF where available. Length change ≥50 bp is represented as fragment PAV; unresolved GT is unknown.',
+    coverage:{vcf_records:vcf.records.length,pav_events:vcf.pavRecords?.length??0,vcf_skipped:vcf.issues.length,phased_calls:vcf.phased,filter_not_applied:vcf.unfiltered},exclusions:counts};
+  const pav=mergePavTables(patch.pav,inputs.pav);
+  return {patch:{...patch,samples,...inputs,...pav&&{pav}},provenance,issues:vcf.issues};
 }
 
 const files=Object.fromEntries(datasetFiles.map(key=>[key,key+'.tsv']));
 const empty=Object.fromEntries(datasetFiles.filter(key=>key!=='samples').map(key=>[key,datasetIntake.tables[key].columns.join('\t')+'\n']));
 const compactField=s=>s.trim().replace(/[\t\r\n]+/g,' ');
 
+function normalizeVariantTables(patch,metadata) {
+  if(!patch.variants||!patch.genotypes)return [patch,metadata];
+  const axes=readTable(patch.variants,datasetIntake.tables.variants.columns,'variants');
+  const extracted=new Map(),retained=[];
+  for(const row of axes.objects()){
+    const alts=row.alt.split(','),split=splitIndelAlleles(row.ref,alts);
+    if(!split.events.length){retained.push(row);continue;}
+    if(extracted.has(row.marker_id)||split.unsupportedIndexes.length)
+      throw Error('无法安全分流 variants 位点：'+row.marker_id);
+    const records=split.events.map(event=>({...event,id:pavIndelId(chromNum(row.chr),Number(row.position),event.ref,event.alt),
+      gene:row.gene_id,chr:chromNum(row.chr),position:Number(row.position),originalId:row.source_record_id||row.marker_id,states:[]}));
+    extracted.set(row.marker_id,{alleles:[row.ref,...alts],shortIndexes:split.shortIndexes,records});
+    if(split.shortAlts.length)retained.push({...row,alt:split.shortAlts.join(',')});
+  }
+  if(!extracted.size)return [patch,metadata];
+  const genotypes=readTable(patch.genotypes,['sample_id'],'genotypes');
+  const originalIds=axes.objects().map(row=>row.marker_id);
+  const sampleIds=readTable(patch.samples,['sample_id'],'samples').objects().map(row=>row.sample_id);
+  const bySample=new Map(genotypes.objects().map(row=>[row.sample_id,row]));
+  if(genotypes.fields[0]!=='sample_id'||originalIds.length!==new Set(originalIds).size||
+    genotypes.fields.length!==originalIds.length+1||originalIds.some(id=>!genotypes.fields.includes(id))||
+    bySample.size!==genotypes.rows.length||genotypes.rows.length!==sampleIds.length||
+    sampleIds.some(id=>!bySample.has(id)))
+    throw Error('分流前 variants、genotypes 与 samples 的位点或样本轴不一致');
+  const genotypeRows=sampleIds.map(id=>{
+    const row=bySample.get(id);
+    for(const [marker,{alleles,shortIndexes,records}] of extracted){
+      let pair;
+      try{pair=callPair(row[marker],alleles);}catch(error){throw Error(id+' '+marker+'：'+error.message);}
+      for(const record of records)record.states.push(pavIndelState(pair,record));
+      row[marker]=pair.map(a=>a===0?'0':a!==null&&shortIndexes.includes(a)?shortIndexes.indexOf(a)+1:'.').join('/');
+    }
+    return row;
+  });
+  const records=[...extracted.values()].flatMap(item=>item.records);
+  const origin='input_table_pav';
+  const sources=metadata.provenance?.sources||[];
+  const source={id:origin,role:'pav',release:metadata.version,citation:metadata.source,method:'variants 与 genotypes · ≥50 bp 锚定片段存在/缺失'};
+  const pav=writeTSV([...pavFields,...pavVariantFields],vcfPavRows(records,sampleIds.map((_,i)=>i),origin));
+  return [{...patch,variants:writeTSV(axes.fields,retained),genotypes:writeTSV(['sample_id',...retained.map(row=>row.marker_id)],genotypeRows),
+    pav:mergePavTables(patch.pav,pav)},
+  {...metadata,provenance:{schema:'RiceFlux provenance 1.0',...metadata.provenance,sources:[...sources,source]}}];
+}
+
 export function createLocalDataset(patch, metadata, reference) {
   if(!patch.samples)throw Error('新建数据集需要 samples.txt 或 samples.tsv');
   validateTablePairs(Object.keys(patch).filter(key=>patch[key]));
+  [patch,metadata]=normalizeVariantTables(patch,metadata);
   if(!patch.genotypes&&!patch.phenotypes&&!optionalDatasetTables.some(key=>patch[key]))throw Error('请提供分型、表型或 PAV');
   const template=readTable(patch.samples,['sample_id'],'samples');
   const genotypes=writeTSV(['sample_id'],template.objects());
@@ -130,9 +198,13 @@ export function extendDataset(base, kind, input, metadata, reference) {
   }else{
     if(base.variants.length)throw Error('该数据集已有基因型。请将另一批分型作为独立数据集导入');
     if(!input.variants||!input.genotypes)throw Error('请选择 variants.tsv 和 genotypes.tsv');
-    patch={variants:input.variants,genotypes:input.genotypes};
+    let normalized;
+    [normalized,metadata]=normalizeVariantTables({...input,samples:base.texts.samples},metadata);
+    const pav=mergePavTables(base.texts.pav,normalized.pav);
+    patch={variants:normalized.variants,genotypes:normalized.genotypes,...pav&&{pav}};
   }
-  const manifest={...base.manifest,version:metadata.version,schema:'RiceFlux tables 1.2',files:{...base.manifest.files,...files},
+  const manifest={...base.manifest,version:metadata.version,schema:'RiceFlux tables 1.2',
+    files:{...base.manifest.files,...files,...patch.pav&&{pav:'pav.tsv'}},
     genotype_evidence:kind==='genotypes'?metadata.genotype_evidence:base.manifest.genotype_evidence,
     source:kind==='genotypes'?source:base.manifest.source,
     supplements:[...(base.manifest.supplements||[]),{kind,source}],
@@ -140,7 +212,7 @@ export function extendDataset(base, kind, input, metadata, reference) {
   delete manifest.sha256;
   delete manifest.counts;
   const next=parseDataset(manifest,{...base.texts,...patch},reference);
-  if(kind==='genotypes'&&!next.variants.length)throw Error('新增位点表没有记录');
+  if(kind==='genotypes'&&!next.variants.length&&next.pav.length===(base.pav?.length??0))throw Error('新增位点表没有记录');
   return next;
 }
 

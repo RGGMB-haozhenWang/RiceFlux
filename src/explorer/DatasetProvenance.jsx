@@ -8,18 +8,27 @@ export function DatasetProvenance({data,bundle}){
   const {manifest,samples,variants,environments,pav,descriptors}=bundle,datasetId=manifest.id;
   const archive=manifest.provenance;
   const [envId,setEnv]=useState('');
+  const [zipBusy,setZipBusy]=useState(false),[zipError,setZipError]=useState('');
+  async function downloadArchive(){
+    if(zipBusy)return;
+    setZipBusy(true);setZipError('');
+    try{saveFile(datasetId+'_portable.zip',await bundle.portableArchive(),'application/zip');}
+    catch(error){setZipError(error.message||'ZIP 导出失败');}
+    finally{setZipBusy(false);}
+  }
   const groups=(data.annotations?.populations||[]).filter(r=>r.dataset_id===datasetId);
   const known=(data.annotations?.environments||[]).filter(r=>r.dataset_id===datasetId);
   const envs=known.length?known:environments,active=envs.find(e=>e.environment_id===envId)||envs[0];
   if(archive)return <div className="dataset-provenance">
-    <p>{samples.length.toLocaleString()} 份材料 · {variants.filter(v=>v.markerType==='SNP').length.toLocaleString()} SNP · {variants.filter(v=>v.markerType==='InDel').length.toLocaleString()} InDel · {pav?.length||0} 个 PAV 条目{descriptors?.size>0&&` · ${descriptors.size.toLocaleString()} 份有分类表型`}{environments.length>0&&` · ${environments.length} 个定量表型记录列`}</p>
+    <p>{samples.length.toLocaleString()} 份材料 · {variants.filter(v=>v.markerType==='SNP').length.toLocaleString()} SNP · {variants.filter(v=>v.markerType==='InDel').length.toLocaleString()} InDel · {pav?.length||0} 个 PAV 条目{descriptors?.size>0&&` · ${descriptors.size.toLocaleString()} 份有分类表型`}{environments.length>0&&` · ${environments.length} 个实测表型记录列`}</p>
     <details><summary>溯源档案 / Provenance</summary><p>{archive.transformation}</p>
       <ul>{archive.sources.map(source=><li key={source.id}><b>{roleNames[source.role]} · {source.release}</b> · {source.citation} · {source.method}
         {source.assembly&&<> · {source.assembly}</>}{source.url&&<> · <a href={source.url} target="_blank" rel="noreferrer">原始资源</a></>}
         {source.doi&&<> · <a href={'https://doi.org/'+source.doi} target="_blank" rel="noreferrer">DOI</a></>}</li>)}</ul>
       {archive.gaps?.length>0&&<ul>{archive.gaps.map(gap=><li key={gap}>{gap}</li>)}</ul>}
       <button type="button" onClick={()=>saveFile(datasetId+'_provenance.json',JSON.stringify(archive,null,2)+'\n','application/json')}>下载溯源档案</button>
-      {manifest.packed?.archive&&<a href={'./datasets/'+manifest.packed.archive} download> · 下载数据 ZIP</a>}
+      {bundle.portableArchive?<button type="button" disabled={zipBusy} aria-busy={zipBusy} onClick={downloadArchive}>{zipBusy?'正在准备数据 ZIP…':zipError?'重试下载数据 ZIP':'下载数据 ZIP'}</button>:manifest.packed?.archive&&<a href={'./datasets/'+manifest.packed.archive} download> · 下载数据 ZIP</a>}
+      {zipError&&<p role="alert">ZIP 导出失败：{zipError}。请点击重试。</p>}
       {archive.artifacts?.filter(asset=>/^[-\w]+\/[\w.-]+$/.test(asset.path)).map(asset=>
         <a key={asset.path} href={'./datasets/'+asset.path} download> · {asset.label}</a>)}
     </details>

@@ -173,7 +173,7 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,clai
   const stacks=[...columns].filter(([,traits])=>traits.length).sort((a,b)=>Number(favourableTraits.has(b[1][0].id))-Number(favourableTraits.has(a[1][0].id)));
   const unmeasured=related.filter(t=>!t.environments?.length).map(t=>t.name);
   return <section className="panel trait-profile" aria-label="全部表型与单倍型评价">
-    <header className="panel-title"><div><h2>表型与单倍型评价</h2><p>{measured.length} 项定量表型 · 按鉴定指标、地点和年份比较</p></div></header>
+    <header className="panel-title"><div><h2>表型与单倍型评价</h2><p>{measured.length} 项实测表型 · 按鉴定指标、地点和年份比较</p></div></header>
     <div className="profile-toolbar">
       <label>分型方案 <select aria-label="表型分型方案" value={scheme.id} onChange={e=>setSchemeId(e.target.value)}>
         <option value="selection">当前位点纯合型</option>

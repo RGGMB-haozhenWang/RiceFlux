@@ -1,6 +1,14 @@
 import contract from '../../public/formats/trait-assessment.json' with { type:'json' };
 
 export function assessmentPolicy(trait,endpoint) {
+  const provenance=endpoint.source?.provenance;
+  const d3=endpoint.source?.dataset_id==='rice3k';
+  if(d3&&trait.id==='blight'&&endpoint.unit==='cm'&&provenance?.source_id==='lu_2021_blight'&&provenance.source_doi==='10.1186/s12284-021-00462-3'){
+    return {mode:'absolute',direction:'lower',criterion:'同一菌株试验中病斑越短，抗性表现越强',protocol:'https://doi.org/'+provenance.source_doi};
+  }
+  if(d3&&trait.id==='leaf_blast'&&endpoint.unit==='级'&&provenance?.source_id==='ptr_pia_2024_blast'&&provenance.source_doi==='10.1038/s42003-024-06244-z'){
+    return {mode:'absolute',direction:'lower',criterion:'同一菌株试验中叶瘟病级越低，抗性表现越强',protocol:'https://doi.org/'+provenance.source_doi};
+  }
   const rule=Object.hasOwn(contract.absolute,trait.id)?contract.absolute[trait.id]:null;
   if(rule||trait.category==='抗病'){
     const known=rule&&rule.unit===endpoint.unit&&rule.assays.includes(endpoint.assay)&&

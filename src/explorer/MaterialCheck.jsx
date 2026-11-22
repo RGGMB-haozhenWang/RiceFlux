@@ -101,7 +101,7 @@ export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneC
         <button className="review-link" type="button" onClick={()=>downloadTable({filename:'riceflux_marker_dictionary.txt',
           columns:['marker_id','gene_id','gene_name','chr','position','ref','alt']},markerCatalog.map(v=>({...v,marker_id:v.id,chr:v.chromosome,position:v.pos})))}>位点字典</button>
       </div>
-      <p className="breeder-note">同一材料可提交 SNP / InDel VCF、表型和 PAV TXT。原有分型 TXT 可填写 A/G、A/AA 等实际序列。</p>
+      <p className="breeder-note">同一材料可提交区域 VCF、表型和 PAV TXT。VCF 中长度变化达到 50 bp 的锚定 InDel 归入片段 PAV。</p>
       {error&&<p role="alert">{error}</p>}
       {busy&&<p role="status">正在校验材料编号和位点。</p>}
       <details className="review-disclosure"><summary>查询已入库材料</summary>
@@ -142,7 +142,7 @@ export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneC
             <th scope="row">{r.marker_type&&r.marker_type+' · '}{r.marker_id}</th><td>{r.genotype||'—'}</td><td>{statusNames[r.status]}{r.note&&<small>{reasons[r.note]||r.note}</small>}</td>
           </tr>)}</tbody>
         </table></div>{submitted.length>100&&<p>显示前 100 条，体检 TXT 含全部记录。</p>}</details>}
-      {pav.length>0&&<details className="review-disclosure"><summary>基因存在 / 缺失记录（PAV）</summary>
+      {pav.length>0&&<details className="review-disclosure"><summary>存在 / 缺失记录（PAV）</summary>
         <div className="matrix-scroll"><table className="individual-table" aria-label="体检 PAV 记录">
           <thead><tr><th>基因 / 原始编号</th><th>状态</th><th>方法与来源</th></tr></thead><tbody>{pav.map((r,i)=><tr key={i}>
             <th scope="row">{r.gene}<small>{r.source_gene_id}</small></th><td>{pavNames[r.status]}</td>

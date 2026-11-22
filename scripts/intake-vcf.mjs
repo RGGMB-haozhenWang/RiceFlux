@@ -3,7 +3,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {gzipSync,gunzipSync} from 'node:zlib';
 import {datasetTableKeys,readPackage,readTable} from '../src/explorer/datasets.js';
-import {vcfToTables} from '../src/explorer/dataImport.js';
+import {mergePavTables,vcfToTables} from '../src/explorer/dataImport.js';
 import {readVcf} from '../src/explorer/vcf.js';
 
 const [vcfFile, observationDir, manifestFile, output,...options]=process.argv.slice(2);
@@ -24,7 +24,10 @@ const samples=readText(path.join(observationDir,'samples.tsv'));
 const ids=readTable(samples,['sample_id']).rows.map(row=>row[0]);
 const vcf=readVcf(text,reference.genes);
 if(vcf.issues.length)throw Error('Preselected regional VCF has unbound records: '+JSON.stringify(vcf.issues.slice(0,12)));
-const tables={samples,...vcfToTables(vcf,ids)};
+const digest=sha(text);
+const pavSourceId='input_vcf_pav_'+digest.slice(0,12);
+const {pav:variantPav,...genotypeTables}=vcfToTables(vcf,ids,undefined,pavSourceId);
+const tables={samples,...genotypeTables};
 for(const key of ['environments','phenotypes','pav','descriptors','pav_summary']){
   const file=path.join(observationDir,key+'.tsv');
   if(fs.existsSync(file))tables[key]=readText(file);
@@ -35,10 +38,16 @@ if(predecessor){
   for(const [key,filename] of Object.entries(previous.files)){
     const value=readText(path.join(predecessor,filename));
     if(sha(value)!==previous.sha256[key])throw Error('Prior dataset hash mismatch: '+key);
+    if(key==='pav'){
+      if(tables.pav&&tables.pav!==value)throw Error('Append changed source PAV rows');
+      tables.pav=value;
+      continue;
+    }
     if(key!=='genotypes'&&key!=='variants'){
       if(tables[key]!==value)throw Error('Append changed a non-genotype source table: '+key);
       continue;
     }
+    if(!vcf.records.length){tables[key]=value;continue;}
     if(key==='variants'){
       const firstLineEnd=tables.variants.indexOf('\n');
       if(value.indexOf('\n')!==firstLineEnd||!value.startsWith(tables.variants.slice(0,firstLineEnd+1)))
@@ -57,9 +66,16 @@ if(predecessor){
   }
   delete manifest.counts;
 }
+if(variantPav){
+  tables.pav=mergePavTables(tables.pav,variantPav);
+  manifest.provenance??={schema:'RiceFlux provenance 1.0',sources:[]};
+  manifest.provenance.sources.push({id:pavSourceId,role:'pav',release:manifest.version,citation:manifest.source,
+    method:'VCF GT · ≥50 bp 片段存在/缺失',assembly:manifest.assembly,
+    files:[{name:path.basename(vcfFile),sha256:digest,hash_scope:'decoded UTF-8 VCF'}]});
+}
 manifest.files=Object.fromEntries(Object.keys(tables).map(key=>[key,key+'.tsv'+(Buffer.byteLength(tables[key])>500000?'.gz':'')]));
 manifest.sha256=Object.fromEntries(Object.entries(tables).map(([key,table])=>[key,sha(table)]));
-manifest.provenance.normalized_vcf={name:path.basename(vcfFile),sha256:sha(text),hash_scope:'decoded UTF-8 VCF'};
+manifest.provenance.normalized_vcf={name:path.basename(vcfFile),sha256:digest,hash_scope:'decoded UTF-8 VCF'};
 if(datasetTableKeys(manifest).length!==Object.keys(tables).length)throw Error('Unregistered table in observations');
 const bundle=await readPackage(manifest,filename=>tables[filename.split('.')[0]],reference);
 manifest.counts={samples:bundle.samples.length,variants:bundle.variants.length,environments:bundle.environments.length,

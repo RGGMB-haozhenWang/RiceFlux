@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createLocalDataset,extendDataset,importDatasetFiles,resolveSampleList} from './dataImport.js';
+import {createLocalDataset,extendDataset,importDatasetFiles,importVcfInput,resolveSampleList} from './dataImport.js';
 import {combineDatasets} from './datasets.js';
 import {semanticManifest} from './inputSchema.js';
 import {sha256Text} from './sha256.js';
@@ -16,6 +16,31 @@ const gt=(a,b,c)=>'sample_id\tChr01:10\n007\t'+a+'\n008\t'+b+'\n009\t'+c+'\n';
 const pheno={environments:'environment_id\ttrait_id\ttrait_name\tunit\tcategory\tfamily\tassay\tsite\tyear\ne\tt1\tNew trait\tmm\tTest\tlength\tmetric\tSite\t2026\n',
   phenotypes:'sample_id\te\n007\t1.5\n009\t3\n'};
 const meta=(id,genotype_evidence='G_chip')=>({id,name:id,version:'1',source:'Validated fixture',genotype_evidence});
+
+test('previous variants/genotypes TXT remaps mixed long SNP calls into a fragment PAV axis',()=>{
+  const long='A'+'C'.repeat(50);
+  const source=createLocalDataset({samples,variants:variants(long+',G'),genotypes:gt('2/2','1/1','0/1')},meta('p'),reference);
+  assert.equal(source.variants[0].alt,'G');
+  assert.equal(source.pav[0].states,' .1.'.trim());
+  assert.equal(source.pav[0].event.lengthChange,50);
+  assert.equal(source.texts.genotypes,'sample_id\tChr01:10\n007\t1/1\n008\t./.\n009\t0/.\n');
+  assert.equal(source.pav[0].source.role,'pav');
+});
+
+test('PAV-only VCF supports sample reordering and adding to an existing phenotype dataset',async()=>{
+  const long='A'+'C'.repeat(51);
+  const vcf='##fileformat=VCFv4.2\n##reference=IRGSP-1.0\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t008\t007\t009\n'+
+    'Chr1\t10\tlarge\tA\t'+long+'\t.\tPASS\t.\tGT\t1/1\t0/0\t./.\n';
+  const {patch,provenance}=await importVcfInput(vcf,{samples},meta('p'),reference,'input.vcf');
+  assert.equal(patch.genotypes,'sample_id\n007\n008\n009\n');
+  const source=createLocalDataset(patch,{...meta('p'),provenance},reference);
+  assert.equal(source.variants.length,0);
+  assert.equal(source.pav[0].states,'01.');
+  const existing=createLocalDataset({samples,...pheno},meta('p'),reference);
+  const next=extendDataset(existing,'genotypes',patch,{...meta('p'),version:'2',provenance},reference);
+  assert.equal(next.pav[0].event.kind,'INS');
+  assert.equal(next.pav[0].states,'01.');
+});
 
 test('multiallelic genotype indices follow each input ALT order and merge by nucleotide',()=>{
   const a=createLocalDataset({samples,variants:variants('G,C'),genotypes:gt('1/2','2/.','0/1')},meta('a'),reference);

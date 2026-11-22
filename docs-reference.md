@@ -8,13 +8,17 @@ Gene display names are aliases. Use MSU/RAP IDs for joins. `annotations/gene_ide
 
 ## Input and output
 
-Use the five-table contract and prior input examples. Reference coordinates are positive-strand, 1-based IRGSP-1.0/MSU7. Tables 1.2 accepts SNPs and short, normalized, prefix-anchored InDels with at most four declared alleles. This includes REF and up to three ALTs. Complex events use a separate representation. [Five-table contract](public/datasets/README.txt) · [Prior input examples](public/formats/README.txt)
+Use the five-table contract and prior input examples. Reference coordinates are positive-strand, 1-based IRGSP-1.0/MSU7. Tables 1.2 stores SNPs and short, normalized, prefix-anchored InDels (absolute change 1–49 bp) with at most four declared alleles. This includes REF and up to three ALTs. Complex events use a separate representation. [Five-table contract](public/datasets/README.txt) · [Prior input examples](public/formats/README.txt)
 
 Analysis downloads use UTF-8 tab-delimited TXT. ZIP exports contain individual TXT tables. Environment exports include the original workbook column, DOI and recorded measurement method. Join `phenotypes.txt` to `reference_members.txt` on `environment_id` to reconstruct percentile denominators. Registered source ZIPs retain their versioned filenames.
 
 ### 区域 VCF 与 PAV
 
 数据接口和材料体检共用 VCF 解析器。群体数据接入后按基因分片，位点身份由染色体、坐标、REF 和变异类型组成，实际等位序列用于跨群体重编码。符号 SV 和基因 PAV 使用独立记录。PAV 通过原始基因 ID 追溯算法与组装，通过 MSU/RAP 对照定位到参考基因。只有来源数据提供材料级状态时，群体筛选才会改变存在比例和分母。
+
+本地 VCF 和旧式 variants + genotypes 两表按每个 ALT 的 `abs(len(ALT) - len(REF))` 分流。49 bp 保留短 InDel；50 bp 及以上的锚定插入和缺失进入片段 PAV。长 ALT 在短变异列保留缺失；片段 PAV 只判纯合 REF 与该事件的纯合 ALT。符号 ALT 和未解析复杂事件须先获得明确的等位序列，或走已有独立 PAV 表。
+
+PAV 表的前五列延续旧格式。片段事件可追加 `event_type, length_change_bp, chr, position, ref, alt, source_record_id`，使用正链 IRGSP-1.0/MSU7，长度变化带符号。联合分组使用同一数据集版本和材料 ID，可比较「仅 PAV」或「当前所选 SNP / 短 InDel + PAV」。显示完整分型与当前试验配对数、中位数，导出分组及逐材料状态；RPAN 等发布汇总仅展示分母和比例。
 
 3K 数据分三步构建。运行 `extract-3k-vcf.py` 从已验收的 PLINK 和 FASTA 提取区域 VCF，运行 `build-3k-observations.py` 整理公开材料名录、历史分类型表型和 RPAN 已发布汇总，再用 `intake-vcf.mjs` 校验 VCF 与来源表，生成可移植输入包。将数据注册到暂存目录后，可用 `npm run build:packed -- /path/to/site --datasets=/path/to/staged/datasets` 构建静态预览。分类表型可在材料体检中查原始代码、数据字典及记录出处。
 
@@ -123,3 +127,9 @@ schema_version	analysis_id	source_ref	contrast	assembly	gene_id	haplotype_id	rec
 每次发布在 [CHANGELOG.md](CHANGELOG.md) 顶部追加记录，包含用户可见变化、数据/接口版本、验证范围和状态。将日志、源码、数据和 GitHub Pages 构建后需要更新的 `docs/` 入口或资源一并审核。提交后先运行 `node scripts/check-changelog.mjs <本次发布前的提交> HEAD`，再推送。发布后核对 Pages 运行结果和线上行为；Git 提交或本地构建与线上验证分别记录。
 
 本地开发从 `npm test` 及构建开始。发布时以当前 Pages 静态目录为基础核对数据索引和已有资产，将新构建的入口和资产合入 `docs/`。完整 3K 注册和已打包数据以 `docs/datasets/` 当前版本为准。
+
+## D3 表型更新与数据包
+
+D3 `2026-11-22.1` 复用前版的材料、变异轴与分型分片。`packed.phenotype_axes` 指向只含 `environments` 和 `phenotypes` 的内容寻址 gzip 分片。试验表和测值表均核对版本清单中的 SHA-256。
+
+数据接口的 ZIP 下载将新版试验、测值和清单与既有压缩分型表组装为可独立导入的完整包。原始数据表也可以逐表下载为 TXT。发布时将本次构建的 JS/CSS 和上一版入口引用的文件一起保留，清理两版均未引用的构建产物。

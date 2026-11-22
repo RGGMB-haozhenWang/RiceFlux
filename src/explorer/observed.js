@@ -1,6 +1,6 @@
 import {readPrior} from './exchange.js';
 import {measuredTraits} from './regions.js';
-import {readTable,readPackage,combineDatasets} from './datasets.js';
+import {readTable,readPackage,combineDatasets,datasetTableKeys} from './datasets.js';
 import {fetchBytes,readText,unpackGzip} from './assets.js';
 import {openPackedDataset} from './packedDataset.js';
 import {extendGeneCatalog,geneCatalogPath} from './geneCatalog.js';
@@ -156,13 +156,38 @@ async function readRegistered(base,row,manifest,reference,signal){
   if(!manifest.packed)return readPackage(manifest,file=>readText(new URL(file,directory),signal),reference);
   const descriptor=manifest.packed;
   if(!/^[-\w]+\.zip$/.test(descriptor.archive)||typeof descriptor.member_prefix!=='string'||!/^(?:[-\w]+\/)?$/.test(descriptor.member_prefix))throw Error('TSV 归档路径无效');
-  return openPackedDataset(manifest,(file,requestSignal)=>fetchBytes(new URL(file,root),requestSignal),async key=>{
+  const overlay=descriptor.phenotype_overlay===true;
+  if(overlay&&!descriptor.phenotype_axes)throw Error('共享归档缺少表型分片');
+  if(overlay&&root.origin!==location.origin)throw Error('共享归档须来自当前站点');
+  let archiveRequest;
+  const sharedArchive=()=>archiveRequest??=fetchBytes(new URL(descriptor.archive,root)).catch(error=>{archiveRequest=undefined;throw error;});
+  const bundle=await openPackedDataset(manifest,(file,requestSignal)=>fetchBytes(new URL(file,root),requestSignal),async key=>{
     const file=manifest.files?.[key];
     if(typeof file!=='string'||!/^[-\w.]+\.(?:tsv|txt)(?:\.gz)?$/.test(file))throw Error('清单文件名无效');
     const {archiveEntry}=await import('./portableArchive.js');
-    const archive=await fetchBytes(new URL(descriptor.archive,root));
+    const archive=await (overlay?sharedArchive():fetchBytes(new URL(descriptor.archive,root)));
     return new TextDecoder().decode(await unpackGzip(await archiveEntry(archive,descriptor.member_prefix+file)));
   },reference,signal);
+  if(overlay)bundle.portableArchive=async()=>{
+    const keys=datasetTableKeys(manifest),names=keys.map(key=>manifest.files?.[key]);
+    if(names.some(name=>typeof name!=='string'||!/^[-\w.]+\.(?:tsv|txt)(?:\.gz)?$/.test(name))||new Set(names).size!==names.length)throw Error('清单文件名无效或重复');
+    const {archiveEntry}=await import('./portableArchive.js');
+    const {zipBytes}=await import('./exports.js');
+    const archive=await sharedArchive(),entries={},prefix=descriptor.member_prefix,enc=new TextEncoder();
+    const source={...manifest};delete source.packed;
+    entries[prefix+'manifest.json']=enc.encode(JSON.stringify(source,null,2)+'\n');
+    for(const key of keys){
+      const name=manifest.files[key];
+      let bytes;
+      if(key==='environments'||key==='phenotypes'){
+        bytes=enc.encode(await bundle.sourceText(key));
+        if(name.endsWith('.gz'))bytes=new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer());
+      }else bytes=await archiveEntry(archive,prefix+name);
+      entries[prefix+name]=bytes;
+    }
+    return zipBytes(entries);
+  };
+  return bundle;
 }
 
 const registeredBundles=new WeakMap();

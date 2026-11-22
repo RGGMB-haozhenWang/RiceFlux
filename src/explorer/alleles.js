@@ -3,7 +3,8 @@
 export const missingCode = 4;
 export const missingPair = 24;
 export const snpBase = /^[ACGT]$/;
-export const literalAllele = /^[ACGT]{1,51}$/;
+export const literalAllele = /^[ACGT]+$/;
+export const pavThreshold = 50;
 const packedPairs = Array.from({ length: 25 }, (_, code) => [code % 5, Math.floor(code / 5)]
   .map(allele => allele === missingCode ? null : allele));
 
@@ -18,7 +19,8 @@ export function markerKind(alleles, allowIndel = false) {
   const [ref, ...alts] = alleles;
   const simple = alts.every(alt => alt.length === ref.length ? alt.length === 1
     : alt.startsWith(ref) || ref.startsWith(alt));
-  return simple && alts.some(alt => alt.length !== ref.length) ? 'InDel' : null;
+  return simple && alts.every(alt=>Math.abs(alt.length-ref.length)<pavThreshold) &&
+    alts.some(alt => alt.length !== ref.length) ? 'InDel' : null;
 }
 
 export function markerAnnotation(marker) {

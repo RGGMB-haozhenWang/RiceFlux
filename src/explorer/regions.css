@@ -102,3 +102,7 @@
 .phenotype-effect-current,.phenotype-effect-paper { margin-top:3px; padding:3px 6px; border-radius:4px; }
 .phenotype-effect-current { background:#eff6f2; color:#31584b; }
 .phenotype-effect-paper { background:#f5f1f8; color:#594569; }
+
+.pav-comparison select { max-width:100%; }
+.pav-comparison .individual-table { min-width:0; }
+.pav-comparison .individual-table th[scope="row"] { white-space:normal; overflow-wrap:anywhere; }

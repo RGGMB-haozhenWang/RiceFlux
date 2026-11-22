@@ -74,6 +74,7 @@
     "pav": {
       "entities": ["intake:PresenceAbsenceCall"],
       "key": ["pav_id"], "columns": ["pav_id", "gene_id", "source_gene_id", "source_id", "states"],
+      "fragmentEventColumns": ["event_type", "length_change_bp", "chr", "position", "ref", "alt", "source_record_id"],
       "joins": {"states": "samples.sample_id in roster order", "source_id": "provenance.sources[].id"}
     },
     "pav_summary": {
@@ -92,7 +93,7 @@
   "pairedTables": [["variants", "genotypes"], ["environments", "phenotypes"]],
   "profiles": {
     "package": {"label": "数据包（清单 + 五表）", "manifestNames": ["manifest.json", "manifest.jsonld"], "hint": "选择清单及其登记的表格。"},
-    "new": {"label": "新建本地数据集", "allowVcf": true, "hint": "一份区域 VCF 可同时导入 SNP 和 InDel；可附材料、表型或 PAV。也可使用分型两表。"},
+    "new": {"label": "新建本地数据集", "allowVcf": true, "hint": "区域 VCF 或分型两表可同时接入 SNP、短 InDel 和 ≥50 bp 片段 PAV。可另附逐材料 PAV 表。"},
     "phenotypes": {"label": "给预览数据集追加表型", "tableKeys": ["environments", "phenotypes"], "requires": ["environments", "phenotypes"], "hint": "选择 environments 和 phenotypes 两表。"},
     "genotypes": {"label": "给仅表型数据集追加基因型", "tableKeys": ["variants", "genotypes"], "requires": ["variants", "genotypes"], "allowVcf": true, "hint": "选择一份区域 VCF 或 variants 和 genotypes 两表。"}
   },
@@ -102,6 +103,7 @@
     "uncovered": "No matching marker in the dataset version dictionary, including absence from a variant-only VCF"
   },
   "sequenceVariantTypes": ["SNP", "InDel"],
+  "indelFragmentPav": {"minimumAbsoluteLengthChangeBp": 50, "basis": "per-ALT absolute length difference at an anchored literal allele", "derivedStates": ["1", "0", "."], "unassayed": "-"},
   "scope": "Tables carry observations and source records. Functional claims remain linked evidence.",
   "@included": [
     {"@id": "intake:DatasetInputContract", "@type": "owl:Class"},
