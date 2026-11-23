@@ -1,4 +1,5 @@
 import React from 'react';
+import {showFrequencyGroup} from './researcherUi.js';
 import {alleleStats,percent} from './model.js';
 import {markerAnnotation} from './alleles.js';
 import {MarkerIcon,markerNames} from './VariantMark.jsx';
@@ -26,10 +27,11 @@ export function AlleleFrequency({variant,cohort,populations,showSummary=true}) {
     <div className={kind==='SNP'?'af-legend':'af-legend indel-alleles'}>{labels.map((label,i)=><span key={label}><i style={{background:shade('#377b9a',i)}}/>{label}</span>)}</div>
     <div className="pop-frequency">{populations.map(p=>{
       const s=alleleStats(cohort.filter(x=>x.population_id===p.id),variant);
+      if(!showFrequencyGroup(s))return null;
       const text=[p.name,p.description,`n=${s.n}`,markerQuality(s),alleleFrequencyText(s)].filter(Boolean).join(' · ');
       return <div key={p.id} title={text} tabIndex={0} aria-label={text}>
         <div className="freq-label"><b><i style={{background:p.color}}/><span>{p.short_name||p.name}</span></b><strong>{percent(s.af)}</strong></div>
-        <div className="af-bar">{s.called>0&&s.alleleCounts.map((a,i)=><div key={a.allele} style={{width:percent(a.frequency),background:shade(p.color,i)}}/>)}</div>
+        <div className={s.called?"af-bar":"af-bar af-missing"} aria-label={s.called?undefined:"无有效调用"}>{s.called>0&&s.alleleCounts.map((a,i)=><div key={a.allele} style={{width:percent(a.frequency),background:shade(p.color,i)}}/>)}</div>
         <small>{s.alt} / {s.called} 有效 ALT · n={s.n} · {markerQuality(s)}{showAll&&' · '+alleleFrequencyText(s)}</small>
       </div>;
     })}</div>

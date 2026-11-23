@@ -15,7 +15,7 @@ import {findGenes} from './geneSearch.js';
 import {geneSchemes,jointCalls,typeMaterial} from './jointHaplotypes.js';
 import {breederAxes,evidenceLevel,genotypePhenotypes,isCross,markerCoverage,materialKey,mostMeasured,parentComparison,registeredCrosses,reviewAxes,targetRange,targetStatus,trackingKey,traitRows} from './breeder.js';
 import {LinkagePanel} from './LinkagePanel.jsx';
-import {parseMaterialCheck} from './materialCheck.js';
+import {parseMaterialChecks} from './materialCheck.js';
 import {readableDefinition} from './provenance.js';
 import {siteName} from './regions.js';
 import {useGeneCalls} from './useGeneCalls.js';
@@ -111,14 +111,17 @@ function PhenotypeEvidence({reference,axis,target,focus,scope,tracking,onTrack,o
 }
 
 function GeneControls({data,models,focus,change,onFocus}){
-  const [query,setQuery]=useState('');
+  const [query,setQuery]=useState(''),[chromosome,setChromosome]=useState('1');
   const ids=models.map(m=>m.gene.id);
   const available=query.trim()?findGenes(data.genes,query).filter(g=>!ids.includes(g.id)).slice(0,6):[];
   function add(g){
     change({geneIds:[...ids,g.id],focus:g.id});
     setQuery('');
   }
+  const chromosomeGenes=data.genes.filter(g=>String(g.chromosome).replace(/^Chr0?/i,'')===chromosome&&!g.catalog?.historical&&!ids.includes(g.id));
   return <div className="review-gene-controls">
+    <label>染色体<select aria-label="育种染色体" value={chromosome} onChange={e=>setChromosome(e.target.value)}>{Array.from({length:12},(_,i)=><option key={i+1} value={i+1}>Chr{i+1}</option>)}</select></label>
+    <label>按染色体添加基因<select aria-label="染色体基因选择" value="" onChange={e=>{const g=chromosomeGenes.find(g=>g.id===e.target.value);if(g)add(g);}}><option value="">选择基因（{chromosomeGenes.length}）</option>{chromosomeGenes.map(g=><option key={g.id} value={g.id}>{g.name} · {g.msu_id||g.catalog?.msu||g.id}</option>)}</select></label>
     <div className="review-search" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setQuery('');}}>
       <label>关注基因<input type="search" aria-label="查找关注基因" value={query} placeholder="名称或 MSU/RAP ID"
         onKeyDown={e=>{if(e.key==='Escape')setQuery('');if(e.key==='Enter'&&available.length===1)add(available[0]);}}
@@ -522,7 +525,7 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
         else showMaterial(samples,samples.every(isCross)?'cross':'material');
         setUpload({notice:info+(names?' · '+names:'')});
       }else{
-        setCheckedImport({...parseMaterialCheck(texts,data.genes.flatMap(g=>g.variants),'G_mixed',data.genes),inputs});
+        setCheckedImport({...parseMaterialChecks(texts,data.genes.flatMap(g=>g.variants),'G_mixed',data.genes),inputs});
         setCheckedKnown('');
         if(plan?.scenario==='check'){
           change({samples:[],geneIds:plan.genes.map(g=>g.id),queryTrait:''});
@@ -573,7 +576,7 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
     setLookup('haplotypes');
     open('traits');
   }
-  const geneControls=legacy?<GeneControls data={data} models={models} focus={focus} change={change} onFocus={value=>change({focus:value})}/>:null;
+  const geneControls=null;
   const datasets=data.meta.datasets,heading=breedingTasks.find(item=>item.id===task)?.title;
   const availableTraits=new Map(sources.map(a=>[a.trait_id,a.trait_name]));
   const canCompare=task!=='parents'&&chosenParents.length===2;
@@ -598,6 +601,11 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
       {!planning&&<button className="review-link" type="button" onClick={()=>{setDraft(null);open('introgression');}}>亲本导入决策</button>}
     </BreederInput>}
     </header>
+    {task!=='introgression'&&<section className="breeder-card" aria-label="育种基因选择">
+      <GeneControls data={data} models={models} focus={focus} change={change} onFocus={value=>change({focus:value})}/>
+      <button type="button" className="review-link" onClick={()=>open('check')}>多材料优势状态体检</button>
+      <button type="button" className="review-link" disabled={models.length<2} onClick={()=>open('stack')}>多基因比较（{models.length}）</button>
+    </section>}
     {plan&&<BreederPlan plan={plan} axes={axes} onChange={changePlan} onRun={runPlan} onClose={()=>setDraft(null)}/>}
     {heading&&!reviewing&&task!=='introgression'&&<h2 className="entry-result-title">{task==='traits'?'性状型别':heading}</h2>}
     {task==='introgression'&&<IntrogressionReview/>}
@@ -659,7 +667,7 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
     </section>}
     {task==='check'&&<MaterialCheck data={data} axes={axes} models={models} initialGene={initialGene} siteSelections={siteSelections}
       geneControls={geneControls} fileCheck={checkedImport} setFileCheck={setCheckedImport}
-      initialSampleId={checkedKnown} showInput={legacy||!checkedImport&&!checkedKnown}/>}
+      initialSampleId={checkedKnown} initialSamples={selectedAll} showInput={legacy||!checkedImport&&!checkedKnown}/>}
     {needsCalls&&!status.ready&&<p className="breeder-status" role={status.error?'alert':'status'}>
       {status.error?<>{status.error} <button type="button" onClick={status.retry}>重试</button></>:'正在载入关注基因的分型…'}
     </p>}

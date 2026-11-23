@@ -98,3 +98,21 @@ export function inspectMaterialGene(sample,scheme,localCalls){
   return {call:typeMaterial(sample,{...scheme,markers}),expected:scheme.positions.length,covered:present.length,
     complete:complete.length,gaps:markers.flatMap((v,i)=>!v||!complete.includes(v)?[String(scheme.positions[i])]:[])};
 }
+
+// Split accession-tagged TXT rows before applying the same single-material validation.
+export function parseMaterialChecks(texts,markers,evidence='G_mixed',genes=[]){
+  if(texts.some(isVcf))return parseMaterialCheck(texts,markers,evidence,genes);
+  const groups=new Map();
+  for(const text of texts){
+    const table=readTable(text,['sample_id'],'体检 TXT');
+    for(const row of table.objects()){
+      if(!groups.has(row.sample_id))groups.set(row.sample_id,new Map());
+      const files=groups.get(row.sample_id);
+      if(!files.has(text))files.set(text,[table.fields.join('\t')]);
+      files.get(text).push(table.fields.map(f=>row[f]).join('\t'));
+    }
+  }
+  if(!groups.size)return parseMaterialCheck(texts,markers,evidence,genes);
+  const materials=[...groups.values()].map(files=>parseMaterialCheck([...files.values()].map(lines=>lines.join('\n')),markers,evidence,genes));
+  return {...materials[0],materials};
+}

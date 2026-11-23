@@ -1,4 +1,5 @@
 import React,{useMemo,useState} from 'react';
+import {measuredTraitChoices} from './researcherUi.js';
 import {RegionalPhenotypes} from './RegionalPhenotypes.jsx';
 import {assessmentPolicy,isTargetRange,targetKey} from './traitAssessment.js';
 import {regionalView} from './regions.js';
@@ -26,7 +27,7 @@ function TargetEditor({trait,unit,range,onChange}) {
       {range&&<button type="button" onClick={()=>{setLower('');setUpper('');setError(false);onChange(null);}}>清除</button>}
     </form>
     {error?<p role="alert">请输入两个有效数值，下限须小于或等于上限。</p>:
-      range&&<p role="status">目标 {range[0]}–{range[1]} {unit} · 中位数距区间最近者优先，相同距离比较区间内比例。</p>}
+      range&&<p role="status">目标 {range[0]}–{range[1]} {unit}</p>}
   </div>;
 }
 
@@ -98,6 +99,7 @@ function DescriptorProfile({cohort,groups}) {
 
 export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,claims,selectedIds,targets,onTarget,onInspect}) {
   const [schemeId,setSchemeId]=useState(null);
+  const [chosenTraits,setChosenTraits]=useState(null);
   const available=useMemo(()=>{
     const definitions=schemes.filter(s=>s.kind==='literature'&&s.ready).map(s=>{
       const effects=new Map();
@@ -168,8 +170,11 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,clai
   const measured=data.traits.filter(t=>t.environments?.length).sort((a,b)=>
     Number(favourableTraits.has(b.id))-Number(favourableTraits.has(a.id))||
     Number(paperTraits.has(b.id))-Number(paperTraits.has(a.id))||Number(associated.has(b.id))-Number(associated.has(a.id)));
+  const choices=measuredTraitChoices(measured);
+  const selectedTraits=chosenTraits??choices.slice(0,3).map(c=>c.key);
+  const shownIds=new Set(choices.filter(c=>selectedTraits.includes(c.key)).flatMap(c=>c.traits.map(t=>t.id)));
   const columns=new Map([['relative',[]],['absolute',[]]]);
-  for(const trait of measured)columns.get(assessmentPolicy(trait,trait.environments[0]).mode).push(trait);
+  for(const trait of measured.filter(t=>shownIds.has(t.id)))columns.get(assessmentPolicy(trait,trait.environments[0]).mode).push(trait);
   const stacks=[...columns].filter(([,traits])=>traits.length).sort((a,b)=>Number(favourableTraits.has(b[1][0].id))-Number(favourableTraits.has(a[1][0].id)));
   const unmeasured=related.filter(t=>!t.environments?.length).map(t=>t.name);
   return <section className="panel trait-profile" aria-label="全部表型与单倍型评价">
@@ -183,6 +188,14 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,clai
       {(mapping.byGroup.size>0||mapping.bySource.size>0)&&<button type="button" className="site-detail"
         onClick={()=>downloadTable(formats.haplotypeMapping,haplotypeMappingRows(gene,mapping,cohort,scheme))}>导出分型对应 TXT</button>}
     </div>
+    <div className="profile-trait-picker">
+      <details><summary>显示性状 · {choices.filter(c=>selectedTraits.includes(c.key)).length} / {choices.length}</summary>
+        <div className="trait-choice-menu">{choices.map(choice=><label key={choice.key}><input type="checkbox" checked={selectedTraits.includes(choice.key)}
+          onChange={e=>setChosenTraits(e.target.checked?[...selectedTraits,choice.key]:selectedTraits.filter(key=>key!==choice.key))}/>{choice.name}</label>)}</div>
+      </details>
+      {choices.filter(c=>selectedTraits.includes(c.key)).map(choice=><button key={choice.key} type="button" aria-label={'移除性状 '+choice.name} onClick={()=>setChosenTraits(selectedTraits.filter(key=>key!==choice.key))}>{choice.name} ×</button>)}
+    </div>
+    {!shownIds.size&&<p>请在「显示性状」中选择要比较的性状。</p>}
     {unmeasured.length>0&&<p className="profile-unmeasured">暂无配对实测 · {unmeasured.join('、')}</p>}
     {stacks.map(([mode,traits])=><section className="trait-stack" key={mode}>
       <h3 className="trait-stack-heading">{mode==='relative'?'相对性状':'绝对性状'}</h3>

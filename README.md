@@ -1,27 +1,18 @@
 # RiceFlux
 
-[基因分析](https://rggmb-haozhenwang.github.io/RiceFlux/) · [育种工作台](https://rggmb-haozhenwang.github.io/RiceFlux/?view=breeder) · [教程 / Guide](https://rggmb-haozhenwang.github.io/RiceFlux/tutorial.html) · [开发者文档](docs-reference.md) · [变更日志](CHANGELOG.md)
+[基因分析](https://rggmb-haozhenwang.github.io/RiceFlux/) · [育种工作台](https://rggmb-haozhenwang.github.io/RiceFlux/?view=breeder) · [变更日志](CHANGELOG.md)
 
-面向水稻育种的基因、位点组合与材料比较。展示原始表型、参考群体百分位和探索性组间检验。
-A static rice genetics workbench for genes, genotype combinations and accessions. Display raw phenotypes, reference percentiles and exploratory group comparisons.
+RiceFlux 用水稻先验、分型、试验表型和文献证据比较基因与材料。
 
-- **D1**: 6044 份名录材料（5222 现代品种、822 地方品种），1067 SNP。
-- **D2**: RiceNavi 404 份材料，23 个严格匹配 SNP，18 个基因；完整来源库另保留 319 条位点记录。
-- **D3** 为 3K 的 3,024 份材料，包含基因区域 SNP、InDel、历史分类描述和逐材料表型。定量性状保留试验、单位与原始数值，抗病性状按菌株比较。来源见数据集溯源档案和表型图内的「鉴定与地点溯源」。 [RFGB](https://rfgbv2.rmbreeding.cn/phenotype) · [白叶枯病](https://doi.org/10.1186/s12284-021-00462-3) · [叶瘟](https://doi.org/10.1038/s42003-024-06244-z)
-- **基因目录 / Gene catalog** 按 MSU、RAP 和别名查询。点击 InDel 徽标或区域图标记，可查看各数据集版本的坐标、等位序列、有效分母和来源。
-- **证据 / Evidence**: 数据集覆盖、文献功能位点、单倍型组分与调用质量分别标注。6044 的表型列附原文测定规程、地点与指标。
-- **表型评价 / Phenotype assessment** 按 V4 首批 50 个基因开放。相对性状可设置区间，绝对性状按已登记测定方向判断。原文单倍型效应附性状、比较范围与 DOI。 [性状规范](public/formats/trait-assessment.json) · [首批基因](public/prior/core50_genes.tsv)
+- 基因分析可按名称、MSU 或 RAP 查询，选择位点、数据集和试验，比较表型与群体频率。
+- 育种工作台可选择多份材料，按染色体查找基因，核对材料携带的文献优势型及对应证据。
+- D1 为 RiceAtlas 6044，D2 为 RiceNavi 404，D3 为 3K Rice Genomes。数据版本和溯源可从页面的数据接口查看。
 
-## 使用 / Use
+## 输入
 
-1. 用页眉「查基因」查找 MSU／RAP ID、基因名或别名。左侧查看基因和群体，右侧查看表型与证据。
-2. 页眉可打开多基因比较、材料比较和个体明细。「筛选」设置材料和位点质控，「更多」提供数据接口、下载和工作区。
-3. 下载 UTF-8 制表符 TXT。Excel 导入时将材料 ID 设为文本。工作区设置可保存与迁移。
-4. 在「育种工作台」中勾选材料或导入编号名单，选择性状、试验场次与基因。切换到已选材料后可划定区间、记录取舍、下载对照表。导出的前六列依次为编号、性状、基因、染色体、基因型、表现型，后续列保留单位、分型依据和试验来源。
+使用 UTF-8 制表符 TXT 或 TSV。新版分型包使用 `RiceFlux tables 1.3`，以 MSU7 基因 ID 和 IRGSP-1.0 正链位点为主键。RAP、基因名和原始检测编号保留在对照表等来源字段。六列观测表可导入「编号、性状、基因、染色体、基因型、表型」，多位点或多试验时补充位点或试验编号。 [输入说明](public/datasets/README.txt) · [本体契约](public/formats/dataset-intake.json)
 
-Choose datasets → search a gene → select sites → compare → export TSV.
-
-## 本地与发布 / Run and deploy
+## 开发与发布
 
 ```sh
 npm ci
@@ -30,7 +21,8 @@ npm run build:packed -- /path/to/new-site --datasets=/path/to/staged/datasets
 python3 -m http.server 4173 --bind 127.0.0.1 --directory /path/to/new-site
 ```
 
-打包结果可直接在静态服务器部署。用暂存目录的 `index.tsv` 注册 D3。完整数据包接受 `manifest.json` 或 `manifest.jsonld` 与配套 TXT/TSV。区域 VCF 同时接收 SNP 和短 InDel。[接口说明](public/datasets/README.txt) · [本体输入规范](public/formats/dataset-intake.json) · [输入样表](public/formats/prior.tsv) · [完整技术说明](docs-reference.md)
-The packed site uses versioned dataset releases from the staging registry.
+发布使用版本化数据目录。替换线上构建前，核对数据索引、按需下载和变更日志。 [技术说明](docs-reference.md)
 
-来源：[6044](https://doi.org/10.1016/j.molp.2025.03.007) · [RiceNavi](https://doi.org/10.1038/s41588-020-00769-9)。保留来源名录和调用，不自动合并同名材料，不将缺失改为参考等位。
+## 数据下载
+
+[扩展先验 TSV.gz](docs/formats/prior_expanded.tsv.gz) · [克隆基因注释 TSV.gz](docs/datasets/cloned_catalog/genes.tsv.gz)

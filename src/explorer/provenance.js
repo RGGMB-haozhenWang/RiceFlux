@@ -1,6 +1,7 @@
 import {callOf} from './catalog.js';
 import {datasetBadge} from './datasetColors.js';
 import {bundleGeneCoverage} from './geneCoverage.js';
+import {canonicalTraitKey} from './traitVocabulary.js';
 
 const coverageIndexes=new WeakMap();
 function indexGeneSupport(data){
@@ -46,25 +47,24 @@ export function identityFor(data,gene){
     identity_status:gene.model?'参考模型已登记':'参考模型待核',review_scope:'扩展目录编号及参考注释'};
   return data.annotations?.identities.find(r=>r.gene_id===gene.id);
 }
-const traitName=value=>(value||'').trim().normalize('NFKC');
 export function geneTraits(data,gene){
-  if(data.meta.synthetic||gene.catalog?.collection==='cloned_catalog')return [];
+  if(data.meta.synthetic)return [];
   const curated=data.reference?.genes.find(g=>g.id===gene.id)||gene;
   // Some source records place notes next to endpoint names in the same field.
   const reported=(curated.catalog?.traits||[]).flatMap(label=>label.split(/[;；]/)).map(label=>label.trim())
     .filter(label=>label&&!/[。！？：:%％，]/.test(label)&&!/^(作者|已审|样本量|基因背景|基因\/材料背景)/.test(label));
-  const names=new Set(reported.map(traitName));
+  const names=new Set(reported.map(canonicalTraitKey));
   const registry=data.traits.filter(t=>t.family!=='prior'||t.id.startsWith('prior_'));
   // The shared sheath link serves exploratory comparisons in the core collection.
-  const linked=registry.filter(t=>curated.trait_ids.includes(t.id)&&(t.id!=='sheath'||names.has(traitName(t.name))));
+  const linked=registry.filter(t=>curated.trait_ids.includes(t.id)&&(t.id!=='sheath'||names.has(canonicalTraitKey(t.name))));
   const options=new Map();
   function add(name,registered){
-    const key=traitName(name)||registered?.id;
+    const key=canonicalTraitKey(name)||registered?.id;
     if(options.has(key))return;
     if(registered&&registered.family!=='prior'){
       options.set(key,registered);return;
     }
-    const matches=registry.filter(t=>traitName(t.name)===key);
+    const matches=registry.filter(t=>canonicalTraitKey(t.name)===key);
     const endpoints=matches.filter(t=>t.family!=='prior'||t.environments?.length);
     const trait=endpoints.length===1?endpoints[0]:registered??(matches.length===1?matches[0]:{id:'prior_'+name,name,category:'当前基因关联性状',family:'prior',unit:'无配对表型'});
     options.set(key,trait);

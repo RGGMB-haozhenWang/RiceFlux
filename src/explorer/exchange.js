@@ -1,6 +1,7 @@
 import {columns,formats,namespace} from './formats.js';
 import {alleleStats} from './model.js';
 import {componentMarker} from './alleles.js';
+import {resolveGeneQuery} from './geneSearch.js';
 // IRGSP-1.0/MSU7 reference FASTA index, chromosomes 1 through 12.
 export const lengths = [0,43270923,35937250,36413819,35502694,29958434,31248787,29697621,28443022,23012720,23207287,29021106,27531856];
 export function chromNum(label) {
@@ -56,7 +57,12 @@ export function matchMarker(gene,record,site) {
 }
 
 export function bindPrior(records, genes) {
-  return records.map(record => ({...record, gene:resolvePrior(record, genes)}));
+  return records.map(record=>{
+    const gene=resolvePrior(record,genes);
+    const suggestions=gene?[]:resolveGeneQuery(genes,record.row.QTG).suggestions.slice(0,4)
+      .map(g=>g.name+' ['+(g.catalog?.msu||g.id)+']');
+    return {...record,gene,suggestions};
+  });
 }
 
 function markerSummary(gene, marker, status, cohort, evidence) {
@@ -78,7 +84,8 @@ export function priorResults(records, cohort, evidence) {
   return records.flatMap(record => record.sites.map((site, i) => {
     const marker = matchMarker(record.gene, record, site);
     const status = marker ? 'matched' : !record.gene ? 'gene_unresolved' : !site.pos ? 'position_missing' : 'site_unmatched';
-    return {...record.row, Input_row:record.line, Input_DOI:record.inputDOI.join(' '), Component:i+1, ...markerSummary(record.gene, marker, status, cohort, evidence)};
+    return {...record.row, Input_row:record.line, Input_DOI:record.inputDOI.join(' '), Component:i+1,
+      Suggestions:record.suggestions?.join(' / '),...markerSummary(record.gene, marker, status, cohort, evidence)};
   }));
 }
 

@@ -16,3 +16,14 @@ test('body check retains missing, unknown and invalid variants without treating 
   assert.equal(result.call.status,'uncovered');
   assert.throws(()=>parseMaterialCheck([genotype,phenotype.replace('\ns\t','\nother\t')],markers),/同.*sample_id/);
 });
+
+test('batch TXT keeps accession calls and phenotype pairing isolated',async()=>{
+  const {parseMaterialChecks}=await import('./materialCheck.js');
+  const genotypes='sample_id\tmarker_id\tgenotype\ns1\tm\tA/A\ns2\tm\tG/G\n';
+  const phenotypes='sample_id\ttrait\tvalue\tunit\tsite\tyear\tmethod\ns2\t粒长\t9\tmm\t甲地\t2026\t尺测\n';
+  const batch=parseMaterialChecks([genotypes,phenotypes],[{id:'m',pos:1,ref:'A',alt:'G'}]);
+  assert.equal(batch.materials.length,2);
+  assert.deepEqual(batch.materials.map(m=>m.sample.genotypes.m),[[0,0],[1,1]]);
+  assert.equal(batch.materials[0].readings.length,0);
+  assert.equal(batch.materials[1].readings[0].value,9);
+});

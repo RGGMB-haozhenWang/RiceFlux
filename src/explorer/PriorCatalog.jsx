@@ -3,6 +3,7 @@ import {Button,Dialog} from '@radix-ui/themes';
 import {MagnifyingGlassIcon} from '@radix-ui/react-icons';
 import {SourceBadges} from './SourceBadges.jsx';
 import {findGenes} from './geneSearch.js';
+import {canonicalTraitKey} from './traitVocabulary.js';
 import {geneEvidence,geneSupport,geneTraits,hasPhenotypes} from './provenance.js';
 import {datasetBadge,datasetTint} from './datasetColors.js';
 import {downloadTable} from './formats.js';
@@ -44,7 +45,7 @@ export function PriorFinder({data,onChoose,onInspect}){
     if(open)for(const gene of data.genes){
       const traits=geneTraits(data,gene);
       byGene.set(gene.id,traits);
-      for(const trait of traits)options.set(trait.id,trait);
+      for(const trait of traits)options.set(canonicalTraitKey(trait.name),trait);
     }
     return {byGene,options};
   },[open,data]);
@@ -54,7 +55,7 @@ export function PriorFinder({data,onChoose,onInspect}){
     return findGenes(data.genes,query).flatMap(gene=>{
       if(evidence==='goal_profile'&&!supportsTraitAssessment(gene))return [];
       const linked=traitIndex.byGene.get(gene.id);
-      const traits=activeTrait?linked.filter(t=>t.id===activeTrait):linked;
+      const traits=activeTrait?linked.filter(t=>canonicalTraitKey(t.name)===activeTrait):linked;
       if(activeTrait&&!traits.length)return [];
       const summary=geneEvidence(data,gene,dataset);
       const supported=traits.filter(t=>hasPhenotypes(t,dataset));
@@ -66,11 +67,13 @@ export function PriorFinder({data,onChoose,onInspect}){
   const offset=Math.min(page,Math.max(0,Math.ceil(hits.length/pageSize)-1))*pageSize;
   function exportCatalog(){
     const columns=['gene_id','MSU_ID','RAP_ID','gene_name','aliases','chromosome','gene_start','gene_end',
-      'reference_model','catalog_group','indel_datasets','catalog_dois'];
+      'reference_model','catalog_group','identity_status','original_names','evidence_abstract','bibliography_status','indel_datasets','catalog_dois'];
     downloadTable({filename:'riceflux_gene_catalog.txt',columns},data.genes.map(g=>({
       gene_id:g.id,MSU_ID:g.catalog?.msu,RAP_ID:g.catalog?.rap,gene_name:g.name,aliases:g.catalog?.aliases?.join(';'),
       chromosome:g.chromosome,gene_start:g.gene_start,gene_end:g.gene_end,reference_model:g.model,
       catalog_group:g.catalog?.collection||'prior',
+      identity_status:g.catalog?.identityStatus,original_names:g.catalog?.originalNames?.join(';'),
+      evidence_abstract:g.catalog?.evidenceAbstract,bibliography_status:g.catalog?.bibliographyStatus,
       indel_datasets:geneSupport(data,g).filter(r=>Number(r.indel_sites)>0).map(r=>r.dataset_id+'='+r.indel_sites).join(';'),
       catalog_dois:g.catalog?.geneDOI?.join(';'),
     })));
@@ -85,7 +88,7 @@ export function PriorFinder({data,onChoose,onInspect}){
         <input aria-label="检索全库" type="search" placeholder="基因名、别名、MSU / RAP 编号" value={query} onChange={change(setQuery)}/>
         <select aria-label="按关联性状筛选" value={activeTrait} onChange={change(setTrait)}>
           <option value="">全部关联性状</option>
-          {[...traitIndex.options.values()].sort((a,b)=>a.name.localeCompare(b.name,'zh')).map(t=><option key={t.id} value={t.id}>{t.name}</option>)}
+          {[...traitIndex.options.values()].sort((a,b)=>a.name.localeCompare(b.name,'zh')).map(t=><option key={canonicalTraitKey(t.name)} value={canonicalTraitKey(t.name)}>{t.name}</option>)}
         </select>
         <select aria-label="数据集覆盖" className="dataset-tint" style={dataset==='all'?undefined:datasetTint(dataset,data.datasetRegistry)} value={dataset} onChange={change(setDataset)}>
           <option value="all">全部数据集 / All datasets</option>
@@ -111,13 +114,19 @@ export function PriorFinder({data,onChoose,onInspect}){
       <p className="footnote">{hits.length.toLocaleString()} 个匹配基因{hits.length>pageSize&&
         ` · 当前 ${(offset+1).toLocaleString()}–${Math.min(offset+pageSize,hits.length).toLocaleString()}`}</p>
       <div className="catalog-list">
-        {hits.slice(offset,offset+pageSize).map(({gene,traits,supported})=><div className="catalog-row" key={gene.id} onClick={()=>{onChoose(gene,activeTrait||supported[0]?.id);setOpen(false);}}>
+        {hits.slice(offset,offset+pageSize).map(({gene,traits,supported})=><div className="catalog-row" key={gene.id} onClick={()=>{onChoose(gene,(activeTrait?traits[0]?.id:undefined)||supported[0]?.id);setOpen(false);}}>
           <button type="button" className="catalog-gene">
             <b>{gene.catalog.msu||gene.catalog.rap||gene.catalog.sourceId}</b>
-            <small>{[gene.name,...gene.catalog.aliases.filter(a=>a!==gene.name).slice(0,4)].join(' / ')}</small>
+            <small>{[gene.name,...[...new Set([...(gene.catalog.aliases||[]),...(gene.catalog.originalNames||[])])].filter(a=>a!==gene.name).slice(0,4)].join(' / ')}</small>
           </button>
           <SourceBadges data={data} gene={gene} phenotypeDataset={dataset} onInspect={(...args)=>{setOpen(false);onInspect(...args);}}/>
           <PrimaryTraits traits={traits} supported={supported}/>
+          {gene.catalog.identityStatus&&<small className="catalog-identity-status">身份：{gene.catalog.identityStatus}</small>}
+          {(gene.catalog.evidenceAbstract||gene.catalog.bibliographyStatus)&&<details className="catalog-evidence-summary" onClick={e=>e.stopPropagation()}>
+            <summary>证据摘要与出处状态</summary>
+            {gene.catalog.evidenceAbstract&&<p>{gene.catalog.evidenceAbstract}</p>}
+            {gene.catalog.bibliographyStatus&&<small>出处：{gene.catalog.bibliographyStatus}</small>}
+          </details>}
         </div>)}
         {!hits.length&&<p>没有匹配项。可改用编号或切换数据集与证据。</p>}
       </div>

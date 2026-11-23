@@ -1,5 +1,13 @@
 RiceFlux 数据接口 / Load data · Tables 1.2
 
+Tables 1.3 · MSU7 输入
+  gene_id 为 LOC_OsNNgNNNNN。SNP、短 InDel 的 marker_id 为 MSU7:ChrNN:位置:REF:SNP 或 MSU7:ChrNN:位置:REF:InDel。REF、ALT 使用 IRGSP-1.0 正链；ALT 保持原始顺序。
+  片段 PAV 以 MSU7:ChrNN:位置:REF:PAV:ALT 标识具体等位。基因级 PAV 同时保留试验编号与 MSU gene_id，群体汇总无逐材料状态。
+  历史版本保留原始表与标识。D2/D3 的 MSU7 对照 TXT 可在数据集预览中下载。
+  六列模式读取 observations.txt，表头为 编号、性状、基因、染色体、基因型、表型（制表符）。基因名或 RAP 仅在可唯一对应 MSU 且模型、染色体一致时接入。
+  可加「位点」「试验编号」。多个符合的位点或试验必须显式指定。提供表型时同时选择 environments.txt，填写方法、单位、地点和年份。新位点附标准 variants.txt，样本注释可附 samples.txt。缺失用 NA。
+  下载的 TXT 保留编号为文本。多位点单倍型及片段 PAV 使用标准数据包中的组分或逐材料调用表。
+
 入口 / Entry
 数据接口 → 导入基因型 / 表型。解压 examples/riceflux_import_examples.zip 可获得完整合成样例。规范表格为 UTF-8 TSV、制表符分隔 TXT 或相同内容的 gzip 文件。保留 ID 的大小写及前导零。表头只写一行，单元格内无 TAB 或换行。值缺失时填 NA，分型还可写 . 或 ./.。
 

@@ -6,6 +6,7 @@ import {sourceColor} from './datasetColors.js';
 import {provenanceSources} from './provenance.js';
 import {datasetIntake,manifestFields} from './inputSchema.js';
 import {pavVariantFields} from './pav.js';
+import {msuGeneId,msuSiteId} from './msuIdentity.js';
 
 const inputTables=datasetIntake.tables;
 export const datasetFiles=Object.keys(inputTables).filter(key=>inputTables[key].requiredInPackage);
@@ -40,6 +41,7 @@ function keyOf(v){return variantKey(chromNum(v.chromosome),v.pos,v.ref,v.markerT
 function sameMarker(a,b){return a.gene===b.gene&&keyOf(a)===keyOf(b);}
 
 export function parseDatasetAxes(manifest,texts,reference){
+  const canonical=manifest.schema==='RiceFlux tables 1.3';
   requireValue(datasetIntake.tableSchemas.includes(manifest.schema)&&typeof manifest.id==='string'&&/^[A-Za-z0-9_-]+$/.test(manifest.id)&&typeof manifest.name==='string'&&manifest.name.trim()&&typeof manifest.version==='string'&&manifest.version.trim(),'数据集清单缺少有效的 schema、id、name 或 version');
   requireValue(datasetIntake.genotypeEvidence.includes(manifest.genotype_evidence),'请登记分型来源 genotype_evidence');
   requireValue(manifest.assembly===datasetIntake.assembly,'参考组装不兼容；需要 '+datasetIntake.assembly+' 正链坐标');
@@ -70,16 +72,21 @@ export function parseDatasetAxes(manifest,texts,reference){
     const genes=genesByKey.get(row.gene_id)||[];
     requireValue(genes.length===1,'gene_id 不能唯一匹配：'+row.gene_id+'；请使用 MSU/RAP ID');
     const g=genes[0],chr=chromNum(row.chr),pos=Number(row.position),ref=row.ref,alt=missing(row.alt)?null:row.alt;
+    const msu_id=msuGeneId(g);
+    requireValue(!canonical||msu_id&&row.gene_id===msu_id,'1.3 的 gene_id 必须使用核对后的 MSU7 ID：'+row.gene_id);
     requireValue(g.model&&chr===chromNum(g.chromosome)&&Number.isSafeInteger(pos)&&pos>=g.start&&pos<=g.end&&pos+ref.length-1<=lengths[chr],'位点坐标与参考模型不符：'+row.marker_id);
     const alleles=alleleNames({ref,alt});
-    const markerType=markerKind(alleles,manifest.schema==='RiceFlux tables 1.2');
-    requireValue(markerType,'SNP 或 1.2 锚定短 InDel 的 REF/ALT 须为互不重复的序列（最多 4 种等位）：'+row.marker_id);
+    const markerType=markerKind(alleles,canonical||manifest.schema==='RiceFlux tables 1.2');
+    requireValue(markerType,'SNP 或锚定短 InDel 的 REF/ALT 须为互不重复的序列（最多 4 种等位）：'+row.marker_id);
     const feature=g.features.some(f=>f.start<=pos&&pos<=f.end)?'CDS':g.promoter?.start<=pos&&pos<=g.promoter.end?'上游 2 kb':'其他区域';
-    const v={id:row.marker_id,gene:g.id,chromosome:'Chr'+chr,pos,ref,alt,alleles,feature,classified:'导入区域标记'};
+    const msu_site_id=msuSiteId(chr,pos,ref,markerType);
+    requireValue(!canonical||msu_site_id===row.marker_id,'1.3 的 marker_id 应为 '+msu_site_id+'：'+row.marker_id);
+    const coordinates=variantKey(chr,pos,ref,markerType);
+    const v={id:(canonical&&knownCoordinates.get(coordinates))||row.marker_id,gene:g.id,chromosome:'Chr'+chr,pos,ref,alt,alleles,feature,classified:'导入区域标记'};
     const old=known.get(v.id);requireValue(!old||sameMarker(old,v),'已登记位点的身份或 REF/ALT 不一致：'+v.id);
     const knownId=knownCoordinates.get(keyOf(v));
     requireValue(!knownId||knownId===v.id,'同一坐标使用不同 marker_id：'+chr+':'+pos+'（已登记 '+knownId+'）');
-    return {...(old||v),alt,alleles,markerType,source_id:row.source_id,source_record_id:row.source_record_id,
+    return {...(old||v),alt,alleles,markerType,msu_id,msu_site_id,input_gene_id:row.gene_id,input_marker_id:row.marker_id,source_id:row.source_id,source_record_id:row.source_record_id,
       source_filter:row.source_filter,reference_check:row.reference_check};
   });
   unique(variants,'id','位点');
@@ -91,7 +98,9 @@ export function parseDatasetAxes(manifest,texts,reference){
     const mapped=genesByKey.get(row.gene_id)||[];
     requireValue(!row.gene_id||mapped.length===1,'PAV gene_id 不能唯一匹配：'+row.gene_id);
     requireValue(row.source_gene_id&&sources.has(row.source_id),'PAV 必须登记原始基因 ID 和溯源档案来源。');
-    return {id:row.pav_id,geneId:mapped[0]?.id??null,sourceGene:row.source_gene_id,source:sources.get(row.source_id),
+    const msu_id=msuGeneId(mapped[0]);
+    requireValue(!canonical||msu_id&&row.gene_id===msu_id,'1.3 的 PAV gene_id 必须使用核对后的 MSU7 ID：'+row.gene_id);
+    return {id:row.pav_id,geneId:mapped[0]?.id??null,msu_id,sourceGene:row.source_gene_id,source:sources.get(row.source_id),
       datasetId:manifest.id,datasetName:manifest.name,version:manifest.version};
   };
   const pav=manifest.files?.pav?intakeTable(texts,'pav').objects().map(row=>{
@@ -106,7 +115,9 @@ export function parseDatasetAxes(manifest,texts,reference){
       literalAllele.test(row.ref)&&alleleMatch&&gene?.model&&chr===chromNum(gene.chromosome)&&Number.isSafeInteger(position)&&
       position>=gene.start&&position<=gene.end&&position+Math.max(row.ref.length-1,kind==='DEL'?-lengthChange:0)<=lengths[chr],
       'InDel 片段 PAV 的组装、坐标、长度或等位定义无效：'+row.pav_id);
-    return {...assay,states:row.states,sampleIndex,event:{kind,lengthChange,chr,position,ref:row.ref,alt:row.alt,originalId:row.source_record_id}};
+    const msu_site_id=msuSiteId(chr,position,row.ref,'PAV',row.alt);
+    requireValue(!canonical||row.pav_id===msu_site_id,'1.3 的片段 PAV ID 应为 '+msu_site_id);
+    return {...assay,states:row.states,sampleIndex,event:{kind,lengthChange,chr,position,ref:row.ref,alt:row.alt,originalId:row.source_record_id,msu_site_id}};
   }):[];
   const summaries=new Map();
   if(manifest.files?.pav_summary){
@@ -180,10 +191,10 @@ export function parseDataset(manifest,texts,reference){
   const [header,...lines]=texts.genotypes.replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n').split('\n');
   const {fields}=readTable(header,inputTables.genotypes.columns,'genotypes');
   const fieldSet=new Set(fields),rows=lines.filter(Boolean);
-  requireValue(fields.length===variants.length+1&&fields[0]==='sample_id'&&variants.every(v=>fieldSet.has(v.id)),'分型表的位点列与 variants 不一致');
+  requireValue(fields.length===variants.length+1&&fields[0]==='sample_id'&&variants.every(v=>fieldSet.has(v.input_marker_id)),'分型表的位点列与 variants 不一致');
   requireValue(rows.length===samples.length,'分型表材料数与 samples 不一致');
   const seen=new Set(),columns=new Map(variants.map(v=>[v.id,new Uint8Array(samples.length).fill(missingPair)]));
-  const byMarker=new Map(variants.map(v=>[v.id,v]));
+  const byMarker=new Map(variants.map(v=>[v.input_marker_id,v]));
   const ordered=fields.slice(1).map(id=>byMarker.get(id));
   const encodings=ordered.map(()=>new Map());
   for(const line of rows){
@@ -208,27 +219,30 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
   const multiple=bundles.length>1,variants=new Map(),coords=new Map(),individuals=[],envs=new Map();
   const n=bundles.reduce((n,b)=>n+b.samples.length,0);
   const byMarker=new Map(),packed=bundles.filter(b=>b.loadGenes);
+  const canonicalInput=bundles.some(b=>b.manifest.schema==='RiceFlux tables 1.3');
+  const publishedIds=new Map(canonicalInput?bundles.filter(b=>b.manifest.schema!=='RiceFlux tables 1.3')
+    .flatMap(b=>b.variants.map(v=>[keyOf(v),v.id])):[]);
   let start=0;
   for(const bundle of bundles){
     for(const marker of bundle.variants){
-      if(!byMarker.has(marker.id))byMarker.set(marker.id,[]);
-      byMarker.get(marker.id).push({marker,columns:bundle.columns,start,datasetId:bundle.manifest.id});
+      const id=bundle.manifest.schema==='RiceFlux tables 1.3'?(publishedIds.get(keyOf(marker))||marker.id):marker.id;
+      if(!byMarker.has(id))byMarker.set(id,[]);
+      byMarker.get(id).push({marker,columns:bundle.columns,start,datasetId:bundle.manifest.id});
+      const v=marker.id===id?marker:{...marker,id};
+      const old=variants.get(v.id),coord=keyOf(v);
+      requireValue(!old||sameMarker(old,v),'数据集间位点身份冲突：'+v.id);
+      requireValue(!coords.has(coord)||coords.get(coord)===v.id,'同一坐标使用不同 marker_id：'+coord+'；请统一位点字典');coords.set(coord,v.id);
+      if(!old)variants.set(v.id,{...v,encoding:5});
+      else{
+        const alt=[...new Set([...alleleNames(old).slice(1),...alleleNames(v).slice(1)])].sort();
+        const kind=markerKind([old.ref,...alt],true);
+        requireValue(kind,'合并后的位点等位超出支持范围：'+v.id);
+        old.alt=alt.join(',')||null;
+        old.alleles=[old.ref,...alt];
+        old.markerType=kind;
+      }
     }
     start+=bundle.samples.length;
-  }
-  for(const bundle of bundles)for(const v of bundle.variants){
-    const old=variants.get(v.id),coord=keyOf(v);
-    requireValue(!old||sameMarker(old,v),'数据集间位点身份冲突：'+v.id);
-    requireValue(!coords.has(coord)||coords.get(coord)===v.id,'同一坐标使用不同 marker_id：'+coord+'；请统一位点字典');coords.set(coord,v.id);
-    if(!old)variants.set(v.id,{...v,encoding:5});
-    else{
-      const alt=[...new Set([...alleleNames(old).slice(1),...alleleNames(v).slice(1)])].sort();
-      const kind=markerKind([old.ref,...alt],true);
-      requireValue(kind,'合并后的位点等位超出支持范围：'+v.id);
-      old.alt=alt.join(',')||null;
-      old.alleles=[old.ref,...alt];
-      old.markerType=kind;
-    }
   }
   const traitMeta=new Map(),units=new Map();let offset=0;
   for(const b of bundles){
@@ -291,7 +305,7 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
   }
   const genes=reference.genes.map(g=>{
     const vs=(variantsByGene.get(g.id)||[]).sort((a,b)=>a.pos-b.pos);
-    return {...g,variants:vs,pav:pavByGene.get(g.id)||[],trait_ids:[...g.trait_ids,...extra],start:g.model?Math.min(g.start,...vs.map(v=>v.pos)):null,end:g.model?Math.max(g.end,...vs.map(v=>v.pos)):null};
+    return {...g,msu_id:msuGeneId(g),variants:vs,pav:pavByGene.get(g.id)||[],trait_ids:[...g.trait_ids,...extra],start:g.model?Math.min(g.start,...vs.map(v=>v.pos)):null,end:g.model?Math.max(g.end,...vs.map(v=>v.pos)):null};
   });
   for(const v of variants.values()){
     const parts=byMarker.get(v.id),alleles=alleleNames(v);
@@ -300,7 +314,7 @@ export function combineDatasets(reference,bundles,groupBy='source_group',registr
     Object.defineProperty(v,'column',{get(){
       if(combined)return combined;
       const source=parts.map(p=>{
-        const column=p.columns.get(v.id);
+        const column=p.columns.get(p.marker.id);
         requireValue(column,'分型分片尚未载入：'+v.id);
         return {...p,column};
       });

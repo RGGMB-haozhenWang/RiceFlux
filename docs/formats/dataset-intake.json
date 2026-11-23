@@ -14,7 +14,7 @@
   },
   "@id": "intake:v1",
   "@type": "intake:DatasetInputContract",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "manifestType": "v1:DatasetVersion",
   "datasetIriPrefix": "https://rggmb-haozhenwang.github.io/RiceFlux/formats/ontology/entity/dataset/",
   "manifestContext": {
@@ -30,10 +30,13 @@
     "supplements": {"@id": "intake:supplements", "@type": "@json"}
   },
   "assembly": "IRGSP-1.0/MSU7",
-  "tableSchemas": ["RiceFlux tables 1.0", "RiceFlux tables 1.1", "RiceFlux tables 1.2"],
+  "tableSchemas": ["RiceFlux tables 1.0", "RiceFlux tables 1.1", "RiceFlux tables 1.2", "RiceFlux tables 1.3"],
   "genotypeEvidence": ["G_chip", "G_projected", "G_direct", "G_mixed", "G_none"],
   "identity": {
     "datasetVersion": ["id", "version"],
+    "canonicalGene": ["MSU7", "gene_id"],
+    "canonicalMarker": ["MSU7", "chr", "position", "ref", "variant_type"],
+    "canonicalFragmentPav": ["MSU7", "chr", "position", "ref", "PAV", "alt"],
     "accession": ["dataset_id", "sample_id"],
     "referenceSite": ["assembly", "chr", "position", "ref"],
     "marker": ["dataset_id", "dataset_version", "marker_id"],
@@ -51,7 +54,7 @@
       "entities": ["v1:AssayedMarker", "v1:ReferenceSite", "v1:GeneIdentity", "v1:Source"],
       "requiredInPackage": true, "key": ["marker_id"],
       "columns": ["marker_id", "gene_id", "chr", "position", "ref", "alt"],
-      "joins": {"gene_id": "reference MSU/RAP locus", "source_id": "provenance.sources[].id"}
+      "joins": {"gene_id": "1.3 canonical LOC_Os MSU7 locus; 1.0–1.2 legacy MSU/RAP crosswalk", "source_id": "provenance.sources[].id"}
     },
     "genotypes": {
       "entities": ["v1:GenotypeCall"],
@@ -94,6 +97,7 @@
   "profiles": {
     "package": {"label": "数据包（清单 + 五表）", "manifestNames": ["manifest.json", "manifest.jsonld"], "hint": "选择清单及其登记的表格。"},
     "new": {"label": "新建本地数据集", "allowVcf": true, "hint": "区域 VCF 或分型两表可同时接入 SNP、短 InDel 和 ≥50 bp 片段 PAV。可另附逐材料 PAV 表。"},
+    "observations": {"label": "六列观测表（MSU7）", "tableKeys": ["observations", "environments", "variants", "samples"], "requires": ["observations"], "hint": "选择 observations.txt，表型附 environments，未登记位点附 variants。多位点或多试验时填写位点或试验编号。"},
     "phenotypes": {"label": "给预览数据集追加表型", "tableKeys": ["environments", "phenotypes"], "requires": ["environments", "phenotypes"], "hint": "选择 environments 和 phenotypes 两表。"},
     "genotypes": {"label": "给仅表型数据集追加基因型", "tableKeys": ["variants", "genotypes"], "requires": ["variants", "genotypes"], "allowVcf": true, "hint": "选择一份区域 VCF 或 variants 和 genotypes 两表。"}
   },

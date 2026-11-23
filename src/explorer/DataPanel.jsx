@@ -97,7 +97,7 @@ export function DataPanel({data,onApply,gene}){
     </div><p className="footnote">同名材料按数据集分别统计；设置可保存到工作区。</p>
     <details className="dataset-import"><summary>导入基因型 / 表型 · Import data</summary>
       <div className="compare-tools"><select aria-label="数据导入方式" value={importMode} onChange={e=>setImportMode(e.target.value)}>{Object.entries(datasetIntake.profiles).map(([key,profile])=><option key={key} value={key}>{profile.label}</option>)}</select>
-        {importMode==='new'&&<input aria-label="本地数据集名称" placeholder="数据集名称" value={importName} onChange={e=>setImportName(e.target.value)}/>}
+        {['new','observations'].includes(importMode)&&<input aria-label="本地数据集名称" placeholder="数据集名称" value={importName} onChange={e=>setImportName(e.target.value)}/>}
         {importMode!=='package'&&<input aria-label="导入数据来源" placeholder="来源说明或 DOI" value={importSource} onChange={e=>setImportSource(e.target.value)}/>}
         {datasetIntake.profiles[importMode].allowVcf&&<select aria-label="导入分型证据" value={importEvidence} onChange={e=>setImportEvidence(e.target.value)}>{datasetIntake.genotypeEvidence.filter(value=>value!=='G_none').map(value=><option key={value}>{value}</option>)}</select>}
         <label className="file-button">选择文件<input aria-label="导入数据集" type="file" multiple accept=".json,.jsonld,.tsv,.txt,.vcf,.gz,.bgz" onChange={upload} disabled={busy}/></label>

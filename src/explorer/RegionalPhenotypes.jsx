@@ -107,13 +107,14 @@ export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schem
           {view.assays.map(a => <option key={a}>{a}</option>)}
         </select></label>}
     </div>
-    {compact&&<label className="site-select">试验地点<select aria-label="表型试验地点" value={activeSite} onChange={e=>onChange({site:e.target.value})}>{sites.map(({site})=><option key={site} value={site}>{siteName(site)}</option>)}</select><span>各地分别展示</span></label>}
+    {compact&&<label className="site-select">试验地点<select aria-label="表型试验地点" value={activeSite} onChange={e=>onChange({site:e.target.value})}>{sites.map(({site})=><option key={site} value={site}>{siteName(site)}</option>)}</select></label>}
     <div className="phenotype-tools">
       {available.length>0&&<label>分组 <select aria-label="表型分组方案" value={scheme?.id||''} onChange={e=>setSchemeId(e.target.value)}><option value="">当前位点组合</option>{available.map(s=><option key={s.id} value={s.id}>{presetTitle(s)}</option>)}</select></label>}
       {view.active.source.provenance&&<details className="phenotype-provenance"><summary>鉴定与地点溯源 / Trial source</summary><TrialProtocol record={view.active.source.provenance}/></details>}
       <PhenotypeTests groups={named||allGroups} view={view} definition={{trait:trait.id,gene:gene?.id,mode:scheme?.id||assessment?.scheme||'selected_genotypes',markers:scheme?scheme.markers.map(v=>v.id):markerIds}}/>
       {onInspect&&<button type="button" className="site-detail" onClick={event=>onInspect(trait,view,event.currentTarget)}>查看所选试验个体</button>}
     </div>
+    {range&&<p className="target-legend"><i/>目标区间 · {valueText(range[0])}–{valueText(range[1])} {view.unit}</p>}
     <details className="region-description" open={!compact}><summary>统计口径 · {view.unit}</summary><p>各地共用同一横轴。箱体为四分位区间，中线为中位数，两端为最小值和最大值。n 为有测值的组合成员数。</p></details>
     <div className="region-grid">{sites.filter(s=>!compact||s.site===activeSite).map(({site,endpoint,rows,total}) => {
       const active = site===activeSite, name = siteName(site);

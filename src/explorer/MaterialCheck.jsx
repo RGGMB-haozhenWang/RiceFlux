@@ -1,10 +1,11 @@
 import React,{useMemo,useState} from 'react';
+import {BreederPriorCheck} from './BreederPriorCheck.jsx';
 import {AccessionPicker} from './BreederTasks.jsx';
 import {callLabel} from './BreederReview.jsx';
 import {fileText,isVcfFile,vcfFileText} from './dataImport.js';
 import {downloadTable} from './formats.js';
 import {geneSchemes} from './jointHaplotypes.js';
-import {checkGenotypeFields,checkPhenotypeFields,inspectMaterialGene,parseMaterialCheck} from './materialCheck.js';
+import {checkGenotypeFields,checkPhenotypeFields,inspectMaterialGene,parseMaterialChecks} from './materialCheck.js';
 import {siteName} from './regions.js';
 import {useGeneCalls} from './useGeneCalls.js';
 import {checkPavFields,pavNames,pavState} from './pav.js';
@@ -21,15 +22,19 @@ export async function readCheckFiles(files){
   }));
 }
 
-export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneControls,fileCheck,setFileCheck,showInput=true,initialSampleId}){
+export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneControls,fileCheck,setFileCheck,showInput=true,initialSampleId,initialSamples=[]}){
   const [known,setKnown]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
   const [evidence,setEvidence]=useState('G_mixed');
+  const [importedId,setImportedId]=useState('');
+  const activeImport=fileCheck?.materials?.find(m=>m.sample.id===importedId)??fileCheck;
+  const [comparisonIds,setComparisonIds]=useState([]);
+  const comparisonSamples=fileCheck?(fileCheck.materials??[fileCheck]).map(m=>m.sample):[...new Map([...initialSamples,...data.individuals.filter(s=>comparisonIds.includes(s.id)),...(known||initialSampleId?[data.individuals.find(s=>s.id===(known||initialSampleId))].filter(Boolean):[])].map(s=>[s.id,s])).values()];
   const markerCatalog=useMemo(()=>data.genes.flatMap(g=>g.variants.map(v=>({...v,gene_id:g.id,gene_name:g.name}))),[data]);
   const geneByMarker=useMemo(()=>new Map(markerCatalog.map(v=>[v.id,v.gene_id])),[markerCatalog]);
-  const sample=fileCheck?.sample??data.individuals.find(s=>s.id===(known||initialSampleId));
+  const sample=activeImport?.sample??data.individuals.find(s=>s.id===(known||initialSampleId));
   const ids=useMemo(()=>{
     const primary=models.map(m=>m.gene.id);
-    if(fileCheck)return [...new Set([...primary,...[...fileCheck.calls.keys()].map(id=>geneByMarker.get(id))])].filter(Boolean);
+    if(fileCheck)return [...new Set([...primary,...(fileCheck.materials??[fileCheck]).flatMap(m=>[...m.calls.keys()]).map(id=>geneByMarker.get(id))])].filter(Boolean);
     return primary.length?primary:[initialGene].filter(Boolean);
   },[models,fileCheck,geneByMarker,initialGene]);
   const status=useGeneCalls(data,ids,Boolean(sample&&!fileCheck&&ids.length));
@@ -41,17 +46,17 @@ export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneC
     const menu=geneSchemes(gene,data.evidence,[],siteSelections[id]);
     return [{gene,scheme:menu[0]}];
   }),[ids,models,data,siteSelections]);
-  const readings=fileCheck?.readings??(sample?axes.filter(a=>a.dataset===sample.dataset_id&&Object.hasOwn(sample.phenotypes,a.id)).map(a=>({
+  const readings=activeImport?.readings??(sample?axes.filter(a=>a.dataset===sample.dataset_id&&Object.hasOwn(sample.phenotypes,a.id)).map(a=>({
     trait:a.trait_name,value:sample.phenotypes[a.id],unit:a.unit,site:siteName(a.source.original_site??a.source.site),
     year:a.source.year,method:a.assay
   })):[]);
   const genes=sample&&(fileCheck||status.ready)?checkModels.map(({gene,scheme})=>({
-    gene,scheme,...inspectMaterialGene(sample,scheme,fileCheck?.calls)
+    gene,scheme,...inspectMaterialGene(sample,scheme,activeImport?.calls)
   })):[];
   const measured=readings.filter(r=>Number.isFinite(r.value));
   const descriptors=sample?.descriptors||[];
-  const submitted=fileCheck?.submitted??[];
-  const pav=fileCheck?.pav??(sample?(data.pav||[]).flatMap(assay=>{
+  const submitted=activeImport?.submitted??[];
+  const pav=activeImport?.pav??(sample?(data.pav||[]).flatMap(assay=>{
     const status=pavState(assay,sample);
     if(status==='unassayed'||models.length&&!ids.includes(assay.geneId))return [];
     return [{gene_id:assay.geneId,gene:assay.geneId?data.genes.find(g=>g.id===assay.geneId)?.name:assay.sourceGene,source_gene_id:assay.sourceGene,status,
@@ -65,7 +70,7 @@ export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneC
     try{
       if(files.length>3)throw Error('可各选一份分型、表型和 PAV。');
       const inputs=await readCheckFiles(files);
-      const next=parseMaterialCheck(inputs.map(f=>f.text),markerCatalog,evidence,data.genes);
+      const next=parseMaterialChecks(inputs.map(f=>f.text),markerCatalog,evidence,data.genes);
       setFileCheck({...next,inputs});setKnown('');
     }catch(e){setError(e.message);}finally{setBusy(false);}
   }
@@ -89,6 +94,14 @@ export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneC
     downloadTable({filename:'riceflux_material_check.txt',columns:fields},rows);
   }
   return <div className="task-content">
+    <section className="breeder-card" aria-label="选择多份体检材料">
+      <h2>选择材料比较文献优势状态</h2>
+      <AccessionPicker label="添加比较材料" samples={data.individuals} onPick={s=>{setComparisonIds(ids=>[...new Set([...ids,s.id])]);setFileCheck(null);}}/>
+      <p>{comparisonSamples.length} 份材料已加入比较。可在顶部清空查询重新选择。</p>
+      <div className="breeder-pins">{comparisonSamples.map(s=><span className="breeder-pin" key={s.id}>{s.name} · {s.dataset_id}{comparisonIds.includes(s.id)&&<button type="button" aria-label={'移除比较 '+s.name} onClick={()=>setComparisonIds(ids=>ids.filter(id=>id!==s.id))}>×</button>}</span>)}</div>
+    </section>
+    {comparisonSamples.length>0&&<BreederPriorCheck data={data} axes={axes} samples={comparisonSamples} models={models} localReadings={fileCheck?(s=>(fileCheck.materials??[fileCheck]).find(m=>m.sample.id===s.id)?.readings):null} localCalls={fileCheck?(s=>(fileCheck.materials??[fileCheck]).find(m=>m.sample.id===s.id)?.calls):null}/>}
+
     {showInput&&<section className="breeder-card" aria-label="导入体检材料">
       <div className="task-form">
         <label>检测来源<select aria-label="体检分型来源" value={evidence} disabled={busy} onChange={e=>setEvidence(e.target.value)}>
@@ -101,13 +114,14 @@ export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneC
         <button className="review-link" type="button" onClick={()=>downloadTable({filename:'riceflux_marker_dictionary.txt',
           columns:['marker_id','gene_id','gene_name','chr','position','ref','alt']},markerCatalog.map(v=>({...v,marker_id:v.id,chr:v.chromosome,position:v.pos})))}>位点字典</button>
       </div>
-      <p className="breeder-note">同一材料可提交区域 VCF、表型和 PAV TXT。VCF 中长度变化达到 50 bp 的锚定 InDel 归入片段 PAV。</p>
+      <p className="breeder-note">TXT 可包含多份材料，使用 sample_id 配对分型、表型和 PAV；VCF 每次仅支持一份材料。VCF 中长度变化达到 50 bp 的锚定 InDel 归入片段 PAV。</p>
       {error&&<p role="alert">{error}</p>}
       {busy&&<p role="status">正在校验材料编号和位点。</p>}
       <details className="review-disclosure"><summary>查询已入库材料</summary>
         <AccessionPicker label="已入库材料" samples={data.individuals} selected={!fileCheck?sample:null} onPick={s=>{setKnown(s.id);setFileCheck(null);setError('');}}/>
       </details>
     </section>}
+    {fileCheck?.materials?.length>1&&<label>查看导入材料详情<select aria-label="导入材料详情" value={sample.id} onChange={e=>setImportedId(e.target.value)}>{fileCheck.materials.map(m=><option key={m.sample.id} value={m.sample.id}>{m.sample.name}</option>)}</select></label>}
     {sample&&<section className="breeder-card" aria-label="材料体检结果">
       <div className="task-heading"><h2>{sample.name}</h2>
         <span>{sample.source_sample_id??sample.id} · {fileCheck?'本次导入':sample.dataset_name??sample.dataset_id}</span>
@@ -123,7 +137,7 @@ export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneC
       </p>
       {!showInput&&fileCheck&&submitted.length>0&&<label className="entry-evidence-label">检测来源
         <select aria-label="体检分型来源" value={sample.genotype_evidence} onChange={e=>setFileCheck({
-          ...fileCheck,sample:{...sample,genotype_evidence:e.target.value}})}>
+          ...fileCheck,sample:{...fileCheck.sample,genotype_evidence:e.target.value},...(fileCheck.materials?{materials:fileCheck.materials.map(m=>({...m,sample:{...m.sample,genotype_evidence:e.target.value}}))}:{})})}>
           {Object.entries(evidenceNames).map(([id,name])=><option key={id} value={id}>{name}</option>)}
         </select>
       </label>}

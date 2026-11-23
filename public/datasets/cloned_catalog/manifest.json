@@ -1,26 +1,43 @@
 {
-  "schema": "RiceFlux gene catalog 1.0",
-  "version": "2026-11-20.1",
+  "schema": "RiceFlux gene catalog 1.1",
+  "version": "2026-11-23.1",
   "file": "genes.tsv.gz",
   "assembly": "IRGSP-1.0/MSU7",
-  "sha256": "76ddaafb3631f242f9deed20a4bec7dde241cb2f9a05f9ca09e3d832b7e523ad",
+  "sha256": "64391c7602e4c89c90d80a9d0171f7a0ad5636d03dfe8bfaa2ce96dda9a7e4b1",
   "counts": {
     "source_rows": 5680,
     "rap_pair_not_unique": 102,
     "no_stable_id": 162,
-    "unique_workbook_loci": 5502,
+    "restored_abstract_cells": 85,
+    "unique_workbook_loci": 5664,
     "duplicate_source_rows": 16,
     "legacy_overlap": 451,
     "mapped_new_genes": 4982,
+    "entries_with_abstract": 5664,
+    "entries_with_doi": 5528,
     "legacy_entries": 485,
-    "extension_entries": 5051,
-    "catalog_total": 5536,
-    "unlocated_new_genes": 69
+    "extension_entries": 5213,
+    "enrichment_entries": 451,
+    "table_entries": 5664,
+    "catalog_total": 5698,
+    "unlocated_new_genes": 231
   },
   "inputs": {
-    "workbook_sha256": "e968cf739718239f278559fb9fad5dd6fc396d7ec16d306316c113c7f898e492",
+    "workbook_sha256": "f46ef1521f3a951f5fdec2a0fac04aa7f8f3b0aac0abcf33724790809d77cc35",
     "reference_sha256": "dcb6f75f83e6aef96c647246732bd0ab2a548aeefb9d580cdba06a87cda2a548",
+    "gff_sha256": "e8421ecfa75bb68f7c38ab270c1188bf5966b2bfa10a0e94da6db5d92b3462b3",
     "crosswalk_sha256": "75f3c7c2b81837ee0ec94c17b73ba36ae6e7c3f93192840399e8887553c77e00",
-    "gff_sha256": "e8421ecfa75bb68f7c38ab270c1188bf5966b2bfa10a0e94da6db5d92b3462b3"
+    "corrections_sha256": "3bf2a68684a2e84142ce832b79dcff0a8600dc71b8d43bd1f9efea7bd3858a2c"
+  },
+  "source_status": "resident_workbook_backup_with_bound_cell_corrections",
+  "identity_rule": "exact accession and unique RAP-MSU mapping; gene symbols never join records",
+  "evidence_status": "Source functional annotations and DOI are retained, not independently verified abstracts or proof of cloned status.",
+  "crosswalk": {
+    "version": "RAP-MSU 2026-02-05",
+    "columns": [
+      "RAP gene identifier",
+      "comma-separated MSU transcript identifiers"
+    ],
+    "url": "https://rapdb.dna.affrc.go.jp/download/irgsp1.html"
   }
 }

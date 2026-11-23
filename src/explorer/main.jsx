@@ -175,7 +175,8 @@ function App() {
   useEffect(()=>{if(notice){const t=setTimeout(()=>setNotice(''),4000);return()=>clearTimeout(t);}},[notice]);
   const gene=data?.genes.find(g=>g.id===geneId);
   const evidenceEnabled=!demo&&!breederOpen&&Boolean(gene?.catalog&&!gene.catalog.historical);
-  const assessmentEnabled=evidenceEnabled&&supportsTraitAssessment(gene);
+  const assessmentEnabled=evidenceEnabled&&(supportsTraitAssessment(gene)||
+    Boolean(gene.model)&&data.traits.some(t=>t.environments?.length));
   useEffect(()=>{
     if(!evidenceEnabled)return;
     let current=true;
@@ -454,6 +455,10 @@ function App() {
     </header>
     {researcher?<div className={'explorer reader-explorer'+(embedded?' embedded':'')}>
     <a className="skip" href="#explorer-main" onClick={e=>{e.preventDefault();goToSection('overview');}}>跳到分析结果</a>
+    <nav className="reader-quick-nav" aria-label="研究者快捷导航">
+      <b>快速定位</b>
+      {readerLayout.filter(p=>!headerFunctions.includes(p.id)).map(p=><button type="button" key={p.id} aria-controls={'rf-section-'+p.id} onClick={()=>goToSection(p.id)}>{p.title}</button>)}
+    </nav>
     <div className="canvas">
       <main id="explorer-main" tabIndex={-1}><div className="hero">
         <div className="reader-context">
@@ -468,7 +473,7 @@ function App() {
           compare: !demo&&<ComparePanel data={data} activeGene={gene} cohort={cohort} config={compareSettings} onConfig={setting('compare')} onInspect={inspectIndel}/>,
           locus: <Panel title="基因区域 / Locus" tag={`${variants.length} / ${gene.variants.length} 位点`}>
             <div className="site-selection-tools">
-              <SitePicker gene={gene} cohort={cohort} selection={siteSelections[geneId]} initialIds={variants.map(v=>v.id)} schemes={schemes}
+              <SitePicker data={data} gene={gene} cohort={cohort} selection={siteSelections[geneId]} initialIds={variants.map(v=>v.id)} schemes={schemes}
                 onApply={selectSites} onAutomatic={()=>selectSites(null)}/>
               <span>{sites.mode==='manual'?'自选组合':'QC 自动选择'}</span>
             </div>

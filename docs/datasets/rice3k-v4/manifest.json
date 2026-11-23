@@ -245,12 +245,12 @@
       {
         "path": "rice3k-v4/regional.vcf.gz",
         "label": "3K 区域分型 VCF",
-        "sha256": "1d662271f9879afaba9178aa5d2f4893bbd1d8bf6efbf937e017c0363cb6f25b"
+        "sha256": "d4e8c8d594482dbeca65ff024cfac87ce2ed54cf87d469f07b7cd3e5a676420c"
       },
       {
         "path": "rice3k-v4/regional.vcf.gz.tbi",
         "label": "3K 区域 VCF 索引",
-        "sha256": "7fee4eab38a8ab95ba861af5b0f74f65abf103427af50d2d8339e219e0e9cb23"
+        "sha256": "b438a4e9e6c5d12ba3694261dc13a6cca1ffb7dad0fb1d24834819b8151bac8c"
       },
       {
         "path": "rice3k-v4/snp_coverage.txt",

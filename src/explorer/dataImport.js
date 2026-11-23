@@ -8,6 +8,7 @@ import {pavFields,pavVariantFields} from './pav.js';
 import {splitIndelAlleles,pavIndelState,pavIndelId} from './indelPav.js';
 import {callPair} from './alleles.js';
 import {chromNum} from './exchange.js';
+import {sixColumnTables} from './sixColumnImport.js';
 
 export async function fileText(file) {
   const bytes=new Uint8Array(await file.arrayBuffer());
@@ -153,14 +154,14 @@ function normalizeVariantTables(patch,metadata) {
   {...metadata,provenance:{schema:'RiceFlux provenance 1.0',...metadata.provenance,sources:[...sources,source]}}];
 }
 
-export function createLocalDataset(patch, metadata, reference) {
+export function createLocalDataset(patch, metadata, reference, schema='RiceFlux tables 1.2') {
   if(!patch.samples)throw Error('新建数据集需要 samples.txt 或 samples.tsv');
   validateTablePairs(Object.keys(patch).filter(key=>patch[key]));
   [patch,metadata]=normalizeVariantTables(patch,metadata);
   if(!patch.genotypes&&!patch.phenotypes&&!optionalDatasetTables.some(key=>patch[key]))throw Error('请提供分型、表型或 PAV');
   const template=readTable(patch.samples,['sample_id'],'samples');
   const genotypes=writeTSV(['sample_id'],template.objects());
-  const manifest={schema:'RiceFlux tables 1.2',id:metadata.id,name:compactField(metadata.name),version:metadata.version,
+  const manifest={schema,id:metadata.id,name:compactField(metadata.name),version:metadata.version,
     assembly:datasetIntake.assembly,source:compactField(metadata.source),genotype_evidence:patch.genotypes?metadata.genotype_evidence:'G_none',
     files:{...files,...Object.fromEntries(optionalDatasetTables.filter(key=>patch[key]).map(key=>[key,key+'.tsv']))},
     ...metadata.provenance&&{provenance:metadata.provenance}};
@@ -242,10 +243,10 @@ export async function importDatasetFiles(selected,{mode,metadata,target,registry
     throw Error('请按所选导入方式提供命名正确的 TXT / TSV 表格');
   if(vcf.length>1||vcf.length&&(!profile.allowVcf||keys.includes('variants')||keys.includes('genotypes')))
     throw Error('请选择一份区域 VCF 或一组分型两表');
-  validateTablePairs(keys);
+  if(mode!=='observations')validateTablePairs(keys);
   if(!vcf.length&&profile.requires?.some(key=>!keys.includes(key)))
     throw Error('缺少所选导入方式要求的表格：'+profile.requires.join('、'));
-  const override=mode!=='new';
+  const override=mode!=='new'&&mode!=='observations';
   if(override&&!target)throw Error('先预览一个目标数据集');
   if(mode==='genotypes'&&target.variants.length)throw Error('该数据集已有基因型。请将另一批分型作为独立数据集导入');
   let input=Object.fromEntries(await Promise.all(tables.map(async(f,i)=>[keys[i],await fileText(f)])));
@@ -254,6 +255,8 @@ export async function importDatasetFiles(selected,{mode,metadata,target,registry
     fields.provenance=JSON.parse(await fileText(archive));
     provenanceSources({provenance:fields.provenance});
   }
+  if(mode==='observations')
+    return {bundle:createLocalDataset(sixColumnTables(input,reference,target),fields,reference,'RiceFlux tables 1.3'),override:false};
   const source=override?(target.sourceBundle?await target.sourceBundle():target):null;
   if(vcf.length){
     const {patch,provenance}=await importVcfInput(await vcfFileText(vcf[0]),
