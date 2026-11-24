@@ -348,9 +348,15 @@ export async function readPackage(document,reader,reference){
   const texts={};
   await Promise.all(datasetTableKeys(manifest).map(async key=>{
     const filename=manifest.files?.[key];requireValue(typeof filename==='string'&&/^[\w.-]+\.(?:tsv|txt)(?:\.gz)?$/.test(filename),'清单文件名无效：'+key);
-    texts[key]=await reader(filename);
+    let text=await reader(filename);
     const expected=manifest.sha256?.[key];
-    if(expected)requireValue(await sha256Text(texts[key])===expected,'数据哈希不匹配：'+filename);
+    if(expected&&await sha256Text(text)!==expected){
+      // Some checkouts convert line endings. Accept only the original hashed bytes after conversion.
+      const canonical=text.replaceAll('\r\n','\n');
+      requireValue(canonical!==text&&await sha256Text(canonical)===expected,'数据哈希不匹配：'+filename);
+      text=canonical;
+    }
+    texts[key]=text;
   }));
   return parseDataset(manifest,texts,reference);
 }

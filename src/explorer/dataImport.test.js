@@ -98,6 +98,12 @@ test('legacy and ontology manifests validate identical TXT axes and hashes',asyn
     assert.deepEqual(bundle.variants[0].alleles,['A','AG','ACT']);
     assert.equal(bundle.phenotypes.get('007').e,1.5);
   }
+  const windowsTables=entries.map(([key,txt])=>upload(key+'.txt',txt.replaceAll('\n','\r\n')));
+  const windows=await importDatasetFiles([upload('manifest.json',JSON.stringify(manifest)),...windowsTables],opts);
+  assert.deepEqual(windows.bundle.texts,source.texts);
+  await assert.rejects(importDatasetFiles([upload('manifest.json',JSON.stringify(manifest)),
+    ...windowsTables.filter(f=>f.name!=='samples.txt'),
+    upload('samples.txt',samples.replace('007','7').replaceAll('\n','\r\n'))],opts),/数据哈希不匹配.*samples/);
   await assert.rejects(importDatasetFiles([upload('manifest.jsonld',JSON.stringify({...semantic,'@type':'v1:GeneRecord'})),...tables],opts),/DatasetVersion/);
   await assert.rejects(importDatasetFiles([upload('manifest.jsonld',JSON.stringify(semantic)),...tables.filter(f=>f.name!=='samples.txt'),
     upload('samples.txt',samples.replace('007','7'))],opts),/数据哈希不匹配.*samples/);

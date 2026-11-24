@@ -2,7 +2,7 @@ import {readPrior} from './exchange.js';
 import {measuredTraits} from './regions.js';
 import {readTable,readPackage,combineDatasets,datasetTableKeys} from './datasets.js';
 import {fetchBytes,readText,unpackGzip} from './assets.js';
-import {openPackedDataset} from './packedDataset.js';
+import {openPackedDataset,readPackedAxes} from './packedDataset.js';
 import {extendGeneCatalog,geneCatalogPath} from './geneCatalog.js';
 import {coverageFields,coveragePath} from './geneCoverage.js';
 import {manifestFields,registeredManifestPath} from './inputSchema.js';
@@ -88,6 +88,8 @@ export function observedDataset(cohort, ontology) {
 }
 
 async function readJSON(path,signal){return JSON.parse(await readText(path,signal));}
+const datasetRoot=base=>new URL(base+'datasets/',location.href);
+const packedReader=root=>(file,signal)=>fetchBytes(new URL(file,root),signal);
 
 export async function loadExplorer(base,demo,signal,initialGene){
   if(demo)return readJSON(base+'data/explorer_demo.json',signal);
@@ -97,7 +99,12 @@ export async function loadExplorer(base,demo,signal,initialGene){
     const rows=readTable(index,['id','name','version','manifest'],'index').objects();
     if(!rows.length||new Set(rows.map(r=>r.id)).size!==rows.length||rows.some(r=>!registeredManifestPath(r.manifest)||
       Boolean(r.previous_manifest||r.previous_version)&&(!r.previous_version||r.previous_version===r.version||!registeredManifestPath(r.previous_manifest))))throw Error('数据集索引无效');
-    return Promise.all([rows,registeredManifest(base,rows[0],signal)]);
+    return registeredManifest(base,rows[0],signal).then(manifest=>{
+      const axesRequest=manifest.packed?readPackedAxes(manifest,packedReader(datasetRoot(base)),signal):null;
+      // The reference may still be downloading when the axes request fails.
+      axesRequest?.catch(()=>{});
+      return [rows,manifest,axesRequest];
+    });
   });
   const configRequest=readJSON(base+'formats/deployment.json',signal);
   const catalogRequest=configRequest.then(async config=>{
@@ -114,7 +121,7 @@ export async function loadExplorer(base,demo,signal,initialGene){
     if(config.catalog_coverage!==coveragePath)throw Error('位点覆盖目录地址无效');
     return readTable(await readText(base+'datasets/'+coveragePath,signal),coverageFields,'位点覆盖目录').objects();
   });
-  const [baseReference,[registry,manifest],literature,config,regions,traitRegistry,annotations,extended,coverage]=await Promise.all([
+  const [baseReference,[registry,manifest,axesRequest],literature,config,regions,traitRegistry,annotations,extended,coverage]=await Promise.all([
     readJSON(base+'datasets/reference.json.gz',signal),indexRequest,readText(base+'datasets/literature.tsv',signal),configRequest,
     readText(base+'formats/genome_regions.tsv',signal),readText(base+'formats/traits.tsv',signal),annotationsRequest,catalogRequest,coverageRequest]);
   if(config.version!==1)throw Error('服务器配置版本无效');
@@ -139,7 +146,7 @@ export async function loadExplorer(base,demo,signal,initialGene){
     reference.deploymentPriorFile=path;
     reference.compareOnLoad=config.compare_on_load!==false;
   }
-  const bundle=await readRegistered(base,registry[0],manifest,reference,signal);
+  const bundle=await readRegistered(base,registry[0],manifest,reference,signal,axesRequest);
   const data=combineDatasets(reference,[bundle]);
   if(data.loadGenes)await data.loadGenes([initialGene?.(data)??(data.genes.find(g=>g.name==='DTH7')||data.genes[0]).id],signal);
   return data;
@@ -151,8 +158,8 @@ async function registeredManifest(base,row,signal){
   return manifest;
 }
 
-async function readRegistered(base,row,manifest,reference,signal){
-  const root=new URL(base+'datasets/',location.href),directory=new URL(row.manifest,root);
+async function readRegistered(base,row,manifest,reference,signal,axesRequest){
+  const root=datasetRoot(base),directory=new URL(row.manifest,root);
   if(!manifest.packed)return readPackage(manifest,file=>readText(new URL(file,directory),signal),reference);
   const descriptor=manifest.packed;
   if(!/^[-\w]+\.zip$/.test(descriptor.archive)||typeof descriptor.member_prefix!=='string'||!/^(?:[-\w]+\/)?$/.test(descriptor.member_prefix))throw Error('TSV 归档路径无效');
@@ -161,13 +168,13 @@ async function readRegistered(base,row,manifest,reference,signal){
   if(overlay&&root.origin!==location.origin)throw Error('共享归档须来自当前站点');
   let archiveRequest;
   const sharedArchive=()=>archiveRequest??=fetchBytes(new URL(descriptor.archive,root)).catch(error=>{archiveRequest=undefined;throw error;});
-  const bundle=await openPackedDataset(manifest,(file,requestSignal)=>fetchBytes(new URL(file,root),requestSignal),async key=>{
+  const bundle=await openPackedDataset(manifest,packedReader(root),async key=>{
     const file=manifest.files?.[key];
     if(typeof file!=='string'||!/^[-\w.]+\.(?:tsv|txt)(?:\.gz)?$/.test(file))throw Error('清单文件名无效');
     const {archiveEntry}=await import('./portableArchive.js');
     const archive=await (overlay?sharedArchive():fetchBytes(new URL(descriptor.archive,root)));
     return new TextDecoder().decode(await unpackGzip(await archiveEntry(archive,descriptor.member_prefix+file)));
-  },reference,signal);
+  },reference,signal,axesRequest);
   if(overlay)bundle.portableArchive=async()=>{
     const keys=datasetTableKeys(manifest),names=keys.map(key=>manifest.files?.[key]);
     if(names.some(name=>typeof name!=='string'||!/^[-\w.]+\.(?:tsv|txt)(?:\.gz)?$/.test(name))||new Set(names).size!==names.length)throw Error('清单文件名无效或重复');

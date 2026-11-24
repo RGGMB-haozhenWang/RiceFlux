@@ -8,6 +8,8 @@ RiceFlux 用水稻先验、分型、试验表型和文献证据比较基因与�
 - 育种工作台可选择多份材料，按染色体查找基因，核对材料携带的文献优势型及对应证据。
 - D1 为 RiceAtlas 6044，D2 为 RiceNavi 404，D3 为 3K Rice Genomes。数据版本和溯源可从页面的数据接口查看。
 
+[性状方向表](docs/formats/function-review/effect_direction.txt) · [RiceNavi ALT 核对](docs/formats/function-review/ricenavi_alt_audit.txt) · [先验核对索引](docs/formats/function-review/prior_function_index.txt) · [基因方向覆盖](docs/formats/function-review/gene_direction_coverage.txt) · [复杂先验](docs/formats/function-review/complex_priors.txt)
+
 ## 输入
 
 使用 UTF-8 制表符 TXT 或 TSV。新版分型包使用 `RiceFlux tables 1.3`，以 MSU7 基因 ID 和 IRGSP-1.0 正链位点为主键。RAP、基因名和原始检测编号保留在对照表等来源字段。六列观测表可导入「编号、性状、基因、染色体、基因型、表型」，多位点或多试验时补充位点或试验编号。 [输入说明](public/datasets/README.txt) · [本体契约](public/formats/dataset-intake.json)

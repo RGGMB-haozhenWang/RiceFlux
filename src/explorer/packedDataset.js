@@ -15,7 +15,7 @@ export async function verifiedAsset(ref,read,signal){
   return bytes;
 }
 
-export async function openPackedDataset(manifest,read,readSource,reference,signal){
+export async function readPackedAxes(manifest,read,signal){
   const index=manifest.packed;
   if(index?.schema!==packedSchema||!Array.isArray(index.blocks))throw Error('数据分片版本无效');
   const decode=async ref=>JSON.parse(new TextDecoder().decode(await verifiedAsset(ref,read,signal)));
@@ -30,6 +30,12 @@ export async function openPackedDataset(manifest,read,readSource,reference,signa
     }
   }
   if(!packedAxes(manifest).every(key=>typeof texts[key]==='string'))throw Error('数据轴分片缺少输入表');
+  return texts;
+}
+
+export async function openPackedDataset(manifest,read,readSource,reference,signal,axesRequest){
+  const index=manifest.packed;
+  const texts=await (axesRequest??readPackedAxes(manifest,read,signal));
   const axes=parseDatasetAxes(manifest,texts,reference);
   const {samples,variants}=axes,byId=new Map(variants.map(v=>[v.id,v])),seen=new Set();
   const columns=new Map(),byGene=new Map(),inflight=new Map(),ready=new Set();
