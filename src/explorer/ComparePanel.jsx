@@ -1,3 +1,4 @@
+import {useText} from './locale.jsx';
 import {LinkagePanel} from './LinkagePanel.jsx';
 import {findGenes} from './geneSearch.js';
 import {JointPanel} from './JointPanel.jsx';
@@ -16,20 +17,22 @@ import {markerAnnotation} from './alleles.js';
 import {markerNames} from './VariantMark.jsx';
 
 function CompareGene({data,gene,variants,cohort,populations,onRemove,markerId,setMarker,onInspect}){
+  const localize = useText();
   const v=variants.find(v=>v.id===markerId)||variants[0];
-  return <article className="comp-gene"><header><strong>{gene.name}{' '}<IndelBadge data={data} gene={gene} onInspect={onInspect}/>{' '}<PhenotypeBadge data={data} gene={gene}/></strong><button onClick={onRemove} aria-label={'移除 '+gene.name}>移除</button></header>
-    <p>{[gene.catalog?.msu||gene.id,gene.model?gene.chromosome+' '+gene.gene_start.toLocaleString()+'–'+gene.gene_end.toLocaleString()+' bp':'基因模型待定位'].join(' · ')}</p>
+  return <article className="comp-gene"><header><strong>{localize(gene.name)}{' '}<IndelBadge data={data} gene={gene} onInspect={onInspect}/>{' '}<PhenotypeBadge data={data} gene={gene}/></strong><button onClick={onRemove} aria-label={localize('移除 '+gene.name)}>{localize("移除")}</button></header>
+    <p>{localize([gene.catalog?.msu||gene.id,gene.model?gene.chromosome+' '+gene.gene_start.toLocaleString()+'–'+gene.gene_end.toLocaleString()+' bp':'基因模型待定位'].join(' · '))}</p>
     {gene.model&&<GenomeTrack gene={gene} variants={variants} selected={v} onSelect={setMarker} onInspect={(id,trigger)=>onInspect(gene,id,undefined,trigger)}/>}
     <PavPanel gene={gene} cohort={cohort} populations={populations}/>
-    {v?<><label>查看位点 <select value={v.id} onChange={e=>setMarker(e.target.value)}>{variants.map(m=><option key={m.id} value={m.id}>
-      {markerNames[markerAnnotation(m).kind]} · {m.pos.toLocaleString()} · {m.id}
+    {v?<><label>{localize("查看位点")+" "}<select value={v.id} onChange={e=>setMarker(e.target.value)}>{variants.map(m=><option key={m.id} value={m.id}>
+      {localize(markerNames[markerAnnotation(m).kind])} · {localize(m.pos.toLocaleString())} · {localize(m.id)}
     </option>)}</select></label>
-    <AlleleFrequency variant={v} cohort={cohort} populations={populations.filter(p=>cohort.some(s=>s.population_id===p.id))}/></>:<p>当前没有可比较的实测位点。</p>}
+    <AlleleFrequency variant={v} cohort={cohort} populations={populations.filter(p=>cohort.some(s=>s.population_id===p.id))}/></>:<p>{localize("当前没有可比较的实测位点。")}</p>}
 
   </article>;
 }
 
 export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspect}){
+  const localize = useText();
   const example=data.genes.find(g=>g.name===(activeGene.name==='ALK'?'DTH7':'ALK'));
   const initialIds=useMemo(()=>[activeGene.id,...(example&&activeGene.id!==example.id?[example.id]:[])],[activeGene.id,example]);
   const ids=config.ids??initialIds,markerIds=config.markers||{};
@@ -85,31 +88,32 @@ export function ComparePanel({data,activeGene,cohort,config={},onConfig,onInspec
     const file=event.target.files[0];event.target.value='';if(!file)return;
     try{const input=await file.text();install(readPrior(input),file.name);setCustom(true);onConfig(prev=>({...prev,input,inputName:file.name}));}catch(e){setError(e.message);}
   }
-  return <section className="panel compare-panel"><div className="compare-tools"><input aria-label="搜索比较基因" type="search" placeholder="基因名或基因编号" value={filter} onChange={e=>setFilter(e.target.value)}/>
-  <select aria-label="选择比较基因" value={selected} onChange={e=>setChoice(e.target.value)}>{!available.length&&<option value="">无匹配基因</option>}{available.map(g=><option key={g.id} value={g.id}>{g.name} · {g.catalog?.msu||g.id}</option>)}</select>
-  <button disabled={!selected} onClick={()=>add(selected)}>加入比较</button><label className="file-button">导入八列 TXT / TSV<input aria-label="导入八列 TSV" type="file" accept=".tsv,.txt" onChange={upload}/></label>
-  <a href="./formats/prior.tsv" download="prior.txt">样表</a><a href="./formats/README.txt" target="_blank" rel="noreferrer">格式与部署</a><a href="./formats/exchange.json" download>输入输出本体</a>
-  {bundledLibrary&&<><a href="./formats/prior_477.tsv" download="prior_477.txt">477 基因全库 TXT</a><a href="./formats/gene_index.tsv" download="gene_index.txt">逐基因索引</a><a href="./formats/riceflux_prior_477.zip" download>完整输入包 ZIP</a></>}
+  return <section className="panel compare-panel"><div className="compare-tools"><input aria-label={localize("搜索比较基因")} type="search" placeholder={localize("基因名或基因编号")} value={filter} onChange={e=>setFilter(e.target.value)}/>
+  <select aria-label={localize("选择比较基因")} value={selected} onChange={e=>setChoice(e.target.value)}>{!available.length&&<option value="">{localize("无匹配基因")}</option>}{available.map(g=><option key={g.id} value={g.id}>{localize(g.name)} · {localize(g.catalog?.msu||g.id)}</option>)}</select>
+  <button disabled={!selected} onClick={()=>add(selected)}>{localize("加入比较")}</button><label className="file-button">{localize("导入八列 TXT / TSV")}<input aria-label={localize("导入八列 TSV")} type="file" accept=".tsv,.txt" onChange={upload}/></label>
+  <a href="./formats/prior.tsv" download="prior.txt">{localize("样表")}</a><a href="./formats/README.txt" target="_blank" rel="noreferrer">{localize("格式与部署")}</a><a href="./formats/exchange.json" download>{localize("输入输出本体")}</a>
+  {bundledLibrary&&<><a href="./formats/prior_477.tsv" download="prior_477.txt">{localize("477 基因全库 TXT")}</a><a href="./formats/gene_index.tsv" download="gene_index.txt">{localize("逐基因索引")}</a><a href="./formats/riceflux_prior_477.zip" download>{localize("完整输入包 ZIP")}</a></>}
   </div>
-  {error&&<p role="alert">{error}</p>}<p>{genes.length} 个基因 · 当前 {cohort.length.toLocaleString()} 份材料</p>
-  {genes.length>0&&<div className="compare-tools joint-chips">{genes.map(g=><button key={g.id} aria-label={'从组合移除 '+g.name} onClick={()=>setIds(previous=>previous.filter(id=>id!==g.id))}>{g.name} ×</button>)}</div>}
-  {!calls.ready?<Readiness calls={calls}/>:genes.length>=2?<JointPanel key={JSON.stringify(ids)} data={data} genes={genes} cohort={cohort} records={records} config={config.joint||{}} onConfig={joint=>onConfig(prev=>({...prev,joint}))}/>:<p>请选择至少两个基因查看跨基因组合。</p>}
-  {calls.ready&&genes.length>0&&<section className="joint-secondary"><h3>基因区域与分群等位频率</h3><button onClick={exportComparison}>导出位点比较 TXT</button>
+  {error&&<p role="alert">{localize(error)}</p>}<p>{localize(genes.length)}{" "+localize("个基因 · 当前")+" "}{localize(cohort.length.toLocaleString())}{" "+localize("份材料")}</p>
+  {genes.length>0&&<div className="compare-tools joint-chips">{genes.map(g=><button key={g.id} aria-label={localize('从组合移除 '+g.name)} onClick={()=>setIds(previous=>previous.filter(id=>id!==g.id))}>{localize(g.name)} ×</button>)}</div>}
+  {!calls.ready?<Readiness calls={calls}/>:genes.length>=2?<JointPanel key={JSON.stringify(ids)} data={data} genes={genes} cohort={cohort} records={records} config={config.joint||{}} onConfig={joint=>onConfig(prev=>({...prev,joint}))}/>:<p>{localize("请选择至少两个基因查看跨基因组合。")}</p>}
+  {calls.ready&&genes.length>0&&<section className="joint-secondary"><h3>{localize("基因区域与分群等位频率")}</h3><button onClick={exportComparison}>{localize("导出位点比较 TXT")}</button>
   <div className="comparison-grid">{genes.map((g,i)=><CompareGene key={g.id} data={data} gene={g} variants={regionSites[i]} cohort={cohort} populations={data.populations} markerId={markerIds[g.id]} setMarker={id=>setMarkerIds(prev=>({...prev,[g.id]:id}))} onRemove={()=>setIds(ids.filter(id=>id!==g.id))} onInspect={onInspect}/>)}</div>
   {genes.length>=2&&<LinkagePanel cohort={cohort} genes={genes} markers={selectedSites}/>}
-  {genes.length>0&&<details className="prior-import"><summary>逐材料对照所选位点</summary><div className="compare-tools">
-  <input aria-label="检索多基因材料" type="search" placeholder="名录品种名或编号" value={material} onChange={e=>{setMaterial(e.target.value);setLimit(20);}}/>
-  <button onClick={()=>downloadTable(formats.materialMarkers,visibleSamples.map(sampleRow),[...formats.materialMarkers.columns,...siteLabels])}>导出材料对照 TXT</button></div>
-  <p>{visibleSamples.length.toLocaleString()} 份材料 · 每个基因显示上方所选位点</p><div className="matrix-scroll"><table className="individual-table"><thead><tr><th>材料</th>{siteLabels.map(k=><th key={k}>{k}</th>)}</tr></thead>
-  <tbody>{visibleSamples.slice(0,limit).map(s=><tr key={s.id}><td>{s.id}<small>{s.name}</small></td>{selectedSites.map((v,i)=><td key={genes[i].id}>{v?gtToken(callOf(s,v),v):'NA'}</td>)}</tr>)}</tbody></table></div>
-  {visibleSamples.length>limit&&<button onClick={()=>setLimit(limit+40)}>查看更多材料</button>}</details>}</section>}
-  {records.length>0&&<div className="prior-import"><button aria-expanded={showPrior} onClick={()=>setShowPrior(v=>!v)}>{filename} · {records.length} 条先验 {showPrior?'收起':'展开'}</button>{showPrior&&(!priorCalls.ready?<Readiness calls={priorCalls}/>:<><h3>{filename}</h3><p>{records.length} 条先验记录 · {results.filter(r=>r.Status==='matched').length} / {results.length} 个组分匹配到群体分型</p>
-  <button onClick={()=>downloadTable(formats.priorResults,contextual(results))}>导出输入记录及匹配结果</button> <button onClick={exportGraph}>导出先验关系图 JSON-LD</button>
-  <div className="matrix-scroll"><table className="individual-table"><thead><tr>{['基因','性状与功能','Chr / Position','文献 Hap','匹配 / ALT 频率'].map(s=><th key={s}>{s}</th>)}</tr></thead><tbody>{results.slice(0,showRows).map((r,i)=><tr key={i}><td>{r.QTG}</td><td>{r.Trait} · {r.Function}</td><td>{r.Chr} / {r.Position.split(',')[r.Component-1]}</td><td>{r.Hap}</td><td>{r.Marker?r.Marker+' · '+percent(r.ALT_frequency):({gene_unresolved:'基因身份待核',position_missing:'无坐标',site_unmatched:'位点或 REF 未匹配'}[r.Status])}{r.Suggestions&&<small>候选 · {r.Suggestions}</small>}</td></tr>)}</tbody></table></div>
-  {results.length>showRows&&<button onClick={()=>setShowRows(showRows+48)}>查看更多记录</button>}</>)}</div>}
+  {genes.length>0&&<details className="prior-import"><summary>{localize("逐材料对照所选位点")}</summary><div className="compare-tools">
+  <input aria-label={localize("检索多基因材料")} type="search" placeholder={localize("名录品种名或编号")} value={material} onChange={e=>{setMaterial(e.target.value);setLimit(20);}}/>
+  <button onClick={()=>downloadTable(formats.materialMarkers,visibleSamples.map(sampleRow),[...formats.materialMarkers.columns,...siteLabels])}>{localize("导出材料对照 TXT")}</button></div>
+  <p>{localize(visibleSamples.length.toLocaleString())}{" "+localize("份材料 · 每个基因显示上方所选位点")}</p><div className="matrix-scroll"><table className="individual-table"><thead><tr><th>{localize("材料")}</th>{siteLabels.map(k=><th key={k}>{localize(k)}</th>)}</tr></thead>
+  <tbody>{visibleSamples.slice(0,limit).map(s=><tr key={s.id}><td>{localize(s.id)}<small>{localize(s.name)}</small></td>{selectedSites.map((v,i)=><td key={genes[i].id}>{localize(v?gtToken(callOf(s,v),v):'NA')}</td>)}</tr>)}</tbody></table></div>
+  {visibleSamples.length>limit&&<button onClick={()=>setLimit(limit+40)}>{localize("查看更多材料")}</button>}</details>}</section>}
+  {records.length>0&&<div className="prior-import"><button aria-expanded={showPrior} onClick={()=>setShowPrior(v=>!v)}>{localize(filename)} · {localize(records.length)}{" "+localize("条先验")+" "}{showPrior?localize("收起"):localize("展开")}</button>{showPrior&&(!priorCalls.ready?<Readiness calls={priorCalls}/>:<><h3>{localize(filename)}</h3><p>{localize(records.length)}{" "+localize("条先验记录 ·")+" "}{localize(results.filter(r=>r.Status==='matched').length)} / {localize(results.length)}{" "+localize("个组分匹配到群体分型")}</p>
+  <button onClick={()=>downloadTable(formats.priorResults,contextual(results))}>{localize("导出输入记录及匹配结果")}</button> <button onClick={exportGraph}>{localize("导出先验关系图 JSON-LD")}</button>
+  <div className="matrix-scroll"><table className="individual-table"><thead><tr>{['基因','性状与功能','Chr / Position','文献 Hap','匹配 / ALT 频率'].map(s=><th key={s}>{localize(s)}</th>)}</tr></thead><tbody>{results.slice(0,showRows).map((r,i)=><tr key={i}><td>{localize(r.QTG)}</td><td>{localize(r.Trait)} · {localize(r.Function)}</td><td>{localize(r.Chr)} / {localize(r.Position.split(',')[r.Component-1])}</td><td>{localize(r.Hap)}</td><td>{localize(r.Marker?r.Marker+' · '+percent(r.ALT_frequency):({gene_unresolved:'基因身份待核',position_missing:'无坐标',site_unmatched:'位点或 REF 未匹配'}[r.Status]))}{r.Suggestions&&<small>{localize("候选 ·")+" "}{localize(r.Suggestions)}</small>}</td></tr>)}</tbody></table></div>
+  {results.length>showRows&&<button onClick={()=>setShowRows(showRows+48)}>{localize("查看更多记录")}</button>}</>)}</div>}
   </section>;
 }
 
 function Readiness({calls}){
-  return calls.error?<p role="alert">{calls.error} <button onClick={calls.retry}>重试</button></p>:<p role="status">正在读取比较基因分型…</p>;
+  const localize = useText();
+  return calls.error?<p role="alert">{localize(calls.error)} <button onClick={calls.retry}>{localize("重试")}</button></p>:<p role="status">{localize("正在读取比较基因分型…")}</p>;
 }

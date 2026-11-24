@@ -1,3 +1,4 @@
+import {useText} from './locale.jsx';
 import React,{useMemo,useState} from 'react';
 import {BreederCatalog} from './BreederCatalog.jsx';
 import {IntrogressionReview} from './IntrogressionReview.jsx';
@@ -38,6 +39,7 @@ function trackingHint(row,requested) {
 }
 
 function ParentPanel({data,candidates,axis,models,ready,settings,change,target,onCrosses,onExplore,children}){
+  const localize = useText();
   const resolve=key=>candidates.find(s=>materialKey(s)===key);
   const female=resolve(settings.female),male=resolve(settings.male);
   const crosses=useMemo(()=>registeredCrosses(data.individuals,female,male),[data,female,male]);
@@ -45,31 +47,32 @@ function ParentPanel({data,candidates,axis,models,ready,settings,change,target,o
   const paired=female&&male&&female!==male;
   const records=paired&&ready?models.map(m=>({...m,...parentComparison(female,male,m.scheme)})):[];
   const phenotype=s=>axis&&axis.dataset===s?.dataset_id?s.phenotypes[axis.id]??null:null;
-  return <section className="breeder-card task-panel" aria-label="双亲分型">
+  return <section className="breeder-card task-panel" aria-label={localize("双亲分型")}>
     <div className="breeder-parent-grid">
-      {[['female','母本',female],['male','父本',male]].map(([key,label,sample])=><AccessionPicker key={key} label={label}
+      {[['female','母本',female],['male','父本',male]].map(([key,label,sample])=><AccessionPicker key={key} label={localize(label)}
         samples={candidates} selected={sample} onPick={s=>change({[key]:materialKey(s)})}/>)}
     </div>
-    {!paired&&<p className="breeder-note">{female&&male?'请选择不同的双亲。':'选双亲后比较携带型。'}</p>}
-    {paired&&children}
-    {paired&&axis&&<p className="task-context">{axis.trait_name} · {trialLabel(axis)} · 母本 {phenotype(female)??'缺测'} · 父本 {phenotype(male)??'缺测'}</p>}
-    {paired&&!models.length&&<p className="breeder-note">添加目标基因以查看双亲差异和 F1 预期型。</p>}
-    {records.length>0&&<div className="matrix-scroll"><table className="individual-table breeder-parent-types"><thead><tr><th>基因</th><th>母本型</th><th>父本型</th><th>追踪判断</th><th>F1 预期</th></tr></thead>
-      <tbody>{records.map(r=><tr key={r.gene.id}><th>{r.gene.name}</th><td>{callLabel(r.female)}</td><td>{callLabel(r.male)}</td><td>{comparison[r.status]}
-        {settings.tracking?.[r.trackKey]&&<small>{trackingHint(r,settings.tracking[r.trackKey])}</small>}</td>
-        <td>{r.f1?.join(' · ')??'待核'}</td></tr>)}</tbody>
+    {!paired&&<p className="breeder-note">{female&&male?localize("请选择不同的双亲。"):localize("选双亲后比较携带型。")}</p>}
+    {localize(paired&&children)}
+    {paired&&axis&&<p className="task-context">{localize(axis.trait_name)} · {localize(trialLabel(axis))}{" "+localize("· 母本")+" "}{phenotype(female)??localize("缺测")}{" "+localize("· 父本")+" "}{phenotype(male)??localize("缺测")}</p>}
+    {paired&&!models.length&&<p className="breeder-note">{localize("添加目标基因以查看双亲差异和 F1 预期型。")}</p>}
+    {records.length>0&&<div className="matrix-scroll"><table className="individual-table breeder-parent-types"><thead><tr><th>{localize("基因")}</th><th>{localize("母本型")}</th><th>{localize("父本型")}</th><th>{localize("追踪判断")}</th><th>{localize("F1 预期")}</th></tr></thead>
+      <tbody>{records.map(r=><tr key={r.gene.id}><th>{localize(r.gene.name)}</th><td>{localize(callLabel(r.female))}</td><td>{localize(callLabel(r.male))}</td><td>{localize(comparison[r.status])}
+        {settings.tracking?.[r.trackKey]&&<small>{localize(trackingHint(r,settings.tracking[r.trackKey]))}</small>}</td>
+        <td>{r.f1?.join(' · ')??localize("待核")}</td></tr>)}</tbody>
     </table></div>}
-    {paired&&crosses.length>0&&<details className="review-disclosure"><summary>实测组合 · {crosses.length} 个</summary>
-        <ul className="breeder-crosses">{crosses.slice(0,6).map(s=><li key={s.id}>{materialName(s)} · {rawId(s)} <b>{shown(phenotype(s))}{phenotype(s)!==null?' '+axis.unit:''}</b>
-          {target.active&&phenotype(s)!==null&&' · '+labels[targetStatus(phenotype(s),target)]}</li>)}</ul>
-        <button className="review-link" type="button" onClick={()=>onCrosses(crosses)}>打开组合表型</button>
+    {paired&&crosses.length>0&&<details className="review-disclosure"><summary>{localize("实测组合 ·")+" "}{localize(crosses.length)}{" "+localize("个")}</summary>
+        <ul className="breeder-crosses">{crosses.slice(0,6).map(s=><li key={s.id}>{localize(materialName(s))} · {localize(rawId(s))} <b>{localize(shown(phenotype(s)))}{localize(phenotype(s)!==null?' '+axis.unit:'')}</b>
+          {localize(target.active&&phenotype(s)!==null&&' · '+labels[targetStatus(phenotype(s),target)])}</li>)}</ul>
+        <button className="review-link" type="button" onClick={()=>onCrosses(crosses)}>{localize("打开组合表型")}</button>
     </details>}
-    {paired&&axis&&parents.some(s=>phenotype(s)===null)&&<p className="breeder-note">双亲缺少同口径实测，无法由当前记录估计杂种优势。</p>}
-    {paired&&<button className="review-link" type="button" onClick={onExplore}>查找目标性状的携带型</button>}
+    {paired&&axis&&parents.some(s=>phenotype(s)===null)&&<p className="breeder-note">{localize("双亲缺少同口径实测，无法由当前记录估计杂种优势。")}</p>}
+    {paired&&<button className="review-link" type="button" onClick={onExplore}>{localize("查找目标性状的携带型")}</button>}
   </section>;
 }
 
 function PhenotypeEvidence({reference,axis,target,focus,scope,tracking,onTrack,onCarriers}){
+  const localize = useText();
   const [baseline,setBaseline]=useState(null);
   const groups=useMemo(()=>genotypePhenotypes(traitRows(reference,axis,target),focus.scheme,target),
     [reference,axis,target,focus.scheme]);
@@ -89,28 +92,29 @@ function PhenotypeEvidence({reference,axis,target,focus,scope,tracking,onTrack,o
       target_min:target.min,target_max:target.max,target_n:g.met,target_rate:g.met===null?null:g.met/g.n,
     })));
   }
-  return <section className="review-analysis-body" aria-label="群体型别证据">
-      <p className="breeder-evidence-grade">证据 {evidence.grade}</p>
-      <p className="breeder-note">{evidence.literature} {evidence.literature==='L2'?'文献型定义':evidence.literature==='L1'?'基因层文献':'暂无文献'} · {evidence.phenotype} {typed} 份分型与表型配对 · {evidence.inference} 暂无模型效应</p>
-      {focus.scheme.doi.length>0&&<p className="breeder-note">{focus.scheme.doi.map(doi=><a key={doi} href={'https://doi.org/'+doi} target="_blank" rel="noreferrer">{doi} </a>)}</p>}
+  return <section className="review-analysis-body" aria-label={localize("群体型别证据")}>
+      <p className="breeder-evidence-grade">{localize("证据")+" "}{localize(evidence.grade)}</p>
+      <p className="breeder-note">{localize(evidence.literature)} {evidence.literature==='L2'?localize("文献型定义"):evidence.literature==='L1'?localize("基因层文献"):localize("暂无文献")} · {localize(evidence.phenotype)} {localize(typed)}{" "+localize("份分型与表型配对 ·")+" "}{localize(evidence.inference)}{" "+localize("暂无模型效应")}</p>
+      {focus.scheme.doi.length>0&&<p className="breeder-note">{focus.scheme.doi.map(doi=><a key={doi} href={'https://doi.org/'+doi} target="_blank" rel="noreferrer">{localize(doi)} </a>)}</p>}
       {groups.length>0?<>
-        {!ordinal&&groups.length>1&&<label>对照型<select aria-label="选择效力对照型" value={contrast?.label??''} onChange={e=>setBaseline({context,label:e.target.value})}>
-          <option value="">选择后显示原始均值差</option>{groups.map(g=><option key={g.label} value={g.label}>{readableDefinition(g.label)}</option>)}
+        {!ordinal&&groups.length>1&&<label>{localize("对照型")}<select aria-label={localize("选择效力对照型")} value={contrast?.label??''} onChange={e=>setBaseline({context,label:e.target.value})}>
+          <option value="">{localize("选择后显示原始均值差")}</option>{groups.map(g=><option key={g.label} value={g.label}>{localize(readableDefinition(g.label))}</option>)}
         </select></label>}
-        <label>拟在后代追踪的型<select aria-label="选择拟追踪型" value={groups.some(g=>g.label===tracking)?tracking:''} onChange={e=>onTrack(e.target.value)}>
-          <option value="">选择型别</option>{groups.map(g=><option key={g.label} value={g.label}>{readableDefinition(g.label)}</option>)}
+        <label>{localize("拟在后代追踪的型")}<select aria-label={localize("选择拟追踪型")} value={groups.some(g=>g.label===tracking)?tracking:''} onChange={e=>onTrack(e.target.value)}>
+          <option value="">{localize("选择型别")}</option>{groups.map(g=><option key={g.label} value={g.label}>{localize(readableDefinition(g.label))}</option>)}
         </select></label>
-        {groups.length===1&&<p className="breeder-note">当前只有一个型别有配对实测，无法比较型别差异。</p>}
-        <p className="breeder-note">{ordinal?'等级性状展示中位等级和四分位范围。':'同一试验内的描述性配对。均值差包含群体背景影响。'}</p>
-        <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>单倍型或标记型</th><th>配对 n</th>{!ordinal&&<th>均值</th>}<th>中位数 [Q1, Q3]</th>{contrast&&<th>均值差</th>}{target.active&&<th>达标率</th>}</tr></thead>
+        {groups.length===1&&<p className="breeder-note">{localize("当前只有一个型别有配对实测，无法比较型别差异。")}</p>}
+        <p className="breeder-note">{ordinal?localize("等级性状展示中位等级和四分位范围。"):localize("同一试验内的描述性配对。均值差包含群体背景影响。")}</p>
+        <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>{localize("单倍型或标记型")}</th><th>{localize("配对 n")}</th>{!ordinal&&<th>{localize("均值")}</th>}<th>{localize("中位数 [Q1, Q3]")}</th>{contrast&&<th>{localize("均值差")}</th>}{target.active&&<th>{localize("达标率")}</th>}</tr></thead>
           <tbody>{groups.map(g=><tr key={g.label}><th>{onCarriers?<button className="review-link" type="button" onClick={()=>onCarriers(g.label)}
-            title="查看有同口径实测的携带材料">{readableDefinition(g.label)}</button>:readableDefinition(g.label)}</th><td>{g.n}</td>{!ordinal&&<td>{shown(g.mean)}</td>}<td>{shown(g.median)} [{shown(g.q1)}, {shown(g.q3)}]</td>{contrast&&<td>{shown(g.mean-contrast.mean)}</td>}{target.active&&<td>{ratio(g.met,g.n)}<small>{g.met} / {g.n}</small></td>}</tr>)}</tbody></table></div>
-        <button type="button" onClick={exportGroups}>下载型别对照 TXT</button>
-      </>:<p className="breeder-note">当前测定记录暂无可比较的型别。</p>}
+            title={localize("查看有同口径实测的携带材料")}>{localize(readableDefinition(g.label))}</button>:readableDefinition(g.label)}</th><td>{localize(g.n)}</td>{!ordinal&&<td>{localize(shown(g.mean))}</td>}<td>{localize(shown(g.median))} [{localize(shown(g.q1))}, {localize(shown(g.q3))}]</td>{contrast&&<td>{localize(shown(g.mean-contrast.mean))}</td>}{target.active&&<td>{localize(ratio(g.met,g.n))}<small>{localize(g.met)} / {localize(g.n)}</small></td>}</tr>)}</tbody></table></div>
+        <button type="button" onClick={exportGroups}>{localize("下载型别对照 TXT")}</button>
+      </>:<p className="breeder-note">{localize("当前测定记录暂无可比较的型别。")}</p>}
   </section>;
 }
 
 function GeneControls({data,models,focus,change,onFocus}){
+  const localize = useText();
   const [query,setQuery]=useState(''),[chromosome,setChromosome]=useState('1');
   const ids=models.map(m=>m.gene.id);
   const available=query.trim()?findGenes(data.genes,query).filter(g=>!ids.includes(g.id)).slice(0,6):[];
@@ -120,24 +124,25 @@ function GeneControls({data,models,focus,change,onFocus}){
   }
   const chromosomeGenes=data.genes.filter(g=>String(g.chromosome).replace(/^Chr0?/i,'')===chromosome&&!g.catalog?.historical&&!ids.includes(g.id));
   return <div className="review-gene-controls">
-    <label>染色体<select aria-label="育种染色体" value={chromosome} onChange={e=>setChromosome(e.target.value)}>{Array.from({length:12},(_,i)=><option key={i+1} value={i+1}>Chr{i+1}</option>)}</select></label>
-    <label>按染色体添加基因<select aria-label="染色体基因选择" value="" onChange={e=>{const g=chromosomeGenes.find(g=>g.id===e.target.value);if(g)add(g);}}><option value="">选择基因（{chromosomeGenes.length}）</option>{chromosomeGenes.map(g=><option key={g.id} value={g.id}>{g.name} · {g.msu_id||g.catalog?.msu||g.id}</option>)}</select></label>
+    <label>{localize("染色体")}<select aria-label={localize("育种染色体")} value={chromosome} onChange={e=>setChromosome(e.target.value)}>{Array.from({length:12},(_,i)=><option key={i+1} value={i+1}>Chr{localize(i+1)}</option>)}</select></label>
+    <label>{localize("按染色体添加基因")}<select aria-label={localize("染色体基因选择")} value="" onChange={e=>{const g=chromosomeGenes.find(g=>g.id===e.target.value);if(g)add(g);}}><option value="">{localize("选择基因（")}{localize(chromosomeGenes.length)}）</option>{chromosomeGenes.map(g=><option key={g.id} value={g.id}>{localize(g.name)} · {localize(g.msu_id||g.catalog?.msu||g.id)}</option>)}</select></label>
     <div className="review-search" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget))setQuery('');}}>
-      <label>关注基因<input type="search" aria-label="查找关注基因" value={query} placeholder="名称或 MSU/RAP ID"
+      <label>{localize("关注基因")}<input type="search" aria-label={localize("查找关注基因")} value={query} placeholder={localize("名称或 MSU/RAP ID")}
         onKeyDown={e=>{if(e.key==='Escape')setQuery('');if(e.key==='Enter'&&available.length===1)add(available[0]);}}
         onChange={e=>setQuery(e.target.value)}/></label>
-      {query.trim()&&<div className="review-matches">{available.map(g=><button type="button" key={g.id} onClick={()=>add(g)}><span><strong>{g.name}</strong>
-        <small>{g.catalog?.msu||g.id}</small></span><span>加入</span></button>)}{!available.length&&<p>未找到可加入的基因。</p>}</div>}
+      {query.trim()&&<div className="review-matches">{available.map(g=><button type="button" key={g.id} onClick={()=>add(g)}><span><strong>{localize(g.name)}</strong>
+        <small>{localize(g.catalog?.msu||g.id)}</small></span><span>{localize("加入")}</span></button>)}{!available.length&&<p>{localize("未找到可加入的基因。")}</p>}</div>}
     </div>
     {models.length>0&&<div className="breeder-pins">{models.map(({gene})=><div key={gene.id} className="breeder-pin" data-active={focus?.gene.id===gene.id}>
-      <button type="button" aria-label={'查看 '+gene.name+' 型别证据'} aria-pressed={focus?.gene.id===gene.id}
-        onClick={()=>onFocus(gene.id)}>{gene.name}</button>
-      <button type="button" aria-label={'取消关注 '+gene.name} onClick={()=>change({geneIds:ids.filter(id=>id!==gene.id)})}>×</button>
+      <button type="button" aria-label={localize('查看 '+gene.name+' 型别证据')} aria-pressed={focus?.gene.id===gene.id}
+        onClick={()=>onFocus(gene.id)}>{localize(gene.name)}</button>
+      <button type="button" aria-label={localize('取消关注 '+gene.name)} onClick={()=>change({geneIds:ids.filter(id=>id!==gene.id)})}>×</button>
     </div>)}</div>}
   </div>;
 }
 
 function CombinationPanel({data,models,settings,change,ready,reference,scope,target,axis,focus,reviewResult,onReview}){
+  const localize = useText();
   const [limit,setLimit]=useState(8);
   const [key,setKey]=useState(null);
   const result=useMemo(()=>ready?jointCalls(reference,models.map(m=>m.scheme)):null,[ready,reference,models]);
@@ -165,36 +170,36 @@ function CombinationPanel({data,models,settings,change,ready,reference,scope,tar
       ...Object.fromEntries(ids.map((id,i)=>[id,g.labels[i]]))})):[context];
     exportTxt('riceflux_breeder_combinations.txt',cols,records);
   }
-  return <section className="review-analysis-body" aria-label="群体组合">
+  return <section className="review-analysis-body" aria-label={localize("群体组合")}>
     {result&&<>
-      <p className="breeder-counts" data-testid="breeder-joint-n">{models.length===1?'群体判型':'群体联合判型'} <b>{result.assigned.toLocaleString()}</b> / {scopeSamples.length.toLocaleString()} 份</p>
+      <p className="breeder-counts" data-testid="breeder-joint-n">{models.length===1?localize("群体判型"):localize("群体联合判型")} <b>{localize(result.assigned.toLocaleString())}</b> / {localize(scopeSamples.length.toLocaleString())}{" "+localize("份")}</p>
       {genotypeGroups.length>0&&<div className="matrix-scroll"><table className="individual-table">
-        <thead><tr><th>基因型组合</th><th>清单中</th><th>群体频数</th>{axis&&<th>表型配对</th>}</tr></thead>
+        <thead><tr><th>{localize("基因型组合")}</th><th>{localize("清单中")}</th><th>{localize("群体频数")}</th>{axis&&<th>{localize("表型配对")}</th>}</tr></thead>
         <tbody>{genotypeGroups.slice(0,limit).map(g=><tr key={g.key}><th>
           <button type="button" className="review-link" aria-pressed={key===g.key} onClick={()=>setKey(key===g.key?null:g.key)}
-            title="查看实际携带材料">{g.labels.map(shortType).join(' × ')}</button>
-        </th><td>{reviewCounts.get(g.key)??0}</td><td>{g.n}<small title="完整判型材料内的比例">{ratio(g.n,result.assigned)}</small></td>
-          {axis&&<td>{g.paired}{target.active&&<small>达标 {g.met}</small>}</td>}</tr>)}</tbody>
+            title={localize("查看实际携带材料")}>{localize(g.labels.map(shortType).join(' × '))}</button>
+        </th><td>{localize(reviewCounts.get(g.key)??0)}</td><td>{localize(g.n)}<small title={localize("完整判型材料内的比例")}>{localize(ratio(g.n,result.assigned))}</small></td>
+          {axis&&<td>{localize(g.paired)}{target.active&&<small>{localize("达标")+" "}{localize(g.met)}</small>}</td>}</tr>)}</tbody>
       </table></div>}
-      {!genotypeGroups.length&&<p className="breeder-note">当前群体暂无完整组合。</p>}
+      {!genotypeGroups.length&&<p className="breeder-note">{localize("当前群体暂无完整组合。")}</p>}
       <div className="review-footer">
-        {genotypeGroups.length>limit&&<button className="review-link" type="button" onClick={()=>setLimit(n=>n+12)}>更多型别</button>}
-        <button className="review-link" type="button" onClick={exportCombinations}>下载组合 TXT</button>
+        {genotypeGroups.length>limit&&<button className="review-link" type="button" onClick={()=>setLimit(n=>n+12)}>{localize("更多型别")}</button>}
+        <button className="review-link" type="button" onClick={exportCombinations}>{localize("下载组合 TXT")}</button>
       </div>
     </>}
-    {active&&<CarrierList key={active.key} title={active.labels.map(shortType).join(' × ')}
+    {active&&<CarrierList key={active.key} title={localize(active.labels.map(shortType).join(' × '))}
       samples={result.members.filter(m=>m.key===active.key).map(m=>m.sample)} axis={axis} target={target} onReview={onReview}
       definition={JSON.stringify(ids.map((id,i)=>[id,models[i].scheme.id,active.labels[i]]))}/>}
-    <details className="review-disclosure review-schemes"><summary>判型、位点质量与连锁</summary>
-      <div className="breeder-schemes">{models.map(({gene,menu,scheme})=><label key={gene.id}>{gene.name}
-        <select aria-label={gene.name+' 育种判型'} title={scheme.doi.join(' · ')} value={scheme.id} onChange={e=>change({schemes:{...settings.schemes,[gene.id]:e.target.value}})}>
-          {menu.map(s=><option key={s.id} value={s.id}>{schemeNames[s.kind]} · {s.positions.length} 位点{menu.filter(m=>m.kind===s.kind&&m.positions.length===s.positions.length).length>1&&s.doi.length>0?' · '+s.doi[0]:''}{s.ready?'':' · 待覆盖'}</option>)}
+    <details className="review-disclosure review-schemes"><summary>{localize("判型、位点质量与连锁")}</summary>
+      <div className="breeder-schemes">{models.map(({gene,menu,scheme})=><label key={gene.id}>{localize(gene.name)}
+        <select aria-label={localize(gene.name+' 育种判型')} title={localize(scheme.doi.join(' · '))} value={scheme.id} onChange={e=>change({schemes:{...settings.schemes,[gene.id]:e.target.value}})}>
+          {menu.map(s=><option key={s.id} value={s.id}>{localize(schemeNames[s.kind])} · {localize(s.positions.length)}{" "+localize("位点")}{localize(menu.filter(m=>m.kind===s.kind&&m.positions.length===s.positions.length).length>1&&s.doi.length>0?' · '+s.doi[0]:'')}{s.ready?'':localize(" · 待覆盖")}</option>)}
         </select>
       </label>)}</div>
       {ready&&markers.length>0&&<>
-      <h3>{focus.gene.name} 位点质量</h3>
-      <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>标记</th><th>完整 / 覆盖</th><th>Missing</th><th>MAF</th></tr></thead>
-        <tbody>{markers.map(v=>{const s=markerCoverage(scopeSamples,v);return <tr key={v.id}><th>{v.markerType||'SNP'} · {v.id}<small>{v.ref} → {v.alt??'—'} · 未覆盖 {s.uncovered}</small></th><td>{s.complete} / {s.n}</td><td>{ratio(s.total-s.called,s.total)}</td><td>{s.maf===null?'—':ratio(s.maf,1)}</td></tr>;})}</tbody></table></div>
+      <h3>{localize(focus.gene.name)}{" "+localize("位点质量")}</h3>
+      <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>{localize("标记")}</th><th>{localize("完整 / 覆盖")}</th><th>Missing</th><th>MAF</th></tr></thead>
+        <tbody>{markers.map(v=>{const s=markerCoverage(scopeSamples,v);return <tr key={v.id}><th>{localize(v.markerType||'SNP')} · {localize(v.id)}<small>{localize(v.ref)} → {localize(v.alt??'—')}{" "+localize("· 未覆盖")+" "}{localize(s.uncovered)}</small></th><td>{localize(s.complete)} / {localize(s.n)}</td><td>{localize(ratio(s.total-s.called,s.total))}</td><td>{localize(s.maf===null?'—':ratio(s.maf,1))}</td></tr>;})}</tbody></table></div>
       </>}
       {ready&&indexMarkers.filter(Boolean).length>1&&<LinkagePanel genes={models.map(m=>m.gene)} markers={indexMarkers} cohort={scopeSamples}/>}
     </details>
@@ -203,6 +208,7 @@ function CombinationPanel({data,models,settings,change,ready,reference,scope,tar
 
 
 function TraitLookup({data,axes,reference,scope,settings,change,initialTrait,siteSelections,onReview,onParents}){
+  const localize = useText();
   const [scan,setScan]=useState(false),[limit,setLimit]=useState(12),[carrier,setCarrier]=useState(null);
   const traits=queryTraits(data);
   const trait=traits.find(t=>t.id===(settings.lookupTrait??initialTrait))??traits[0];
@@ -252,81 +258,82 @@ function TraitLookup({data,axes,reference,scope,settings,change,initialTrait,sit
       type:r.label,paired_n:r.n,target_min:target.min,target_max:target.max,target_n:r.met,
       target_rate:r.met===null?null:r.met/r.n,doi:r.scheme.doi.join(',')})));
   }
-  if(!trait)return <p className="breeder-note">当前没有可查询的性状。</p>;
-  return <section className="breeder-card task-panel" aria-label="按性状查单倍型">
+  if(!trait)return <p className="breeder-note">{localize("当前没有可查询的性状。")}</p>;
+  return <section className="breeder-card task-panel" aria-label={localize("按性状查单倍型")}>
     <div className="task-form">
-      {data.individuals.some(isCross)&&<label>范围<select aria-label="型别比较对象" value={scope}
+      {data.individuals.some(isCross)&&<label>{localize("范围")}<select aria-label={localize("型别比较对象")} value={scope}
         onChange={e=>{setCarrier(null);change({scope:e.target.value,lookupAxis:''});}}>
-        <option value="material">品种与中间材料</option><option value="cross">杂交组合</option>
+        <option value="material">{localize("品种与中间材料")}</option><option value="cross">{localize("杂交组合")}</option>
       </select></label>}
-      <label>性状<select aria-label="查询单倍型的性状" value={trait.id} onChange={e=>selectTrait(e.target.value)}>
-        {traits.map(t=><option key={t.id} value={t.id}>{t.name}</option>)}
+      <label>{localize("性状")}<select aria-label={localize("查询单倍型的性状")} value={trait.id} onChange={e=>selectTrait(e.target.value)}>
+        {traits.map(t=><option key={t.id} value={t.id}>{localize(t.name)}</option>)}
       </select></label>
-      {genes.length>0&&<label>关联基因<select aria-label="性状关联基因" value={gene.id} onChange={e=>selectGene(e.target.value)}>
-        {genes.map(g=><option key={g.id} value={g.id}>{g.name}{g.variants.length?'':' · 无观测位点'}</option>)}
+      {genes.length>0&&<label>{localize("关联基因")}<select aria-label={localize("性状关联基因")} value={gene.id} onChange={e=>selectGene(e.target.value)}>
+        {genes.map(g=><option key={g.id} value={g.id}>{localize(g.name)}{g.variants.length?'':localize(" · 无观测位点")}</option>)}
       </select></label>}
       {axis&&measuredN>0&&<ReviewRange key={axis.key} axis={axis} bounds={bounds} target={target} observations={rows}
         onBounds={value=>change({goals:{...settings.goals,[axis.key]:value}})} selectedCount={rows.length} scopeLabel="同来源群体"/>}
     </div>
-    {axis?<div className="task-context-row"><span>{trialLabel(axis)} · {measuredN.toLocaleString()} 份实测</span>
+    {axis?<div className="task-context-row"><span>{localize(trialLabel(axis))} · {localize(measuredN.toLocaleString())}{" "+localize("份实测")}</span>
       <ReviewSource axis={axis} sources={sources} datasets={data.meta.datasets} onAxis={key=>change({lookupAxis:key})}/></div>:
-      <p className="breeder-note">当前数据没有这个性状的实测表型，可核对已记录的文献和位点。</p>}
-    {genes.length===0&&<p className="breeder-note">先验库暂无这个性状的关联基因。</p>}
+      <p className="breeder-note">{localize("当前数据没有这个性状的实测表型，可核对已记录的文献和位点。")}</p>}
+    {genes.length===0&&<p className="breeder-note">{localize("先验库暂无这个性状的关联基因。")}</p>}
     {gene&&<div className="task-result">
-      <div className="task-heading"><h2>{gene.name} 型别证据</h2>
-        <button type="button" className="review-link" onClick={()=>onParents(gene.id,scheme.id,axis,trait.id)}>带到双亲比较</button>
+      <div className="task-heading"><h2>{localize(gene.name)}{" "+localize("型别证据")}</h2>
+        <button type="button" className="review-link" onClick={()=>onParents(gene.id,scheme.id,axis,trait.id)}>{localize("带到双亲比较")}</button>
       </div>
-      {schemes.length>1&&<details className="review-disclosure"><summary>判型定义</summary>
-        <label>定义<select aria-label="性状查询判型定义" value={scheme.id} onChange={e=>selectGene(gene.id,e.target.value)}>
-          {schemes.map(s=><option key={s.id} value={s.id}>{schemeNames[s.kind]} · {s.positions.length} 位点</option>)}
+      {schemes.length>1&&<details className="review-disclosure"><summary>{localize("判型定义")}</summary>
+        <label>{localize("定义")}<select aria-label={localize("性状查询判型定义")} value={scheme.id} onChange={e=>selectGene(gene.id,e.target.value)}>
+          {schemes.map(s=><option key={s.id} value={s.id}>{localize(schemeNames[s.kind])} · {localize(s.positions.length)}{" "+localize("位点")}</option>)}
         </select></label>
       </details>}
       {axis&&scheme.ready&&(focusStatus.ready?<PhenotypeEvidence
         reference={reference} scope={scope} axis={axis} target={target} focus={focus} tracking={tracking}
         onTrack={label=>change({tracking:{...settings.tracking,[focus.trackKey]:label}})}
         onCarriers={label=>setCarrier({gene:gene.id,scheme:scheme.id,axis:axis.key,label})}/>:
-        <p role={focusStatus.error?'alert':'status'}>{focusStatus.error?<>{focusStatus.error} <button type="button" onClick={focusStatus.retry}>重试</button></>:'正在读取分型…'}</p>)}
-      {axis&&!scheme.ready&&<p className="breeder-note">目前缺少这个定义的可用位点，无法用群体实测复核该型别。</p>}
-      {carrierLabel&&<CarrierList key={carrierLabel} title={shortType(carrierLabel)+' · 有同口径实测'}
+        <p role={focusStatus.error?'alert':'status'}>{focusStatus.error?<>{localize(focusStatus.error)} <button type="button" onClick={focusStatus.retry}>{localize("重试")}</button></>:'正在读取分型…'}</p>)}
+      {axis&&!scheme.ready&&<p className="breeder-note">{localize("目前缺少这个定义的可用位点，无法用群体实测复核该型别。")}</p>}
+      {carrierLabel&&<CarrierList key={carrierLabel} title={localize(shortType(carrierLabel)+' · 有同口径实测')}
         samples={carrierSamples} axis={axis} target={target} onReview={s=>onReview(s,axis,focus)}
         definition={JSON.stringify([gene.id,scheme.id,carrierLabel])}/>}
-      {original.length>0&&<details className="review-disclosure"><summary>原文事件与性状</summary>
-        <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>原文性状</th><th>型别或变异</th><th>原文描述</th><th>来源</th></tr></thead>
-          <tbody>{original.map(e=><tr key={e.key}><td>{e.trait||'—'}</td><td>{e.label||e.state||'—'}</td><td>{e.effect||'—'}</td>
-            <td>{e.doi.map(d=><a key={d} href={'https://doi.org/'+d} target="_blank" rel="noreferrer">{d} </a>)}</td></tr>)}</tbody>
+      {original.length>0&&<details className="review-disclosure"><summary>{localize("原文事件与性状")}</summary>
+        <div className="matrix-scroll"><table className="individual-table"><thead><tr><th>{localize("原文性状")}</th><th>{localize("型别或变异")}</th><th>{localize("原文描述")}</th><th>{localize("来源")}</th></tr></thead>
+          <tbody>{original.map(e=><tr key={e.key}><td>{localize(e.trait||'—')}</td><td>{localize(e.label||e.state||'—')}</td><td>{localize(e.effect||'—')}</td>
+            <td>{e.doi.map(d=><a key={d} href={'https://doi.org/'+d} target="_blank" rel="noreferrer">{localize(d)} </a>)}</td></tr>)}</tbody>
         </table></div>
       </details>}
     </div>}
     {axis&&covered.length>1&&<div className="task-result">
-      <button type="button" onClick={()=>setScan(!scan)} aria-expanded={scan}>{scan?'收起同一性状的型别':'查看同一性状的型别'}</button>
-      {scan&&scanStatus.ready&&<p className="breeder-note">{comparableGenes} 个基因有两个或以上的实测配对型别。
-        {summaries.length-comparable.length>0?' 仅一个配对型别的基因保留在下载表中。':''}
-        {target.active?' 表中按达标份数排列，并列出各型别的配对数和比例。':''}</p>}
-      {scan&&!scanStatus.ready&&<p role={scanStatus.error?'alert':'status'}>{scanStatus.error?<>{scanStatus.error} <button type="button" onClick={scanStatus.retry}>重试</button></>:'正在收集分型与实测配对…'}</p>}
-      {scan&&scanStatus.ready&&comparable.length>0&&<div className="matrix-scroll"><table className="individual-table" aria-label="性状型别总表">
-        <thead><tr><th>基因</th><th>型别</th><th>配对 n</th><th>中位数 [Q1, Q3]</th>{target.active&&<th>达标</th>}</tr></thead>
+      <button type="button" onClick={()=>setScan(!scan)} aria-expanded={scan}>{scan?localize("收起同一性状的型别"):localize("查看同一性状的型别")}</button>
+      {scan&&scanStatus.ready&&<p className="breeder-note">{localize(comparableGenes)}{localize("个基因有两个或以上的实测配对型别。")}{summaries.length-comparable.length>0?localize(" 仅一个配对型别的基因保留在下载表中。"):''}
+        {target.active?localize(" 表中按达标份数排列，并列出各型别的配对数和比例。"):''}</p>}
+      {scan&&!scanStatus.ready&&<p role={scanStatus.error?'alert':'status'}>{scanStatus.error?<>{localize(scanStatus.error)} <button type="button" onClick={scanStatus.retry}>{localize("重试")}</button></>:'正在收集分型与实测配对…'}</p>}
+      {scan&&scanStatus.ready&&comparable.length>0&&<div className="matrix-scroll"><table className="individual-table" aria-label={localize("性状型别总表")}>
+        <thead><tr><th>{localize("基因")}</th><th>{localize("型别")}</th><th>{localize("配对 n")}</th><th>{localize("中位数 [Q1, Q3]")}</th>{target.active&&<th>{localize("达标")}</th>}</tr></thead>
         <tbody>{comparable.slice(0,limit).map(r=><tr key={JSON.stringify([r.gene.id,r.label])}>
-          <th><button className="review-link" type="button" onClick={()=>{selectGene(r.gene.id,r.scheme.id);document.querySelector('.task-panel h2')?.scrollIntoView({block:'center'});}}>{r.gene.name}</button></th>
-          <td>{shortType(r.label)}</td><td>{r.n}</td><td>{shown(r.median)} [{shown(r.q1)}, {shown(r.q3)}]</td>
-          {target.active&&<td>{r.met} / {r.n} · {ratio(r.met,r.n)}</td>}</tr>)}</tbody>
+          <th><button className="review-link" type="button" onClick={()=>{selectGene(r.gene.id,r.scheme.id);document.querySelector('.task-panel h2')?.scrollIntoView({block:'center'});}}>{localize(r.gene.name)}</button></th>
+          <td>{localize(shortType(r.label))}</td><td>{localize(r.n)}</td><td>{localize(shown(r.median))} [{localize(shown(r.q1))}, {localize(shown(r.q3))}]</td>
+          {target.active&&<td>{localize(r.met)} / {localize(r.n)} · {localize(ratio(r.met,r.n))}</td>}</tr>)}</tbody>
       </table></div>}
       {scan&&scanStatus.ready&&summaries.length>0&&<div className="review-footer">
-        {comparable.length>limit&&<button className="review-link" type="button" onClick={()=>setLimit(n=>n+20)}>更多型别</button>}
-        <button className="review-link" type="button" onClick={exportScan}>下载性状型别 TXT</button>
+        {comparable.length>limit&&<button className="review-link" type="button" onClick={()=>setLimit(n=>n+20)}>{localize("更多型别")}</button>}
+        <button className="review-link" type="button" onClick={exportScan}>{localize("下载性状型别 TXT")}</button>
       </div>}
-      {scan&&scanStatus.ready&&!summaries.length&&<p className="breeder-note">没有找到同口径实测与完整判型的配对记录。</p>}
+      {scan&&scanStatus.ready&&!summaries.length&&<p className="breeder-note">{localize("没有找到同口径实测与完整判型的配对记录。")}</p>}
     </div>}
   </section>;
 }
 
 function TaskChoice({view,onChange}){
-  return <div className="task-tabs" aria-label="资料查询方式">
-    <button type="button" aria-pressed={view==='materials'} onClick={()=>onChange('materials')}>查材料和组合</button>
-    <button type="button" aria-pressed={view==='haplotypes'} onClick={()=>onChange('haplotypes')}>按性状查单倍型</button>
+  const localize = useText();
+  return <div className="task-tabs" aria-label={localize("资料查询方式")}>
+    <button type="button" aria-pressed={view==='materials'} onClick={()=>onChange('materials')}>{localize("查材料和组合")}</button>
+    <button type="button" aria-pressed={view==='haplotypes'} onClick={()=>onChange('haplotypes')}>{localize("按性状查单倍型")}</button>
   </div>;
 }
 
 export function BreederWorkspace({data,cohort,settings,onChange,initialGene,initialTrait,siteSelections}){
+  const localize = useText();
   const [task,setTask]=useState(()=>{
     const requested=new URLSearchParams(location.search).get('task');
     return breedingTasks.some(item=>item.id===requested)?requested:'';
@@ -585,47 +592,47 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
   const canReview=!showReview&&selected.length>0;
   return <main className="breeder-workspace">
     <header className="breeder-workbench-header">
-    <div className="breeder-intro"><h1>育种工作台</h1><p>{task==='introgression'?'家系内效应复核':dashboard?dashboard.name:datasets.length===1?datasets[0].name:datasets.length+' 个数据集'}</p></div>
-    {task==='introgression'?<button className="review-link" type="button" onClick={()=>open('')}>返回材料比较</button>:
+    <div className="breeder-intro"><h1>{localize("育种工作台")}</h1><p>{task==='introgression'?localize("家系内效应复核"):dashboard?dashboard.name:datasets.length===1?datasets[0].name:datasets.length+' 个数据集'}</p></div>
+    {task==='introgression'?<button className="review-link" type="button" onClick={()=>open('')}>{localize("返回材料比较")}</button>:
     <BreederInput data={data} onSelect={selectEntities} onSentence={propose} onUpload={loadFiles} upload={upload} planning={planning} compact={Boolean(dashboard)} datasetId={dashboard?.id}
       materials={planning?[]:selectedAll} genes={planning?[]:models.map(m=>m.gene)}
       trait={planning?null:chosenTrait} onRemoveMaterial={removeMaterial} onRemoveGene={removeGene}
       importName={task==='check'?checkedImport?.sample.name:null} onRemoveImport={()=>{setCheckedImport(null);open('');}}
       onRemoveTrait={()=>change({queryTrait:'',trait:'',axis:'',lookupTrait:'',lookupAxis:''})} onReset={newQuery}>
       {!planning&&(canCompare||canStack||canLookup||canReview)&&<>
-        {canCompare&&!dashboard&&<button className="review-link" type="button" onClick={compareSelected}>比较双亲</button>}
-        {canStack&&<button className="review-link" type="button" onClick={()=>open('stack')}>查看基因组合</button>}
-        {canLookup&&<button className="review-link" type="button" onClick={viewTraitTypes}>查{axis.trait_name}的型别</button>}
-        {canReview&&<button className="review-link" type="button" onClick={()=>{setLookup('materials');open('traits');}}>查看所选材料</button>}
+        {canCompare&&!dashboard&&<button className="review-link" type="button" onClick={compareSelected}>{localize("比较双亲")}</button>}
+        {canStack&&<button className="review-link" type="button" onClick={()=>open('stack')}>{localize("查看基因组合")}</button>}
+        {canLookup&&<button className="review-link" type="button" onClick={viewTraitTypes}>{localize("查")}{localize(axis.trait_name)}{localize("的型别")}</button>}
+        {canReview&&<button className="review-link" type="button" onClick={()=>{setLookup('materials');open('traits');}}>{localize("查看所选材料")}</button>}
       </>}
-      {!planning&&<button className="review-link" type="button" onClick={()=>{setDraft(null);open('introgression');}}>亲本导入决策</button>}
+      {!planning&&<button className="review-link" type="button" onClick={()=>{setDraft(null);open('introgression');}}>{localize("亲本导入决策")}</button>}
     </BreederInput>}
     </header>
-    {task!=='introgression'&&<section className="breeder-card" aria-label="育种基因选择">
+    {task!=='introgression'&&<section className="breeder-card" aria-label={localize("育种基因选择")}>
       <GeneControls data={data} models={models} focus={focus} change={change} onFocus={value=>change({focus:value})}/>
-      <button type="button" className="review-link" onClick={()=>open('check')}>多材料优势状态体检</button>
-      <button type="button" className="review-link" disabled={models.length<2} onClick={()=>open('stack')}>多基因比较（{models.length}）</button>
+      <button type="button" className="review-link" onClick={()=>open('check')}>{localize("多材料优势状态体检")}</button>
+      <button type="button" className="review-link" disabled={models.length<2} onClick={()=>open('stack')}>{localize("多基因比较（")}{localize(models.length)}）</button>
     </section>}
     {plan&&<BreederPlan plan={plan} axes={axes} onChange={changePlan} onRun={runPlan} onClose={()=>setDraft(null)}/>}
-    {heading&&!reviewing&&task!=='introgression'&&<h2 className="entry-result-title">{task==='traits'?'性状型别':heading}</h2>}
+    {heading&&!reviewing&&task!=='introgression'&&<h2 className="entry-result-title">{task==='traits'?localize("性状型别"):heading}</h2>}
     {task==='introgression'&&<IntrogressionReview/>}
     {task==='parents'&&<ParentPanel data={data} candidates={parents} axis={axis} models={models} ready={status.ready}
       settings={settings} change={update=>change({samples:keys,...update})}
       target={target} onCrosses={samples=>showMaterial(samples,'cross')}
       onExplore={()=>{change({lookupTrait:axis?.trait_id??initialTrait,lookupAxis:axis?.key??''});setLookup('haplotypes');open('traits');}}>
       <div className="task-form">
-        {axis&&<label>关注性状<select aria-label="双亲比较性状" value={axis.trait_id} onChange={e=>change({trait:e.target.value,axis:''})}>
-          {[...availableTraits].map(([id,name])=><option key={id} value={id}>{name}</option>)}
+        {axis&&<label>{localize("关注性状")}<select aria-label={localize("双亲比较性状")} value={axis.trait_id} onChange={e=>change({trait:e.target.value,axis:''})}>
+          {[...availableTraits].map(([id,name])=><option key={id} value={id}>{localize(name)}</option>)}
         </select></label>}
-        {geneControls}
+        {localize(geneControls)}
       </div>
       {pairSuggestions.length>0&&<div className="task-suggestions">
-        <span>目标性状的候选基因</span>
+        <span>{localize("目标性状的候选基因")}</span>
         {pairSuggestions.map(g=><button className="review-link" type="button" key={g.id}
-          aria-label={'添加 '+g.name} onClick={()=>change({geneIds:[...models.map(m=>m.gene.id),g.id],focus:g.id})}>{g.name} +</button>)}
+          aria-label={localize('添加 '+g.name)} onClick={()=>change({geneIds:[...models.map(m=>m.gene.id),g.id],focus:g.id})}>{localize(g.name)} +</button>)}
       </div>}
       {pair.length===2&&pair[0]!==pair[1]&&<button type="button" className="review-link"
-        onClick={()=>change({female:settings.male,male:settings.female})}>调换母父本</button>}
+        onClick={()=>change({female:settings.male,male:settings.female})}>{localize("调换母父本")}</button>}
       {axis&&<ReviewSource axis={axis} sources={sources} datasets={datasets} onAxis={chooseAxis}/>}
     </ParentPanel>}
     {task==='traits'&&legacy&&!dashboard&&<TaskChoice view={lookup} onChange={setLookup}/>}
@@ -643,7 +650,7 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
         onAxis={chooseAxis} onTrait={trait=>change({trait,axis:''})}
         onBounds={updateBounds}
         models={models} observations={observations} referenceN={observations[0]?.reference_n} callById={callById} showInput={legacy}>
-      {geneControls}
+      {localize(geneControls)}
     </BreederReview>}
     {task==='traits'&&!reviewing&&<TraitLookup data={data} axes={axes} reference={reference} scope={scope} settings={settings}
         change={change} initialTrait={initialTrait} siteSelections={siteSelections}
@@ -652,15 +659,15 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
           change({trait:shownAxis.trait_id,axis:shownAxis.key,
             geneIds:[...new Set([...models.map(m=>m.gene.id),mark.gene.id])],schemes:{...settings.schemes,[mark.gene.id]:mark.scheme.id}});
         }} onParents={openParents}/>}
-    {task==='stack'&&<section className="breeder-card task-panel" aria-label="多基因聚合">
+    {task==='stack'&&<section className="breeder-card task-panel" aria-label={localize("多基因聚合")}>
       <div className="task-form">
-        {geneControls}
-        {data.individuals.some(isCross)&&<label>对象<select aria-label="聚合对象" value={scope}
+        {localize(geneControls)}
+        {data.individuals.some(isCross)&&<label>{localize("对象")}<select aria-label={localize("聚合对象")} value={scope}
           onChange={e=>change({scope:e.target.value,axis:'',trait:''})}>
-          <option value="material">品种与中间材料</option><option value="cross">杂交组合</option>
+          <option value="material">{localize("品种与中间材料")}</option><option value="cross">{localize("杂交组合")}</option>
         </select></label>}
       </div>
-      {models.length<2&&<p className="breeder-note">{models.length?'再添加一个基因可查看组合。':'搜索基因以查看群体型别。'}</p>}
+      {models.length<2&&<p className="breeder-note">{models.length?localize("再添加一个基因可查看组合。"):localize("搜索基因以查看群体型别。")}</p>}
       {models.length>0&&<CombinationPanel data={data} models={models} settings={settings} change={change} ready={status.ready}
           reference={reference} scope={scope} target={settings.axis?target:targetRange()} axis={settings.axis?axis:null} focus={focus} reviewResult={result}
           onReview={s=>showMaterial([s],isCross(s)?'cross':'material')}/>}
@@ -669,7 +676,7 @@ export function BreederWorkspace({data,cohort,settings,onChange,initialGene,init
       geneControls={geneControls} fileCheck={checkedImport} setFileCheck={setCheckedImport}
       initialSampleId={checkedKnown} initialSamples={selectedAll} showInput={legacy||!checkedImport&&!checkedKnown}/>}
     {needsCalls&&!status.ready&&<p className="breeder-status" role={status.error?'alert':'status'}>
-      {status.error?<>{status.error} <button type="button" onClick={status.retry}>重试</button></>:'正在载入关注基因的分型…'}
+      {status.error?<>{localize(status.error)} <button type="button" onClick={status.retry}>{localize("重试")}</button></>:'正在载入关注基因的分型…'}
     </p>}
   </main>;
 }

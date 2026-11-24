@@ -74,7 +74,7 @@
   .research-sections button { padding:4px 8px; min-height:30px; }
   .reader-explorer #explorer-main { padding:12px 10px 28px; }
   .reader-explorer .assessed-regions .region-row { grid-template-columns:minmax(65px,24%) minmax(32px,1fr) 42px 36px; }
-  .reader-explorer .assessed-regions[data-target="active"] .region-row { grid-template-columns:minmax(65px,24%) minmax(32px,1fr) 42px 36px 43px; }
+  .reader-explorer .assessed-regions[data-target="active"] .region-row { grid-template-columns:minmax(65px,24%) minmax(32px,1fr) 42px 36px 66px; }
   .reader-explorer .assessed-regions .region-row>:nth-child(4) { white-space:nowrap; }
 }
 .explorer button,.explorer select,.explorer input,.rt-DialogContent button,.rt-DialogContent select,.rt-DialogContent input { font-size:var(--table-size); }
@@ -294,3 +294,14 @@ button.indel-gene:hover,button.indel-gene:focus-visible { background:#ffe6d2; }
 .catalog-identity-status,.catalog-evidence-summary { grid-column:1/-1; color:#61746d; font-size:12px; }
 .catalog-evidence-summary summary { cursor:pointer; }
 .catalog-evidence-summary p { margin:6px 0; color:#435c52; }
+
+.locale-switch { display:inline-flex; flex:none; align-items:center; gap:2px; width:max-content; padding:2px; border:1px solid #dce5e3; border-radius:7px; }
+.locale-switch button { border:0; border-radius:4px; background:transparent; color:#456261; padding:4px 7px; font:inherit; font-size:13px; white-space:nowrap; }
+.locale-switch button[aria-pressed="true"] { background:#e5efeb; color:#214a40; font-weight:600; }
+.locale-switch button:focus-visible { outline:2px solid #34786c; outline-offset:2px; }
+.locale-error { position:fixed; inset:auto 18px 14px auto; z-index:200; background:white; border:1px solid #dce5e3; border-radius:8px; padding:10px 14px; }
+:lang(zh-CN) .radix-themes { --default-font-family:system-ui, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; }
+.research-toolbar { flex-wrap:wrap; }
+@media(max-width:1200px) {
+  :root[lang="en"] .research-toolbar .reader-navigation { order:2; margin:0; }
+}

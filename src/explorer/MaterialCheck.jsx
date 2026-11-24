@@ -1,3 +1,4 @@
+import {useText} from './locale.jsx';
 import React,{useMemo,useState} from 'react';
 import {BreederPriorCheck} from './BreederPriorCheck.jsx';
 import {AccessionPicker} from './BreederTasks.jsx';
@@ -23,6 +24,7 @@ export async function readCheckFiles(files){
 }
 
 export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneControls,fileCheck,setFileCheck,showInput=true,initialSampleId,initialSamples=[]}){
+  const localize = useText();
   const [known,setKnown]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
   const [evidence,setEvidence]=useState('G_mixed');
   const [importedId,setImportedId]=useState('');
@@ -94,86 +96,85 @@ export function MaterialCheck({data,axes,models,initialGene,siteSelections,geneC
     downloadTable({filename:'riceflux_material_check.txt',columns:fields},rows);
   }
   return <div className="task-content">
-    <section className="breeder-card" aria-label="选择多份体检材料">
-      <h2>选择材料比较文献优势状态</h2>
-      <AccessionPicker label="添加比较材料" samples={data.individuals} onPick={s=>{setComparisonIds(ids=>[...new Set([...ids,s.id])]);setFileCheck(null);}}/>
-      <p>{comparisonSamples.length} 份材料已加入比较。可在顶部清空查询重新选择。</p>
-      <div className="breeder-pins">{comparisonSamples.map(s=><span className="breeder-pin" key={s.id}>{s.name} · {s.dataset_id}{comparisonIds.includes(s.id)&&<button type="button" aria-label={'移除比较 '+s.name} onClick={()=>setComparisonIds(ids=>ids.filter(id=>id!==s.id))}>×</button>}</span>)}</div>
+    <section className="breeder-card" aria-label={localize("选择多份体检材料")}>
+      <h2>{localize("选择材料比较文献优势状态")}</h2>
+      <AccessionPicker label={localize("添加比较材料")} samples={data.individuals} onPick={s=>{setComparisonIds(ids=>[...new Set([...ids,s.id])]);setFileCheck(null);}}/>
+      <p>{localize(comparisonSamples.length)}{" "+localize("份材料已加入比较。可在顶部清空查询重新选择。")}</p>
+      <div className="breeder-pins">{comparisonSamples.map(s=><span className="breeder-pin" key={s.id}>{localize(s.name)} · {localize(s.dataset_id)}{comparisonIds.includes(s.id)&&<button type="button" aria-label={localize('移除比较 '+s.name)} onClick={()=>setComparisonIds(ids=>ids.filter(id=>id!==s.id))}>×</button>}</span>)}</div>
     </section>
     {comparisonSamples.length>0&&<BreederPriorCheck data={data} axes={axes} samples={comparisonSamples} models={models} localReadings={fileCheck?(s=>(fileCheck.materials??[fileCheck]).find(m=>m.sample.id===s.id)?.readings):null} localCalls={fileCheck?(s=>(fileCheck.materials??[fileCheck]).find(m=>m.sample.id===s.id)?.calls):null}/>}
 
-    {showInput&&<section className="breeder-card" aria-label="导入体检材料">
+    {showInput&&<section className="breeder-card" aria-label={localize("导入体检材料")}>
       <div className="task-form">
-        <label>检测来源<select aria-label="体检分型来源" value={evidence} disabled={busy} onChange={e=>setEvidence(e.target.value)}>
-          {Object.entries(evidenceNames).map(([id,name])=><option key={id} value={id}>{name}</option>)}
+        <label>{localize("检测来源")}<select aria-label={localize("体检分型来源")} value={evidence} disabled={busy} onChange={e=>setEvidence(e.target.value)}>
+          {Object.entries(evidenceNames).map(([id,name])=><option key={id} value={id}>{localize(name)}</option>)}
         </select></label>
-        <label className="task-upload">导入体检文件<input type="file" aria-label="导入体检文件" multiple accept=".txt,.tsv,.vcf,.gz,.bgz" onChange={read} disabled={busy}/></label>
-        <button className="review-link" type="button" onClick={()=>templates('genotype')}>分型模板</button>
-        <button className="review-link" type="button" onClick={()=>templates('phenotype')}>表型模板</button>
-        <button className="review-link" type="button" onClick={()=>templates('pav')}>PAV 模板</button>
+        <label className="task-upload">{localize("导入体检文件")}<input type="file" aria-label={localize("导入体检文件")} multiple accept=".txt,.tsv,.vcf,.gz,.bgz" onChange={read} disabled={busy}/></label>
+        <button className="review-link" type="button" onClick={()=>templates('genotype')}>{localize("分型模板")}</button>
+        <button className="review-link" type="button" onClick={()=>templates('phenotype')}>{localize("表型模板")}</button>
+        <button className="review-link" type="button" onClick={()=>templates('pav')}>{localize("PAV 模板")}</button>
         <button className="review-link" type="button" onClick={()=>downloadTable({filename:'riceflux_marker_dictionary.txt',
-          columns:['marker_id','gene_id','gene_name','chr','position','ref','alt']},markerCatalog.map(v=>({...v,marker_id:v.id,chr:v.chromosome,position:v.pos})))}>位点字典</button>
+          columns:['marker_id','gene_id','gene_name','chr','position','ref','alt']},markerCatalog.map(v=>({...v,marker_id:v.id,chr:v.chromosome,position:v.pos})))}>{localize("位点字典")}</button>
       </div>
-      <p className="breeder-note">TXT 可包含多份材料，使用 sample_id 配对分型、表型和 PAV；VCF 每次仅支持一份材料。VCF 中长度变化达到 50 bp 的锚定 InDel 归入片段 PAV。</p>
-      {error&&<p role="alert">{error}</p>}
-      {busy&&<p role="status">正在校验材料编号和位点。</p>}
-      <details className="review-disclosure"><summary>查询已入库材料</summary>
-        <AccessionPicker label="已入库材料" samples={data.individuals} selected={!fileCheck?sample:null} onPick={s=>{setKnown(s.id);setFileCheck(null);setError('');}}/>
+      <p className="breeder-note">{localize("TXT 可包含多份材料，使用 sample_id 配对分型、表型和 PAV；VCF 每次仅支持一份材料。VCF 中长度变化达到 50 bp 的锚定 InDel 归入片段 PAV。")}</p>
+      {error&&<p role="alert">{localize(error)}</p>}
+      {busy&&<p role="status">{localize("正在校验材料编号和位点。")}</p>}
+      <details className="review-disclosure"><summary>{localize("查询已入库材料")}</summary>
+        <AccessionPicker label={localize("已入库材料")} samples={data.individuals} selected={!fileCheck?sample:null} onPick={s=>{setKnown(s.id);setFileCheck(null);setError('');}}/>
       </details>
     </section>}
-    {fileCheck?.materials?.length>1&&<label>查看导入材料详情<select aria-label="导入材料详情" value={sample.id} onChange={e=>setImportedId(e.target.value)}>{fileCheck.materials.map(m=><option key={m.sample.id} value={m.sample.id}>{m.sample.name}</option>)}</select></label>}
-    {sample&&<section className="breeder-card" aria-label="材料体检结果">
-      <div className="task-heading"><h2>{sample.name}</h2>
-        <span>{sample.source_sample_id??sample.id} · {fileCheck?'本次导入':sample.dataset_name??sample.dataset_id}</span>
+    {fileCheck?.materials?.length>1&&<label>{localize("查看导入材料详情")}<select aria-label={localize("导入材料详情")} value={sample.id} onChange={e=>setImportedId(e.target.value)}>{fileCheck.materials.map(m=><option key={m.sample.id} value={m.sample.id}>{localize(m.sample.name)}</option>)}</select></label>}
+    {sample&&<section className="breeder-card" aria-label={localize("材料体检结果")}>
+      <div className="task-heading"><h2>{localize(sample.name)}</h2>
+        <span>{localize(sample.source_sample_id??sample.id)} · {fileCheck?localize("本次导入"):sample.dataset_name??sample.dataset_id}</span>
         <button type="button" className="review-link review-to-end" onClick={exportCheck}
-          disabled={!fileCheck&&!status.ready}>下载体检 TXT</button>
+          disabled={!fileCheck&&!status.ready}>{localize("下载体检 TXT")}</button>
       </div>
       <p className="breeder-counts">
-        <span><b>{measured.length}</b> 条定量实测</span>
-        {descriptors.length>0&&<span><b>{descriptors.length}</b> 条分类表型</span>}
-        {fileCheck&&submitted.length>0&&<span><b>{submitted.filter(r=>r.status==='called').length}</b> / {submitted.length} 个提交位点调用完整</span>}
-        {pav.length>0&&<span><b>{pav.filter(r=>r.status!=='unknown').length}</b> / {pav.length} 条 PAV 已判定</span>}
-        {sample.genotype_evidence!=='G_none'&&<span>来源 {evidenceNames[sample.genotype_evidence]??sample.genotype_evidence}</span>}
+        <span><b>{localize(measured.length)}</b>{" "+localize("条定量实测")}</span>
+        {descriptors.length>0&&<span><b>{localize(descriptors.length)}</b>{" "+localize("条分类表型")}</span>}
+        {fileCheck&&submitted.length>0&&<span><b>{localize(submitted.filter(r=>r.status==='called').length)}</b> / {localize(submitted.length)}{" "+localize("个提交位点调用完整")}</span>}
+        {pav.length>0&&<span><b>{localize(pav.filter(r=>r.status!=='unknown').length)}</b> / {localize(pav.length)}{" "+localize("条 PAV 已判定")}</span>}
+        {sample.genotype_evidence!=='G_none'&&<span>{localize("来源")+" "}{localize(evidenceNames[sample.genotype_evidence]??sample.genotype_evidence)}</span>}
       </p>
-      {!showInput&&fileCheck&&submitted.length>0&&<label className="entry-evidence-label">检测来源
-        <select aria-label="体检分型来源" value={sample.genotype_evidence} onChange={e=>setFileCheck({
+      {!showInput&&fileCheck&&submitted.length>0&&<label className="entry-evidence-label">{localize("检测来源")}<select aria-label={localize("体检分型来源")} value={sample.genotype_evidence} onChange={e=>setFileCheck({
           ...fileCheck,sample:{...fileCheck.sample,genotype_evidence:e.target.value},...(fileCheck.materials?{materials:fileCheck.materials.map(m=>({...m,sample:{...m.sample,genotype_evidence:e.target.value}}))}:{})})}>
-          {Object.entries(evidenceNames).map(([id,name])=><option key={id} value={id}>{name}</option>)}
+          {Object.entries(evidenceNames).map(([id,name])=><option key={id} value={id}>{localize(name)}</option>)}
         </select>
       </label>}
-      {geneControls}
-      {!fileCheck&&!status.ready&&<p role={status.error?'alert':'status'}>{status.error?<>{status.error} <button type="button" onClick={status.retry}>重试</button></>:'正在读取分型…'}</p>}
-      {genes.length>0&&<div className="matrix-scroll"><table className="individual-table" aria-label="基因体检">
-        <thead><tr><th>基因</th><th>完整 / 覆盖 / 定义位点</th><th>判型</th><th>需补查的位置</th></tr></thead>
-        <tbody>{genes.map(r=><tr key={r.gene.id}><th scope="row">{r.gene.name}<small>{r.scheme.kind==='literature'?'文献型':'标记型'}</small></th>
-          <td>{r.complete} / {r.covered} / {r.expected}</td><td>{callLabel(r.call)}</td><td>{r.gaps.join('、')||'—'}</td>
+      {localize(geneControls)}
+      {!fileCheck&&!status.ready&&<p role={status.error?'alert':'status'}>{status.error?<>{localize(status.error)} <button type="button" onClick={status.retry}>{localize("重试")}</button></>:'正在读取分型…'}</p>}
+      {genes.length>0&&<div className="matrix-scroll"><table className="individual-table" aria-label={localize("基因体检")}>
+        <thead><tr><th>{localize("基因")}</th><th>{localize("完整 / 覆盖 / 定义位点")}</th><th>{localize("判型")}</th><th>{localize("需补查的位置")}</th></tr></thead>
+        <tbody>{genes.map(r=><tr key={r.gene.id}><th scope="row">{localize(r.gene.name)}<small>{r.scheme.kind==='literature'?localize("文献型"):localize("标记型")}</small></th>
+          <td>{localize(r.complete)} / {localize(r.covered)} / {localize(r.expected)}</td><td>{localize(callLabel(r.call))}</td><td>{localize(r.gaps.join('、')||'—')}</td>
         </tr>)}</tbody>
       </table></div>}
-      {!genes.length&&(!ids.length||status.ready||fileCheck)&&<p className="breeder-note">可添加关注基因，检查其定义位点是否覆盖。</p>}
-      {fileCheck&&submitted.length>0&&<details className="review-disclosure"><summary>查看提交位点及问题</summary>
-        <div className="matrix-scroll"><table className="individual-table" aria-label="提交位点">
-          <thead><tr><th>位点</th><th>输入</th><th>核对状态</th></tr></thead><tbody>{submitted.slice(0,100).map(r=><tr key={r.marker_id}>
-            <th scope="row">{r.marker_type&&r.marker_type+' · '}{r.marker_id}</th><td>{r.genotype||'—'}</td><td>{statusNames[r.status]}{r.note&&<small>{reasons[r.note]||r.note}</small>}</td>
+      {!genes.length&&(!ids.length||status.ready||fileCheck)&&<p className="breeder-note">{localize("可添加关注基因，检查其定义位点是否覆盖。")}</p>}
+      {fileCheck&&submitted.length>0&&<details className="review-disclosure"><summary>{localize("查看提交位点及问题")}</summary>
+        <div className="matrix-scroll"><table className="individual-table" aria-label={localize("提交位点")}>
+          <thead><tr><th>{localize("位点")}</th><th>{localize("输入")}</th><th>{localize("核对状态")}</th></tr></thead><tbody>{submitted.slice(0,100).map(r=><tr key={r.marker_id}>
+            <th scope="row">{localize(r.marker_type&&r.marker_type+' · ')}{localize(r.marker_id)}</th><td>{localize(r.genotype||'—')}</td><td>{localize(statusNames[r.status])}{r.note&&<small>{localize(reasons[r.note]||r.note)}</small>}</td>
           </tr>)}</tbody>
-        </table></div>{submitted.length>100&&<p>显示前 100 条，体检 TXT 含全部记录。</p>}</details>}
-      {pav.length>0&&<details className="review-disclosure"><summary>存在 / 缺失记录（PAV）</summary>
-        <div className="matrix-scroll"><table className="individual-table" aria-label="体检 PAV 记录">
-          <thead><tr><th>基因 / 原始编号</th><th>状态</th><th>方法与来源</th></tr></thead><tbody>{pav.map((r,i)=><tr key={i}>
-            <th scope="row">{r.gene}<small>{r.source_gene_id}</small></th><td>{pavNames[r.status]}</td>
-            <td>{r.method}<small>{r.doi?<a href={'https://doi.org/'+r.doi} target="_blank" rel="noreferrer">原文 DOI</a>:r.source}</small></td>
-          </tr>)}</tbody>
-        </table></div></details>}
-      {descriptors.length>0&&<details className="review-disclosure"><summary>种质表型描述（分类）</summary>
-        <div className="matrix-scroll"><table className="individual-table" aria-label="体检分类表型">
-          <thead><tr><th>指标</th><th>原始代码 / 定义</th><th>季节与数据字典</th></tr></thead><tbody>{descriptors.map((r,i)=><tr key={i}>
-            <th scope="row">{r.descriptor}<small>{r.descriptor_id}</small></th><td>{r.value_code}{r.value_label&&<small>{r.value_label}</small>}</td>
-            <td>{[r.site,r.crop_year,r.dictionary_id].filter(Boolean).join(' · ')}</td>
+        </table></div>{submitted.length>100&&<p>{localize("显示前 100 条，体检 TXT 含全部记录。")}</p>}</details>}
+      {pav.length>0&&<details className="review-disclosure"><summary>{localize("存在 / 缺失记录（PAV）")}</summary>
+        <div className="matrix-scroll"><table className="individual-table" aria-label={localize("体检 PAV 记录")}>
+          <thead><tr><th>{localize("基因 / 原始编号")}</th><th>{localize("状态")}</th><th>{localize("方法与来源")}</th></tr></thead><tbody>{pav.map((r,i)=><tr key={i}>
+            <th scope="row">{localize(r.gene)}<small>{localize(r.source_gene_id)}</small></th><td>{localize(pavNames[r.status])}</td>
+            <td>{localize(r.method)}<small>{r.doi?<a href={'https://doi.org/'+r.doi} target="_blank" rel="noreferrer">{localize("原文 DOI")}</a>:r.source}</small></td>
           </tr>)}</tbody>
         </table></div></details>}
-      <details className="review-disclosure"><summary>实测表型与缺测记录</summary>
-        {!readings.length?<p className="breeder-note">没有提交或接入表型记录。</p>:<div className="matrix-scroll"><table className="individual-table" aria-label="体检表型记录">
-          <thead><tr><th>性状</th><th>原值</th><th>地点、年份与方法</th></tr></thead><tbody>{readings.map((r,index)=><tr key={index}>
-            <th scope="row">{r.trait}</th><td>{r.value===null?'缺测':r.value+' '+r.unit}</td><td>{[r.site,r.year,r.method].join(' · ')}</td>
+      {descriptors.length>0&&<details className="review-disclosure"><summary>{localize("种质表型描述（分类）")}</summary>
+        <div className="matrix-scroll"><table className="individual-table" aria-label={localize("体检分类表型")}>
+          <thead><tr><th>{localize("指标")}</th><th>{localize("原始代码 / 定义")}</th><th>{localize("季节与数据字典")}</th></tr></thead><tbody>{descriptors.map((r,i)=><tr key={i}>
+            <th scope="row">{localize(r.descriptor)}<small>{localize(r.descriptor_id)}</small></th><td>{localize(r.value_code)}{r.value_label&&<small>{localize(r.value_label)}</small>}</td>
+            <td>{localize([r.site,r.crop_year,r.dictionary_id].filter(Boolean).join(' · '))}</td>
+          </tr>)}</tbody>
+        </table></div></details>}
+      <details className="review-disclosure"><summary>{localize("实测表型与缺测记录")}</summary>
+        {!readings.length?<p className="breeder-note">{localize("没有提交或接入表型记录。")}</p>:<div className="matrix-scroll"><table className="individual-table" aria-label={localize("体检表型记录")}>
+          <thead><tr><th>{localize("性状")}</th><th>{localize("原值")}</th><th>{localize("地点、年份与方法")}</th></tr></thead><tbody>{readings.map((r,index)=><tr key={index}>
+            <th scope="row">{localize(r.trait)}</th><td>{r.value===null?localize("缺测"):r.value+' '+r.unit}</td><td>{localize([r.site,r.year,r.method].join(' · '))}</td>
           </tr>)}</tbody>
         </table></div>}</details>
     </section>}

@@ -1,3 +1,4 @@
+import {useText} from './locale.jsx';
 import React,{useMemo,useState} from 'react';
 import {Button,Dialog} from '@radix-ui/themes';
 import {MagnifyingGlassIcon} from '@radix-ui/react-icons';
@@ -26,18 +27,20 @@ function matchesEvidence(evidence,summary,traits,supported){
 }
 
 function PrimaryTraits({traits,supported}){
-  if(!traits.length)return <div className="catalog-traits"><small>暂无已登记性状</small></div>;
+  const localize = useText();
+  if(!traits.length)return <div className="catalog-traits"><small>{localize("暂无已登记性状")}</small></div>;
   const observed=new Set(supported.map(t=>t.id));
   const ordered=[...supported,...traits.filter(t=>!observed.has(t.id))];
-  return <div className="catalog-traits" aria-label="主要性状及实测状态">
+  return <div className="catalog-traits" aria-label={localize("主要性状及实测状态")}>
     {ordered.slice(0,4).map(t=>observed.has(t.id)
-      ? <span key={t.id} className="source-badge phenotype-support" title="当前所选数据集有实测表型">P · {t.name}</span>
-      : <span key={t.id} className="catalog-unmeasured">{t.name} · 暂无实测</span>)}
-    {ordered.length>4&&<small>另 {ordered.length-4} 项</small>}
+      ? <span key={t.id} className="source-badge phenotype-support" title={localize("当前所选数据集有实测表型")}>P · {localize(t.name)}</span>
+      : <span key={t.id} className="catalog-unmeasured">{localize(t.name)}{" "+localize("· 暂无实测")}</span>)}
+    {ordered.length>4&&<small>{localize("另")+" "}{localize(ordered.length-4)}{" "+localize("项")}</small>}
   </div>;
 }
 
 export function PriorFinder({data,onChoose,onInspect}){
+  const localize = useText();
   const [open,setOpen]=useState(false),[query,setQuery]=useState(''),[dataset,setDataset]=useState('all');
   const [evidence,setEvidence]=useState('all'),[traitId,setTrait]=useState(''),[page,setPage]=useState(0);
   const traitIndex=useMemo(()=>{
@@ -80,63 +83,63 @@ export function PriorFinder({data,onChoose,onInspect}){
   }
   return <>
     <Dialog.Root open={open} onOpenChange={setOpen}>
-    <Dialog.Trigger><Button className="prior-search" size="2" variant="soft"><MagnifyingGlassIcon/>查基因</Button></Dialog.Trigger>
+    <Dialog.Trigger><Button className="prior-search" size="2" variant="soft"><MagnifyingGlassIcon/>{localize("查基因")}</Button></Dialog.Trigger>
     <Dialog.Content maxWidth="720px">
-      <Dialog.Title>水稻先验基因库</Dialog.Title>
-      <Dialog.Description>按基因名或 ID 检索。InDel 表示至少一个已登记数据集观察到非参考等位。P 表示有实测表型。</Dialog.Description>
+      <Dialog.Title>{localize("水稻先验基因库")}</Dialog.Title>
+      <Dialog.Description>{localize("按基因名或 ID 检索。InDel 表示至少一个已登记数据集观察到非参考等位。P 表示有实测表型。")}</Dialog.Description>
       <div className="catalog-filters source-filters">
-        <input aria-label="检索全库" type="search" placeholder="基因名、别名、MSU / RAP 编号" value={query} onChange={change(setQuery)}/>
-        <select aria-label="按关联性状筛选" value={activeTrait} onChange={change(setTrait)}>
-          <option value="">全部关联性状</option>
-          {[...traitIndex.options.values()].sort((a,b)=>a.name.localeCompare(b.name,'zh')).map(t=><option key={canonicalTraitKey(t.name)} value={canonicalTraitKey(t.name)}>{t.name}</option>)}
+        <input aria-label={localize("检索全库")} type="search" placeholder={localize("基因名、别名、MSU / RAP 编号")} value={query} onChange={change(setQuery)}/>
+        <select aria-label={localize("按关联性状筛选")} value={activeTrait} onChange={change(setTrait)}>
+          <option value="">{localize("全部关联性状")}</option>
+          {[...traitIndex.options.values()].sort((a,b)=>a.name.localeCompare(b.name,'zh')).map(t=><option key={canonicalTraitKey(t.name)} value={canonicalTraitKey(t.name)}>{localize(t.name)}</option>)}
         </select>
-        <select aria-label="数据集覆盖" className="dataset-tint" style={dataset==='all'?undefined:datasetTint(dataset,data.datasetRegistry)} value={dataset} onChange={change(setDataset)}>
-          <option value="all">全部数据集 / All datasets</option>
-          {data.datasetRegistry.map(r=><option key={r.id} value={r.id}>{datasetBadge(r.id,data.datasetRegistry)} · {r.name}</option>)}
+        <select aria-label={localize("数据集覆盖")} className="dataset-tint" style={dataset==='all'?undefined:datasetTint(dataset,data.datasetRegistry)} value={dataset} onChange={change(setDataset)}>
+          <option value="all">{localize("全部数据集 / All datasets")}</option>
+          {data.datasetRegistry.map(r=><option key={r.id} value={r.id}>{localize(datasetBadge(r.id,data.datasetRegistry))} · {localize(r.name)}</option>)}
         </select>
-        <select aria-label="证据与实测表型" value={evidence} onChange={change(setEvidence)}>
-          <option value="all">全部证据 / All evidence</option>
-          <optgroup label="实测表型 / Phenotypes">
-            <option value="goal_profile">性状目标判型 · V4</option>
-            <option value="P">P · 有实测性状</option>
-            <option value="no_phenotype">关联性状均暂无实测</option>
+        <select aria-label={localize("证据与实测表型")} value={evidence} onChange={change(setEvidence)}>
+          <option value="all">{localize("全部证据 / All evidence")}</option>
+          <optgroup label={localize("实测表型 / Phenotypes")}>
+            <option value="goal_profile">{localize("性状目标判型 · V4")}</option>
+            <option value="P">{localize("P · 有实测性状")}</option>
+            <option value="no_phenotype">{localize("关联性状均暂无实测")}</option>
           </optgroup>
-          <optgroup label="分型与文献 / Calls and literature">
-            <option value="F">F · 文献功能位点</option>
-            <option value="H">H · 文献单倍型组分</option>
-            <option value="indel">InDel · 有分型</option>
-            <option value="L">L · 基因层文献</option>
-            <option value="regional">区域标记</option>
-            <option value="untyped">未接入分型</option>
+          <optgroup label={localize("分型与文献 / Calls and literature")}>
+            <option value="F">{localize("F · 文献功能位点")}</option>
+            <option value="H">{localize("H · 文献单倍型组分")}</option>
+            <option value="indel">{localize("InDel · 有分型")}</option>
+            <option value="L">{localize("L · 基因层文献")}</option>
+            <option value="regional">{localize("区域标记")}</option>
+            <option value="untyped">{localize("未接入分型")}</option>
           </optgroup>
         </select>
       </div>
-      <p className="footnote">{hits.length.toLocaleString()} 个匹配基因{hits.length>pageSize&&
-        ` · 当前 ${(offset+1).toLocaleString()}–${Math.min(offset+pageSize,hits.length).toLocaleString()}`}</p>
+      <p className="footnote">{localize(hits.length.toLocaleString())}{" "+localize("个匹配基因")}{hits.length>pageSize&&
+        localize(" · 当前 #0#–#1#", [(offset+1).toLocaleString(), Math.min(offset+pageSize,hits.length).toLocaleString()])}</p>
       <div className="catalog-list">
         {hits.slice(offset,offset+pageSize).map(({gene,traits,supported})=><div className="catalog-row" key={gene.id} onClick={()=>{onChoose(gene,(activeTrait?traits[0]?.id:undefined)||supported[0]?.id);setOpen(false);}}>
           <button type="button" className="catalog-gene">
-            <b>{gene.catalog.msu||gene.catalog.rap||gene.catalog.sourceId}</b>
-            <small>{[gene.name,...[...new Set([...(gene.catalog.aliases||[]),...(gene.catalog.originalNames||[])])].filter(a=>a!==gene.name).slice(0,4)].join(' / ')}</small>
+            <b>{localize(gene.catalog.msu||gene.catalog.rap||gene.catalog.sourceId)}</b>
+            <small>{localize([gene.name,...[...new Set([...(gene.catalog.aliases||[]),...(gene.catalog.originalNames||[])])].filter(a=>a!==gene.name).slice(0,4)].join(' / '))}</small>
           </button>
           <SourceBadges data={data} gene={gene} phenotypeDataset={dataset} onInspect={(...args)=>{setOpen(false);onInspect(...args);}}/>
           <PrimaryTraits traits={traits} supported={supported}/>
-          {gene.catalog.identityStatus&&<small className="catalog-identity-status">身份：{gene.catalog.identityStatus}</small>}
+          {gene.catalog.identityStatus&&<small className="catalog-identity-status">{localize("身份：")}{localize(gene.catalog.identityStatus)}</small>}
           {(gene.catalog.evidenceAbstract||gene.catalog.bibliographyStatus)&&<details className="catalog-evidence-summary" onClick={e=>e.stopPropagation()}>
-            <summary>证据摘要与出处状态</summary>
-            {gene.catalog.evidenceAbstract&&<p>{gene.catalog.evidenceAbstract}</p>}
-            {gene.catalog.bibliographyStatus&&<small>出处：{gene.catalog.bibliographyStatus}</small>}
+            <summary>{localize("证据摘要与出处状态")}</summary>
+            {gene.catalog.evidenceAbstract&&<p>{localize(gene.catalog.evidenceAbstract)}</p>}
+            {gene.catalog.bibliographyStatus&&<small>{localize("出处：")}{localize(gene.catalog.bibliographyStatus)}</small>}
           </details>}
         </div>)}
-        {!hits.length&&<p>没有匹配项。可改用编号或切换数据集与证据。</p>}
+        {!hits.length&&<p>{localize("没有匹配项。可改用编号或切换数据集与证据。")}</p>}
       </div>
       <div className="dialog-actions">
-        <Button type="button" variant="soft" color="gray" onClick={exportCatalog}>下载基因目录 TXT</Button>
+        <Button type="button" variant="soft" color="gray" onClick={exportCatalog}>{localize("下载基因目录 TXT")}</Button>
         {hits.length>pageSize&&<span className="catalog-pager">
-          <Button disabled={!offset} variant="soft" onClick={()=>setPage(offset/pageSize-1)}>上一页</Button>
-          <Button disabled={offset+pageSize>=hits.length} variant="soft" onClick={()=>setPage(offset/pageSize+1)}>下一页</Button>
+          <Button disabled={!offset} variant="soft" onClick={()=>setPage(offset/pageSize-1)}>{localize("上一页")}</Button>
+          <Button disabled={offset+pageSize>=hits.length} variant="soft" onClick={()=>setPage(offset/pageSize+1)}>{localize("下一页")}</Button>
         </span>}
-        <Dialog.Close><Button>关闭</Button></Dialog.Close>
+        <Dialog.Close><Button>{localize("关闭")}</Button></Dialog.Close>
       </div>
     </Dialog.Content></Dialog.Root>
   </>;

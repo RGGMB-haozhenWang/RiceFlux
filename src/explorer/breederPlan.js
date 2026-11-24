@@ -1,24 +1,26 @@
 import {isCross,materialKey} from './breeder.js';
 import {siteName} from './regions.js';
+import {traitTerms} from './terms.js';
 
 export const planExamples=[
-  {title:'亲本改良',prompt:'以 D106 为母本、D112 为父本，比较 LOC_Os07g41200 的后代型别。'},
-  {title:'性状与单倍型',prompt:'查看公主岭 2022 年的粒长单倍型和材料。'},
-  {title:'查共同携带',prompt:'聚合 LOC_Os07g49460 和 LOC_Os07g41200，找同时携带的材料。'},
-  {title:'材料体检',prompt:'给一份新材料做体检，检查位点覆盖和缺测。'},
+  {title:'亲本改良',prompt:'以 D106 为母本、D112 为父本，比较 LOC_Os07g41200 的后代型别。',promptEn:'Compare F1 genotypes for LOC_Os07g41200 with D106 as maternal parent and D112 as paternal parent.'},
+  {title:'性状与单倍型',prompt:'查看公主岭 2022 年的粒长单倍型和材料。',promptEn:'Show grain length haplotypes for Gongzhuling in 2022.'},
+  {title:'查共同携带',prompt:'聚合 LOC_Os07g49460 和 LOC_Os07g41200，找同时携带的材料。',promptEn:'Pyramid LOC_Os07g49460 and LOC_Os07g41200 and find carriers.'},
+  {title:'材料体检',prompt:'给一份新材料做体检，检查位点覆盖和缺测。',promptEn:'Check coverage and missing calls for a new accession.'},
 ];
 
 export const queryTraits=data=>data.traits.filter(t=>t.environments?.length||t.category==='V4 文献性状'&&t.id!=='v4_unspecified');
+export const traitSearchLabels=trait=>[trait.name,trait.id,traitTerms[trait.name]].filter(Boolean);
 const normalize=text=>String(text??'').normalize('NFKC').trim().toLowerCase();
 const latin=/[a-z0-9_]/;
-const units={毫米:'mm',厘米:'cm',米:'m',日:'天',天:'天',克:'g'};
+const units={毫米:'mm',厘米:'cm',米:'m',日:'天',天:'天',克:'g',d:'天',day:'天',days:'天'};
 const unitOf=unit=>units[normalize(unit)]??normalize(unit);
 
 export function planScenario(text){
-  if(/体检|质控|新材料.*(?:覆盖|缺测)/.test(text))return 'check';
-  if(/母本|父本|亲本|后代|杂交(?!组合)|配组|\bf[1-9]\b/i.test(text))return 'parents';
-  if(/聚合|叠加|同时携带|堆叠|基因组合|基因的组合/.test(text))return 'stack';
-  if(/表型|单倍型|分型|达标|优良|筛选|实测|查.*(?:材料|杂交组合|性状|粒长|粒宽|抽穗期)/.test(text))return 'traits';
+  if(/体检|质控|新材料.*(?:覆盖|缺测)|\b(?:check|screen)\b.*\b(?:coverage|missing calls|new accession)\b/i.test(text))return 'check';
+  if(/母本|父本|亲本|后代|杂交(?!组合)|配组|\bf[1-9]\b|\b(?:maternal|paternal|parents?|progeny|offspring)\b/i.test(text))return 'parents';
+  if(/聚合|叠加|同时携带|堆叠|基因组合|基因的组合|\b(?:pyramid(?:ing)?|joint genotypes|co-carriers)\b/i.test(text))return 'stack';
+  if(/表型|单倍型|分型|达标|优良|筛选|实测|查.*(?:材料|杂交组合|性状|粒长|粒宽|抽穗期)|\b(?:phenotypes?|haplotypes?|target range)\b/i.test(text))return 'traits';
   return null;
 }
 
@@ -39,7 +41,7 @@ function mentionCandidates(text,data){
   }
   for(const s of data.individuals)add('material',s,[s.id,s.source_sample_id,s.name]);
   for(const g of data.genes)add('gene',g,[g.id,g.name,g.catalog?.msu,g.catalog?.rap,...(g.catalog?.aliases??[])]);
-  for(const t of queryTraits(data))add('trait',t,[t.id,t.name]);
+  for(const t of queryTraits(data))add('trait',t,traitSearchLabels(t));
   matches.sort((a,b)=>a.start-b.start||b.end-a.end);
   const spans=[];
   for(const m of matches){
@@ -52,22 +54,25 @@ function mentionCandidates(text,data){
 }
 
 function readGoal(text){
-  const number='(-?\\d+(?:\\.\\d+)?)',unit='(mm|cm|m|g|%|毫米|厘米|米|克|天|日|级)';
-  const interval=text.match(new RegExp(number+'\\s*'+unit+'?\\s*(?:至|到|[-–—~～])\\s*'+number+'\\s*'+unit+'(?![a-z])'));
+  const number='(-?\\d+(?:\\.\\d+)?)',unit='(mm|cm|m|g|%|days?|d|毫米|厘米|米|克|天|日|级)';
+  const interval=text.match(new RegExp(number+'\\s*'+unit+'?\\s*(?:至|到|[-–—~～]|to +)\\s*'+number+'\\s*'+unit+'(?![a-z])'));
   if(interval){
     const [,min,firstUnit,max,lastUnit]=interval;
     return firstUnit&&unitOf(firstUnit)!==unitOf(lastUnit)?{invalid:true}:{min,max,unit:unitOf(lastUnit)};
   }
-  const low=text.match(new RegExp('(?:不低于|至少|≥|>=)\\s*'+number+'\\s*'+unit));
-  const high=text.match(new RegExp('(?:不高于|不超过|至多|≤|<=)\\s*'+number+'\\s*'+unit));
+  const low=text.match(new RegExp('(?:不低于|至少|at least|≥|>=)\\s*'+number+'\\s*'+unit));
+  const high=text.match(new RegExp('(?:不高于|不超过|至多|at most|≤|<=)\\s*'+number+'\\s*'+unit));
   if(low&&high&&unitOf(low[2])!==unitOf(high[2]))return {invalid:true};
   if(low||high)return {min:low?.[1]??'',max:high?.[1]??'',unit:unitOf((low??high)[2])};
   return /(?:大于|小于|不低于|至少|不高于|不超过|至多|[≥≤<>])\s*-?\d/.test(text)?{invalid:true}:null;
 }
 
 function roleAt(text,hit){
-  const before=text.slice(Math.max(0,hit.start-14),hit.start);
-  const after=text.slice(hit.end,hit.end+14);
+  const before=text.slice(Math.max(0,hit.start-36),hit.start);
+  const after=text.slice(hit.end,hit.end+36);
+  const english=after.match(/^\s+(?:as\s+(?:the\s+)?)(maternal|paternal)\s+parent\b/)?.[1]??
+    before.match(/\b(maternal|paternal)\s+parent\s*(?:is|:)?\s*$/)?.[1];
+  if(english)return english==='maternal'?'母本':'父本';
   return after.match(/^\s*(?:作为|作|为|当|是|做)\s*(母本|父本)/)?.[1]??
     before.match(/(母本|父本)\s*(?:用|选|为|是|[:：])?\s*$/)?.[1];
 }

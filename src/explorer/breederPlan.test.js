@@ -31,3 +31,14 @@ test('sentence range binds to one measurement context and catches unit mismatch'
   assert.equal(makeBreederPlan('查粒长 8.2 cm 至 8.25 mm 的单倍型',data).goal.invalid,true);
   assert.equal(makeBreederPlan('查粒长大于 8.20 mm 的单倍型',data).goal.invalid,true);
 });
+
+test('English plans retain accession roles, trait aliases and numerical targets',()=>{
+  const parents=makeBreederPlan('Compare F1 genotypes for GL7 with D106 as maternal parent and D112 as paternal parent.',data);
+  assert.equal(parents.female,'["rice","D106"]');
+  assert.equal(parents.male,'["rice","D112"]');
+  const trait=makeBreederPlan('Show grain length haplotypes for Gongzhuling in 2022 from 8.20 to 8.25 mm.',data);
+  assert.deepEqual(trait.traits.map(t=>t.id),['length']);
+  assert.deepEqual(trait.goal,{min:'8.20',max:'8.25',unit:'mm'});
+  const check=makeBreederPlan('Check coverage and missing calls for a new accession.',data);
+  assert.equal(check.scenario,'check');
+});

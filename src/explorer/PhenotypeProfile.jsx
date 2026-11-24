@@ -1,3 +1,4 @@
+import {useText} from './locale.jsx';
 import React,{useMemo,useState} from 'react';
 import {measuredTraitChoices} from './researcherUi.js';
 import {RegionalPhenotypes} from './RegionalPhenotypes.jsx';
@@ -10,6 +11,7 @@ import {buildHaplotypeMapping,haplotypeMappingRows,sourceHaplotypeKey} from './h
 import {downloadTable,formats} from './formats.js';
 
 function TargetEditor({trait,unit,range,onChange}) {
+  const localize = useText();
   const [lower,setLower]=useState(range?.[0]?.toString()??'');
   const [upper,setUpper]=useState(range?.[1]?.toString()??'');
   const [error,setError]=useState(false);
@@ -20,31 +22,32 @@ function TargetEditor({trait,unit,range,onChange}) {
     setError(false);onChange(value);
   }
   return <div className="trait-target">
-    <form onSubmit={apply} aria-label={trait.name+'目标区间'}>
-      <label>下限 <input type="number" step="any" aria-label={trait.name+'目标下限'} value={lower} onChange={e=>setLower(e.target.value)}/></label>
-      <label>上限 <input type="number" step="any" aria-label={trait.name+'目标上限'} value={upper} onChange={e=>setUpper(e.target.value)}/></label>
-      <span>{unit}</span><button type="submit">应用区间</button>
-      {range&&<button type="button" onClick={()=>{setLower('');setUpper('');setError(false);onChange(null);}}>清除</button>}
+    <form onSubmit={apply} aria-label={localize(trait.name+'目标区间')}>
+      <label>{localize("下限")+" "}<input type="number" step="any" aria-label={localize('#0#目标下限',[trait.name])} value={lower} onChange={e=>setLower(e.target.value)}/></label>
+      <label>{localize("上限")+" "}<input type="number" step="any" aria-label={localize('#0#目标上限',[trait.name])} value={upper} onChange={e=>setUpper(e.target.value)}/></label>
+      <span>{localize(unit)}</span><button type="submit">{localize("应用区间")}</button>
+      {range&&<button type="button" onClick={()=>{setLower('');setUpper('');setError(false);onChange(null);}}>{localize("清除")}</button>}
     </form>
-    {error?<p role="alert">请输入两个有效数值，下限须小于或等于上限。</p>:
-      range&&<p role="status">目标 {range[0]}–{range[1]} {unit}</p>}
+    {error?<p role="alert">{localize("请输入两个有效数值，下限须小于或等于上限。")}</p>:
+      range&&<p role="status">{localize("目标")+" "}{localize(range[0])}–{localize(range[1])} {localize(unit)}</p>}
   </div>;
 }
 
 function TraitCard({trait,associated,gene,cohort,groups,scheme,selectedIds,targets,onTarget,onInspect,claims,mapping}) {
+  const localize = useText();
   const [selection,setSelection]=useState({});
   const view=useMemo(()=>regionalView(trait,selection),[trait,selection]);
   const policy=assessmentPolicy(trait,view.active);
   const key=targetKey(trait,view.active);
   const range=policy.mode==='relative'?targets[key]:undefined;
-  return <section className="trait-card" data-trait={trait.id} aria-label={trait.name+' · '+view.unit}>
-    <header className="trait-card-heading"><h3>{trait.name} <small>{view.unit}</small></h3>
-      <span className={'trait-badge '+(policy.mode==='absolute'?'trait-absolute':'trait-relative')}>{policy.mode==='absolute'?'绝对性状':'相对性状'}</span>
-      {associated&&<span className="trait-associated">基因关联</span>}
+  return <section className="trait-card" data-trait={trait.id} aria-label={localize(trait.name+' · '+view.unit)}>
+    <header className="trait-card-heading"><h3>{localize(trait.name)} <small>{localize(view.unit)}</small></h3>
+      <span className={'trait-badge '+(policy.mode==='absolute'?'trait-absolute':'trait-relative')}>{policy.mode==='absolute'?localize("绝对性状"):localize("相对性状")}</span>
+      {associated&&<span className="trait-associated">{localize("基因关联")}</span>}
     </header>
     {policy.mode==='relative'?<TargetEditor key={key+JSON.stringify(range)} trait={trait} unit={view.unit} range={range} onChange={r=>onTarget(key,r)}/>:
-      <p className="trait-criterion">{policy.criterion||'该鉴定指标的量尺方向待核。'}
-        {policy.direction&&<a href={policy.protocol} target="_blank" rel="noreferrer"> 测定来源 ↗</a>}
+      <p className="trait-criterion">{policy.criterion||localize("该鉴定指标的量尺方向待核。")}
+        {policy.direction&&<a href={policy.protocol} target="_blank" rel="noreferrer">{" "+localize("测定来源 ↗")}</a>}
       </p>}
     <RegionalPhenotypes trait={trait} gene={gene} groups={groups} cohort={cohort} selectedIds={selectedIds} compact
       markerIds={scheme.markers.map(v=>v.id)} view={view} claims={claims} mapping={mapping} assessment={{policy,range,scheme:scheme.id}}
@@ -53,21 +56,23 @@ function TraitCard({trait,associated,gene,cohort,groups,scheme,selectedIds,targe
 }
 
 function DescriptorCard({entry}) {
+  const localize = useText();
   const [selected,setSelected]=useState('');
   const [key,trial]=entry.trials.has(selected)?[selected,entry.trials.get(selected)]:entry.trials.entries().next().value;
   const {record,counts,total}=trial;
   return <section className="trait-card">
-    <header className="trait-card-heading"><h3>{record.descriptor}</h3>
-      <small>{[entry.dataset,record.dictionary_id].filter(Boolean).join(' · ')}</small></header>
-    {entry.trials.size>1&&<label>试验 <select aria-label={record.descriptor+'试验'} value={key} onChange={e=>setSelected(e.target.value)}>
-      {[...entry.trials].map(([id,{record}])=><option key={id} value={id}>{[record.site,record.crop_year].filter(Boolean).join(' · ')||'试验未登记'}</option>)}
+    <header className="trait-card-heading"><h3>{localize(record.descriptor)}</h3>
+      <small>{localize([entry.dataset,record.dictionary_id].filter(Boolean).join(' · '))}</small></header>
+    {entry.trials.size>1&&<label>{localize("试验")+" "}<select aria-label={localize(record.descriptor+'试验')} value={key} onChange={e=>setSelected(e.target.value)}>
+      {[...entry.trials].map(([id,{record}])=><option key={id} value={id}>{[record.site,record.crop_year].filter(Boolean).join(' · ')||localize("试验未登记")}</option>)}
     </select></label>}
-    <p>{[record.site,record.crop_year].filter(Boolean).join(' · ')} · {total} 条记录</p>
-    <ul>{[...counts].map(([group,values])=><li key={group}><b>{group}</b>{' · '}{[...values].map(([label,n])=>`${label} × ${n}`).join('；')}</li>)}</ul>
+    <p>{localize([record.site,record.crop_year].filter(Boolean).join(' · '))} · {localize(total)}{" "+localize("条记录")}</p>
+    <ul>{[...counts].map(([group,values])=><li key={group}><b>{localize(group)}</b>{' · '}{localize([...values].map(([label,n])=>`${label} × ${n}`).join('；'))}</li>)}</ul>
   </section>;
 }
 
 function DescriptorProfile({cohort,groups}) {
+  const localize = useText();
   const [open,setOpen]=useState(false);
   const rows=useMemo(()=>{
     if(!open)return [];
@@ -92,12 +97,13 @@ function DescriptorProfile({cohort,groups}) {
   },[open,cohort,groups]);
   if(!cohort.some(sample=>sample.descriptors?.length))return null;
   return <details className="trait-descriptors" onToggle={e=>setOpen(e.currentTarget.open)}>
-    <summary>分类表型</summary>
+    <summary>{localize("分类表型")}</summary>
     {open&&rows.map(entry=><DescriptorCard key={entry.key} entry={entry}/>)}
   </details>;
 }
 
 export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,claims,selectedIds,targets,onTarget,onInspect}) {
+  const localize = useText();
   const [schemeId,setSchemeId]=useState(null);
   const [chosenTraits,setChosenTraits]=useState(null);
   const available=useMemo(()=>{
@@ -177,32 +183,32 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,clai
   for(const trait of measured.filter(t=>shownIds.has(t.id)))columns.get(assessmentPolicy(trait,trait.environments[0]).mode).push(trait);
   const stacks=[...columns].filter(([,traits])=>traits.length).sort((a,b)=>Number(favourableTraits.has(b[1][0].id))-Number(favourableTraits.has(a[1][0].id)));
   const unmeasured=related.filter(t=>!t.environments?.length).map(t=>t.name);
-  return <section className="panel trait-profile" aria-label="全部表型与单倍型评价">
-    <header className="panel-title"><div><h2>表型与单倍型评价</h2><p>{measured.length} 项实测表型 · 按鉴定指标、地点和年份比较</p></div></header>
+  return <section className="panel trait-profile" aria-label={localize("全部表型与单倍型评价")}>
+    <header className="panel-title"><div><h2>{localize("表型与单倍型评价")}</h2><p>{localize(measured.length)}{" "+localize("项实测表型 · 按鉴定指标、地点和年份比较")}</p></div></header>
     <div className="profile-toolbar">
-      <label>分型方案 <select aria-label="表型分型方案" value={scheme.id} onChange={e=>setSchemeId(e.target.value)}>
-        <option value="selection">当前位点纯合型</option>
-        {available.map(s=><option key={s.id} value={s.id}>{s.title||presetTitle(s)}</option>)}
+      <label>{localize("分型方案")+" "}<select aria-label={localize("表型分型方案")} value={scheme.id} onChange={e=>setSchemeId(e.target.value)}>
+        <option value="selection">{localize("当前位点纯合型")}</option>
+        {available.map(s=><option key={s.id} value={s.id}>{localize(s.title||presetTitle(s))}</option>)}
       </select></label>
-      <span>{groups.length?`${scheme.markers.length} 位点 · ${groups.length} 型 · ${groups.reduce((n,g)=>n+g.members.length,0).toLocaleString()} 份完成判型`:'当前无完整判型，展示群体原始表型'}</span>
+      <span>{groups.length?localize("#0# 位点 · #1# 型 · #2# 份完成判型", [scheme.markers.length, groups.length, groups.reduce((n,g)=>n+g.members.length,0).toLocaleString()]):localize("当前无完整判型，展示群体原始表型")}</span>
       {(mapping.byGroup.size>0||mapping.bySource.size>0)&&<button type="button" className="site-detail"
-        onClick={()=>downloadTable(formats.haplotypeMapping,haplotypeMappingRows(gene,mapping,cohort,scheme))}>导出分型对应 TXT</button>}
+        onClick={()=>downloadTable(formats.haplotypeMapping,haplotypeMappingRows(gene,mapping,cohort,scheme))}>{localize("导出分型对应 TXT")}</button>}
     </div>
     <div className="profile-trait-picker">
-      <details><summary>显示性状 · {choices.filter(c=>selectedTraits.includes(c.key)).length} / {choices.length}</summary>
+      <details><summary>{localize("显示性状 ·")+" "}{localize(choices.filter(c=>selectedTraits.includes(c.key)).length)} / {localize(choices.length)}</summary>
         <div className="trait-choice-menu">{choices.map(choice=><label key={choice.key}><input type="checkbox" checked={selectedTraits.includes(choice.key)}
-          onChange={e=>setChosenTraits(e.target.checked?[...selectedTraits,choice.key]:selectedTraits.filter(key=>key!==choice.key))}/>{choice.name}</label>)}</div>
+          onChange={e=>setChosenTraits(e.target.checked?[...selectedTraits,choice.key]:selectedTraits.filter(key=>key!==choice.key))}/>{localize(choice.name)}</label>)}</div>
       </details>
-      {choices.filter(c=>selectedTraits.includes(c.key)).map(choice=><button key={choice.key} type="button" aria-label={'移除性状 '+choice.name} onClick={()=>setChosenTraits(selectedTraits.filter(key=>key!==choice.key))}>{choice.name} ×</button>)}
+      {choices.filter(c=>selectedTraits.includes(c.key)).map(choice=><button key={choice.key} type="button" aria-label={localize('移除性状 '+choice.name)} onClick={()=>setChosenTraits(selectedTraits.filter(key=>key!==choice.key))}>{localize(choice.name)} ×</button>)}
     </div>
-    {!shownIds.size&&<p>请在「显示性状」中选择要比较的性状。</p>}
-    {unmeasured.length>0&&<p className="profile-unmeasured">暂无配对实测 · {unmeasured.join('、')}</p>}
+    {!shownIds.size&&<p>{localize("请在「显示性状」中选择要比较的性状。")}</p>}
+    {unmeasured.length>0&&<p className="profile-unmeasured">{localize("暂无配对实测 ·")+" "}{localize(unmeasured.join('、'))}</p>}
     {stacks.map(([mode,traits])=><section className="trait-stack" key={mode}>
-      <h3 className="trait-stack-heading">{mode==='relative'?'相对性状':'绝对性状'}</h3>
+      <h3 className="trait-stack-heading">{mode==='relative'?localize("相对性状"):localize("绝对性状")}</h3>
       {traits.map(trait=><TraitCard key={trait.id} trait={trait} associated={associated.has(trait.id)} gene={gene}
         cohort={cohort} groups={plots} scheme={scheme} claims={claims} mapping={mapping} selectedIds={selectedIds} targets={targets} onTarget={onTarget} onInspect={onInspect}/>)}
     </section>)}
     <DescriptorProfile cohort={cohort} groups={groups}/>
-    {measured.length>0&&<p className="footnote">文献优势对应原文试验。区间优势和抗性优势按当前实测计算。n 为该型有实测值的材料数。</p>}
+    {measured.length>0&&<p className="footnote">{localize("文献优势对应原文试验。区间优势和抗性优势按当前实测计算。n 为该型有实测值的材料数。")}</p>}
   </section>;
 }

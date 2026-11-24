@@ -1,3 +1,4 @@
+import {useText} from './locale.jsx';
 import React,{useMemo,useState} from 'react';
 import {minimumGroupN,phenotypeComparison} from './phenotypeTests.js';
 import {saveFile,writeTSV} from './formats.js';
@@ -10,6 +11,7 @@ const fmt=(x,p=3)=>Number.isFinite(x)?x.toPrecision(p):'—';
 const pval=x=>x===0?'< 1e−300':fmt(x);
 
 export function PhenotypeTests({groups,view,definition}){
+  const localize = useText();
   const [open,setOpen]=useState(false);
   const output=useMemo(()=>open?phenotypeComparison(groups,view.sites.map(s=>s.endpoint).filter(Boolean)):null,[open,groups,view]);
   function download(){
@@ -21,10 +23,10 @@ export function PhenotypeTests({groups,view,definition}){
       'groups.tsv':writeTSV(['environment_id','dataset_id','site','year','assay','unit','group','definition','n','mean','sd','included',...Object.keys(context)],counts),
     }),'application/zip');
   }
-  return <details className="phenotype-tests" onToggle={e=>setOpen(e.currentTarget.open)}><summary>组间检验 / Tests</summary>
-    {output&&<><p className="footnote">按数据集、地点、年份和指标检验。每组至少 {minimumGroupN} 份有效材料。同一方法在当前年份和指标的试验间做 Holm 校正。结果供探索，未校正亲缘或群体结构。</p>
-      <div className="matrix-scroll"><table className="individual-table"><thead><tr>{['地点','检验','组数 / n','统计量','P','Holm P','状态'].map(name=><th key={name}>{name}</th>)}</tr></thead><tbody>{output.tests.map(row=><tr key={row.environment_id+row.method} className={row.environment_id===view.active.id?'selected-person':''}><td>{siteName(row.site)}</td><td>{names[row.method]}</td><td>{row.group_n} / {row.n}</td><td>{fmt(row.statistic)}</td><td>{pval(row.p)}</td><td>{pval(row.holm)}</td><td>{status[row.status]||`排除小样本组 ${row.excluded_groups}`}</td></tr>)}</tbody></table></div>
-      <details><summary>当前地点各组有效数 / Group counts</summary><ul>{output.counts.filter(row=>row.environment_id===view.active.id).map(row=><li key={row.group}>{row.group} · n={row.n} · 均值 {fmt(row.mean)} {row.unit} · SD {fmt(row.sd)}{!row.included?' · 样本不足':''}</li>)}</ul></details>
-      <button onClick={download}>下载检验与组别 TSV</button></>}
+  return <details className="phenotype-tests" onToggle={e=>setOpen(e.currentTarget.open)}><summary>{localize("组间检验 / Tests")}</summary>
+    {output&&<><p className="footnote">{localize("按数据集、地点、年份和指标检验。每组至少")+" "}{localize(minimumGroupN)}{" "+localize("份有效材料。同一方法在当前年份和指标的试验间做 Holm 校正。结果供探索，未校正亲缘或群体结构。")}</p>
+      <div className="matrix-scroll"><table className="individual-table"><thead><tr>{['地点','检验','组数 / n','统计量','P','Holm P','状态'].map(name=><th key={name}>{localize(name)}</th>)}</tr></thead><tbody>{output.tests.map(row=><tr key={row.environment_id+row.method} className={row.environment_id===view.active.id?'selected-person':''}><td>{localize(siteName(row.site))}</td><td>{localize(names[row.method])}</td><td>{localize(row.group_n)} / {localize(row.n)}</td><td>{localize(fmt(row.statistic))}</td><td>{localize(pval(row.p))}</td><td>{localize(pval(row.holm))}</td><td>{status[row.status]||localize("排除小样本组 #0#", [row.excluded_groups])}</td></tr>)}</tbody></table></div>
+      <details><summary>{localize("当前地点各组有效数 / Group counts")}</summary><ul>{output.counts.filter(row=>row.environment_id===view.active.id).map(row=><li key={row.group}>{localize(row.group)} · n={localize(row.n)}{" "+localize("· 均值")+" "}{localize(fmt(row.mean))} {localize(row.unit)} · SD {localize(fmt(row.sd))}{!row.included?localize(" · 样本不足"):''}</li>)}</ul></details>
+      <button onClick={download}>{localize("下载检验与组别 TSV")}</button></>}
   </details>;
 }

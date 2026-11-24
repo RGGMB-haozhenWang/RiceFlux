@@ -1,3 +1,4 @@
+import {useText} from './locale.jsx';
 import React,{Suspense,useEffect,useState} from 'react';
 import {Button,Dialog} from '@radix-ui/themes';
 import {saveFile} from './formats.js';
@@ -48,18 +49,19 @@ function storage(action,value){return new Promise((resolve,reject)=>{
   };
 });}
 export function WorkspaceTools({data,config,onLayout,onDisplay,onRestore}){
+  const localize = useText();
   const [open,setOpen]=useState(false),[name,setName]=useState('我的分析'),[saved,setSaved]=useState([]),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
   function pack(){return {schema:'RiceFlux workspace 1.0',name,saved_at:new Date().toISOString(),config,datasets:data.meta.datasets,local_datasets:(data.datasetBundles||[]).filter(b=>data.datasetRegistry.some(r=>r.id===b.manifest.id&&r.local)).map(b=>b.overlays?{manifest:b.manifest,baseVersion:b.baseVersion,overlays:b.overlays}:{manifest:b.manifest,texts:b.texts})};}
   async function task(fn){setBusy(true);setMessage('');try{await fn()}catch(e){setMessage(e.message)}finally{setBusy(false)}}
   const refresh=async()=>setSaved(await storage('list'));
   function move(index,delta){const layout=[...config.layout],next=index+delta;if(next<0||next>=layout.length)return;[layout[index],layout[next]]=[layout[next],layout[index]];onLayout(layout);}
-  return <><Button variant="soft" onClick={()=>{setOpen(true);task(refresh)}}>我的工作区</Button><Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Content maxWidth="780px"><Dialog.Title>我的工作区</Dialog.Title><Dialog.Description>保存筛选、材料和分析设置。导出的设置可在其他设备恢复。</Dialog.Description>
-    <div className="compare-tools"><input aria-label="工作区名称" value={name} maxLength={60} onChange={e=>setName(e.target.value)}/><button disabled={busy||!name.trim()} onClick={()=>task(async()=>{await storage('save',pack());await refresh();setMessage('已保存当前布局、筛选和本地数据集');})}>保存工作区</button><button disabled={busy} onClick={()=>saveFile('riceflux_workspace.json',JSON.stringify(pack()),'application/json')}>导出设置</button><label className="file-button">导入设置<input type="file" accept=".json" aria-label="导入工作区设置" onChange={e=>{const file=e.target.files[0];e.target.value='';if(file)task(async()=>{const p=validateWorkspace(JSON.parse(await file.text()));await onRestore(p);setMessage('已恢复设置');});}}/></label></div>
-    {saved.map(s=><div className="saved-workspace" key={s.name}><span>{s.name}<small>{new Date(s.saved_at).toLocaleString()}</small></span><button disabled={busy} onClick={()=>task(async()=>{await onRestore(validateWorkspace(s));setName(s.name);setMessage('已恢复 '+s.name);})}>恢复</button><button disabled={busy} onClick={()=>task(async()=>{await storage('delete',s.name);await refresh()})}>删除存档</button></div>)}
-    <details><summary>阅读与区段顺序</summary><div className="compare-tools"><label>字号 <select aria-label="页面字号" value={config.display.text} onChange={e=>onDisplay({...config.display,text:e.target.value})}><option value="standard">标准 · 16</option><option value="large">大字 · 18</option></select></label>
-      <button onClick={()=>onLayout(defaultLayout)}>恢复默认区段</button><select value="" aria-label="加入分析组件" onChange={e=>{const id=e.target.value;if(id)onLayout([...config.layout,{id,title:panels[id],width:'full'}]);}}><option value="">加入组件…</option>{Object.entries(panels).filter(([id])=>!config.layout.some(p=>p.id===id)).map(([id,title])=><option key={id} value={id}>{title}</option>)}</select></div>
-    {config.layout.map((p,i)=><div className="component-editor" key={p.id}><input aria-label={'组件标题 '+panels[p.id]} value={p.title} maxLength={80} onChange={e=>onLayout(config.layout.map(x=>x.id===p.id?{...x,title:e.target.value}:x))}/><select aria-label={'组件宽度 '+panels[p.id]} value={p.width} onChange={e=>onLayout(config.layout.map(x=>x.id===p.id?{...x,width:e.target.value}:x))}><option value="full">整行</option><option value="half">半行</option></select><button disabled={!i} onClick={()=>move(i,-1)}>↑</button><button disabled={i===config.layout.length-1} onClick={()=>move(i,1)}>↓</button><button onClick={()=>onLayout(config.layout.filter(x=>x.id!==p.id))}>移除</button></div>)}
-    </details><p className="footnote">存档在浏览器中。可导出设置备份。</p>{message&&<p role="status">{message}</p>}<div className="dialog-actions"><Dialog.Close><Button disabled={busy}>完成</Button></Dialog.Close></div></Dialog.Content></Dialog.Root></>;
+  return <><Button variant="soft" onClick={()=>{setOpen(true);task(refresh)}}>{localize("我的工作区")}</Button><Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Content maxWidth="780px"><Dialog.Title>{localize("我的工作区")}</Dialog.Title><Dialog.Description>{localize("保存筛选、材料和分析设置。导出的设置可在其他设备恢复。")}</Dialog.Description>
+    <div className="compare-tools"><input aria-label={localize("工作区名称")} value={name} maxLength={60} onChange={e=>setName(e.target.value)}/><button disabled={busy||!name.trim()} onClick={()=>task(async()=>{await storage('save',pack());await refresh();setMessage('已保存当前布局、筛选和本地数据集');})}>{localize("保存工作区")}</button><button disabled={busy} onClick={()=>saveFile('riceflux_workspace.json',JSON.stringify(pack()),'application/json')}>{localize("导出设置")}</button><label className="file-button">{localize("导入设置")}<input type="file" accept=".json" aria-label={localize("导入工作区设置")} onChange={e=>{const file=e.target.files[0];e.target.value='';if(file)task(async()=>{const p=validateWorkspace(JSON.parse(await file.text()));await onRestore(p);setMessage('已恢复设置');});}}/></label></div>
+    {saved.map(s=><div className="saved-workspace" key={s.name}><span>{localize(s.name)}<small>{localize(new Date(s.saved_at).toLocaleString())}</small></span><button disabled={busy} onClick={()=>task(async()=>{await onRestore(validateWorkspace(s));setName(s.name);setMessage('已恢复 '+s.name);})}>{localize("恢复")}</button><button disabled={busy} onClick={()=>task(async()=>{await storage('delete',s.name);await refresh()})}>{localize("删除存档")}</button></div>)}
+    <details><summary>{localize("阅读与区段顺序")}</summary><div className="compare-tools"><label>{localize("字号")+" "}<select aria-label={localize("页面字号")} value={config.display.text} onChange={e=>onDisplay({...config.display,text:e.target.value})}><option value="standard">{localize("标准 · 16")}</option><option value="large">{localize("大字 · 18")}</option></select></label>
+      <button onClick={()=>onLayout(defaultLayout)}>{localize("恢复默认区段")}</button><select value="" aria-label={localize("加入分析组件")} onChange={e=>{const id=e.target.value;if(id)onLayout([...config.layout,{id,title:panels[id],width:'full'}]);}}><option value="">{localize("加入组件…")}</option>{Object.entries(panels).filter(([id])=>!config.layout.some(p=>p.id===id)).map(([id,title])=><option key={id} value={id}>{localize(title)}</option>)}</select></div>
+    {config.layout.map((p,i)=><div className="component-editor" key={p.id}><input aria-label={localize('组件标题 '+panels[p.id])} value={p.title} maxLength={80} onChange={e=>onLayout(config.layout.map(x=>x.id===p.id?{...x,title:e.target.value}:x))}/><select aria-label={localize('组件宽度 '+panels[p.id])} value={p.width} onChange={e=>onLayout(config.layout.map(x=>x.id===p.id?{...x,width:e.target.value}:x))}><option value="full">{localize("整行")}</option><option value="half">{localize("半行")}</option></select><button disabled={!i} onClick={()=>move(i,-1)}>↑</button><button disabled={i===config.layout.length-1} onClick={()=>move(i,1)}>↓</button><button onClick={()=>onLayout(config.layout.filter(x=>x.id!==p.id))}>{localize("移除")}</button></div>)}
+    </details><p className="footnote">{localize("存档在浏览器中。可导出设置备份。")}</p>{message&&<p role="status">{localize(message)}</p>}<div className="dialog-actions"><Dialog.Close><Button disabled={busy}>{localize("完成")}</Button></Dialog.Close></div></Dialog.Content></Dialog.Root></>;
 }
 export function jumpToSection(id){
   const target=document.getElementById(id==='overview'?'explorer-main':panelId(id));
@@ -72,6 +74,7 @@ export function jumpToSection(id){
 }
 
 export function WorkspaceNavigation({layout,toolbar,onJump}){
+  const localize = useText();
   useEffect(()=>{
     const header=toolbar.current;
     if(!header)return;
@@ -83,46 +86,48 @@ export function WorkspaceNavigation({layout,toolbar,onJump}){
   },[toolbar]);
   const links=pages.flatMap(page=>layout.some(p=>page.sections.includes(p.id))?[page]:[]);
   if(!links.length)return null;
-  return <nav className="research-sections" aria-label="分析区段">
+  return <nav className="research-sections" aria-label={localize("分析区段")}>
     {links.map(({id,title})=><button type="button" key={id} aria-controls={panelId(id)}
-      onClick={()=>onJump(id)}>{title}</button>)}
+      onClick={()=>onJump(id)}>{localize(title)}</button>)}
   </nav>;
 }
 
 function ToolSection({title,children}){
+  const localize = useText();
   const [visited,setVisited]=useState(false);
   return <details className="section-disclosure" onToggle={e=>{if(e.currentTarget.open)setVisited(true);}}>
-    <summary>{title}</summary>
-    {visited&&children}
+    <summary>{localize(title)}</summary>
+    {localize(visited&&children)}
   </details>;
 }
 
 export function WorkspaceLayout({layout,content,openTool,onCloseTool,toolTrigger}){
+  const localize = useText();
   const visible=pages.map(page=>({...page,panels:layout.filter(p=>page.sections.includes(p.id)&&content[p.id])})).filter(page=>page.panels.length);
   const tool=layout.find(p=>p.id===openTool&&headerFunctions.includes(p.id)&&content[p.id]);
-  const render=p=><Suspense fallback={<p className="section-loading" role="status">正在载入{p.title}…</p>}>{content[p.id]}</Suspense>;
+  const render=p=><Suspense fallback={<p className="section-loading" role="status">{localize("正在载入")}{localize(p.title)}…</p>}>{localize(content[p.id])}</Suspense>;
   return <>
     <div id="analysis-workspace" className="reader-columns" data-split={visible.length===2?'true':undefined}>
-      {visible.map(page=><section className="reader-page" key={page.id} data-page={page.id} id={panelId(page.id)} tabIndex={-1} aria-label={page.title}>
-        <header className="reader-page-heading"><h2>{page.title}</h2>
-          {page.panels.some(p=>p.id==='evidence')&&<button className="site-detail" type="button" onClick={()=>jumpToSection('evidence')}>查看证据 ↓</button>}
+      {visible.map(page=><section className="reader-page" key={page.id} data-page={page.id} id={panelId(page.id)} tabIndex={-1} aria-label={localize(page.title)}>
+        <header className="reader-page-heading"><h2>{localize(page.title)}</h2>
+          {page.panels.some(p=>p.id==='evidence')&&<button className="site-detail" type="button" onClick={()=>jumpToSection('evidence')}>{localize("查看证据 ↓")}</button>}
         </header>
-        <div className="workspace-grid">{page.panels.map(p=><section className={'work-panel '+p.width} key={p.id} id={panelId(p.id)} data-panel={p.id} aria-label={p.title} tabIndex={-1}>
-          {p.id==='ricenavi'?<ToolSection title={p.title}>{render(p)}</ToolSection>:
-            <>{p.title!==panels[p.id]&&<div className="custom-panel-title">{p.title}</div>}{render(p)}</>}
+        <div className="workspace-grid">{page.panels.map(p=><section className={'work-panel '+p.width} key={p.id} id={panelId(p.id)} data-panel={p.id} aria-label={localize(p.title)} tabIndex={-1}>
+          {p.id==='ricenavi'?<ToolSection title={localize(p.title)}>{localize(render(p))}</ToolSection>:
+            <>{p.title!==panels[p.id]&&<div className="custom-panel-title">{localize(p.title)}</div>}{localize(render(p))}</>}
         </section>)}</div>
       </section>)}
-      {!visible.length&&<p>可在「我的工作区」添加分析区段。</p>}
+      {!visible.length&&<p>{localize("可在「我的工作区」添加分析区段。")}</p>}
     </div>
     <Dialog.Root open={Boolean(tool)} onOpenChange={open=>{if(!open)onCloseTool();}}>
       <Dialog.Content className="reader-function-dialog" maxWidth="1300px" aria-describedby={undefined}
         onCloseAutoFocus={event=>{event.preventDefault();toolTrigger.current?.focus({preventScroll:true});}}>
         {tool&&<>
           <div className="reader-function-heading">
-            <Dialog.Title>{tool.title}</Dialog.Title>
-            <Dialog.Close><Button variant="soft" color="gray">关闭</Button></Dialog.Close>
+            <Dialog.Title>{localize(tool.title)}</Dialog.Title>
+            <Dialog.Close><Button variant="soft" color="gray">{localize("关闭")}</Button></Dialog.Close>
           </div>
-          <div data-panel={tool.id}>{render(tool)}</div>
+          <div data-panel={tool.id}>{localize(render(tool))}</div>
         </>}
       </Dialog.Content>
     </Dialog.Root>

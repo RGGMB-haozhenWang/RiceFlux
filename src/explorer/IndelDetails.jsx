@@ -1,3 +1,4 @@
+import {useText} from './locale.jsx';
 import React,{useEffect,useMemo,useState} from 'react';
 import {Button,Dialog} from '@radix-ui/themes';
 import {geneSupport} from './provenance.js';
@@ -26,6 +27,7 @@ function alleleLabel(variant){
 }
 
 export function IndelDetails({data,cohort,inspection,onClose}){
+  const localize = useText();
   const {gene,markerId,sourceId,trigger}=inspection;
   const sources=useMemo(()=>indelSources(data,gene,markerId),[data,gene,markerId]);
   const [choice,setChoice]=useState(sourceId||'');
@@ -64,32 +66,30 @@ export function IndelDetails({data,cohort,inspection,onClose}){
     <Dialog.Content maxWidth="680px" className="indel-details" onCloseAutoFocus={event=>{
       if(trigger?.isConnected){event.preventDefault();trigger.focus({preventScroll:true});}
     }}>
-      <Dialog.Title>InDel 位点详情</Dialog.Title>
-      <Dialog.Description>{gene.name} · {gene.catalog?.msu||gene.id} · {gene.assembly}</Dialog.Description>
-      {sources.length>1?<div className="compare-tools"><label>分型数据集 <select aria-label="InDel 分型数据集" value={source.row.id} onChange={e=>{setChoice(e.target.value);setSiteId(markerId||'');}}>
-        {sources.map(({row})=><option key={row.id} value={row.id}>{sourceLabel(row)}</option>)}
-      </select></label></div>:<p>{source?sourceLabel(source.row):'该位点暂无可读取的 InDel 分型。'}</p>}
-      {source&&!ready&&<p role="status">正在读取该基因的 InDel 分型…</p>}
-      {ready?.error&&<p role="alert">{ready.error} <button type="button" onClick={()=>setAttempt(n=>n+1)}>重试</button></p>}
-      {ready?.variants&&!variant&&<p>此数据集版本暂无请求位点的 InDel 分型。</p>}
+      <Dialog.Title>{localize("InDel 位点详情")}</Dialog.Title>
+      <Dialog.Description>{localize(gene.name)} · {localize(gene.catalog?.msu||gene.id)} · {localize(gene.assembly)}</Dialog.Description>
+      {sources.length>1?<div className="compare-tools"><label>{localize("分型数据集")+" "}<select aria-label={localize("InDel 分型数据集")} value={source.row.id} onChange={e=>{setChoice(e.target.value);setSiteId(markerId||'');}}>
+        {sources.map(({row})=><option key={row.id} value={row.id}>{localize(sourceLabel(row))}</option>)}
+      </select></label></div>:<p>{source?sourceLabel(source.row):localize("该位点暂无可读取的 InDel 分型。")}</p>}
+      {source&&!ready&&<p role="status">{localize("正在读取该基因的 InDel 分型…")}</p>}
+      {ready?.error&&<p role="alert">{localize(ready.error)} <button type="button" onClick={()=>setAttempt(n=>n+1)}>{localize("重试")}</button></p>}
+      {ready?.variants&&!variant&&<p>{localize("此数据集版本暂无请求位点的 InDel 分型。")}</p>}
       {variant&&<>
-        {ready.variants.length>1&&<div className="compare-tools"><label>位点 <select aria-label="InDel 位点" value={variant.id} onChange={e=>setSiteId(e.target.value)}>
-          {ready.variants.map(v=><option key={v.id} value={v.id}>{v.chromosome}:{v.pos.toLocaleString()} · {alleleLabel(v)}</option>)}
+        {ready.variants.length>1&&<div className="compare-tools"><label>{localize("位点")+" "}<select aria-label={localize("InDel 位点")} value={variant.id} onChange={e=>setSiteId(e.target.value)}>
+          {ready.variants.map(v=><option key={v.id} value={v.id}>{localize(v.chromosome)}:{localize(v.pos.toLocaleString())} · {localize(alleleLabel(v))}</option>)}
         </select></label></div>}
-        <p className="indel-site"><b>{variant.chromosome}:{variant.pos.toLocaleString()} · {alleleLabel(variant)}</b><br/>
-          {markerNames[markerAnnotation(variant).kind]} · {variant.feature} · <code>{variant.id}</code></p>
-        <p className="indel-provenance">{provenance?.url?<a href={provenance.url} target="_blank" rel="noreferrer">{provenance.citation}</a>:provenance?.citation||ready.manifest.source}
-          {provenance?.release&&' · '+provenance.release}
+        <p className="indel-site"><b>{localize(variant.chromosome)}:{localize(variant.pos.toLocaleString())} · {localize(alleleLabel(variant))}</b><br/>
+          {localize(markerNames[markerAnnotation(variant).kind])} · {localize(variant.feature)} · <code>{localize(variant.id)}</code></p>
+        <p className="indel-provenance">{provenance?.url?<a href={provenance.url} target="_blank" rel="noreferrer">{localize(provenance.citation)}</a>:provenance?.citation||ready.manifest.source}
+          {localize(provenance?.release&&' · '+provenance.release)}
           {provenance?.doi&&<> · <a href={'https://doi.org/'+provenance.doi} target="_blank" rel="noreferrer">DOI</a></>}
-          {' · '}{ready.manifest.genotype_evidence}{variant.source_record_id&&' · 原始记录 '+variant.source_record_id}{variant.source_filter&&' · FILTER '+variant.source_filter}</p>
-        <p className="indel-scope">{source.bundle?'当前所选材料':'来源数据集全部材料'} · {members.length.toLocaleString()} 份覆盖 ·
-          {' '}{(stats.n-stats.complete).toLocaleString()} 份含缺失调用
-          {uncovered>0&&` · 当前分析 ${uncovered.toLocaleString()} 份未覆盖`}<br/>
-          ALT {stats.alt.toLocaleString()} / {stats.called.toLocaleString()} 个有效等位 · 频率 {percent(stats.af)} · MAF {percent(stats.maf)} · Missing {missingPercent(stats.missing)}
+          {' · '}{localize(ready.manifest.genotype_evidence)}{localize(variant.source_record_id&&' · 原始记录 '+variant.source_record_id)}{localize(variant.source_filter&&' · FILTER '+variant.source_filter)}</p>
+        <p className="indel-scope">{source.bundle?localize("当前所选材料"):localize("来源数据集全部材料")} · {localize(members.length.toLocaleString())}{localize("份覆盖 ·")}{' '}{localize((stats.n-stats.complete).toLocaleString())}{localize("份含缺失调用")}{uncovered>0&&localize(" · 当前分析 #0# 份未覆盖", [uncovered.toLocaleString()])}<br/>
+          ALT {localize(stats.alt.toLocaleString())} / {localize(stats.called.toLocaleString())}{" "+localize("个有效等位 · 频率")+" "}{localize(percent(stats.af))} · MAF {localize(percent(stats.maf))} · Missing {localize(missingPercent(stats.missing))}
         </p>
         <AlleleFrequency showSummary={false} variant={variant} cohort={members} populations={ready.view.populations.filter(p=>members.some(s=>s.population_id===p.id))}/>
       </>}
-      <div className="dialog-actions"><Dialog.Close><Button>关闭</Button></Dialog.Close></div>
+      <div className="dialog-actions"><Dialog.Close><Button>{localize("关闭")}</Button></Dialog.Close></div>
     </Dialog.Content>
   </Dialog.Root>;
 }
