@@ -18,6 +18,8 @@ import {PopulationComposition} from './PopulationComposition.jsx';
 const ComparePanel=React.lazy(()=>import('./ComparePanel.jsx').then(m=>({default:m.ComparePanel})));
 const IndelDetails=React.lazy(()=>import('./IndelDetails.jsx').then(m=>({default:m.IndelDetails})));
 import {PhenotypeProfile} from './PhenotypeProfile.jsx';
+import {CheckCultivar} from './CheckCultivar.jsx';
+import {materialKey} from './breeder.js';
 import {SourceBadges} from './SourceBadges.jsx';
 import {Tutorial} from './Tutorial.jsx';
 import {GenomeTrack} from './GenomeTrack.jsx';
@@ -60,7 +62,7 @@ function initialSelection(data,requested=''){
 const allMaterials={materialScope:'all',individualIds:[],individualOnly:false};
 const defaultWorkspace={
   ...allMaterials,geneId:'SIM_HD01',traitId:'heading',popIds:[],variantId:'',
-  minMaf:.05,maxMissing:.2,plotSelection:{},siteSelections:{},traitTargets:{},
+  minMaf:.05,maxMissing:.2,plotSelection:{},siteSelections:{},traitTargets:{},phenotypeCheck:null,
   layout:defaultLayout,display:{mode:'desk',tab:'overview',text:'standard'},material:{},compare:{},breeder:{},
 };
 const defaultCohort=data=>({...allMaterials,popIds:data.populations.map(p=>p.id)});
@@ -148,8 +150,9 @@ function App() {
   const localize = useText();
   const [data,setData]=useState(null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
   const [workspace,setWorkspace]=useState(defaultWorkspace);
-  const {traitId,geneId,popIds,individualIds,individualOnly,materialScope,minMaf,maxMissing,variantId,plotSelection,siteSelections,traitTargets,
+  const {traitId,geneId,popIds,individualIds,individualOnly,materialScope,minMaf,maxMissing,variantId,plotSelection,siteSelections,traitTargets,phenotypeCheck,
     layout,display,material:materialSettings,compare:compareSettings,breeder:breederSettings}=workspace;
+  const checkSample=useMemo(()=>phenotypeCheck&&data?.individuals.find(sample=>materialKey(sample)===phenotypeCheck.key),[phenotypeCheck?.key,data?.individuals]);
   const readerLayout=useMemo(()=>demo?layout.filter(p=>!['compare','materials','ricenavi','evidence'].includes(p.id)):layout,[layout]);
   const [groupKey,setGroup]=useState(null),[showAll,setShowAll]=useState(false);
   const [pick,setPick]=useState(false),[query,setQuery]=useState(''),[help,setHelp]=useState(false),[notice,setNotice]=useState('');
@@ -532,10 +535,11 @@ function App() {
           composition: <Panel title={localize("基因型组合 / Genotypes")} sub={localize("完整未分相基因型组合；频率按个体计数。")}  className="matrix-panel"><div className="matrix-scroll"><table className="matrix"><thead><tr><th>{localize("组合")}</th>{variants.map(v=><th key={v.id}><button className={v.id===selected?.id?'active-variant':''} aria-haspopup={!demo&&v.markerType==='InDel'?'dialog':undefined} onClick={e=>selectMarker(v,e.currentTarget)}>{localize(v.pos.toLocaleString())}<small>{localize(v.ref)}→{localize(v.alt??'—')}</small></button></th>)}<th>{localize("个体数")}</th><th>{localize("占完整个体")}</th><th>{localize("群体组成")}</th></tr></thead><tbody>{visibleGroups.map((g,i)=><tr key={g.key} className={g.key===group?.key?'active-group':''}><th><button title={localize(g.id)} onClick={()=>setGroup(g.key===groupKey?null:g.key)}><i style={{background:COLORS[i%8]}}/>G{localize(String(i+1).padStart(2,'0'))}</button></th>{g.tokens.map((t,j)=><td key={variants[j].id}><span className={`gt ${t===`${variants[j].ref}/${variants[j].ref}`?'ref':t.split('/')[0]===t.split('/')[1]?'alt':'het'}`}>{localize(t)}</span></td>)}<td><b>{localize(g.members.length)}</b></td><td>{localize(percent(g.members.length/complete))}</td><td><PopulationComposition populations={data.populations} members={g.members} selectedIds={individualIds}/></td></tr>)}</tbody></table></div>{!groups.length&&<Empty>{localize("没有可分类的完整个体。零位点或含缺失调用时，不生成虚假的单一组合。")}</Empty>}<div className="panel-bottom"><span>{localize("展示")+" "}{localize(visibleGroups.length)} / {localize(groups.length)}{" "+localize("类 ·")+" "}{localize(complete.toLocaleString())} / {localize(cohort.length.toLocaleString())}{" "+localize("份完整分型")}</span>{group&&readerLayout.some(p=>p.id==='individuals')&&<Button variant="ghost" size="1" onClick={()=>goToSection('individuals')}>{localize("查看该组合材料")}</Button>}{groups.length>8&&<Button variant="ghost" size="1" onClick={()=>setShowAll(v=>!v)}>{showAll?localize("收起稀有组合"):localize("显示全部组合")}</Button>}</div><div className="population-key">{scopeGroups.map(p=><span key={p.id}><i style={{background:p.color}}/>{localize(p.name)}</span>)}</div></Panel>,
           phenotype: <div className="phenotype-section">{assessmentEnabled?
           <PhenotypeProfile key={gene.id} data={data} gene={gene} related={relatedTraits} cohort={cohort} variants={variants} schemes={schemes} claims={traitReview.claims}
-            selectedIds={individualIds} targets={traitTargets} onTarget={setTraitTarget}
+            selectedIds={individualIds} targets={traitTargets} onTarget={setTraitTarget} check={phenotypeCheck} checkSample={checkSample} onCheck={setting('phenotypeCheck')}
             onInspect={layout.some(p=>p.id==='individuals')?inspectTrial:undefined}/>:view ?
           <Panel title={localize(trait.name+' · 分地区表型 ('+view.unit+')')} tag={localize(view.sites.length+' 个试验地点')}>
-            <RegionalPhenotypes trait={trait} groups={visibleGroups} allGroups={groups} gene={gene} claims={traitReview?.claims||[]} schemes={schemes} cohort={cohort} markerIds={variants.map(v=>v.id)} view={view} onChange={changePlot} selectedIds={individualIds} compact={false}/>
+            <CheckCultivar individuals={data.individuals} check={phenotypeCheck} sample={checkSample} onChange={setting('phenotypeCheck')}/>
+            <RegionalPhenotypes check={phenotypeCheck} checkSample={checkSample} trait={trait} groups={visibleGroups} allGroups={groups} gene={gene} claims={traitReview?.claims||[]} schemes={schemes} cohort={cohort} markerIds={variants.map(v=>v.id)} view={view} onChange={changePlot} selectedIds={individualIds} compact={false}/>
           </Panel> : demo ? <Panel title={localize("#0# · 表型对照", [trait.name])} sub={localize("单位：#0#。仅展示上表当前组合；线框为四分位范围，中线为中位数，端点为最小/最大值。", [trait.unit])} tag="DESCRIPTIVE"><Phenotypes groups={visibleGroups} trait={trait} selectedIds={individualIds}/><p className="footnote">{localize("各组 n 为有该性状记录的个体数。")}{demo?localize("合成表型独立生成，无显著性检验，不据此推断优良等位基因。"):trait.source?localize("各组按所选地点、年份的实测值统计。"):localize("当前为先验浏览，未选择实测表型。")}</p></Panel> : <Panel title={localize(trait.name+' · 表型对照')}><Empty>{localize("当前数据集暂无该性状的实测表型。")}</Empty></Panel>}</div>,
           evidence: !demo&&<>
             <HaplotypeMatches key={gene.id} gene={gene} cohort={cohort} evidence={data.evidence} review={traitReview}/>

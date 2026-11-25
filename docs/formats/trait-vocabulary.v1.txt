@@ -1,0 +1,125 @@
+id	en	zh	scale_kind	scope	aliases
+grain_weight	grain weight	粒重	continuous	requested	single grain weight | seed weight
+grain_size	grain size	籽粒大小	composite	requested	kernel size | 粒形/籽粒大小
+width	grain width	粒宽	continuous	requested	籽粒宽度
+length	grain length	粒长	continuous	requested	籽粒长度
+grain_yield	grain yield	籽粒产量	unspecified_scale	requested	yield | 产量
+grain_number	grain number	粒数	unspecified_scale	requested	seed number | 籽粒数
+grain_protein_content	grain protein content	籽粒蛋白质含量	continuous	requested	protein content | seed protein content | 籽粒蛋白含量
+amylose_content	amylose content	直链淀粉含量	continuous	requested	apparent amylose content | 直链淀粉
+gelatinization_temperature	gelatinization temperature	糊化温度	continuous	requested	gelatinisation temperature
+stale_flavor_generation	stale-flavor generation	陈味形成	unspecified_scale	requested	generation of stale flavor | stale flavor generation
+l_asparagine_content	L-asparagine content	L-天冬酰胺含量	continuous	requested	l-asparagine
+chalkiness	chalkiness	垩白	unspecified_scale	requested	
+glutinous_rice	glutinous rice	糯性	binary	requested	waxy endosperm | 糯稻 | 粘性胚乳
+fragrance	fragrance	香味	binary	requested	rice fragrance | aroma | 香气
+seed_coat_color	seed-coat color	种皮颜色	categorical	requested	seed coat color | seed coat colour | seed-coat colour | 种皮色
+apiculus_pigmentation	apiculus pigmentation	颖尖色	categorical	requested	apiculus color | apiculus colour | 颖尖着色
+grain_phenol_reaction	phenol reaction (grains turn brown)	籽粒酚反应	binary	requested	grain phenol reaction | phenol reaction
+awn	awn	芒	binary	requested	awn presence | 芒性状 | 有无芒
+glabrous_leaves_glumes	glabrous leaves/glumes	叶片或颖壳无毛	binary	requested	glabrous leaves and glumes | glabrousness of rice leave glumes
+panicle_number	panicle number	穗数	unspecified_scale	requested	panicle count
+panicle_architecture	panicle architecture	穗型	categorical	requested	panicle morphology | 穗部构型
+effective_panicle_number	effective panicle number (EPN)	有效穗数	unspecified_scale	requested	effective panicle number | epn
+seed_setting_rate	seed setting rate	结实率	continuous	requested	setting rate | seed-setting rate | seed set percentage
+plant_height	plant height	株高	continuous	requested	height
+internode_length	internode length	节间长度	continuous	requested	节间长
+tiller_number	tiller number	分蘖数	count	requested	tiller count | 分蘖数量
+tiller_angle	tiller angle	分蘖角度	continuous	requested	分蘖角
+flag_leaf_angle	flag-leaf angle	剑叶角度	continuous	requested	flag leaf angle | 剑叶角
+leaf_width	leaf width	叶宽	continuous	requested	
+root_length	root length	根长	continuous	requested	
+root_thickness	root thickness	根粗	continuous	requested	root diameter
+root_weight	root weight	根重	continuous	requested	
+lateral_root_number	lateral root number	侧根数	count	requested	lateral roots number | lateral root count
+root_sodium_content	root sodium content	根部钠含量	continuous	requested	
+mesocotyl_length	mesocotyl length	中胚轴长度	continuous	requested	中胚轴长
+heading	heading date	抽穗期	time	requested	heading | days to heading | 抽穗天数
+germination	germination	萌发	unspecified_scale	requested	seed germination | 发芽
+low_temperature_germinability	low-temperature germinability	低温发芽能力	unspecified_scale	requested	low temperature germinability | low-temperature germinability ability | 低温发芽力
+anaerobic_germination_tolerance	anaerobic germination tolerance	厌氧萌发耐性	unspecified_scale	requested	low-oxygen germination tolerance | 厌氧萌发耐受性
+preharvest_sprouting	pre-harvest sprouting	穗发芽	unspecified_scale	requested	preharvest sprouting | 穗上发芽
+seed_dormancy	seed dormancy	种子休眠	unspecified_scale	requested	
+seed_shattering	seed shattering	落粒性	unspecified_scale	requested	grain shattering
+ratooning_ability	ratooning ability	再生稻再生力	unspecified_scale	requested	ratooning capacity | 再生能力（再生稻）
+regeneration_ability	regeneration ability	再生能力	unspecified_scale	requested	regeneration ablility
+callus_browning	callus browning	愈伤组织褐化	unspecified_scale	requested	
+drought_tolerance	drought tolerance	耐旱性	unspecified_scale	requested	drought resistance | 抗旱性
+salt_tolerance	salt tolerance	耐盐性	unspecified_scale	requested	salinity tolerance | 抗盐性
+aluminum_tolerance	aluminum tolerance	耐铝性	unspecified_scale	requested	aluminium tolerance | al tolerance
+boron_toxicity_tolerance	boron-toxicity tolerance	耐硼毒性	unspecified_scale	requested	boron toxicity tolerance
+chilling_tolerance	cold/chilling tolerance	耐冷性	unspecified_scale	requested	cold tolerance | chilling tolerance | 低温耐受性
+grain_ratio	grain length-to-width ratio	粒长宽比	continuous	retained	grain length/width ratio | 粒长/粒宽
+thousand_grain_weight	thousand-grain weight	千粒重	continuous	retained	1000-grain weight | 1000 grain weight | thousand grain weight | 千粒质量
+panicle_length	panicle length	穗长	continuous	retained	
+grains_per_panicle	grains per panicle	每穗粒数	count	retained	grain number per panicle | 穗粒数
+spikelets_per_panicle	spikelets per panicle	每穗颖花数	count	retained	
+leaf_blast	leaf blast resistance	叶瘟抗性	unspecified_scale	retained	叶瘟 | 叶瘟评分
+neck_blast	neck blast resistance	穗颈瘟抗性	unspecified_scale	retained	穗颈瘟 | 穗颈瘟评分
+blight	bacterial blight lesion length	白叶枯病斑长度	continuous	retained	白叶枯病病斑长度
+blast_resistance	blast resistance	稻瘟病抗性	unspecified_scale	retained	rice blast resistance
+blast_tolerance	blast tolerance	稻瘟病耐受性	unspecified_scale	retained	
+blight_resistance	bacterial blight resistance	白叶枯病抗性	unspecified_scale	retained	blight resistance
+culm_length	culm length	茎秆长	continuous	retained	茎秆长度
+culm_number	culm number	茎秆数	count	retained	
+ligule_length	ligule length	叶舌长	continuous	retained	
+seedling_height	seedling height	苗高	continuous	retained	
+leaf_rolling_index	leaf rolling index	卷叶指数	continuous	retained	
+grain_yield_per_plant	grain yield per plant	单株籽粒产量	continuous	retained	单株产量
+plot_grain_yield	grain yield per plot	小区籽粒产量	continuous	retained	小区产量
+days_to_flowering	days to flowering	开花日数	time	retained	开花天数
+awning_length	awn length	芒长	continuous	retained	
+grain_cadmium	grain cadmium concentration	籽粒镉含量	continuous	retained	
+cadmium_accumulation	cadmium accumulation	镉积累	unspecified_scale	retained	cd accumulation
+nitrogen_use_efficiency	nitrogen use efficiency	氮素利用效率	continuous	retained	氮利用效率
+nitrate_reductase_activity	nitrate reductase activity	硝酸还原酶活性	continuous	retained	
+lodging_resistance	lodging resistance	抗倒伏性	unspecified_scale	retained	
+brown_planthopper_resistance	brown planthopper resistance	褐飞虱抗性	unspecified_scale	retained	resistance to brown planthopper
+planthopper_resistance	planthopper resistance	飞虱抗性	unspecified_scale	retained	resistance to planthoppers
+rice_stripe_resistance	resistance to rice stripe virus	条纹叶枯病抗性	unspecified_scale	retained	
+tungro_resistance	resistance to tungro spherical virus	东格鲁球状病毒抗性	unspecified_scale	retained	
+sheath	sheath blight relative lesion height	纹枯病相对病斑高度	continuous	retained	
+sprouting_unspecified	sprouting	发芽（来源未注明阶段）	unspecified_scale	retained	
+grain_filling_rate	grain-filling rate	籽粒灌浆速率	continuous	retained	grain filling rate
+flooding_tolerance	flooding tolerance	耐涝性	unspecified_scale	retained	
+submergence_tolerance	submergence tolerance	耐淹性	unspecified_scale	retained	
+deep_water_adaptation	deep water adaptation	深水适应性	unspecified_scale	retained	adaptation to deep water
+flooding_adaptation	flooding adaptation	淹水适应性	unspecified_scale	retained	
+drought_avoidance	drought avoidance	避旱性	unspecified_scale	retained	
+uvb_tolerance	UV-B tolerance	耐 UV-B 性	unspecified_scale	retained	
+herbicide_tolerance	herbicide tolerance	耐除草剂性	unspecified_scale	retained	herbicides tolerance
+potassium_use_efficiency	potassium use efficiency	钾利用效率	continuous	retained	
+phosphorus_tolerance	phosphorus tolerance	磷耐受性	unspecified_scale	retained	
+nutrient_tolerance	tolerance to nutrition	养分耐受性	unspecified_scale	retained	
+copper_accumulation	copper accumulation	铜积累	unspecified_scale	retained	
+molybdenum_accumulation	molybdenum accumulation	钼积累	unspecified_scale	retained	
+nonphotochemical_quenching	nonphotochemical quenching	非光化学猝灭	continuous	retained	
+fertility_restoration	fertility restoration	育性恢复	binary	retained	
+hybrid_compatibility	hybrid compatibility	杂交亲和性	binary	retained	
+hybrid_male_sterility	hybrid male sterility	杂种雄性不育	binary	retained	
+cytoplasmic_male_sterility	cytoplasmic male sterility	细胞质雄性不育	binary	retained	
+photoperiod_sensitive_male_sterility	photoperiod-sensitive male sterility	光敏雄性不育	binary	retained	
+thermosensitive_male_sterility	thermosensitive male sterility	温敏雄性不育	binary	retained	
+hybrid_weakness	interspecific hybrid weakness	种间杂种衰弱	binary	retained	
+coumaroyl_feruloyl_spermidine	N',N''-p-coumaroyl feruloyl spermidine	对香豆酰-阿魏酰亚精胺	continuous	retained	
+feruloylputrescine	N-feruloylputrescine	N-阿魏酰腐胺	continuous	retained	
+benzoyltryptamine	benzoyl tryptamine	苯甲酰色胺	continuous	retained	
+cinnamoyltryptamine	cinnamoyl tryptamine	肉桂酰色胺	continuous	retained	
+feruloylserotonin	feruloylserotonin	阿魏酰血清素	continuous	retained	
+strigolactone	strigolactone	独脚金内酯	continuous	retained	
+trigonelline	trigonelline	葫芦巴碱	continuous	retained	
+five_o_glucoside	5-O-glucoside	5-O-葡萄糖苷（来源组分）	continuous	retained	
+seven_o_glucoside	7-O-glucoside	7-O-葡萄糖苷（来源组分）	continuous	retained	
+meoh_jasmonates	MeOH-Jasmonates	MeOH-Jasmonates（来源组分）	continuous	retained	
+o_methylapigenin_c_pentoside	O-methylapigenin C-pentoside	O-甲基芹菜素 C-戊糖苷	continuous	retained	
+tricin_lignan_glycosides	tricin-lignan-glycosides	tricin-lignan-glycosides（来源组分）	continuous	retained	
+culm_diameter	culm diameter	茎秆直径	continuous	retained	
+grain_yield_under_drought	grain yield under drought	旱田条件下籽粒产量	unspecified_scale	retained	
+drought_survival	survival under drought	干旱存活率	proportion	retained	
+chlorophyll_content	leaf chlorophyll content	叶片叶绿素含量	continuous	retained	
+flag_leaf_length	flag-leaf length	旗叶长	continuous	retained	
+grain_yield_per_area	grain yield per unit area	单位面积籽粒产量	continuous	retained	
+seed_setting_under_drought	seed-setting rate under drought	干旱条件下结实率	proportion	retained	
+drought_green_area_ratio	projected green area ratio after drought	干旱后绿色投影面积比	proportion	retained	
+wx_mature_mrna	mature Wx transcript abundance	Wx成熟转录本丰度	continuous	retained	
+root_to_shoot_cadmium	root-to-shoot cadmium translocation	镉根到地上部转运	continuous	retained	

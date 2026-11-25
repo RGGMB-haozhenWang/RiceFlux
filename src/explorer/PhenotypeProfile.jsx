@@ -9,6 +9,7 @@ import {presetTitle} from './provenance.js';
 import {reportedAllele} from './traitEvidence.js';
 import {buildHaplotypeMapping,haplotypeMappingRows,sourceHaplotypeKey} from './haplotypeIdentity.js';
 import {downloadTable,formats} from './formats.js';
+import {CheckCultivar} from './CheckCultivar.jsx';
 
 function TargetEditor({trait,unit,range,onChange}) {
   const localize = useText();
@@ -33,7 +34,7 @@ function TargetEditor({trait,unit,range,onChange}) {
   </div>;
 }
 
-function TraitCard({trait,associated,gene,cohort,groups,scheme,selectedIds,targets,onTarget,onInspect,claims,mapping}) {
+function TraitCard({trait,associated,gene,cohort,groups,scheme,selectedIds,targets,onTarget,onInspect,claims,mapping,checkSample,check}) {
   const localize = useText();
   const [selection,setSelection]=useState({});
   const view=useMemo(()=>regionalView(trait,selection),[trait,selection]);
@@ -50,7 +51,7 @@ function TraitCard({trait,associated,gene,cohort,groups,scheme,selectedIds,targe
         {policy.direction&&<a href={policy.protocol} target="_blank" rel="noreferrer">{" "+localize("测定来源 ↗")}</a>}
       </p>}
     <RegionalPhenotypes trait={trait} gene={gene} groups={groups} cohort={cohort} selectedIds={selectedIds} compact
-      markerIds={scheme.markers.map(v=>v.id)} view={view} claims={claims} mapping={mapping} assessment={{policy,range,scheme:scheme.id}}
+      markerIds={scheme.markers.map(v=>v.id)} view={view} claims={claims} mapping={mapping} checkSample={checkSample} check={check} assessment={{policy,range,scheme:scheme.id}}
       onInspect={onInspect} onChange={patch=>setSelection(current=>({assay:view.assay,year:view.year,site:view.active.source.site,...current,...patch}))}/>
   </section>;
 }
@@ -102,7 +103,7 @@ function DescriptorProfile({cohort,groups}) {
   </details>;
 }
 
-export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,claims,selectedIds,targets,onTarget,onInspect}) {
+export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,claims,selectedIds,targets,onTarget,onInspect,check,checkSample,onCheck}) {
   const localize = useText();
   const [schemeId,setSchemeId]=useState(null);
   const [chosenTraits,setChosenTraits]=useState(null);
@@ -194,6 +195,7 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,clai
       {(mapping.byGroup.size>0||mapping.bySource.size>0)&&<button type="button" className="site-detail"
         onClick={()=>downloadTable(formats.haplotypeMapping,haplotypeMappingRows(gene,mapping,cohort,scheme))}>{localize("导出分型对应 TXT")}</button>}
     </div>
+    {measured.length>0&&<CheckCultivar individuals={data.individuals} check={check} sample={checkSample} onChange={onCheck}/>}
     <div className="profile-trait-picker">
       <details><summary>{localize("显示性状 ·")+" "}{localize(choices.filter(c=>selectedTraits.includes(c.key)).length)} / {localize(choices.length)}</summary>
         <div className="trait-choice-menu">{choices.map(choice=><label key={choice.key}><input type="checkbox" checked={selectedTraits.includes(choice.key)}
@@ -206,7 +208,7 @@ export function PhenotypeProfile({data,gene,related,cohort,variants,schemes,clai
     {stacks.map(([mode,traits])=><section className="trait-stack" key={mode}>
       <h3 className="trait-stack-heading">{mode==='relative'?localize("相对性状"):localize("绝对性状")}</h3>
       {traits.map(trait=><TraitCard key={trait.id} trait={trait} associated={associated.has(trait.id)} gene={gene}
-        cohort={cohort} groups={plots} scheme={scheme} claims={claims} mapping={mapping} selectedIds={selectedIds} targets={targets} onTarget={onTarget} onInspect={onInspect}/>)}
+        cohort={cohort} groups={plots} scheme={scheme} claims={claims} mapping={mapping} selectedIds={selectedIds} targets={targets} onTarget={onTarget} onInspect={onInspect} checkSample={checkSample} check={check}/>)}
     </section>)}
     <DescriptorProfile cohort={cohort} groups={groups}/>
     {measured.length>0&&<p className="footnote">{localize("文献优势对应原文试验。区间优势和抗性优势按当前实测计算。n 为该型有实测值的材料数。")}</p>}

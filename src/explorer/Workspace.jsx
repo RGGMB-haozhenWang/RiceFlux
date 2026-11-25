@@ -4,6 +4,7 @@ import {Button,Dialog} from '@radix-ui/themes';
 import {saveFile} from './formats.js';
 import {validateSiteSelections} from './siteSelection.js';
 import {validateTraitTargets} from './traitAssessment.js';
+import {validatePhenotypeCheck} from './phenotypeCheck.js';
 export const panels={locus:'基因区域与变异',frequency:'等位基因频率',composition:'多位点基因型组合',phenotype:'地区表型',evidence:'基因与证据',compare:'多基因比较',materials:'材料比较',individuals:'个体明细',ricenavi:'RiceNavi 来源'};
 const pages=[
   {id:'gene',title:'基因与群体',sections:['locus','frequency','composition']},
@@ -36,6 +37,7 @@ export function validateWorkspace(value){
   }
   validateSiteSelections(c.siteSelections);validateSiteSelections(c.compare?.joint?.customSites);
   validateTraitTargets(c.traitTargets);
+  validatePhenotypeCheck(c.phenotypeCheck);
   if(c.display&&(!['desk','free'].includes(c.display.mode)||!['standard','large'].includes(c.display.text)||!['overview',...Object.keys(panels)].includes(c.display.tab)))throw Error('阅读布局设置无效');
   return value;
 }

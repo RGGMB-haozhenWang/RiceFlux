@@ -1,0 +1,1185 @@
+{
+  "schema": "RiceFlux trait vocabulary 1.0",
+  "version": "2026-11-25.1",
+  "note": "Trait concepts and aliases for retrieval; assay, unit, site, year and source trait ID remain separate.",
+  "directions": [
+    "increase",
+    "promoting",
+    "larger",
+    "shorter",
+    "reduce",
+    "delaying"
+  ],
+  "nonDirectional": [
+    "present",
+    "absent",
+    "category",
+    "unspecified"
+  ],
+  "traits": [
+    {
+      "id": "grain_weight",
+      "en": "grain weight",
+      "zh": "粒重",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "single grain weight",
+        "seed weight"
+      ]
+    },
+    {
+      "id": "grain_size",
+      "en": "grain size",
+      "zh": "籽粒大小",
+      "scale_kind": "composite",
+      "scope": "requested",
+      "aliases": [
+        "kernel size",
+        "粒形/籽粒大小"
+      ]
+    },
+    {
+      "id": "width",
+      "en": "grain width",
+      "zh": "粒宽",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "籽粒宽度"
+      ]
+    },
+    {
+      "id": "length",
+      "en": "grain length",
+      "zh": "粒长",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "籽粒长度"
+      ]
+    },
+    {
+      "id": "grain_yield",
+      "en": "grain yield",
+      "zh": "籽粒产量",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "yield",
+        "产量"
+      ]
+    },
+    {
+      "id": "grain_number",
+      "en": "grain number",
+      "zh": "粒数",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "seed number",
+        "籽粒数"
+      ]
+    },
+    {
+      "id": "grain_protein_content",
+      "en": "grain protein content",
+      "zh": "籽粒蛋白质含量",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "protein content",
+        "seed protein content",
+        "籽粒蛋白含量"
+      ]
+    },
+    {
+      "id": "amylose_content",
+      "en": "amylose content",
+      "zh": "直链淀粉含量",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "apparent amylose content",
+        "直链淀粉"
+      ]
+    },
+    {
+      "id": "gelatinization_temperature",
+      "en": "gelatinization temperature",
+      "zh": "糊化温度",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "gelatinisation temperature"
+      ]
+    },
+    {
+      "id": "stale_flavor_generation",
+      "en": "stale-flavor generation",
+      "zh": "陈味形成",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "generation of stale flavor",
+        "stale flavor generation"
+      ]
+    },
+    {
+      "id": "l_asparagine_content",
+      "en": "L-asparagine content",
+      "zh": "L-天冬酰胺含量",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "l-asparagine"
+      ]
+    },
+    {
+      "id": "chalkiness",
+      "en": "chalkiness",
+      "zh": "垩白",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": []
+    },
+    {
+      "id": "glutinous_rice",
+      "en": "glutinous rice",
+      "zh": "糯性",
+      "scale_kind": "binary",
+      "scope": "requested",
+      "aliases": [
+        "waxy endosperm",
+        "糯稻",
+        "粘性胚乳"
+      ]
+    },
+    {
+      "id": "fragrance",
+      "en": "fragrance",
+      "zh": "香味",
+      "scale_kind": "binary",
+      "scope": "requested",
+      "aliases": [
+        "rice fragrance",
+        "aroma",
+        "香气"
+      ]
+    },
+    {
+      "id": "seed_coat_color",
+      "en": "seed-coat color",
+      "zh": "种皮颜色",
+      "scale_kind": "categorical",
+      "scope": "requested",
+      "aliases": [
+        "seed coat color",
+        "seed coat colour",
+        "seed-coat colour",
+        "种皮色"
+      ]
+    },
+    {
+      "id": "apiculus_pigmentation",
+      "en": "apiculus pigmentation",
+      "zh": "颖尖色",
+      "scale_kind": "categorical",
+      "scope": "requested",
+      "aliases": [
+        "apiculus color",
+        "apiculus colour",
+        "颖尖着色"
+      ]
+    },
+    {
+      "id": "grain_phenol_reaction",
+      "en": "phenol reaction (grains turn brown)",
+      "zh": "籽粒酚反应",
+      "scale_kind": "binary",
+      "scope": "requested",
+      "aliases": [
+        "grain phenol reaction",
+        "phenol reaction"
+      ]
+    },
+    {
+      "id": "awn",
+      "en": "awn",
+      "zh": "芒",
+      "scale_kind": "binary",
+      "scope": "requested",
+      "aliases": [
+        "awn presence",
+        "芒性状",
+        "有无芒"
+      ]
+    },
+    {
+      "id": "glabrous_leaves_glumes",
+      "en": "glabrous leaves/glumes",
+      "zh": "叶片或颖壳无毛",
+      "scale_kind": "binary",
+      "scope": "requested",
+      "aliases": [
+        "glabrous leaves and glumes",
+        "glabrousness of rice leave glumes"
+      ]
+    },
+    {
+      "id": "panicle_number",
+      "en": "panicle number",
+      "zh": "穗数",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "panicle count"
+      ]
+    },
+    {
+      "id": "panicle_architecture",
+      "en": "panicle architecture",
+      "zh": "穗型",
+      "scale_kind": "categorical",
+      "scope": "requested",
+      "aliases": [
+        "panicle morphology",
+        "穗部构型"
+      ]
+    },
+    {
+      "id": "effective_panicle_number",
+      "en": "effective panicle number (EPN)",
+      "zh": "有效穗数",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "effective panicle number",
+        "epn"
+      ]
+    },
+    {
+      "id": "seed_setting_rate",
+      "en": "seed setting rate",
+      "zh": "结实率",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "setting rate",
+        "seed-setting rate",
+        "seed set percentage"
+      ]
+    },
+    {
+      "id": "plant_height",
+      "en": "plant height",
+      "zh": "株高",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "height"
+      ]
+    },
+    {
+      "id": "internode_length",
+      "en": "internode length",
+      "zh": "节间长度",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "节间长"
+      ]
+    },
+    {
+      "id": "tiller_number",
+      "en": "tiller number",
+      "zh": "分蘖数",
+      "scale_kind": "count",
+      "scope": "requested",
+      "aliases": [
+        "tiller count",
+        "分蘖数量"
+      ]
+    },
+    {
+      "id": "tiller_angle",
+      "en": "tiller angle",
+      "zh": "分蘖角度",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "分蘖角"
+      ]
+    },
+    {
+      "id": "flag_leaf_angle",
+      "en": "flag-leaf angle",
+      "zh": "剑叶角度",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "flag leaf angle",
+        "剑叶角"
+      ]
+    },
+    {
+      "id": "leaf_width",
+      "en": "leaf width",
+      "zh": "叶宽",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": []
+    },
+    {
+      "id": "root_length",
+      "en": "root length",
+      "zh": "根长",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": []
+    },
+    {
+      "id": "root_thickness",
+      "en": "root thickness",
+      "zh": "根粗",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "root diameter"
+      ]
+    },
+    {
+      "id": "root_weight",
+      "en": "root weight",
+      "zh": "根重",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": []
+    },
+    {
+      "id": "lateral_root_number",
+      "en": "lateral root number",
+      "zh": "侧根数",
+      "scale_kind": "count",
+      "scope": "requested",
+      "aliases": [
+        "lateral roots number",
+        "lateral root count"
+      ]
+    },
+    {
+      "id": "root_sodium_content",
+      "en": "root sodium content",
+      "zh": "根部钠含量",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": []
+    },
+    {
+      "id": "mesocotyl_length",
+      "en": "mesocotyl length",
+      "zh": "中胚轴长度",
+      "scale_kind": "continuous",
+      "scope": "requested",
+      "aliases": [
+        "中胚轴长"
+      ]
+    },
+    {
+      "id": "heading",
+      "en": "heading date",
+      "zh": "抽穗期",
+      "scale_kind": "time",
+      "scope": "requested",
+      "aliases": [
+        "heading",
+        "days to heading",
+        "抽穗天数"
+      ]
+    },
+    {
+      "id": "germination",
+      "en": "germination",
+      "zh": "萌发",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "seed germination",
+        "发芽"
+      ]
+    },
+    {
+      "id": "low_temperature_germinability",
+      "en": "low-temperature germinability",
+      "zh": "低温发芽能力",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "low temperature germinability",
+        "low-temperature germinability ability",
+        "低温发芽力"
+      ]
+    },
+    {
+      "id": "anaerobic_germination_tolerance",
+      "en": "anaerobic germination tolerance",
+      "zh": "厌氧萌发耐性",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "low-oxygen germination tolerance",
+        "厌氧萌发耐受性"
+      ]
+    },
+    {
+      "id": "preharvest_sprouting",
+      "en": "pre-harvest sprouting",
+      "zh": "穗发芽",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "preharvest sprouting",
+        "穗上发芽"
+      ]
+    },
+    {
+      "id": "seed_dormancy",
+      "en": "seed dormancy",
+      "zh": "种子休眠",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": []
+    },
+    {
+      "id": "seed_shattering",
+      "en": "seed shattering",
+      "zh": "落粒性",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "grain shattering"
+      ]
+    },
+    {
+      "id": "ratooning_ability",
+      "en": "ratooning ability",
+      "zh": "再生稻再生力",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "ratooning capacity",
+        "再生能力（再生稻）"
+      ]
+    },
+    {
+      "id": "regeneration_ability",
+      "en": "regeneration ability",
+      "zh": "再生能力",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "regeneration ablility"
+      ]
+    },
+    {
+      "id": "callus_browning",
+      "en": "callus browning",
+      "zh": "愈伤组织褐化",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": []
+    },
+    {
+      "id": "drought_tolerance",
+      "en": "drought tolerance",
+      "zh": "耐旱性",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "drought resistance",
+        "抗旱性"
+      ]
+    },
+    {
+      "id": "salt_tolerance",
+      "en": "salt tolerance",
+      "zh": "耐盐性",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "salinity tolerance",
+        "抗盐性"
+      ]
+    },
+    {
+      "id": "aluminum_tolerance",
+      "en": "aluminum tolerance",
+      "zh": "耐铝性",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "aluminium tolerance",
+        "al tolerance"
+      ]
+    },
+    {
+      "id": "boron_toxicity_tolerance",
+      "en": "boron-toxicity tolerance",
+      "zh": "耐硼毒性",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "boron toxicity tolerance"
+      ]
+    },
+    {
+      "id": "chilling_tolerance",
+      "en": "cold/chilling tolerance",
+      "zh": "耐冷性",
+      "scale_kind": "unspecified_scale",
+      "scope": "requested",
+      "aliases": [
+        "cold tolerance",
+        "chilling tolerance",
+        "低温耐受性"
+      ]
+    },
+    {
+      "id": "grain_ratio",
+      "en": "grain length-to-width ratio",
+      "zh": "粒长宽比",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": [
+        "grain length/width ratio",
+        "粒长/粒宽"
+      ]
+    },
+    {
+      "id": "thousand_grain_weight",
+      "en": "thousand-grain weight",
+      "zh": "千粒重",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": [
+        "1000-grain weight",
+        "1000 grain weight",
+        "thousand grain weight",
+        "千粒质量"
+      ]
+    },
+    {
+      "id": "panicle_length",
+      "en": "panicle length",
+      "zh": "穗长",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "grains_per_panicle",
+      "en": "grains per panicle",
+      "zh": "每穗粒数",
+      "scale_kind": "count",
+      "scope": "retained",
+      "aliases": [
+        "grain number per panicle",
+        "穗粒数"
+      ]
+    },
+    {
+      "id": "spikelets_per_panicle",
+      "en": "spikelets per panicle",
+      "zh": "每穗颖花数",
+      "scale_kind": "count",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "leaf_blast",
+      "en": "leaf blast resistance",
+      "zh": "叶瘟抗性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "叶瘟",
+        "叶瘟评分"
+      ]
+    },
+    {
+      "id": "neck_blast",
+      "en": "neck blast resistance",
+      "zh": "穗颈瘟抗性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "穗颈瘟",
+        "穗颈瘟评分"
+      ]
+    },
+    {
+      "id": "blight",
+      "en": "bacterial blight lesion length",
+      "zh": "白叶枯病斑长度",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": [
+        "白叶枯病病斑长度"
+      ]
+    },
+    {
+      "id": "blast_resistance",
+      "en": "blast resistance",
+      "zh": "稻瘟病抗性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "rice blast resistance"
+      ]
+    },
+    {
+      "id": "blast_tolerance",
+      "en": "blast tolerance",
+      "zh": "稻瘟病耐受性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "blight_resistance",
+      "en": "bacterial blight resistance",
+      "zh": "白叶枯病抗性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "blight resistance"
+      ]
+    },
+    {
+      "id": "culm_length",
+      "en": "culm length",
+      "zh": "茎秆长",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": [
+        "茎秆长度"
+      ]
+    },
+    {
+      "id": "culm_number",
+      "en": "culm number",
+      "zh": "茎秆数",
+      "scale_kind": "count",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "ligule_length",
+      "en": "ligule length",
+      "zh": "叶舌长",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "seedling_height",
+      "en": "seedling height",
+      "zh": "苗高",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "leaf_rolling_index",
+      "en": "leaf rolling index",
+      "zh": "卷叶指数",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "grain_yield_per_plant",
+      "en": "grain yield per plant",
+      "zh": "单株籽粒产量",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": [
+        "单株产量"
+      ]
+    },
+    {
+      "id": "plot_grain_yield",
+      "en": "grain yield per plot",
+      "zh": "小区籽粒产量",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": [
+        "小区产量"
+      ]
+    },
+    {
+      "id": "days_to_flowering",
+      "en": "days to flowering",
+      "zh": "开花日数",
+      "scale_kind": "time",
+      "scope": "retained",
+      "aliases": [
+        "开花天数"
+      ]
+    },
+    {
+      "id": "awning_length",
+      "en": "awn length",
+      "zh": "芒长",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "grain_cadmium",
+      "en": "grain cadmium concentration",
+      "zh": "籽粒镉含量",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "cadmium_accumulation",
+      "en": "cadmium accumulation",
+      "zh": "镉积累",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "cd accumulation"
+      ]
+    },
+    {
+      "id": "nitrogen_use_efficiency",
+      "en": "nitrogen use efficiency",
+      "zh": "氮素利用效率",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": [
+        "氮利用效率"
+      ]
+    },
+    {
+      "id": "nitrate_reductase_activity",
+      "en": "nitrate reductase activity",
+      "zh": "硝酸还原酶活性",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "lodging_resistance",
+      "en": "lodging resistance",
+      "zh": "抗倒伏性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "brown_planthopper_resistance",
+      "en": "brown planthopper resistance",
+      "zh": "褐飞虱抗性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "resistance to brown planthopper"
+      ]
+    },
+    {
+      "id": "planthopper_resistance",
+      "en": "planthopper resistance",
+      "zh": "飞虱抗性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "resistance to planthoppers"
+      ]
+    },
+    {
+      "id": "rice_stripe_resistance",
+      "en": "resistance to rice stripe virus",
+      "zh": "条纹叶枯病抗性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "tungro_resistance",
+      "en": "resistance to tungro spherical virus",
+      "zh": "东格鲁球状病毒抗性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "sheath",
+      "en": "sheath blight relative lesion height",
+      "zh": "纹枯病相对病斑高度",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "sprouting_unspecified",
+      "en": "sprouting",
+      "zh": "发芽（来源未注明阶段）",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "grain_filling_rate",
+      "en": "grain-filling rate",
+      "zh": "籽粒灌浆速率",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": [
+        "grain filling rate"
+      ]
+    },
+    {
+      "id": "flooding_tolerance",
+      "en": "flooding tolerance",
+      "zh": "耐涝性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "submergence_tolerance",
+      "en": "submergence tolerance",
+      "zh": "耐淹性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "deep_water_adaptation",
+      "en": "deep water adaptation",
+      "zh": "深水适应性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "adaptation to deep water"
+      ]
+    },
+    {
+      "id": "flooding_adaptation",
+      "en": "flooding adaptation",
+      "zh": "淹水适应性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "drought_avoidance",
+      "en": "drought avoidance",
+      "zh": "避旱性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "uvb_tolerance",
+      "en": "UV-B tolerance",
+      "zh": "耐 UV-B 性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "herbicide_tolerance",
+      "en": "herbicide tolerance",
+      "zh": "耐除草剂性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": [
+        "herbicides tolerance"
+      ]
+    },
+    {
+      "id": "potassium_use_efficiency",
+      "en": "potassium use efficiency",
+      "zh": "钾利用效率",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "phosphorus_tolerance",
+      "en": "phosphorus tolerance",
+      "zh": "磷耐受性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "nutrient_tolerance",
+      "en": "tolerance to nutrition",
+      "zh": "养分耐受性",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "copper_accumulation",
+      "en": "copper accumulation",
+      "zh": "铜积累",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "molybdenum_accumulation",
+      "en": "molybdenum accumulation",
+      "zh": "钼积累",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "nonphotochemical_quenching",
+      "en": "nonphotochemical quenching",
+      "zh": "非光化学猝灭",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "fertility_restoration",
+      "en": "fertility restoration",
+      "zh": "育性恢复",
+      "scale_kind": "binary",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "hybrid_compatibility",
+      "en": "hybrid compatibility",
+      "zh": "杂交亲和性",
+      "scale_kind": "binary",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "hybrid_male_sterility",
+      "en": "hybrid male sterility",
+      "zh": "杂种雄性不育",
+      "scale_kind": "binary",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "cytoplasmic_male_sterility",
+      "en": "cytoplasmic male sterility",
+      "zh": "细胞质雄性不育",
+      "scale_kind": "binary",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "photoperiod_sensitive_male_sterility",
+      "en": "photoperiod-sensitive male sterility",
+      "zh": "光敏雄性不育",
+      "scale_kind": "binary",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "thermosensitive_male_sterility",
+      "en": "thermosensitive male sterility",
+      "zh": "温敏雄性不育",
+      "scale_kind": "binary",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "hybrid_weakness",
+      "en": "interspecific hybrid weakness",
+      "zh": "种间杂种衰弱",
+      "scale_kind": "binary",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "coumaroyl_feruloyl_spermidine",
+      "en": "N',N''-p-coumaroyl feruloyl spermidine",
+      "zh": "对香豆酰-阿魏酰亚精胺",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "feruloylputrescine",
+      "en": "N-feruloylputrescine",
+      "zh": "N-阿魏酰腐胺",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "benzoyltryptamine",
+      "en": "benzoyl tryptamine",
+      "zh": "苯甲酰色胺",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "cinnamoyltryptamine",
+      "en": "cinnamoyl tryptamine",
+      "zh": "肉桂酰色胺",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "feruloylserotonin",
+      "en": "feruloylserotonin",
+      "zh": "阿魏酰血清素",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "strigolactone",
+      "en": "strigolactone",
+      "zh": "独脚金内酯",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "trigonelline",
+      "en": "trigonelline",
+      "zh": "葫芦巴碱",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "five_o_glucoside",
+      "en": "5-O-glucoside",
+      "zh": "5-O-葡萄糖苷（来源组分）",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "seven_o_glucoside",
+      "en": "7-O-glucoside",
+      "zh": "7-O-葡萄糖苷（来源组分）",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "meoh_jasmonates",
+      "en": "MeOH-Jasmonates",
+      "zh": "MeOH-Jasmonates（来源组分）",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "o_methylapigenin_c_pentoside",
+      "en": "O-methylapigenin C-pentoside",
+      "zh": "O-甲基芹菜素 C-戊糖苷",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "tricin_lignan_glycosides",
+      "en": "tricin-lignan-glycosides",
+      "zh": "tricin-lignan-glycosides（来源组分）",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "culm_diameter",
+      "en": "culm diameter",
+      "zh": "茎秆直径",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "grain_yield_under_drought",
+      "en": "grain yield under drought",
+      "zh": "旱田条件下籽粒产量",
+      "scale_kind": "unspecified_scale",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "drought_survival",
+      "en": "survival under drought",
+      "zh": "干旱存活率",
+      "scale_kind": "proportion",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "chlorophyll_content",
+      "en": "leaf chlorophyll content",
+      "zh": "叶片叶绿素含量",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "flag_leaf_length",
+      "en": "flag-leaf length",
+      "zh": "旗叶长",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "grain_yield_per_area",
+      "en": "grain yield per unit area",
+      "zh": "单位面积籽粒产量",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "seed_setting_under_drought",
+      "en": "seed-setting rate under drought",
+      "zh": "干旱条件下结实率",
+      "scale_kind": "proportion",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "drought_green_area_ratio",
+      "en": "projected green area ratio after drought",
+      "zh": "干旱后绿色投影面积比",
+      "scale_kind": "proportion",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "wx_mature_mrna",
+      "en": "mature Wx transcript abundance",
+      "zh": "Wx成熟转录本丰度",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    },
+    {
+      "id": "root_to_shoot_cadmium",
+      "en": "root-to-shoot cadmium translocation",
+      "zh": "镉根到地上部转运",
+      "scale_kind": "continuous",
+      "scope": "retained",
+      "aliases": []
+    }
+  ]
+}

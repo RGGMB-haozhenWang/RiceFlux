@@ -6,10 +6,12 @@ import {TrialProtocol} from './TrialProtocol.jsx';
 import {PhenotypeTests} from './PhenotypeTests.jsx';
 import {typeMaterial} from './jointHaplotypes.js';
 import {presetTitle} from './provenance.js';
-import {assessPhenotype,isTargetRange} from './traitAssessment.js';
+import {assessPhenotype} from './traitAssessment.js';
 import {effectDirections,quantitativeEffectText,claimEvidenceKey} from './traitEvidence.js';
 import {phenotypeEffectComparisons} from './phenotypeEffectComparisons.js';
 import {buildHaplotypeMapping} from './haplotypeIdentity.js';
+import {checkObservation} from './phenotypeCheck.js';
+import {checkCultivarName} from './CheckCultivar.jsx';
 
 const numberFormat = new Intl.NumberFormat('zh-CN', {maximumFractionDigits:3,useGrouping:false});
 const valueText = value => numberFormat.format(value);
@@ -19,7 +21,7 @@ const literatureLabel=claim=>claim.judgment==='favourable'?'文献优势':claim.
 const literatureStyle=claim=>claim.judgment==='favourable'?'literature-positive':claim.judgment==='unfavourable'?'literature-negative':'';
 const directionArrow=claim=>claim.direction==='increase'?'↑':'↓';
 
-function RangePlot({row,domain,target}) {
+function RangePlot({row,domain,target,observation}) {
   const localize = useText();
   const scale=Math.max(1,Math.abs(domain[0]),Math.abs(domain[1]));
   const position = v => 100 * (v/scale-domain[0]/scale) / (domain[1]/scale-domain[0]/scale);
@@ -29,10 +31,13 @@ function RangePlot({row,domain,target}) {
     <title>{localize(caption)}{target?localize("；目标 #0#–#1#", [valueText(target[0]), valueText(target[1])]):''}</title>
     {target&&<g aria-hidden="true"><rect className="target-band" x={Math.min(99.5,position(target[0]))} y="0"
       width={Math.max(.5,position(target[1])-position(target[0]))} height="16"/></g>}
+    {observation?.band&&<rect className="check-band" x={position(observation.band[0])} y="0"
+      width={position(observation.band[1])-position(observation.band[0])} height="16" aria-hidden="true"/>}
     <line className="range-line" x1={position(row.min)} x2={position(row.max)} y1="8" y2="8"/>
     {[row.min,row.max].map((v,i) => <line className="range-line" key={i} x1={position(v)} x2={position(v)} y1="5" y2="11"/>)}
     <rect x={position(row.q1)} width={Math.max(.8,position(row.q3)-position(row.q1))} y="3" height="10" rx="1"/>
     <line className="range-median" x1={position(row.median)} x2={position(row.median)} y1="2" y2="14"/>
+    {observation&&<line className="check-line" x1={position(observation.value)} x2={position(observation.value)} y1="0" y2="16" aria-hidden="true"/>}
     {row.highlighted.map(s => <circle key={s.id} cx={position(s.value)} cy="8" r="2"><title>{localize(s.id)} · {localize(s.value)}</title></circle>)}
   </svg>;
 }
@@ -79,7 +84,7 @@ function RowEffect({comparisons,view}) {
   </details>;
 }
 
-export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schemes=[],cohort=[],markerIds=[], view, onChange, selectedIds,compact=false,assessment,onInspect,claims=[],mapping}) {
+export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schemes=[],cohort=[],markerIds=[], view, onChange, selectedIds,compact=false,assessment,onInspect,claims=[],mapping,checkSample,check}) {
   const localize = useText();
   const [schemeId,setSchemeId]=useState('');
   const [allRows,setAllRows]=useState(false);
@@ -99,7 +104,9 @@ export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schem
   const plotGroups=named||groups;
   const {sites,domain} = useMemo(() => regionalDistributions(plotGroups,view,selectedIds,Boolean(assessment)),[plotGroups,view,selectedIds,Boolean(assessment)]);
   const range=assessment?.range,policy=assessment?.policy;
-  const axis=range&&domain?[Math.min(domain[0],range[0]),Math.max(domain[1],range[1])]:domain;
+  const observations=new Map(sites.map(({site,endpoint})=>[site,checkObservation(checkSample,endpoint,check?.bandPct)]));
+  const bounds=[...(range||[]),...[...observations.values()].flatMap(item=>item?.band??(item?[item.value]:[]))];
+  const axis=domain?[Math.min(domain[0],...bounds),Math.max(domain[1],...bounds)]:null;
   const activeSite = view.active.source.site;
   return <div className={'regional-chart'+(compact?' compact-regions':'')+(assessment?' assessed-regions':'')} data-target={range?'active':undefined} aria-label={localize(trait.name+'分地区表型')}>
     <div className="region-toolbar">
@@ -121,6 +128,7 @@ export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schem
     <details className="region-description" open={!compact}><summary>{localize("统计口径 ·")+" "}{localize(view.unit)}</summary><p>{localize("各地共用同一横轴。箱体为四分位区间，中线为中位数，两端为最小值和最大值。n 为有测值的组合成员数。")}</p></details>
     <div className="region-grid">{sites.filter(s=>!compact||s.site===activeSite).map(({site,endpoint,rows,total}) => {
       const active = site===activeSite, name = siteName(site);
+      const observation=observations.get(site);
       const report=policy?assessPhenotype(rows,policy,range):null;
       const candidates=report?.preferred;
       const traitEffects=row=>(plotGroups[row.index]?.effects||[]).filter(({claim})=>claim.trait_id===trait.id);
@@ -140,6 +148,10 @@ export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schem
           {endpoint && !assessment&&<button type="button" className="site-detail" aria-label={localize('查看'+name+'个体明细')} aria-pressed={active}
             onClick={() => onChange({site})}>{active?localize("已选明细"):localize("查看明细")}</button>}
         </header>
+        {checkSample&&<p className="check-legend" data-check-value={observation?.value}>
+          {observation?<><i/>{localize("对照实测")} · {checkCultivarName(checkSample)} · <b>{valueText(observation.value)} {localize(view.unit)}</b>
+            {observation.band&&<> · {localize("蒙版")} {observation.band.map(valueText).join('–')} {localize(view.unit)}</>}</>:
+            localize("该对照在本场次缺测")}</p>}
         {total ? <>
           <div className="region-row region-labels"><span>{assessment?localize("单倍型"):localize("组合")}</span><span>{localize("分布")}</span><span>{localize("中位数")}</span><span>n</span>{range&&<span>{localize("区间内")}</span>}</div>
           {displayed.map(row => {
@@ -160,7 +172,7 @@ export function RegionalPhenotypes({trait, groups, allGroups=groups, gene, schem
               </a>)}
               {candidates?.has(row.key)&&<small className="trait-badge target-match">{policy.mode==='relative'?localize("区间优势"):localize("抗性优势")}{candidates.size>1?localize(" · 并列"):''}</small>}
             </span>
-            {row.n ? <RangePlot row={row} domain={axis} target={range}/> : <span className="missing-range">—</span>}
+            {row.n ? <RangePlot row={row} domain={axis} target={range} observation={observation}/> : <span className="missing-range">—</span>}
             <span>{localize(row.n?valueText(row.median):'—')}</span><span>{localize(row.n)}</span>
             {range&&<span className="range-count" title={row.n?localize("中位数距区间 #0# #1#", [valueText(report.results.get(row.key).distance), view.unit]):undefined}>{localize(row.n?`${report.results.get(row.key).inRange}/${row.n}`:'—')}</span>}
             {rowEffects&&<RowEffect comparisons={rowEffects} view={view}/>}

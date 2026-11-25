@@ -14,6 +14,11 @@ Hap 保留原文型名、单个等位状态或逗号分隔的有序状态。参�
 可在第九列加入 Source_DOI，接受裸 DOI 或 doi.org 链接，多项用空格分隔。该来源描述输入先验记录。仅在与 Position 等长的明确碱基状态可供判型时，导入判型方案也会保留其 DOI。
 材料以 accession_id 连接群体、分型与表型，名称取名录原文 original_name。原始名录见 prior/accessions_6044.tsv.gz。位点列字典和数据文件哈希见 prior/data_manifest.json。
 
+性状与作用方向
+trait-vocabulary.v1.json 定义概念 ID、中英文名称、别名和来源范围。trait-vocabulary.v1.txt 是对应的制表符词表。别名用于匹配和分组，试验仍通过原始表型编号、方法、单位、地点、年份及数据集追溯。可按词表保留粒重、千粒重、产量和有效穗数等独立概念。
+方向术语为 increase、promoting、larger、shorter、reduce、delaying。原始标签、效应等位与对照、适用条件和证据状态可从 function-review 下的 TXT 追溯。对于抽穗期，promoting 表示抽穗提前，抽穗天数减少。分类、存在或缺失与未注明方向分别保留。
+表型比较中的对照品种按数据集和材料编号保存，只读取当前试验指标的测值。默认蒙版以测值加减其绝对值的 5% 计算。0% 及分类量尺仅绘参考线。目标区间可独立使用。
+
 输出
 riceflux_prior_results.tsv 的前八列保留输入值，每个 Position 组分一行，Component 从 1 起按原顺序编号。追加 Matched_gene、Marker、Status、N_samples、REF_copies、ALT_copies、Called_copies、ALT_frequency。匹配结果为 matched、gene_unresolved、position_missing 或 site_unmatched。未匹配行的调用及频率字段为空。N_samples 是当前选中材料数，Called_copies 是检出的拷贝数，ALT_frequency 是 ALT_copies / Called_copies，范围 0–1，无可用拷贝时留空。
 riceflux_comparison.tsv 使用相同列序，逐个列出所选基因的已接入位点，包括未通过单基因视图 MAF 阈值的稀有位点。Status 为 typed 或 no_typed_site。此表按同一材料筛选统计，Hap 留空。多基因视图的轨道使用独立坐标窗口，同一行的多个 SNP 可以属于同一个先验事件。
